@@ -1,6 +1,6 @@
 {
   "compilerOptions": {    
-    "target": "es2016",
+    "target": "es2022",
     "module": "commonjs",
 
     "outDir": "./build/",
@@ -10,9 +10,6 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
 
-    "baseUrl": ".",
-    "paths": {
-      "$core/*": ["./src/*"]
-    }
+    "baseUrl": "."
   }
 }

@@ -1,9 +1,8 @@
 import { Collection } from "discord.js";
-import Command from "$core/commands/command";
-import { lstatSync, readdirSync } from "fs";
-import { join } from "path";
-import Logger from "$core/utils/Logger";
-import Client from "$core/client";
+import Command from "./../commands/command";
+import { readdirSync } from "fs";
+import Logger from "./../utils/Logger";
+import Client from "./../client";
 
 export default class CommandManager {
 
