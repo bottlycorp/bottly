@@ -1,13 +1,8 @@
-import { ClientEvents } from "discord.js";
-
-export type EventName = keyof ClientEvents;
+import { ClientEvents } from 'discord.js';
 
 export default abstract class Event {
 
-    public abstract readonly name: EventName;
+	protected constructor(public readonly name: keyof ClientEvents, public once: boolean = false) {}
 
-    public abstract readonly once: boolean;
-
-    public abstract execute(...args: any[]) : void;
-
+	public abstract execute(...args: unknown[]): void;
 }

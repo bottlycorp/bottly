@@ -2,14 +2,15 @@
 	"name": "gpt",
 	"description": "An Discord bot allow users ask questions to ChatGPT",
 	"version": "1.0.0",
-	"main": "build/index.js",
+	"main": "build/client.js",
 	"author": "Gaëtan H (Steellgold)",
 	"license": "MIT",
 	"scripts": {
-		"dev": "node --watch -r @swc-node/register -r tsconfig-paths/register ./src/index.ts",
-		"start": "node -r @swc-node/register -r tsconfig-paths/register ./src/index.ts"
+		"dev": "node --watch -r @swc-node/register -r tsconfig-paths/register ./src/client.ts",
+		"start": "node -r @swc-node/register -r tsconfig-paths/register ./src/client.ts"
 	},
 	"dependencies": {
+		"@discordjs/builders": "^1.4.0",
 		"chalk": "^4.1.2",
 		"discord.js": "^14.7.1"
 	},
