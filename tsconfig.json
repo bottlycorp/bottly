@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    
+    "target": "ES2022",
+    "module": "commonjs",
+
+    "outDir": "./build/",
+
+    "strict": true,
+    
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "$core/*": ["./src/*"],
+      "$resources/*": ["./resources/*"]
+    }
+  }
+}
