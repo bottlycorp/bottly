@@ -14,8 +14,7 @@
 
     "baseUrl": ".",
     "paths": {
-      "$core/*": ["./src/*"],
-      "$resources/*": ["./resources/*"]
+      "$core/*": ["./src/*"]
     }
   }
 }
