@@ -1,9 +1,9 @@
-import { Collection } from 'discord.js';
-import Command from '$core/commands/command';
-import { lstatSync, readdirSync } from 'fs';
-import { join } from 'path';
-import Logger from '$core/utils/Logger';
-import Client from '$core/client';
+import { Collection } from "discord.js";
+import Command from "$core/commands/command";
+import { lstatSync, readdirSync } from "fs";
+import { join } from "path";
+import Logger from "$core/utils/Logger";
+import Client from "$core/client";
 
 export default class CommandManager {
 
@@ -18,7 +18,7 @@ export default class CommandManager {
 
     let i = 0;
     for (const file of files) {
-      const dynamicImport = await import(`./list/${file}`)
+      const dynamicImport = await import(`./list/${file}`);
 
       const command: Command = new dynamicImport.default();
       this.commands.set(command.name, command);
@@ -42,13 +42,13 @@ export default class CommandManager {
      * Register the slash commands (use it when the client is ready)
      */
   public async register() : Promise<void> {
-		const commands = await Client.instance.application?.commands.fetch();
-		const commandsName = commands?.map(command => command.name);
+    const commands = await Client.instance.application?.commands.fetch();
+    const commandsName = commands?.map(command => command.name);
 
-		for (const command of this.commands.values()) {
-			this.commands.map(command => command.slashCommand.toJSON())
-			await Client.instance.application?.commands.create(command.slashCommand);
-		}
+    for (const command of this.commands.values()) {
+      this.commands.map(command => command.slashCommand.toJSON());
+      await Client.instance.application?.commands.create(command.slashCommand);
+    }
 
     Logger.info("Successfully registered application (/) commands");
   }

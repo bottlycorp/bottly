@@ -16,20 +16,20 @@ export default class Ask extends Command {
 
   public async execute(command: ChatInputCommandInteraction) : Promise<void> {
     command.deferReply();
-		let question = command.options.getString("question");
+    const question = command.options.getString("question");
 
-		if (!question) {
-			await command.editReply({
-				content: "You must provide a question"
-			});
-			return;
-		}
-		
-		const answer = await chatWithAI(question);
+    if (!question) {
+      await command.editReply({
+        content: "You must provide a question"
+      });
+      return;
+    }
 
-		await command.editReply({
-			content: answer
-		});
+    const answer = await chatWithAI(question);
+
+    await command.editReply({
+      content: answer
+    });
   }
 
 }

@@ -6,9 +6,10 @@
 	"author": "Gaëtan H (Steellgold)",
 	"license": "MIT",
 	"scripts": {
-		"dev": "node --watch -r @swc-node/register -r tsconfig-paths/register ./src/client.ts",
-		"start": "node -r @swc-node/register -r tsconfig-paths/register ./src/client.ts",
-		"build": "tsc --build tsconfig.json"
+    "dev": "node --watch -r @swc-node/register -r tsconfig-paths/register ./src/client.ts dev",
+    "start": "node -r @swc-node/register -r tsconfig-paths/register ./src/client.ts",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix"
 	},
 	"dependencies": {
 		"@discordjs/builders": "^1.4.0",
@@ -26,9 +27,6 @@
     "typescript": "^4.9.4"
   },
   "eslintConfig": {
-    "extends": "@bluzzi",
-    "ignorePatterns": [
-      "src/utils/request/graphql"
-    ]
+    "extends": "@bluzzi"
   }
 }
