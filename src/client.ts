@@ -1,7 +1,7 @@
 import { Client as DiscordClient, GatewayIntentBits, Partials } from "discord.js";
-import Logger from "./utils/Logger";
-import CommandManager from "./commands/command.manager";
-import EventManager from "./events/event.manager";
+import Logger from "$core/utils/Logger";
+import CommandManager from "$core/commands/command.manager";
+import EventManager from "$core/events/event.manager";
 import "dotenv/config";
 
 export default class Client extends DiscordClient {

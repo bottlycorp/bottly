@@ -1,6 +1,6 @@
-import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption } from "discord.js";
-import Command from "../../commands/command";
-import { chatWithAI } from "../../utils/OpenAI";
+import { ChatInputCommandInteraction, SlashCommandBooleanOption, SlashCommandBuilder, SlashCommandStringOption } from "discord.js";
+import Command from "$core/commands/command";
+import { chatWithAI } from "$core/utils/OpenAI";
 
 export default class Ask extends Command {
 
