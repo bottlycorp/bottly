@@ -1,10 +1,7 @@
 {
 	"name": "gpt",
 	"description": "An Discord bot allow users ask questions to ChatGPT",
-	"version": "1.0.0",
-	"main": "build/client.js",
-	"author": "Gaëtan H",
-	"license": "MIT",
+	"main": "build/src/client.js",
 	"scripts": {
     "dev": "node --watch -r @swc-node/register -r tsconfig-paths/register ./src/client.ts dev",
     "start": "node -r @swc-node/register -r tsconfig-paths/register ./src/client.ts",
