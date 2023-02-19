@@ -1,8 +1,6 @@
 {
-  "compilerOptions": {
-    "forceConsistentCasingInFileNames": true,
-    
-    "target": "ES2022",
+  "compilerOptions": {    
+    "target": "es2016",
     "module": "commonjs",
 
     "outDir": "./build/",
