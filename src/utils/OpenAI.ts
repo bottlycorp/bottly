@@ -1,5 +1,23 @@
-import { restRequest } from "../request/request";
-import { ChatGPTResponse } from "../types";
+import "dotenv/config";
+import { restRequest } from "./request/request";
+
+type ChatGPTResponse = {
+  id: string;
+  object: "text_completion";
+  created: number;
+  model: "text-davinci-003";
+  choices: {
+    text: string;
+    index: number;
+    logprobs: null;
+    finish_reason: "stop"
+  }[];
+  usage: {
+    prompt_token: number;
+    completion_tokens: number;
+    total_tokens: number;
+  }
+}
 
 export async function chatWithAI(prompt: string): Promise<string> {
   const response = await restRequest<ChatGPTResponse>("post", "https://api.openai.com/v1/completions", {
