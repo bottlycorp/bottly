@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "tsc --build && cls && node build/index.js"
+    "start": "cls && node build/index.js",
+    "build": "tsc --build"
   },
   "keywords": [],
   "author": "MericcaN41",
