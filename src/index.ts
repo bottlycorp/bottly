@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits, Collection, PermissionFlagsBits,} from "discord.js";
+import { Client, GatewayIntentBits, Collection, PermissionFlagsBits, ActivityType,} from "discord.js";
 const { Guilds, MessageContent, GuildMessages, GuildMembers } = GatewayIntentBits
 const client = new Client({intents:[Guilds, MessageContent, GuildMessages, GuildMembers]})
 import { Command } from "./types";
@@ -16,3 +16,5 @@ readdirSync(handlersDir).forEach(handler => {
 })
 
 client.login(process.env.TOKEN)
+
+client.user?.setActivity({ name: "GPT-3",  type: ActivityType.Watching })

@@ -6,7 +6,6 @@ import { Command } from "../types";
 
 module.exports = (client : Client) => {
     const slashCommands : SlashCommandBuilder[] = []
-    const commands : Command[] = []
 
     let slashCommandsDir = join(__dirname,"../commands")
 
