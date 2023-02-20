@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node build/index.js",
-    "build": "tsc --build"
+    "start": "tsc --build && node build/index.js",
+    "build": "echo [Hello World!]"
   },
   "keywords": [],
   "author": "Gaëtan H",
