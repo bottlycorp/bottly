@@ -5,7 +5,7 @@ import { chatWithAI } from "../utils/OpenAI";
 const command : Command = {
   command: new SlashCommandBuilder()
     .setName("ask")
-    .setDescription("Shows the bot's ping")
+    .setDescription("Ask the GPT-3 AI a question and receive a quick and accurate answer!")
     .addStringOption(option => option.setName("question").setDescription("The question you want to ask").setRequired(true)),
   
     execute: async interaction => {
@@ -15,7 +15,7 @@ const command : Command = {
       let answer = await chatWithAI(question);
 
       const embed = new EmbedBuilder()
-        .setTitle("Réponse à votre question")
+        .setTitle("Response to your question")
         .setDescription("Q: **" + question + "**" + answer)
         .setColor("#4353fc")
         .setTimestamp()
@@ -27,7 +27,7 @@ const command : Command = {
       let buttons = [{
         type: 2,
         style: 1,
-        label: "Ouvrir un thread",
+        label: "Open a thread",
         custom_id: "open_thread"
       }]
   
@@ -43,16 +43,16 @@ const command : Command = {
           if (interaction.customId === "open_thread") {
             let channel = interaction.channel as TextChannel
             let thread = await channel.threads.create({
-              name: "Fîl de " + interaction.user.username,
+              name: "Thread of " + interaction.user.username,
               autoArchiveDuration: 60,
               type: ChannelType.PublicThread,
-              reason: "Salon de discussion pour la question : " + question
+              reason: "Channel for the question:" + question
             })
   
             let close = [{
               type: 2,
               style: 4,
-              label: "Fermer le thread",
+              label: "Close thread",
               custom_id: "close_thread"
             }]
   
