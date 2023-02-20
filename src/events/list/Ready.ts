@@ -14,8 +14,8 @@ export default class Ready extends Event {
 		Logger.success("Client has been successfully initialized.");
 
 		Client.instance.user?.setActivity({
-			name: "les questions",
-			type: ActivityType.Listening
+			name: "GPT-3",
+			type: ActivityType.Playing
 		});
 	}
 }
