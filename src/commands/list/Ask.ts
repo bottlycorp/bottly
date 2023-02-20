@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, SlashCommandBooleanOption, SlashCommandBuilder, SlashCommandStringOption, EmbedBuilder } from "discord.js";
+import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption, EmbedBuilder } from "discord.js";
 import Command from "$core/commands/Command";
 import { chatWithAI } from "$core/utils/OpenAI";
 
