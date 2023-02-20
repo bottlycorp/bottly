@@ -1,32 +1,23 @@
 {
-	"name": "gpt",
-	"description": "An Discord bot allow users ask questions to ChatGPT",
-	"version": "1.0.0",
-	"main": "build/client.js",
-	"author": "Gaëtan H",
-	"license": "MIT",
-	"scripts": {
-    "dev": "node --watch -r @swc-node/register -r tsconfig-paths/register ./src/client.ts dev",
-    "start": "node -r @swc-node/register -r tsconfig-paths/register ./src/client.ts",
-    "lint": "eslint ./src",
-    "lint:fix": "eslint ./src --fix"
-	},
-	"dependencies": {
-		"@discordjs/builders": "^1.4.0",
-		"chalk": "^4.1.2",
-		"discord.js": "^14.7.1"
-	},
-  "devDependencies": {
-    "@bluzzi/eslint-config": "^0.8.2",
-    "@swc-node/register": "^1.5.4",
-    "@swc/core": "^1.3.24",
-    "@types/node": "^18.11.18",
-    "dotenv": "^16.0.3",
-    "eslint": "^8.32.0",
-    "tsconfig-paths": "^4.1.2",
-    "typescript": "^4.9.4"
+  "name": "gpt",
+  "description": "A Discord bot that uses GPT-3 to generate text.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node build/index.js",
+    "build": "tsc --build"
   },
-  "eslintConfig": {
-    "extends": "@bluzzi"
+  "keywords": [],
+  "author": "Gaëtan H",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/rest": "^1.1.0",
+    "@types/node": "^18.7.14",
+    "chalk": "^4.1.2",
+    "discord.js": "14.3.0",
+    "dotenv": "^16.0.2"
+  },
+  "devDependencies": {
+    "typescript": "^4.8.2"
   }
 }
