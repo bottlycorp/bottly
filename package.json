@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "tsc --build && node build/index.js",
+    "start": "node build/index.js",
     "build": "tsc --build"
   },
   "keywords": [],
