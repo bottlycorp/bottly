@@ -1,14 +1,14 @@
 {
-  "name": "discordjs-v14-template-ts",
+  "name": "gpt",
+  "description": "A Discord bot that uses GPT-3 to generate text.",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node build/index.js",
     "build": "tsc --build"
   },
   "keywords": [],
-  "author": "MericcaN41",
+  "author": "Gaëtan H",
   "license": "ISC",
   "dependencies": {
     "@discordjs/rest": "^1.1.0",
