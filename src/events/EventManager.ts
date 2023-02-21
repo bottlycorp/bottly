@@ -20,7 +20,10 @@ export default class EventManager {
 				const dynamicImport = await import(`./${directory}/${file}`);
 				const event: Event = new dynamicImport.default;
 
-				Client.instance[event.once ? 'once' : 'on'](event.name, (...args) => event.execute(...args));
+				// TODO: Get the language from the user
+				const lang = 'fr_FR';
+
+				Client.instance[event.once ? 'once' : 'on'](event.name, (...args) => event.execute(lang, ...args));
 				this.listeners++;
 			}
 		}

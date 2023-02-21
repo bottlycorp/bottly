@@ -1,6 +1,10 @@
 import messages from "$resources/messages.json";
+import { Lang } from "$core/utils/types";
 
-export function msg(key: keyof typeof messages, params: (string | number | bigint)[] = [], lang: "fr_FR" | "en_US" = "en_US"): string {
+export function msg(key: keyof typeof messages, params: (string | number | bigint)[] = [], lang: Lang): string {
+  if (!lang) throw new Error("Language is not defined.");
+  if (lang === "default") lang = "en_US";
+
   const messageList: Record<string, Record<string, string>> = messages;
   if (!messageList[key]) return key;
 

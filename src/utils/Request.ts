@@ -8,7 +8,9 @@ export async function addRequest(userId: string, request: Request) {
       question: request.question,
       answer: request.answer,
       messageLink: request.messageLink,
-      createdAt: request.createdAt
+      createdAt: request.createdAt,
+      channelName: request.channelName,
+      guildName: request.guildName
     }
   });
 

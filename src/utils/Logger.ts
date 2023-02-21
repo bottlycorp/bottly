@@ -11,5 +11,9 @@ export default {
 
 	error(message: string) {
 		console.log(chalk.red('[ERROR]') + chalk.gray(': ') + chalk.reset(message));
+	},
+
+	request(message: string) {
+		console.log(chalk.blue('[REQUEST]') + chalk.gray(': ') + chalk.reset(message));
 	}
 };
