@@ -1,6 +1,6 @@
 import messages from "$resources/messages.json";
 
-export function msg(key: keyof typeof messages, params: (string | number)[] = [], lang: "fr_FR" | "en_US" = "en_US"): string {
+export function msg(key: keyof typeof messages, params: (string | number | bigint)[] = [], lang: "fr_FR" | "en_US" = "en_US"): string {
   const messageList: Record<string, Record<string, string>> = messages;
   if (!messageList[key]) return key;
 
