@@ -6,11 +6,8 @@
 	"author": "Gaëtan H (Steellgold)",
 	"license": "MIT",
 	"scripts": {
-		"dev": "node --watch -r @swc-node/register -r tsconfig-paths/register ./src/Client.ts",
-		"start": "node -r @swc-node/register -r tsconfig-paths/register ./src/Client.ts",
-		"build": "tsc && tsc-alias",
-		"build:watch": "tsc && (concurrently \"tsc -w\" \"tsc-alias -w\")",
-		"start:prod": "node -r tsconfig-paths/register build/src/Client.js"
+    "dev": "node --watch -r @swc-node/register -r tsconfig-paths/register ./src/Client.ts dev",
+    "start": "node -r @swc-node/register -r tsconfig-paths/register ./src/Client.ts"
 	},
 	"dependencies": {
 		"@discordjs/builders": "^1.4.0",
