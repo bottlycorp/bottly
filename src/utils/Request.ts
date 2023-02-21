@@ -10,7 +10,8 @@ export async function addRequest(userId: string, request: Request) {
       messageLink: request.messageLink,
       createdAt: request.createdAt,
       channelName: request.channelName,
-      guildName: request.guildName
+      guildName: request.guildName,
+      options: request.options
     }
   });
 
@@ -33,4 +34,18 @@ export async function getRequests(userId: string) {
   }
 
   return [];
+}
+
+export async function deleteRequests(userId: string) {
+  const response = await prisma.requests.deleteMany({
+    where: {
+      userId: parseInt(userId)
+    }
+  });
+
+  if (response) {
+    return true;
+  }
+
+  return false;
 }

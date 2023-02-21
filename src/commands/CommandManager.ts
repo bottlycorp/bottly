@@ -43,15 +43,6 @@ export default class CommandManager {
      * Register the slash commands (use it when the client is ready)
      */
   public async register() : Promise<void> {
-		const commands = await Client.instance.application?.commands.fetch();
-		const commandsName = commands?.map(command => command.name);
-
-    for (const command of commandsName ?? []) {
-      if (!this.commands.has(command)) {
-        await Client.instance.application?.commands.delete(command);
-      }
-    }
-
 		for (const command of this.commands.values()) {
 			this.commands.map(command => command.slashCommand.toJSON())
 			await Client.instance.application?.commands.create(command.slashCommand);

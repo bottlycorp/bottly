@@ -4,7 +4,7 @@ import { chatWithAI } from "$core/utils/OpenAI";
 import { addRequest } from "$core/utils/Request";
 import dayjs from "dayjs";
 import { clearLineBreaks, limit, toBase64 } from "$core/utils/Utils";
-import { msg } from "$core/utils/Message";
+import { langs, msg, replaces } from "$core/utils/Message";
 import { Lang } from "$core/utils/types";
 import Logger from "$core/utils/Logger";
 
@@ -15,165 +15,110 @@ export default class Ask extends Command {
   public readonly slashCommand = new SlashCommandBuilder()
     .setName("ask")
     .setNameLocalizations({
-      fr: "question",
-      "en-US": "ask"
+      fr: "question"
     })
     .setDescription("Ask a question to the bot")
     .setDescriptionLocalizations({
-      fr: "Posez une question au bot",
-      "en-US": "Ask a question to the bot"
+      fr: "Posez une question au bot"
     })
     .addStringOption(new SlashCommandStringOption()
       .setName("question")
       .setNameLocalizations({
-        fr: "demande",
-        "en-US": "question"
+        fr: "demande"
       })
       .setDescription("The question you want to ask")
       .setDescriptionLocalizations({
-        fr: "La question que vous voulez poser",
-        "en-US": "The question you want to ask"
+        fr: "La question que vous voulez poser"
       })
       .setRequired(true))
     .addStringOption(new SlashCommandStringOption()
       .setName("context")
       .setNameLocalizations({
-        fr: "contexte",
-        "en-US": "context"
+        fr: "contexte"
       })
-      .setDescription("The context of the question")
+      .setDescription("The context of the question, it will help the bot to answer better")
       .setDescriptionLocalizations({
-        fr: "Le contexte de la question, cela va aider le bot à mieux répondre",
-        "en-US": "The context of the question, it will help the bot to answer better"
+        fr: "Le contexte de la question, cela va aider le bot à mieux répondre"
       })
       .setRequired(false)
       .addChoices(
         { 
-          name: "🧮 Problème mathématique, question, etc.", 
-          value: "math", 
-          name_localizations: {
-            fr: "🧮 Problème mathématique, question, etc.",
-            "en-US": "🧮 Math problem, question, etc."
+          name: "🧮 Math problem, question, etc.", value: "Mathematic problem, question, etc.", name_localizations: {
+            fr: "🧮 Problème mathématique, question, etc."
           }
         },
         { 
-          name: "🪄 Problème de programmation, question, etc.", 
-          value: "code", 
-          name_localizations: {
-            fr: "🪄 Problème de programmation, question, etc.",
-            "en-US": "🪄 Programming problem, question, etc."
+          name: "🪄 Programming problem, question, etc.", value: "Programming problem, question, etc.", name_localizations: {
+            fr: "🪄 Problème de programmation, question, etc."
           }
         },
         { 
-          name: "📝 Générer une histoire", 
-          value: "story", 
-          name_localizations: {
-            fr: "📝 Générer une histoire",
-            "en-US": "📝 Generate a story"
+          name: "📝 Generate a story, a text, ect", value: "Generate a story", name_localizations: {
+            fr: "📝 Générer une histoire, un texte, etc."
           }
         },
         { 
-          name: "🪡 Traduire un texte", 
-          value: "translate", 
-          name_localizations: {
-            fr: "🪡 Traduire un texte",
-            "en-US": "🪡 Translate a text"
+          name: "🪡 Translate a text", value: "Translate a text", name_localizations: {
+            fr: "🪡 Traduire un texte"
           }
         },
         { 
-          name: "📖 Comprendre un texte", 
-          value: "understand_text", 
-          name_localizations: {
-            fr: "📖 Comprendre un texte",
-            "en-US": "📖 Understand a text"
+          name: "🧬 Code generation, completion, correction, etc.", value: "code_generation", name_localizations: {
+            fr: "🧬 Génération de code, complétion, correction, etc."
           }
         },
         { 
-          name: "🧬 Génération de code, complétion, correction, etc.", 
-          value: "code_generation", 
-          name_localizations: {
-            fr: "🧬 Génération de code, complétion, correction, etc.",
-            "en-US": "🧬 Code generation, completion, correction, etc."
+          name: "🧑‍🏭 Solve a problem", value: "problem_solving", name_localizations: {
+            fr: "🧑‍🏭 Résoudre un problème"
           }
         },
         { 
-          name: "🧑‍🏭 Résoudre un problème", 
-          value: "problem_solving", 
-          name_localizations: {
-            fr: "🧑‍🏭 Résoudre un problème",
-            "en-US": "🧑‍🏭 Solve a problem"
-          }
-        },
-        { 
-          name: "🌐 Trouver de l'information", 
-          value: "find_information", 
-          name_localizations: {
-            fr: "🌐 Trouver de l'information",
-            "en-US": "🌐 Find information"
-          }
-        },
-        { 
-          name: "📚 Trouver une réponse", 
-          value: "find_answer", 
-          name_localizations: {
-            fr: "📚 Trouver une réponse",
-            "en-US": "📚 Find an answer"
-          }
-        },
-        { 
-          name: "📝 Générer une histoire", 
-          value: "generate_story", 
-          name_localizations: {
-            fr: "📝 Générer une histoire",
-            "en-US": "📝 Generate a story"
-          }
-        },
-        { 
-          name: "📖 Comprendre un texte", 
-          value: "understand_text", 
-          name_localizations: {
-            fr: "📖 Comprendre un texte",
-            "en-US": "📖 Understand a text"
-          }
-        },
-        {
-          name: "⚡ Générer une citation",
-          value: "generate_quote",
-          name_localizations: {
-            fr: "⚡ Générer une citation",
-            "en-US": "⚡ Generate a quote"
+          name: "🌐 Find information, response", value: "find_information", name_localizations: {
+            fr: "🌐 Trouver de l'information"
           }
         }
       ))
       .addStringOption(new SlashCommandStringOption()
-        .setName("language")
+        .setName("lang")
         .setNameLocalizations({
-          fr: "langue",
-          "en-US": "language"
+          fr: "langue"
         })
-        .setDescription("The language of the question")
+        .setDescription("The language of the answer")
         .setDescriptionLocalizations({
-          fr: "La langue de la réponse",
-          "en-US": "The language of the answer"
+          fr: "La langue de la réponse"
         })
         .addChoices(
-          { name: "🇫🇷 Français", value: "Français" },
-          { name: "🇬🇧 English", value: "English" },
-          { name: "🇩🇪 Deutsch", value: "Allemand" },
-          { name: "🇪🇸 Español", value: "Espagnol" },
-          { name: "🇮🇹 Italiano", value: "Italiano" },
-          { name: "🇯🇵 日本語", value: "日本語" },
-          { name: "🇰🇷 한국어", value: "한국어" },
-          { name: "🇳🇱 Nederlands", value: "Nederlands" },
-          { name: "🇵🇱 Polski", value: "Polski" },
-          { name: "🇧🇷 Português", value: "Português" },
-          { name: "🇷🇺 Русский", value: "Русский" },
-          { name: "🇨🇳 中文", value: "中文" },
+          { name: "🇫🇷 French", value: "fr_FR", name_localizations: { fr: "🇫🇷 Français" } },
+          { name: "🇩🇪 German", value: "de_DE", name_localizations: { fr: "🇩🇪 Allemand" } },
+          { name: "🇺🇸 English", value: "en_US", name_localizations: { fr: "🇺🇸 Anglais" } },
+          { name: "🇬🇧 English (GB)", value: "en_GB", name_localizations: { fr: "🇬🇧 Anglais (GB)" } },
+          { name: "🇧🇬 Bulgarian", value: "bg_BG", name_localizations: { fr: "🇧🇬 Bulgare" } },
+          { name: "🇨🇳 Chinese", value: "zh_CN", name_localizations: { fr: "🇨🇳 Chinois" } },
+          { name: "🇰🇷 Korean", value: "ko_KR", name_localizations: { fr: "🇰🇷 Coréen" } },
+          { name: "🇩🇰 Danish", value: "da_DK", name_localizations: { fr: "🇩🇰 Danois" } },
+          { name: "🇪🇸 Spanish", value: "es_ES", name_localizations: { fr: "🇪🇸 Espagnol" } },
+          { name: "🇪🇪 Estonian", value: "et_EE", name_localizations: { fr: "🇪🇪 Estonien" } },
+          { name: "🇫🇮 Finnish", value: "fi_FI", name_localizations: { fr: "🇫🇮 Finiois" } },
+          { name: "🇬🇷 Greek", value: "el_GR", name_localizations: { fr: "🇬🇷 Grec" } },
+          { name: "🇭🇺 Hungarian", value: "hu_HU", name_localizations: { fr: "🇭🇺 Hongrois" } },
+          { name: "🇮🇩 Indonesian", value: "id_ID", name_localizations: { fr: "🇮🇩 Indonéisien" } },
+          { name: "🇮🇹 Italian", value: "it_IT", name_localizations: { fr: "🇮🇹 Italien" } },
+          { name: "🇯🇵 Japanese", value: "ja_JP", name_localizations: { fr: "🇯🇵 Japonais" } },
+          { name: "🇱🇻 Latvian", value: "lv_LV", name_localizations: { fr: "🇱🇻 Lettron" } },
+          { name: "🇱🇹 Lithuanian", value: "lt_LT", name_localizations: { fr: "🇱🇹 Lituanien" } },
+          { name: "🇳🇱 Dutch", value: "nl_NL", name_localizations: { fr: "🇳🇱 Néerlandais" } },
+          { name: "🇳🇴 Norwegian", value: "no_NO", name_localizations: { fr: "🇳🇴 Norvégien" } },
+          { name: "🇵🇱 Polish", value: "pl_PL", name_localizations: { fr: "🇵🇱 Polonais" } },
+          { name: "🇵🇹 Portuguese", value: "pt_PT", name_localizations: { fr: "🇵🇹 Portugais" } },
+          { name: "🇷🇴 Romanian", value: "ro_RO", name_localizations: { fr: "🇷🇴 Roumain" } },
+          { name: "🇷🇺 Russian", value: "ru_RU", name_localizations: { fr: "🇷🇺 Russe" } },
+          { name: "🇺🇦 Ukrainian", value: "uk_UA", name_localizations: { fr: "🇺🇦 Ukrainien" } }
         )
       );
 
   public async execute(command: ChatInputCommandInteraction, lang: Lang): Promise<void> {
     await command.deferReply();
+    let responsePattern = "The response need to be in {lang}, and the context is {context}, here is the question: {question}";
 
     question = command.options.getString("question", true);
 
@@ -184,16 +129,13 @@ export default class Ask extends Command {
 			return;
 		}
 
-    const context = command.options.getString("context", false);
-    const answerLanguage = command.options.getString("language", false) || lang;
+    let que = replaces(responsePattern, [
+      langs[command.options.getString("lang", false) ?? lang], command.options.getString("context", false) ?? "general", question
+    ]);
+    console.log(que);
+    
+    let answer = await chatWithAI(que);
 
-    if (context) {
-      question += `\nContext: ${context}`;
-    }
-
-    question += `\nRequested language of the answer: ${answerLanguage}`;
-
-		const answer = await chatWithAI(question);
     Logger.request(question)
 
     const embed = new EmbedBuilder()

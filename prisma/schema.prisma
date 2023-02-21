@@ -26,4 +26,5 @@ model Requests {
   messageLink String
   channelName String
   guildName   String
+  options     Json     @default("{}")
 }

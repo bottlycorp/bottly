@@ -14,6 +14,11 @@ export type Request = {
 
   channelName?: string;
   guildName?: string;
+
+  options?: {
+    context?: string;
+    lang?: Lang;
+  };
 };
 
 export type Lang = "fr_FR" | "en_US" | "default"
