@@ -20,8 +20,10 @@ model User {
 model Requests {
   id          String   @id @default(cuid())
   userId      BigInt
-  createdAt   BigInt
+  createdAt   BigInt   
   question    String
   answer      String
   messageLink String
+  channelName String
+  guildName   String
 }
