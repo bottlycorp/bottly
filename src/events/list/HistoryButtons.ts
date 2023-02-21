@@ -1,5 +1,6 @@
 import Event from '$core/events/Event';
 import { simpleEmbed } from '$core/utils/Embed';
+import { Lang } from '$core/utils/types';
 import { ButtonInteraction, ChannelType } from 'discord.js';
 
 export default class ThreadButtons extends Event {
@@ -8,7 +9,7 @@ export default class ThreadButtons extends Event {
 		super('interactionCreate', false);
 	}
 
-	public async execute(interaction: ButtonInteraction): Promise<void> {
+	public async execute(lang: Lang, interaction: ButtonInteraction): Promise<void> {
     if (interaction.isButton()) {
       const channel = interaction.channel;
 
