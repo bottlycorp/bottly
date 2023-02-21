@@ -1,0 +1,22 @@
+{
+  "history_title": {
+    "fr_FR": "Historique des questions",
+    "en_US": "History of questions"
+  },
+  "history_description": {
+    "fr_FR": "Voici l'historique de vos questions posées\n",
+    "en_US": "Here is the history of your asked questions\n"
+  },
+  "history_empty": {
+    "fr_FR": "Vous n'avez posé aucune question pour le moment, utilisez la commande </ask:1077289203441864805> pour en poser une.\n",
+    "en_US": "You have not asked any questions yet, use the </ask:1077289203441864805> command to ask one.\n"
+  },
+  "history_line": {
+    "fr_FR": "**{id}.** [{question}]({messageLink}) - <t:{date}:R>\n",
+    "en_US": "**{id}.** [{question}]({messageLink}) - <t:{date}:R>\n"
+  },
+  "history_footer": {
+    "fr_FR": "\nVous pouvez utiliser la commande </request:1077398819995668590> pour voir une demande spécifique",
+    "en_US": "\nUse the </request:1077398819995668590> command to view a specific request "
+  }
+}

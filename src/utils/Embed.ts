@@ -7,7 +7,7 @@ export function simpleEmbed(message: string, type: EmbedType = "normal", title?:
   iconURL?: string;
   timestamp?: boolean;
 }) {
-  const color = type === "normal" ? "#4353fc" : "#ff0000";
+  const color = type === "normal" ? "#4353fc" : "#fc4343";
 
   const embed = new EmbedBuilder().setColor(color);
 
