@@ -20,7 +20,7 @@ model User {
 model Requests {
   id          String   @id @default(cuid())
   userId      BigInt
-  createdAt   BigInt   
+  createdAt   Int   
   question    String
   answer      String
   messageLink String
