@@ -47,7 +47,7 @@ export default class Ask extends Command {
 
 		await command.editReply({ embeds: [embed], components: [{ type: 1, components: buttons }] }).then(async (msg) => {
       addRequest(command.user.id, {
-        question: toBase64(question),
+        question: question,
         answer: toBase64(answer),
         messageLink: msg.url,
         createdAt: dayjs().unix()
