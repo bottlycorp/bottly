@@ -1,9 +1,11 @@
 import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import Command from "$core/commands/Command";
 import { getRequests } from "$core/utils/Request";
-import { limit, toString } from "$core/utils/Utils";
+import { limit } from "$core/utils/Utils";
 import { msg } from "$core/utils/Message";
 import { Lang } from "$core/utils/types";
+import { clearHistoryButton } from "$core/utils/Buttons";
+import { simpleEmbed } from "$core/utils/Embed";
 
 export default class HistoryCommand extends Command {
 
@@ -17,33 +19,52 @@ export default class HistoryCommand extends Command {
     .setDescriptionLocalizations({
       fr: "Voir votre historique de questions",
       "en-US": "Watch your history of questions"
-    });
+    })
+    .addIntegerOption(option => option
+      .setName("page")
+      .setDescription("The page to view")
+      .setDescriptionLocalizations({
+        fr: "La page à voir"
+      })
+      .setRequired(false))
+    .addBooleanOption(option => option
+      .setName("public")
+      .setDescription("Set your history as public")
+      .setDescriptionLocalizations({
+        fr: "Rendre le message qui affiche votre historique en public"
+      })
+      .setRequired(false));
 
   public async execute(command: ChatInputCommandInteraction, lang: Lang) : Promise<void> {
-    await command.deferReply();
-    let history = await getRequests(command.user.id);
+    let ephemeral = (command.options.getBoolean("public", false) ?? false) == false ? true : false;
 
-    const embed = new EmbedBuilder()
-      .setTitle(msg("history_title", [], lang))
-      .setColor("#4353fc")
-      .setTimestamp()
-      .setFooter({ text: `Page 1 of ${Math.ceil(history.length / 10)}`, iconURL: command.user.avatarURL() as string })
+    await command.deferReply({ ephemeral: ephemeral });
+    let history = await getRequests(command.user.id);
+    let pageOption = command.options.getInteger("page", false) || 1;
 
     let description = msg("history_empty", [], lang);
-        
+
     if (history.length > 0) {
       description = msg("history_description", [], lang);
-      
-      for (let i = 0; i < history.length; i++) {
-        const question = limit(history[i].question, lang === "fr_FR" ? 40 : 25, "...");
-  
-        description += msg("history_line", [i + 1, question, history[i].messageLink, history[i].createdAt], lang);
+
+      for (let i = (pageOption - 1) * 10; i < pageOption * 10 && i < history.length; i++) {
+        const question = history[i];
+        description += msg("history_line", [i + 1, limit(question.question, lang === "fr_FR" ? 40 : 25, "..."), question.messageLink, question.createdAt], lang);
       }
     }
 
     description += msg("history_footer", [], lang);
-    embed.setDescription(description);
-  
-    await command.editReply({ embeds: [embed] });
+
+    let buttons = [];
+    if (history.length > 0) buttons.push(clearHistoryButton);
+
+    const embed = simpleEmbed(description, "normal", msg("history_title", [], lang), {
+      text: `Page ${pageOption} of ${Math.ceil(history.length / 10)}`,
+      iconURL: command.user.avatarURL() as string,
+      timestamp: true
+    });
+
+    if (buttons.length > 0) await command.editReply({ embeds: [embed], components: [{ type: 1, components: buttons }] });
+    else await command.editReply({ embeds: [embed] });
   }
 }
