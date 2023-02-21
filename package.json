@@ -6,7 +6,7 @@
 	"author": "Gaëtan H (Steellgold)",
 	"license": "MIT",
 	"scripts": {
-    "dev": "node --watch -r @swc-node/register -r tsconfig-paths/register ./src/Client.ts dev",
+    "dev": "npx nodemon --exec node -r @swc-node/register ./src/Client.ts",
     "start": "npm run db:generate && node -r @swc-node/register -r tsconfig-paths/register ./src/Client.ts",
 		"db:generate": "prisma generate"
 	},
