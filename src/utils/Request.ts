@@ -7,7 +7,8 @@ export async function addRequest(userId: string, request: Request) {
       userId: parseInt(userId),
       question: request.question,
       answer: request.answer,
-      messageLink: request.messageLink
+      messageLink: request.messageLink,
+      createdAt: request.createdAt
     }
   });
 

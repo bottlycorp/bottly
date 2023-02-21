@@ -7,5 +7,5 @@ export type Request = {
   question: string;
   answer: string;
   messageLink: string;
-  createdAt: string;
+  createdAt: number;
 };

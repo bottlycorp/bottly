@@ -50,7 +50,7 @@ export default class Ask extends Command {
         question: toBase64(question),
         answer: toBase64(answer),
         messageLink: msg.url,
-        createdAt: dayjs().format("YYYY-MM-DD HH:mm:ss")
+        createdAt: dayjs().unix()
       });
     });
   }
