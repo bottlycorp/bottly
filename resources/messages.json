@@ -18,5 +18,20 @@
   "history_footer": {
     "fr_FR": "\nTIP: Vous pouvez utiliser la commande </request:1077398819995668590> pour voir une demande spécifique",
     "en_US": "\nTIP: Use the </request:1077398819995668590> command to view a specific request "
+  },
+
+  "request_title": {
+    "fr_FR": "Demande #{id}",
+    "en_US": "Request #{id}"
+  },
+
+  "ask_response_title": {
+    "fr_FR": "Réponse à la question",
+    "en_US": "Response to the question"
+  },
+
+  "ask_response_description": {
+    "fr_FR": ":man: {question}\n\n:robot: {answer}",
+    "en_US": ":man: {question}\n\n:robot: {answer}"
   }
 }
