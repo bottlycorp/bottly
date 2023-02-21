@@ -25,7 +25,7 @@ export default class HistoryCommand extends Command {
       description = msg("history_description")
       
       for (let i = 0; i < history.length; i++) {
-        const question = limit(toString(history[i].question), 25, "...");
+        const question = limit(history[i].question, 25, "...");
   
         description += msg("history_line", [i + 1, question, history[i].messageLink, history[i].createdAt])
       }

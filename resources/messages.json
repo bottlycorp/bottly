@@ -16,7 +16,7 @@
     "en_US": "**{id}.** [{question}]({messageLink}) - <t:{date}:R>\n"
   },
   "history_footer": {
-    "fr_FR": "\nVous pouvez utiliser la commande </request:1077398819995668590> pour voir une demande spécifique",
-    "en_US": "\nUse the </request:1077398819995668590> command to view a specific request "
+    "fr_FR": "\nTIP: Vous pouvez utiliser la commande </request:1077398819995668590> pour voir une demande spécifique",
+    "en_US": "\nTIP: Use the </request:1077398819995668590> command to view a specific request "
   }
 }
