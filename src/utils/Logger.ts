@@ -15,5 +15,9 @@ export default {
 
 	request(message: string) {
 		console.log(chalk.blue('[REQUEST]') + chalk.gray(': ') + chalk.reset(message));
+	},
+
+	where(message: string) {
+		console.log(chalk.blue('[WHERE I AM]') + chalk.gray(': ') + chalk.reset(message));
 	}
 };

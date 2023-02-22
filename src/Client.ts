@@ -23,6 +23,12 @@ export default class Client extends DiscordClient {
 		Client.instance = this;
 		this.login(process.env.TOKEN);
 
+    this.on('ready', () => {
+      this.guilds.cache.forEach((guild) => {
+        Logger.where(`${guild.name} (${guild.memberCount} members) | ID: ${guild.id}`);
+      });
+    });
+
 		this.eventManager = new EventManager();
 		this.commandManager = new CommandManager();
 	}
