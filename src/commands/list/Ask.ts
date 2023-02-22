@@ -1,10 +1,10 @@
-import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption, EmbedBuilder, SlashCommandMentionableOption } from "discord.js";
+import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption } from "discord.js";
 import Command from "$core/commands/Command";
 import { chatWithAI } from "$core/utils/OpenAI";
 import { addRequest } from "$core/utils/Request";
 import dayjs from "dayjs";
 import { clearLineBreaks, limit, toBase64 } from "$core/utils/Utils";
-import { localChoices, locals, msg, replaces } from "$core/utils/Message";
+import { contextChoices, localChoices, locals, msg, replaces } from "$core/utils/Message";
 import Logger from "$core/utils/Logger";
 import { simpleEmbed } from "$core/utils/Embed";
 
@@ -41,48 +41,7 @@ export default class Ask extends Command {
         fr: "Le contexte de la question, cela va aider le bot à mieux répondre"
       })
       .setRequired(false)
-      .addChoices(
-        { 
-          name: "🧮 Math problem, question, etc.", value: "Mathematic problem, question, etc.", name_localizations: {
-            fr: "🧮 Problème mathématique, question, etc."
-          }
-        },
-        { 
-          name: "🪄 Programming problem, question, etc.", value: "Programming problem, question, etc.", name_localizations: {
-            fr: "🪄 Problème de programmation, question, etc."
-          }
-        },
-        { 
-          name: "📝 Generate a story, a text, ect", value: "Generate a story", name_localizations: {
-            fr: "📝 Générer une histoire, un texte, etc."
-          }
-        },
-        { 
-          name: "🪡 Translate a text", value: "Translate a text", name_localizations: {
-            fr: "🪡 Traduire un texte"
-          }
-        },
-        { 
-          name: "🧬 Code generation, completion, correction, etc.", value: "Code generation", name_localizations: {
-            fr: "🧬 Génération de code, complétion, correction, etc."
-          }
-        },
-        { 
-          name: "🔎 Solve a problem", value: "Solving a problem", name_localizations: {
-            fr: "🔎 Résoudre un problème"
-          }
-        },
-        { 
-          name: "🌐 Find information, response", value: "Find information or response", name_localizations: {
-            fr: "🌐 Trouver de l'information"
-          }
-        },
-        {
-          name: "🧩 Generation", value: "Generation of something", name_localizations: {
-            fr: "🧩 Génération"
-          }
-        }
-      ))
+      .addChoices(...contextChoices))
       .addStringOption(new SlashCommandStringOption()
         .setName("lang")
         .setNameLocalizations({
@@ -101,22 +60,17 @@ export default class Ask extends Command {
     question = command.options.getString("question", true);
 
 		if (!question) {
-			await command.editReply({
-				content: "You must provide a question"
-			});
+			await command.editReply({ embeds: [ simpleEmbed("You must provide a question", "error")] });
 			return;
 		}
 
-    let context = command.options.getString("context", false) ?? "General";
-    console.log(command.locale);
+    let context = command.options.getString("context", false) ?? "0";
     let contextLang = locals[command.options.getString("lang", false) ?? command.locale];
-    console.log(contextLang);
 
     let que = replaces(responsePattern, [
       contextLang, context, question
     ]);
     
-    console.log(que);
     let answer = await chatWithAI(que);
     Logger.request(question)
 
@@ -130,20 +84,9 @@ export default class Ask extends Command {
       type: 2,
       style: 1,
       label: "Open a thread",
-      custom_id: "open_thread"
-    }];
-
-    // , {
-    //   type: 2,
-    //   style: 1,
-    //   label: "Add to favorites",
-    //   custom_id: "add_favorite"
-    // }, {
-    //   type: 2,
-    //   style: 1,
-    //   label: "Add to a list",
-    //   custom_id: "add_list"
-    // }
+      custom_id: "open_thread",
+      disabled: command.channel?.isThread() ?? false
+    }]
 
 		await command.editReply({ embeds: [embed], components: [{ type: 1, components: buttons }] }).then(async (msg) => {
       let guildName = command.guild?.name;
@@ -154,8 +97,8 @@ export default class Ask extends Command {
         answer: toBase64(answer),
         messageLink: msg.url,
         createdAt: dayjs().unix(),
-        channelName: channelName,
-        guildName: guildName,
+        channelName: channelName ?? "Unknown",
+        guildName: guildName ?? "Unknown",
         options: {
           context: context,
           lang: contextLang

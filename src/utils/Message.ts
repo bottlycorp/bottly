@@ -89,3 +89,53 @@ export const localChoices = [
   { name: "🇹🇼 Chinese, Taiwan", value: "zh-TW" },
   { name: "🇰🇷 Korean", value: "ko" }
 ];
+
+export const contexts: Record<number | string, Record<string, string>> = {
+  0: {
+    fr: "🤷‍♂️ Aucun contexte fourni",
+    "en-US": "🤷‍♂️ No context provided"
+  },
+  1: {
+    fr: "🧮 Problème mathématique, question, etc.",
+    "en-US": "🧮 Math problem, question, etc."
+  },
+  2: {
+    fr: "🪄 Programming problem, question, etc.",
+    "en-US": "🪄 Programming problem, question, etc."
+  },
+  3: {
+    fr: "📝 Generate a story, a text, ect",
+    "en-US": "📝 Generate a story, a text, ect"
+  },
+  4: {
+    fr: "🪡 Traduire un texte",
+    "en-US": "🪡 Translate a text"
+  },
+  5: {
+    fr: "🧬 Génération de code, complétion, correction, etc.",
+    "en-US": "🧬 Code generation, completion, correction, etc."
+  },
+  6: {
+    fr: "🔎 Résoudre un problème",
+    "en-US": "🔎 Solve a problem"
+  },
+  7: {
+    fr: "🌐 Trouver une/des information(s)",
+    "en-US": "🌐 Find information, response"
+  },
+  8: {
+    fr: "🧩 Génération (de tout type)",
+    "en-US": "🧩 Generation"
+  }
+};
+
+export const contextChoices = [
+  { name: "🧮 Math problem, question, etc.", value: "1", name_localizations: { fr: "🧮 Problème mathématique, question, etc." } },
+  { name: "🪄 Programming problem, question, etc.", value: "2", name_localizations: { fr: "🪄 Programming problem, question, etc." } },
+  { name: "📝 Generate a story, a text, ect", value: "3", name_localizations: { fr: "📝 Generate a story, a text, ect" } },
+  { name: "🪡 Translate a text", value: "4", name_localizations: { fr: "🪡 Traduire un texte" } },
+  { name: "🧬 Code generation, completion, correction, etc.", value: "5", name_localizations: { fr: "🧬 Génération de code, complétion, correction, etc." } },
+  { name: "🔎 Solve a problem", value: "6", name_localizations: { fr: "🔎 Résoudre un problème" } },
+  { name: "🌐 Find information, response", value: "7", name_localizations: { fr: "🌐 Trouver une/des information(s)" } },
+  { name: "🧩 Generation", value: "8", name_localizations: { fr: "🧩 Génération (de tout type)" } }
+];

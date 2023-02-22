@@ -52,12 +52,10 @@ export default class ThreadButtons extends Event {
                 { label: "Autres", value: "autres"}
               ]);
 
-            // Reply with text (No embed)
             await interaction.reply({ content: "Choisissez une liste, créer en une avec la commande", components: [{ type: 1, components: [select] }], ephemeral: true });
           }
           break;
         case "cancel":
-          // Delete a ephemeral message (only the user can see it)
           await interaction.deleteReply();
           break;
       }

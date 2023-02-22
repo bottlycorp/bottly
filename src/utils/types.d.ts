@@ -9,11 +9,11 @@ export type Request = {
   messageLink: string;
   createdAt: number;
 
-  channelName?: string;
-  guildName?: string;
+  channelName: string;
+  guildName: string;
 
-  options?: {
-    context?: string;
-    lang?: string;
+  options: {
+    context: string;
+    lang: string;
   };
 };

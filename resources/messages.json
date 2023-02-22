@@ -19,6 +19,10 @@
     "fr": "\nTIP: Vous pouvez utiliser la commande </request:1077398819995668590> pour voir une demande spécifique",
     "en-US": "\nTIP: Use the </request:1077398819995668590> command to view a specific request "
   },
+  "history_request_content": {
+    "fr": "Cette question a été posé le <t:{date}:F> et a été envoyé dans le salon `#{channelName}`, du serveur `{guildName}`.\n\n:grey_question: {question}\n- __Contexte de la question__: {context}\n- __Langue de réponse__: {responseLang}\n\n:robot: __Réponse:__ {answer}",
+    "en-US": "This question was asked on <t:{date}:F> and was sent in the channel `#{channelName}`, from the server `{guildName}`.\n\n:grey_question: {question}\n- __Question context__: {context}\n- __Answer language__: {responseLang}\n\n:robot: __Response:__ {answer}"
+  },
 
   "request_title": {
     "fr": "Demande #{id}",

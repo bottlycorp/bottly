@@ -1,7 +1,7 @@
 import Event from '$core/events/Event';
 import { simpleEmbed } from '$core/utils/Embed';
 import { deleteRequests } from '$core/utils/Request';
-import { ButtonInteraction, ChannelType } from 'discord.js';
+import { ButtonInteraction } from 'discord.js';
 
 export default class ThreadButtons extends Event {
 
