@@ -63,18 +63,23 @@ export default class Ask extends Command {
           }
         },
         { 
-          name: "🧬 Code generation, completion, correction, etc.", value: "code_generation", name_localizations: {
+          name: "🧬 Code generation, completion, correction, etc.", value: "Code generation", name_localizations: {
             fr: "🧬 Génération de code, complétion, correction, etc."
           }
         },
         { 
-          name: "🧑‍🏭 Solve a problem", value: "problem_solving", name_localizations: {
-            fr: "🧑‍🏭 Résoudre un problème"
+          name: "🔎 Solve a problem", value: "Solving a problem", name_localizations: {
+            fr: "🔎 Résoudre un problème"
           }
         },
         { 
-          name: "🌐 Find information, response", value: "find_information", name_localizations: {
+          name: "🌐 Find information, response", value: "Find information or response", name_localizations: {
             fr: "🌐 Trouver de l'information"
+          }
+        },
+        {
+          name: "🧩 Generation", value: "Generation of something", name_localizations: {
+            fr: "🧩 Génération"
           }
         }
       ))
