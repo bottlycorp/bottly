@@ -2,6 +2,8 @@
 
 This is a simple discord bot that uses the OpenAI GPT-3 API to generate text, answers, and more.
 
+You can invite the bot with this [link](https://discord.com/api/oauth2/authorize?client_id=1076862546658738236&permissions=534723782720&scope=bot)
+
 ## Setup
 
 Create a `.env` file in the root directory of the project and add the following variables:
