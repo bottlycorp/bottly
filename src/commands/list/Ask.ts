@@ -4,7 +4,7 @@ import { chatWithAI } from "$core/utils/OpenAI";
 import { addRequest } from "$core/utils/Request";
 import dayjs from "dayjs";
 import { clearLineBreaks, limit, toBase64 } from "$core/utils/Utils";
-import { contextChoices, localChoices, locals, msg, replaces } from "$core/utils/Message";
+import { contextChoices, contexts, localChoices, locals, msg, replaces } from "$core/utils/Message";
 import Logger from "$core/utils/Logger";
 import { simpleEmbed } from "$core/utils/Embed";
 
@@ -65,6 +65,7 @@ export default class Ask extends Command {
 		}
 
     let context = command.options.getString("context", false) ?? "0";
+    let contextList = contexts[parseInt(context)];
     let contextLang = locals[command.options.getString("lang", false) ?? command.locale];
 
     let que = replaces(responsePattern, [
@@ -74,7 +75,12 @@ export default class Ask extends Command {
     let answer = await chatWithAI(que);
     Logger.request(question)
 
-    const embed = simpleEmbed(msg("ask_response_description", [question, context, contextLang, clearLineBreaks(limit(answer, 3080, "..."), 2)], command.locale), "normal", msg("ask_response_title", [], command.locale), {
+    const embed = simpleEmbed(msg("ask_response_description", [
+      question,
+      contextList[command.locale] ?? contextList["en-US"],
+      contextLang,
+      clearLineBreaks(limit(answer, 3080, "..."), 2)
+    ], command.locale), "normal", msg("ask_response_title", [], command.locale), {
       text: command.user.tag,
       iconURL: command.user.avatarURL() as string,
       timestamp: true
