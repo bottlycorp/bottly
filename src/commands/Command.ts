@@ -1,4 +1,3 @@
-import { Lang } from "$core/utils/types";
 import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder } from "discord.js";
 
 export default abstract class Command {
@@ -13,6 +12,6 @@ export default abstract class Command {
       return this.slashCommand.description;
     }
 
-    public abstract execute(command: ChatInputCommandInteraction, Lang: Lang): Promise<void>;
+    public abstract execute(command: ChatInputCommandInteraction): Promise<void>;
 
 }

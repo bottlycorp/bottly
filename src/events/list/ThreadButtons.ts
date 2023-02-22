@@ -1,6 +1,5 @@
 import Event from '$core/events/Event';
 import { simpleEmbed } from '$core/utils/Embed';
-import { Lang } from '$core/utils/types';
 import { SelectMenuBuilder } from '@discordjs/builders';
 import { ButtonInteraction, ChannelType } from 'discord.js';
 
@@ -10,7 +9,7 @@ export default class ThreadButtons extends Event {
 		super('interactionCreate', false);
 	}
 
-	public async execute(lang: Lang, interaction: ButtonInteraction): Promise<void> {
+	public async execute(interaction: ButtonInteraction): Promise<void> {
     if (interaction.isButton()) {
       const channel = interaction.channel;
 
@@ -41,7 +40,6 @@ export default class ThreadButtons extends Event {
           break;
         case "add_list":
           let lists = ["Recettes", "Courses", "Autres"];
-          let embed = null;
           if (lists.length === 0) {
             await interaction.reply({ embeds: [simpleEmbed("Vous n'avez pas encore créé de liste", "normal")] });
           } else {

@@ -3,7 +3,6 @@ import Command from "$core/commands/Command";
 import { getRequests } from "$core/utils/Request";
 import { limit } from "$core/utils/Utils";
 import { msg } from "$core/utils/Message";
-import { Lang } from "$core/utils/types";
 import { clearHistoryButton } from "$core/utils/Buttons";
 import { simpleEmbed } from "$core/utils/Embed";
 
@@ -35,31 +34,31 @@ export default class HistoryCommand extends Command {
       })
       .setRequired(false));
 
-  public async execute(command: ChatInputCommandInteraction, lang: Lang) : Promise<void> {
+  public async execute(command: ChatInputCommandInteraction) : Promise<void> {
     let ephemeral = (command.options.getBoolean("public", false) ?? false) == false ? true : false;
 
     await command.deferReply({ ephemeral: ephemeral });
     let history = await getRequests(command.user.id);
     let pageOption = command.options.getInteger("page", false) || 1;
 
-    let description = msg("history_empty", [], lang);
+    let description = msg("history_empty", [], command.locale);
 
     if (history.length > 0) {
-      description = msg("history_description", [], lang);
+      description = msg("history_description", [], command.locale);
 
       for (let i = (pageOption - 1) * 10; i < pageOption * 10 && i < history.length; i++) {
         const question = history[i];
-        description += msg("history_line", [i + 1, limit(question.question, lang === "fr_FR" ? 40 : 25, "..."), question.messageLink, question.createdAt], lang);
+        description += msg("history_line", [i + 1, limit(question.question, 40, "..."), question.messageLink, question.createdAt], command.locale);
       }
     }
 
-    description += msg("history_footer", [], lang);
+    description += msg("history_footer", [], command.locale);
 
     let buttons = [];
     if (history.length > 0) buttons.push(clearHistoryButton);
 
-    const embed = simpleEmbed(description, "normal", msg("history_title", [], lang), {
-      text: `Page ${pageOption} of ${Math.ceil(history.length / 10)}`,
+    const embed = simpleEmbed(description, "normal", msg("history_title", [], command.locale), {
+      text: `Page ${pageOption}/${Math.ceil(history.length / 10)}`,
       iconURL: command.user.avatarURL() as string,
       timestamp: true
     });

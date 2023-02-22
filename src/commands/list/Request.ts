@@ -4,7 +4,7 @@ import { getRequests } from "$core/utils/Request";
 import { clearLineBreaks, limit, toString } from "$core/utils/Utils";
 import { msg } from "$core/utils/Message";
 import { simpleEmbed } from "$core/utils/Embed";
-import { Lang, Request } from "$core/utils/types";
+import { Request } from "$core/utils/types";
 
 let center = "<:center:1077383962915242024>";
 let left = "<:left:1077383963938660423>";
@@ -32,12 +32,12 @@ export default class RequestCommand extends Command {
       })
       .setRequired(true));
 
-  public async execute(command: ChatInputCommandInteraction, lang: Lang) : Promise<void> {
+  public async execute(command: ChatInputCommandInteraction) : Promise<void> {
     let request = command.options.getInteger("id", true);
     let history = await getRequests(command.user.id);
 
     if (request > history.length) {
-      await command.reply({ embeds: [simpleEmbed("That request does not exist", "error", lang)], ephemeral: true });
+      await command.reply({ embeds: [simpleEmbed("That request does not exist", "error", command.locale)], ephemeral: true });
       return;
     }
 
@@ -47,7 +47,7 @@ export default class RequestCommand extends Command {
     description += `:grey_question:  ${history[request - 1].question}\n`;
     description += `\n:robot: ` + clearLineBreaks(limit(toString(history[request - 1].answer), 1024, "..."), 2);
 
-    const embed = simpleEmbed(description, "normal", msg("request_title", [request], lang), {
+    const embed = simpleEmbed(description, "normal", msg("request_title", [request], command.locale), {
       text: command.user.tag,
       iconURL: command.user.avatarURL() as string,
       timestamp: true

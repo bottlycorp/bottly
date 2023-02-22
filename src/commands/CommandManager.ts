@@ -31,11 +31,8 @@ export default class CommandManager {
     Client.instance.on("interactionCreate", async interaction => {
       if (!interaction.isChatInputCommand()) return;
       const command = this.commands.get(interaction.commandName);
-
-      // TODO: Get the language from the user
-      const lang = "fr_FR";
       
-      if (command) command.execute(interaction, lang);
+      if (command) command.execute(interaction);
     });
   }
 

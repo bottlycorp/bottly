@@ -1,37 +1,37 @@
 {
   "history_title": {
-    "fr_FR": "Historique des questions",
-    "en_US": "History of questions"
+    "fr": "Historique des questions",
+    "en-US": "History of questions"
   },
   "history_description": {
-    "fr_FR": "Voici l'historique de vos questions posées\n",
-    "en_US": "Here is the history of your asked questions\n"
+    "fr": "Voici l'historique de vos questions posées\n",
+    "en-US": "Here is the history of your asked questions\n"
   },
   "history_empty": {
-    "fr_FR": "Vous n'avez posé aucune question pour le moment, utilisez la commande </ask:1077289203441864805> pour en poser une.\n",
-    "en_US": "You have not asked any questions yet, use the </ask:1077289203441864805> command to ask one.\n"
+    "fr": "Vous n'avez posé aucune question pour le moment, utilisez la commande </ask:1077289203441864805> pour en poser une.\n",
+    "en-US": "You have not asked any questions yet, use the </ask:1077289203441864805> command to ask one.\n"
   },
   "history_line": {
-    "fr_FR": "**{id}.** [{question}]({messageLink}) - <t:{date}:R>\n",
-    "en_US": "**{id}.** [{question}]({messageLink}) - <t:{date}:R>\n"
+    "fr": "**{id}.** [{question}]({messageLink}) - <t:{date}:R>\n",
+    "en-US": "**{id}.** [{question}]({messageLink}) - <t:{date}:R>\n"
   },
   "history_footer": {
-    "fr_FR": "\nTIP: Vous pouvez utiliser la commande </request:1077398819995668590> pour voir une demande spécifique",
-    "en_US": "\nTIP: Use the </request:1077398819995668590> command to view a specific request "
+    "fr": "\nTIP: Vous pouvez utiliser la commande </request:1077398819995668590> pour voir une demande spécifique",
+    "en-US": "\nTIP: Use the </request:1077398819995668590> command to view a specific request "
   },
 
   "request_title": {
-    "fr_FR": "Demande #{id}",
-    "en_US": "Request #{id}"
+    "fr": "Demande #{id}",
+    "en-US": "Request #{id}"
   },
 
   "ask_response_title": {
-    "fr_FR": "Réponse à la question",
-    "en_US": "Response to the question"
+    "fr": "Réponse à la question",
+    "en-US": "Response to the question"
   },
 
   "ask_response_description": {
-    "fr_FR": ":man: {question}\n\n:robot: {answer}",
-    "en_US": ":man: {question}\n\n:robot: {answer}"
+    "fr": ":man: {question}\n- Contexte de réponse: {context}\n- Langue de la réponse: {language}\n\n:robot: {answer}",
+    "en-US": ":man: {question}\n- Context: {context}\n- Answer language: {language}\n\n:robot: {answer}"
   }
 }
