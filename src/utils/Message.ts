@@ -100,11 +100,11 @@ export const contexts: Record<number | string, Record<string, string>> = {
     "en-US": "🧮 Math problem, question, etc."
   },
   2: {
-    fr: "🪄 Programming problem, question, etc.",
+    fr: "🪄 Problème de programmation, question, etc.",
     "en-US": "🪄 Programming problem, question, etc."
   },
   3: {
-    fr: "📝 Generate a story, a text, ect",
+    fr: "📝 Génération d'histoire, de texte, etc.",
     "en-US": "📝 Generate a story, a text, ect"
   },
   4: {
