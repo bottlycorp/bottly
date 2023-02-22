@@ -90,7 +90,7 @@ export default class Ask extends Command {
       type: 2,
       style: 1,
       label: "Open a thread",
-      custom_id: "open_thread",
+      custom_id: "open_thread_" + command.user.id,
       disabled: command.channel?.isThread() ?? false
     }]
 

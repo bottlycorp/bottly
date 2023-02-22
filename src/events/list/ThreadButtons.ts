@@ -13,51 +13,42 @@ export default class ThreadButtons extends Event {
     if (interaction.isButton()) {
       const channel = interaction.channel;
 
-      switch (interaction.customId) {
-        case "open_thread":
-          if (channel?.type !== ChannelType.GuildText) return;
-          const message = await channel.messages.fetch(interaction.message.id);
-
-          await interaction.message.edit({
-            components: []
-          });
-
-          if (!message) return;
- 
-          const question = message.embeds[0].description?.match(/(?<=Q: \*\*)(.*)(?=\*\*)/)?.[0];
-
-          await channel.threads.create({
-            name: question || "Thread",
-            autoArchiveDuration: 60,
-            startMessage: message,
-            reason: "Opened a thread with the bot"
-          });
-  
+      if (interaction.customId.startsWith("open_thread_")) {
+        const id = interaction.customId.replace("open_thread_", "");
+        
+        if (id !== interaction.user.id) {
           await interaction.reply({
-            embeds: [ simpleEmbed("Opened a thread with the bot", "normal") ],
+            embeds: [ simpleEmbed("You can't open a thread for someone else", "error") ],
             ephemeral: true
           });
-          break;
-        case "add_list":
-          let lists = ["Recettes", "Courses", "Autres"];
-          if (lists.length === 0) {
-            await interaction.reply({ embeds: [simpleEmbed("Vous n'avez pas encore créé de liste", "normal")] });
-          } else {
-            let select = new SelectMenuBuilder()
-              .setCustomId("select_list")
-              .setPlaceholder("Choisissez une liste")
-              .addOptions([
-                { label: "Recettes", value: "recettes" },
-                { label: "Courses", value: "courses" },
-                { label: "Autres", value: "autres"}
-              ]);
+          return;
+        }
 
-            await interaction.reply({ content: "Choisissez une liste, créer en une avec la commande", components: [{ type: 1, components: [select] }], ephemeral: true });
-          }
-          break;
-        case "cancel":
-          await interaction.deleteReply();
-          break;
+        if (channel?.type !== ChannelType.GuildText) return;
+        const message = await channel.messages.fetch(interaction.message.id);
+
+        await interaction.message.edit({
+          components: []
+        });
+
+        if (!message) return;
+
+        const description = message.embeds[0].description ?? "";
+        const startIndex = description.indexOf(":man: ") + ":man: ".length;
+        const endIndex = description.indexOf("\n", startIndex);
+        const extractedText = description.substring(startIndex, endIndex);
+
+        await channel.threads.create({
+          name: extractedText,
+          autoArchiveDuration: 60,
+          startMessage: message,
+          reason: "Opened a thread with the bot"
+        });
+
+        await interaction.reply({
+          embeds: [ simpleEmbed("Opened a thread with the bot", "normal") ],
+          ephemeral: true
+        });
       }
 	  }
   }
