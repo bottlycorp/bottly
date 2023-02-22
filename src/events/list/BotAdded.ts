@@ -12,13 +12,13 @@ export default class onInvited extends Event {
 	}
 
 	public async execute(guid: Guild): Promise<void> {
-    Logger.where(`${guid.name} (${guid.memberCount} members) | ID: ${guid.id}`);
+    Logger.where(`Added to ${guid.name} (${guid.memberCount} members) | ID: ${guid.id}`);
 
     const webhookClient = new WebhookClient({ url: process.env.WEBHOOK_URL as string });
 
     await webhookClient.send({ embeds: [
-      simpleEmbed("I've been added to the server " + guid.name + " (" + guid.memberCount + " members)", "success", "", {
-        text: guid.id,
+      simpleEmbed(":smile: I've been added to the server **" + guid.name + "** (" + guid.memberCount + " members)", "success", "", {
+        text: guid.id + " | now " + Client.instance.guilds.cache.size + " servers",
         timestamp: true
       })
     ]});
