@@ -14,9 +14,6 @@ export default class Ask extends Command {
 
   public readonly slashCommand = new SlashCommandBuilder()
     .setName("ask")
-    .setNameLocalizations({
-      fr: "question"
-    })
     .setDescription("Ask a question to the bot")
     .setDescriptionLocalizations({
       fr: "Posez une question au bot"

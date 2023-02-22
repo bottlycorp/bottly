@@ -10,10 +10,6 @@ export default class RequestCommand extends Command {
 
   public readonly slashCommand = new SlashCommandBuilder()
     .setName("request")
-    .setNameLocalizations({
-      fr: "requete",
-      "en-US": "request"
-    })
     .setDescription("Watch an specific request of your asked questions")
     .setDescriptionLocalizations({
       fr: "Voir une requête spécifique de vos questions posées",

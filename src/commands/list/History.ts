@@ -10,10 +10,6 @@ export default class HistoryCommand extends Command {
 
   public readonly slashCommand = new SlashCommandBuilder()
     .setName("history")
-    .setNameLocalizations({
-      fr: "historique",
-      "en-US": "history"
-    })
     .setDescription("Watch your history of questions")
     .setDescriptionLocalizations({
       fr: "Voir votre historique de questions",
