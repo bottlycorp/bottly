@@ -131,8 +131,8 @@ export const contexts: Record<number | string, Record<string, string>> = {
 
 export const contextChoices = [
   { name: "🧮 Math problem, question, etc.", value: "1", name_localizations: { fr: "🧮 Problème mathématique, question, etc." } },
-  { name: "🪄 Programming problem, question, etc.", value: "2", name_localizations: { fr: "🪄 Programming problem, question, etc." } },
-  { name: "📝 Generate a story, a text, ect", value: "3", name_localizations: { fr: "📝 Generate a story, a text, ect" } },
+  { name: "🪄 Programming problem, question, etc.", value: "2", name_localizations: { fr: "🪄 Problème de programmation, question, etc." } },
+  { name: "📝 Generate a story, a text, ect", value: "3", name_localizations: { fr: "📝 Génération d'histoire, de texte, etc." } },
   { name: "🪡 Translate a text", value: "4", name_localizations: { fr: "🪡 Traduire un texte" } },
   { name: "🧬 Code generation, completion, correction, etc.", value: "5", name_localizations: { fr: "🧬 Génération de code, complétion, correction, etc." } },
   { name: "🔎 Solve a problem", value: "6", name_localizations: { fr: "🔎 Résoudre un problème" } },
