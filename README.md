@@ -12,6 +12,7 @@ Create a `.env` file in the root directory of the project and add the following 
 TOKEN=TOKEN
 CLIENT_ID=BOT CLIENT ID
 OPEN_AI=API KEY
+WEBHOOK_URL=Webhook URL for post join/leave guild messages
 ```
 
 Replace `TOKEN` with your bot's token and `BOT CLIENT ID` with your bot's client ID.
