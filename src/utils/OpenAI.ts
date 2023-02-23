@@ -1,4 +1,5 @@
 import "dotenv/config";
+import { msg } from "./Message";
 import { restRequest } from "./request/request";
 
 type ChatGPTResponse = {
@@ -19,7 +20,7 @@ type ChatGPTResponse = {
   }
 }
 
-export async function chatWithAI(prompt: string): Promise<string> {
+export async function chatWithAI(prompt: string, langRequested: string): Promise<string> {
   const response = await restRequest<ChatGPTResponse>("post", "https://api.openai.com/v1/completions", {
     headers: {
       authorization: `Bearer ${process.env.OPEN_AI}`,
@@ -36,13 +37,9 @@ export async function chatWithAI(prompt: string): Promise<string> {
     })
   });
 
-  if (!response.success) {
-    return "Une erreur est survenue lors de la communication avec l'API OpenAI.";
-  }
-
-  if (response.data.choices.length > 0) {
+  if (response.success && response.data.choices.length > 0) {
     return response.data.choices[0].text;
   } else {
-    return "Une erreur est survenue lors de la communication avec l'API OpenAI.";
+    return msg("open_ai_problem", [], langRequested)
   }
 }

@@ -69,7 +69,7 @@ export default class Ask extends Command {
       contextLang, context, question
     ]);
     
-    let answer = await chatWithAI(que);
+    let answer = await chatWithAI(que, command.locale);
     Logger.request(question)
 
     const embed = simpleEmbed(msg("ask_response_description", [
