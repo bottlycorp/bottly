@@ -17,5 +17,7 @@ export default class Ready extends Event {
 			name: "GPT-3",
 			type: ActivityType.Playing
 		});
+
+		Client.instance.taskManager.load();
 	}
 }
