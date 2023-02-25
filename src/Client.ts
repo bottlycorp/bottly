@@ -2,6 +2,7 @@ import { Client as DiscordClient, GatewayIntentBits, Partials } from 'discord.js
 import Logger from '$core/utils/Logger';
 import CommandManager from '$core/commands/CommandManager';
 import EventManager from '$core/events/EventManager';
+import TaskManager from '$core/tasks/TaskManager';
 import "dotenv/config";
 
 export default class Client extends DiscordClient {
@@ -10,6 +11,7 @@ export default class Client extends DiscordClient {
 
 	public readonly eventManager: EventManager;
 	public readonly commandManager: CommandManager;
+  public readonly taskManager: TaskManager;
 
   constructor() {
     super({
@@ -23,14 +25,15 @@ export default class Client extends DiscordClient {
 		Client.instance = this;
 		this.login(process.env.TOKEN);
 
+    this.eventManager = new EventManager();
+    this.commandManager = new CommandManager();
+    this.taskManager = new TaskManager();
+
     this.on('ready', () => {
       this.guilds.cache.forEach((guild) => {
         Logger.where(`${guild.name} (${guild.memberCount} members) | ID: ${guild.id}`);
       });
     });
-
-		this.eventManager = new EventManager();
-		this.commandManager = new CommandManager();
 	}
 }
 

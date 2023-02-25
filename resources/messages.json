@@ -37,5 +37,10 @@
   "ask_response_description": {
     "fr": ":man: {question}\n- Contexte de réponse: {context}\n- Langue de la réponse: {language}\n\n:robot: {answer}",
     "en-US": ":man: {question}\n- Context: {context}\n- Answer language: {language}\n\n:robot: {answer}"
+  },
+
+  "open_ai_problem": {
+    "fr": "La communication avec l'API d'OpenAI à rencontré un problème, si cela persiste, [merci de contacter le support](https://discord.gg/hF4msEgbJs), ou de vérifier la [page status de OpenAI](https://status.openai.com/)",
+    "en-US": "The communication with the OpenAI API encountered a problem, if this persists, [please contact support](https://discord.gg/hF4msEgbJs), or check the [OpenAI status page](https://status.openai.com/)"
   }
 }
