@@ -1,6 +1,6 @@
 import { EmbedBuilder } from "discord.js";
 
-type EmbedType = "normal" | "error" | "success";
+type EmbedType = "normal" | "error" | "success" | "pro";
 
 type Colors = {
   [key in EmbedType]: number;
@@ -10,6 +10,7 @@ const colors: Colors = {
   normal: 0x4353fc,
   error: 0xfc4343,
   success: 0x43fc43,
+  pro: 0xc7bb4e,
 };
 
 export function simpleEmbed(message: string, type: EmbedType = "normal", title?: string, footer ?: {
