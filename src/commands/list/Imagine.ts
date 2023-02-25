@@ -40,12 +40,12 @@ export default class HistoryCommand extends Command {
     await command.deferReply();
     let usageLeft = 0;
 
-    if (usageLeft <= 0) {
-      command.editReply({
-        embeds: [simpleEmbed("You have reached your limit of requests for this month, please subscribe to the Premium version of the bot to increase the limit to 500 per months", "error")]
-      });
-      return;
-    }
+    // if (usageLeft <= 0) {
+    //   command.editReply({
+    //     embeds: [simpleEmbed("You have reached your limit of requests for this month, please subscribe to the Premium version of the bot to increase the limit to 500 per months", "error")]
+    //   });
+    //   return;
+    // }
 
     let environment = "";
     if (command.options.getString("environment", false) != null) {
@@ -75,17 +75,17 @@ export default class HistoryCommand extends Command {
     if (response.data.data[0].url != null) {
       const likeButton = { type: 2, style: ButtonStyle.Secondary, disabled: true, emoji: "❤️", custom_id: "like" }
       const refreshButton = { type: 2, style: ButtonStyle.Secondary, disabled: true, emoji: "🔄", custom_id: "refresh" }
-      const usagesLeft = {
-        type: 2,
-        style: ButtonStyle.Secondary,
-        disabled: true,
-        label: `⛽ 8/50 (monthly)`,
-        custom_id: "usage"
-      }
+      // const usagesLeft = {
+      //   type: 2,
+      //   style: ButtonStyle.Secondary,
+      //   disabled: true,
+      //   label: `⛽ 8/50 (monthly)`,
+      //   custom_id: "usage"
+      // }
   
       await command.editReply({
         content: response.data.data[0].url,
-        components: [{ type: 1, components: [likeButton, refreshButton, usagesLeft] }]
+        components: [{ type: 1, components: [likeButton, refreshButton] }]
       });
     } else {
       await command.editReply({
