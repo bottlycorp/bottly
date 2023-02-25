@@ -17,8 +17,9 @@ export default class HistoryCommand extends Command {
 
     proMessage += "- 1000 </ask:1077289203441864805> requests per month\n";
     proMessage += "- 500 </imagine:1078848364722008145> requests per month\n";
-    proMessage += "- Enlarge your images generated and don't get stuck in 1024x1024 !";
+    proMessage += "- Enlarge your images generated and don't get stuck in 1024x1024 !\n";
     proMessage += "- As many lists as you want to store your favorite answers\n";
+    proMessage += "- Aquire the **Pro** role on the support server\n";
 
     proMessage += "\nWhat are you waiting for?\n";
     proMessage += "It's only **$7.99** per month with a 3 days **free trial** and can be **cancelled at any time**!";
