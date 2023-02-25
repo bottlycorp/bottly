@@ -37,9 +37,6 @@ export async function chatWithAI(prompt: string, langRequested: string): Promise
     })
   });
 
-  if (response.success && response.data.choices.length > 0) {
-    return response.data.choices[0].text;
-  } else {
-    return msg("open_ai_problem", [], langRequested)
-  }
+  if (response.success && response.data.choices.length > 0) return response.data.choices[0].text;
+  else return msg("open_ai_problem", [], langRequested)
 }

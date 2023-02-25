@@ -4,10 +4,13 @@ import CommandManager from '$core/commands/CommandManager';
 import EventManager from '$core/events/EventManager';
 import TaskManager from '$core/tasks/TaskManager';
 import "dotenv/config";
+import { Configuration, OpenAIApi } from 'openai';
 
 export default class Client extends DiscordClient {
 
 	public static instance: Client;
+
+  public readonly openai: OpenAIApi;
 
 	public readonly eventManager: EventManager;
 	public readonly commandManager: CommandManager;
@@ -24,6 +27,10 @@ export default class Client extends DiscordClient {
 
 		Client.instance = this;
 		this.login(process.env.TOKEN);
+
+    this.openai = new OpenAIApi(new Configuration({
+      apiKey: process.env.OPENAI_API_KEY
+    }));
 
     this.eventManager = new EventManager();
     this.commandManager = new CommandManager();
