@@ -1,9 +1,9 @@
 import { Client as DiscordClient, GatewayIntentBits, Partials } from 'discord.js';
+import { Configuration, OpenAIApi } from 'openai';
 import Logger from '$core/utils/Logger';
 import CommandManager from '$core/commands/CommandManager';
 import EventManager from '$core/events/EventManager';
 import TaskManager from '$core/tasks/TaskManager';
-import { Configuration, OpenAIApi } from 'openai';
 import "dotenv/config";
 
 export default class Client extends DiscordClient {
@@ -27,7 +27,7 @@ export default class Client extends DiscordClient {
 
 		Client.instance = this;
 		this.login(process.env.TOKEN);
-
+    
     this.openai = new OpenAIApi(new Configuration({
       apiKey: process.env.OPEN_AI
     }));

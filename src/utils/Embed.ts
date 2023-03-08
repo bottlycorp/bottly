@@ -13,7 +13,7 @@ const colors: Colors = {
   pro: 0xc7bb4e,
 };
 
-export function simpleEmbed(message: string, type: EmbedType = "normal", title?: string, footer ?: {
+export function simpleEmbed(message: string, type: EmbedType = "normal", footer ?: {
   text: string;
   iconURL?: string;
   timestamp?: boolean;
@@ -21,7 +21,6 @@ export function simpleEmbed(message: string, type: EmbedType = "normal", title?:
   const embed = new EmbedBuilder().setColor(colors[type]);
 
   if (message) embed.setDescription(message);
-  if (title) embed.setTitle(title);
 
   if (footer) {
     embed.setFooter({
