@@ -11,15 +11,16 @@ datasource db {
 }
 
 model User {
-  id        Int        @unique
+  id        String     @id @unique
   createdAt DateTime   @default(now())
   lastAsked DateTime   @default(now())
-  total     Int        @default(0)
+  total     Int        @default(1)
+  monthly   Int        @default(50)
 }
 
 model Requests {
   id          String   @id @default(cuid())
-  userId      BigInt
+  userId      String
   askedAt     DateTime @default(now())
   question    String
   answeredAt  DateTime @default(now())
