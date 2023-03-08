@@ -12,19 +12,20 @@ datasource db {
 
 model User {
   id        Int        @unique
-  language  String     @default("en")
   createdAt DateTime   @default(now())
   lastAsked DateTime   @default(now())
+  total     Int        @default(0)
 }
 
 model Requests {
   id          String   @id @default(cuid())
   userId      BigInt
-  createdAt   Int   
+  askedAt     DateTime @default(now())
   question    String
+  answeredAt  DateTime @default(now())
   answer      String
+  guildId     BigInt
+  channelId   BigInt
   messageLink String
-  channelName String
-  guildName   String
   options     Json     @default("{}")
 }
