@@ -1,10 +1,10 @@
 import Client from "$core/Client";
 import Command from "$core/commands/Command";
-import { simpleEmbed } from "$core/utils/Embed";
+import { getChatButton, getRevealButton, getUsageButton, simpleEmbed } from "$core/utils/Embed";
 import { buildQuestion, AskContextOptions, Locales } from "$core/utils/Models";
 import { checkUser, getUser, updateUser } from "$core/utils/User";
 import { ask } from "$resources/messages.json";
-import { ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption } from "discord.js";
+import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption, TextChannel } from "discord.js";
 
 export default class Ask extends Command {
 
@@ -63,21 +63,37 @@ export default class Ask extends Command {
       iconURL: command.user.displayAvatarURL()
     });
 
-    const chatButton = new ButtonBuilder()
-      .setCustomId("chat")
-      .setLabel("Discussion")
-      .setStyle(ButtonStyle.Primary);
-    const limitButton = new ButtonBuilder()
-      .setCustomId("limit")
-      .setLabel(`⛽ ${user.monthly - 1}/50 (monthly)`)
-      .setStyle(ButtonStyle.Secondary)
-      .setDisabled(true);
-    const revealButton = new ButtonBuilder()
-      .setCustomId("reveal")
-      .setLabel("Reveal")
-      .setStyle(ButtonStyle.Secondary);
+    const channel = await command.client.channels.fetch(command.channelId);
+    if (!channel || !(channel instanceof TextChannel)) return;
+    const collector = channel.createMessageComponentCollector({ time: 60000 });
 
-    await command.editReply({ embeds: [embed], components: [{ type: 1, components: [chatButton, limitButton, revealButton] }] });
+    collector.on("collect", async i => {
+      if (!i.isButton()) return;
+      if (i.customId.startsWith("reveal")) {
+        const usageRemaining: number = parseInt(i.customId.split("_")[1]);
+        await i.update({ components: [{ type: 1, components: [
+          getChatButton(),
+          getUsageButton(usageRemaining)
+        ] }] });
+        await channel.send({ embeds: [embed.data], components: [{ type: 1, components: [
+          getChatButton(),
+          getUsageButton(usageRemaining)
+        ] }] });
+      }
+    });
+
+    collector.on("end", async() => {
+      await command.editReply({ components: [{ type: 1, components: [
+        getChatButton(),
+        getUsageButton(user.monthly)
+      ] }] });
+    });
+
+    await command.editReply({ embeds: [embed], components: [{ type: 1, components: [
+      getChatButton(),
+      getUsageButton(user.monthly),
+      getRevealButton(user.monthly)
+    ] }] });
   }
 
 }
