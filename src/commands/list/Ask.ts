@@ -34,7 +34,9 @@ export default class Ask extends Command {
     const user = await getUser(command.user.id);
 
     if ((await getUser(command.user.id)).monthly == 0) {
-      command.editReply({ content: "Your free trial expired (wait next month)" });
+      command.editReply({
+        embeds: [simpleEmbed(ask.errors.trial[command.locale === "fr" ? "fr" : "en-US"], "error")] // TODO: Add a way to translate this with hardcorde
+      });
       return;
     }
 

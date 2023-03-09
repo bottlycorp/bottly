@@ -1,5 +1,11 @@
 {
   "ask": {
+    "errors": {
+      "trial": {
+        "fr": "Vous avez atteint la limite de questions par mois, attendez le mois prochain pour le rechargement de votre quota.\n\n:sparkles: Vous pouvez aussi vous abonner pour avoir un quota illimité et des fonctionnalités supplémentaires.",
+        "en-US": "You have reached the limit of questions per month, wait for next month for the reloading of your quota.\n\n:sparkles: You can also subscribe to have an unlimited quota and additional features."
+      }
+    },
     "command": {
       "description": {
         "fr": "Écrire ici la question à poser au robot GPT",
