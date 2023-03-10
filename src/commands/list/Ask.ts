@@ -1,6 +1,6 @@
 import Client from "$core/Client";
 import Command from "$core/commands/Command";
-import { getChatButton, getRevealButton, getUsageButton, simpleEmbed } from "$core/utils/Embed";
+import { getRevealButton, getUsageButton, simpleEmbed } from "$core/utils/Embed";
 import { buildQuestion, AskContextOptions, Locales } from "$core/utils/Models";
 import { checkUser, getUser, updateUser } from "$core/utils/User";
 import { ask } from "$resources/messages.json";
@@ -67,18 +67,16 @@ export default class Ask extends Command {
 
     const channel = await command.client.channels.fetch(command.channelId);
     if (!channel || !(channel instanceof TextChannel)) return;
-    const collector = channel.createMessageComponentCollector({ time: 60000 });
+    const collector = channel.createMessageComponentCollector({ time: 20000 });
 
     collector.on("collect", async i => {
       if (!i.isButton()) return;
       if (i.customId.startsWith("reveal")) {
         const usageRemaining: number = parseInt(i.customId.split("_")[1]);
         await i.update({ components: [{ type: 1, components: [
-          getChatButton(),
           getUsageButton(usageRemaining)
         ] }] });
         await channel.send({ embeds: [embed.data], components: [{ type: 1, components: [
-          getChatButton(),
           getUsageButton(usageRemaining)
         ] }] });
       }
@@ -86,13 +84,11 @@ export default class Ask extends Command {
 
     collector.on("end", async() => {
       await command.editReply({ components: [{ type: 1, components: [
-        getChatButton(),
         getUsageButton(user.monthly)
       ] }] });
     });
 
     await command.editReply({ embeds: [embed], components: [{ type: 1, components: [
-      getChatButton(),
       getUsageButton(user.monthly),
       getRevealButton(user.monthly)
     ] }] });

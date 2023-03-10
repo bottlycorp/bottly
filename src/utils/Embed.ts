@@ -49,10 +49,3 @@ export function getRevealButton(usage: number) : ButtonBuilder {
     .setLabel("Reveal")
     .setStyle(ButtonStyle.Secondary);
 }
-
-export function getChatButton() : ButtonBuilder {
-  return new ButtonBuilder()
-    .setCustomId("chat")
-    .setLabel("Discussion")
-    .setStyle(ButtonStyle.Primary);
-}
