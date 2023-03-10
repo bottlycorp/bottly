@@ -32,5 +32,19 @@
         "en-US": "Open a conversation"
       }
     }
+  },
+  "chat": {
+    "command": {
+      "description": {
+        "fr": "Démarrer une conversation avec le robot GPT, sur la base d'une question initiale",
+        "en-US": "Start a conversation with the GPT robot, based on an initial question"
+      },
+      "options": {
+        "question": {
+          "fr": "La question à poser au robot GPT",
+          "en-US": "The question to ask the GPT robot"
+        }
+      }
+    }
   }
 }
