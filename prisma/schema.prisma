@@ -24,7 +24,8 @@ model Thread {
   lastMessage DateTime @default(now())
   guildId     String
   userId      String
-  messages    String[]
+  messages    Json     @default("[]")
+  active      Boolean  @default(false)
 }
 
 model Requests {

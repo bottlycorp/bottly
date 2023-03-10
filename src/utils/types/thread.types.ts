@@ -4,7 +4,8 @@ export type Thread = {
   lastMessage: Date;
   guildId: string;
   userId: string;
-  messages: Record<string, string>[];
+  messages: { content: string, role: "user" | "assistant" }[];
+  active: boolean; // For avoid spamming messages
 }
 
 export type IAMessages = {

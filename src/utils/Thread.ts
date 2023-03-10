@@ -1,5 +1,5 @@
 import { prisma } from "$core/utils/Prisma";
-import { IAMessages, Thread } from "$core/utils/types/thread.types";
+import { Thread } from "$core/utils/types/thread.types";
 import dayjs from "dayjs";
 
 /**
