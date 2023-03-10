@@ -1,5 +1,6 @@
 import Client from "$core/Client";
 import Command from "$core/commands/Command";
+import { createThread } from "$core/utils/Thread";
 import { chat } from "$resources/messages.json";
 import { TextChannel, ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption } from "discord.js";
 
@@ -38,6 +39,11 @@ export default class Ask extends Command {
     });
 
     thread.send(response.data.choices[0].message?.content ?? "I don't know what to say...");
+    await createThread(thread.id, {
+      userId: command.user.id,
+      guildId: command.guildId ?? "",
+      messages: [{ content: question, role: "user" }]
+    });
 
     await command.editReply({
       content: `Your chat has been created: ${thread}`
