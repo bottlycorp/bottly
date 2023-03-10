@@ -14,7 +14,8 @@ export default class Ask extends Command {
       .setName("question")
       .setDescription(chat.command.options.question["en-US"])
       .setDescriptionLocalizations({ fr: chat.command.options.question.fr })
-      .setRequired(true));
+      .setRequired(true))
+    .setDMPermission(false);
 
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
     await command.deferReply({ ephemeral: true });
@@ -38,7 +39,9 @@ export default class Ask extends Command {
       messages: [{ content: question, name: "User", role: "user" }]
     });
 
+    thread.sendTyping();
     thread.send(response.data.choices[0].message?.content ?? "I don't know what to say...");
+
     await createThread(thread.id, {
       userId: command.user.id,
       guildId: command.guildId ?? "",

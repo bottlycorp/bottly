@@ -26,7 +26,8 @@ export default class Ask extends Command {
       .setName("language")
       .setDescription(ask.command.options.lang["en-US"])
       .setDescriptionLocalizations({ fr: ask.command.options.lang.fr })
-      .addChoices(...Locales.map(l => ({ name: l.name, value: l.value }))));
+      .addChoices(...Locales.map(l => ({ name: l.name, value: l.value }))))
+    .setDMPermission(false);
 
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
     await command.deferReply({ ephemeral: true });
