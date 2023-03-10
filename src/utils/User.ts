@@ -6,7 +6,7 @@ import { User } from "$core/utils/types/user.types";
  * @returns {Promise<boolean>}
  * @description Checks if the user exists in the database, if not, it creates it.
  * @example const userExists = await checkUser(interaction.user.id);
- * @example if (!userExists) return interaction.reply({ content: "You've been registered successfuly", ephemeral: true });
+ * if (!userExists) return interaction.reply({ content: "You've been registered successfuly", ephemeral: true });
  */
 export const checkUser = async(id: string) : Promise<boolean> => {
   if (!(await prisma.user.findUnique({ where: { id } }))) {
@@ -22,7 +22,7 @@ export const checkUser = async(id: string) : Promise<boolean> => {
  * @returns {Promise<User>}
  * @description Gets the user from the database.
  * @example const user = await getUser(interaction.user.id);
- * @example if (user.monthly == 0) return interaction.reply({ content: "Your free trial expired (wait next month)", ephemeral: true });
+ * if (user.monthly == 0) return interaction.reply({ content: "Your free trial expired (wait next month)", ephemeral: true });
  */
 export const getUser = async(id: string) : Promise<User> => {
   const user = await prisma.user.findUnique({ where: { id } });
