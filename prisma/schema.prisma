@@ -18,7 +18,7 @@ model User {
   chatUsage  Int      @default(20)
   imageUsage Int      @default(20)
   premium    Boolean  @default(false)
-  email      String   @default("")
+  email      String   @default("none")
 }
 
 model Thread {
