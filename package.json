@@ -9,7 +9,7 @@
 		"dev": "npx nodemon --exec node -r @swc-node/register ./src/Client.ts",
 		"start": "npm run db:generate && node -r @swc-node/register -r tsconfig-paths/register ./src/Client.ts",
 		"db:generate": "prisma generate",
-    "db:to": "prisma format && prisma generate && prisma db push" 
+		"db:to": "prisma format && prisma generate && prisma db push"
 	},
 	"dependencies": {
 		"@bluzzi/eslint-config": "^0.8.8",
@@ -19,6 +19,7 @@
 		"discord.js": "^14.3.0",
 		"eslint": "^8.35.0",
 		"openai": "^3.2.1",
+		"stripe": "^11.14.0",
 		"zod": "^3.20.6"
 	},
 	"devDependencies": {
