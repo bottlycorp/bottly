@@ -1,5 +1,5 @@
 import { ButtonBuilder } from "@discordjs/builders";
-import { ButtonStyle, EmbedBuilder } from "discord.js";
+import { ButtonStyle, EmbedBuilder, User } from "discord.js";
 
 type EmbedType = "normal" | "error" | "success" | "pro";
 
@@ -14,33 +14,45 @@ const colors: Colors = {
   pro: 0xc7bb4e
 };
 
-export function simpleEmbed(message: string, type: EmbedType = "normal", footer ?: {
-  text: string;
-  iconURL?: string;
-  timestamp?: boolean;
-}): EmbedBuilder {
+export function simpleEmbed(
+  message: string,
+  type: EmbedType = "normal",
+  footer: {
+    text?: string;
+    iconURL?: string;
+    timestamp?: boolean;
+    f?: User;
+  }
+) : EmbedBuilder {
   const embed = new EmbedBuilder().setColor(colors[type]);
 
   if (message) embed.setDescription(message);
 
   if (footer) {
-    embed.setFooter({
-      text: footer.text,
-      iconURL: footer.iconURL
-    });
+    if (footer.iconURL) embed.setFooter({ iconURL: footer.iconURL, text: footer.text ?? "" });
 
-    if (footer.timestamp) embed.setTimestamp();
+    if (footer.f) {
+      embed.setFooter({
+        iconURL: footer.f.displayAvatarURL(),
+        text: footer.text ?? footer.f.tag
+      });
+    }
+
+    embed.setTimestamp();
   }
 
   return embed;
 }
 
 export function getUsageButton(usage: number) : ButtonBuilder {
-  return new ButtonBuilder()
+  const button = new ButtonBuilder()
     .setCustomId("limit")
-    .setLabel(`⛽ ${usage}/50 (monthly)`)
     .setStyle(ButtonStyle.Secondary)
     .setDisabled(true);
+
+  if (usage == 0) button.setLabel("⛽ Monthly limit reached");
+  else button.setLabel(`⛽ ${usage}/50 (monthly)`);
+  return button;
 }
 
 export function getRevealButton(usage: number) : ButtonBuilder {
