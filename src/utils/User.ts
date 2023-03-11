@@ -44,3 +44,13 @@ export const updateUser = async(id: string, data: Partial<User>) : Promise<void>
 export function isPremium(user: User) : boolean {
   return user.premium || user.id == process.env.OWNER_ID;
 }
+
+export function typePremium(type: string) : boolean {
+  switch (type) {
+    case "active": return true;
+    case "trialing": return true;
+    case "canceled": return false;
+    case "inactive": return false;
+    default: return false;
+  }
+}

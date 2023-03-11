@@ -4,8 +4,6 @@ export default abstract class Task {
 
   protected readonly timer: NodeJS.Timer;
 
-  public abstract readonly enabledInDev: boolean;
-
   constructor(time: number) {
     this.time = time;
     this.timer = setInterval(() => this.run(), time);
