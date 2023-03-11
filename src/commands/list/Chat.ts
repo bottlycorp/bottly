@@ -1,6 +1,9 @@
 import Client from "$core/Client";
 import Command from "$core/commands/Command";
+import { simpleEmbed } from "$core/utils/Embed";
+import { msg } from "$core/utils/Message";
 import { createThread } from "$core/utils/Thread";
+import { getUser, isPremium } from "$core/utils/User";
 import { chat } from "$resources/messages.json";
 import { TextChannel, ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption } from "discord.js";
 
@@ -15,17 +18,36 @@ export default class Ask extends Command {
       .setDescription(chat.command.options.question["en-US"])
       .setDescriptionLocalizations({ fr: chat.command.options.question.fr })
       .setRequired(true))
+    .addStringOption(new SlashCommandStringOption()
+      .setName("title")
+      .setDescription(chat.command.options.title["en-US"])
+      .setDescriptionLocalizations({ fr: chat.command.options.title.fr })
+      .setRequired(false))
     .setDMPermission(false);
 
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
     await command.deferReply({ ephemeral: true });
     const question = command.options.getString("question", true);
+    const user = await getUser(command.user.id);
+    const isPremiumUser = isPremium(user);
+
+    if (!isPremiumUser) {
+      if ((await getUser(command.user.id)).askUsage == 0) {
+        command.editReply({
+          embeds: [simpleEmbed(chat.errors.trial[command.locale === "fr" ? "fr" : "en-US"], "error", { f: command.user })]
+        });
+        return;
+      }
+    }
 
     const channel = command.channel;
-    if (!(channel instanceof TextChannel)) return;
+    if (!(channel instanceof TextChannel)) {
+      await command.editReply({ content: "You must execute this command in a text channel." });
+      return;
+    }
 
     const thread = await channel.threads.create({
-      name: `Chat with ${command.user.username}`,
+      name: command.options.getString("title", false) ?? `Chat with ${command.user.username}`,
       autoArchiveDuration: 60,
       reason: "Chat with the bot"
     });
@@ -39,8 +61,13 @@ export default class Ask extends Command {
       messages: [{ content: question, name: "User", role: "user" }]
     });
 
-    thread.sendTyping();
-    thread.send(response.data.choices[0].message?.content ?? "I don't know what to say...");
+    console.log(response.data);
+
+    await thread.sendTyping();
+
+    const responseText = response.data.choices[0].message?.content ?? "I don't know what to say...";
+    thread.send(msg(chat.command.messages.started[command.locale === "fr" ? "fr" : "en-US"], [question]));
+    thread.send(responseText);
 
     await createThread(thread.id, {
       userId: command.user.id,

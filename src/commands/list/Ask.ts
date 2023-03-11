@@ -1,9 +1,13 @@
 import Client from "$core/Client";
 import Command from "$core/commands/Command";
 import { getRevealButton, getUsageButton, simpleEmbed } from "$core/utils/Embed";
+import Logger from "$core/utils/Logger";
 import { buildQuestion, AskContextOptions, Locales } from "$core/utils/Models";
-import { checkUser, getUser, updateUser } from "$core/utils/User";
+import { prisma } from "$core/utils/Prisma";
+import { checkUser, getUser, isPremium, updateUser } from "$core/utils/User";
 import { ask } from "$resources/messages.json";
+import { ButtonBuilder } from "@discordjs/builders";
+import dayjs from "dayjs";
 import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption, TextChannel } from "discord.js";
 
 export default class Ask extends Command {
@@ -31,14 +35,16 @@ export default class Ask extends Command {
 
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
     await command.deferReply({ ephemeral: true });
+    const askedAt = dayjs().toDate();
     await checkUser(command.user.id);
     const user = await getUser(command.user.id);
+    const isPremiumUser = isPremium(user);
 
-    if ((await getUser(command.user.id)).monthly == 0) {
-      command.editReply({
-        embeds: [simpleEmbed(ask.errors.trial[command.locale === "fr" ? "fr" : "en-US"], "error")] // TODO: Add a way to translate this with hardcorde
-      });
-      return;
+    if (!isPremiumUser) {
+      if ((await getUser(command.user.id)).askUsage == 0) {
+        command.editReply({ embeds: [simpleEmbed(ask.errors.trial[command.locale === "fr" ? "fr" : "en-US"], "error", { f: command.user })] });
+        return;
+      }
     }
 
     const question = command.options.getString("question", true);
@@ -49,22 +55,22 @@ export default class Ask extends Command {
 
     const response = await Client.instance.openai.createChatCompletion({
       model: "gpt-3.5-turbo",
-      max_tokens: 1500,
+      max_tokens: 2000,
       temperature: 0.9,
       messages: [{ content: finalQuestion, name: "User", role: "user" }]
     });
 
     const text = response.data.choices[0].message?.content ?? "I don't know what to say...";
 
-    if (text !== "I don't know what to say...") {
-      await updateUser(command.user.id, { monthly: user.monthly - 1 });
-    }
-
     const embed = simpleEmbed(text, "normal", {
       text: command.user.username,
       timestamp: true,
       iconURL: command.user.displayAvatarURL()
     });
+
+    const buttons: ButtonBuilder[] = [];
+    if (!isPremiumUser) buttons.push(getUsageButton(user.askUsage - 1));
+    buttons.push(getRevealButton(user.askUsage - 1));
 
     const channel = await command.client.channels.fetch(command.channelId);
     if (!channel || !(channel instanceof TextChannel)) return;
@@ -73,26 +79,50 @@ export default class Ask extends Command {
     collector.on("collect", async i => {
       if (!i.isButton()) return;
       if (i.customId.startsWith("reveal")) {
+        if (isPremiumUser) {
+          await i.update({ embeds: [embed], components: [] });
+          channel.send({ embeds: [embed.data], components: [] });
+          return;
+        }
+
         const usageRemaining: number = parseInt(i.customId.split("_")[1]);
-        await i.update({ components: [{ type: 1, components: [
-          getUsageButton(usageRemaining)
-        ] }] });
-        await channel.send({ embeds: [embed.data], components: [{ type: 1, components: [
-          getUsageButton(usageRemaining)
-        ] }] });
+        await i.update({ components: [{ type: 1, components: [getUsageButton(usageRemaining)] }] });
+        await channel.send({ embeds: [embed.data], components: [{ type: 1, components: [getUsageButton(usageRemaining)] }] });
       }
     });
 
-    collector.on("end", async() => {
-      await command.editReply({ components: [{ type: 1, components: [
-        getUsageButton(user.monthly)
-      ] }] });
-    });
+    if (!isPremiumUser) {
+      collector.on("end", async() => {
+        await command.editReply({ components: [{ type: 1, components: [getUsageButton(user.askUsage)] }] });
+      });
+    }
 
-    await command.editReply({ embeds: [embed], components: [{ type: 1, components: [
-      getUsageButton(user.monthly),
-      getRevealButton(user.monthly)
-    ] }] });
+    await command.editReply({ embeds: [embed], components: [{ type: 1, components: buttons }] }).then(async(message) => {
+      Logger.request(question);
+
+      await prisma.requests.create({
+        data: {
+          userId: command.user.id,
+          guildId: command.guildId ?? "",
+          channelId: command.channelId,
+          messageLink: message.url,
+          question: question,
+          answer: Buffer.from(text).toString("base64"),
+          answeredAt: dayjs().toDate(),
+          askedAt: askedAt,
+          options: {
+            context: context ?? "default",
+            language: language ?? command.locale
+          }
+        }
+      });
+
+      if (!isPremiumUser) {
+        if (text !== "I don't know what to say...") {
+          await updateUser(command.user.id, { askUsage: user.askUsage - 1 });
+        }
+      }
+    });
   }
 
 }
