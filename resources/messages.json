@@ -34,6 +34,12 @@
     }
   },
   "chat": {
+    "errors": {
+      "trial": {
+        "fr": "Vous avez atteint la limite de conversations par mois, attendez le mois prochain pour le rechargement de votre quota.\n\n:sparkles: Vous pouvez aussi vous abonner pour avoir un quota illimité et des fonctionnalités supplémentaires.",
+        "en-US": "You have reached the limit of conversations per month, wait for next month for the reloading of your quota.\n\n:sparkles: You can also subscribe to have an unlimited quota and additional features."
+      }
+    },
     "command": {
       "description": {
         "fr": "Démarrer une conversation avec le robot GPT, sur la base d'une question initiale",
@@ -43,6 +49,142 @@
         "question": {
           "fr": "La question à poser au robot GPT",
           "en-US": "The question to ask the GPT robot"
+        },
+        "title": {
+          "fr": "Le titre de la conversation",
+          "en-US": "The title of the conversation"
+        }
+      },
+      "messages": {
+        "started": {
+          "fr": "**Question initiale**: {question}",
+          "en-US": "**Initial question**: {question}"
+        }
+      }
+    }
+  },
+  "history": {
+    "command": {
+      "description": {
+        "fr": "Afficher l'historique des questions posées au robot GPT",
+        "en-US": "Display the history of questions asked to the GPT robot"
+      },
+      "options": {
+        "page": {
+          "fr": "La page de l'historique à afficher",
+          "en-US": "The page of the history to display"
+        }
+      },
+      "embed": {
+        "line": {
+          "default": "**{index}**. [{question}]({url}) - <t:{timestamp}:R>"
+        },
+        "line-blank": {
+          "fr": "Vous n'avez encore posé aucune question au robot GPT",
+          "en-US": "You have not yet asked any question to the GPT robot"
+        },
+        "line-threads": {
+          "blank": {
+            "fr": "Vous n'avez pas encore démarré de conversation avec le robot GPT",
+            "en-US": "You have not yet started a conversation with the GPT robot"
+          },
+          "not-blank": {
+            "fr": "Vous avez démarré {count} conversation{plural} avec le robot GPT",
+            "en-US": "You have started {count} conversation{plural} with the GPT robot"
+          }
+        },
+        "footer": {
+          "default": "{page}/{pages}"
+        }
+      }
+    }
+  },
+  "subscription": {
+    "command": {
+      "description": {
+        "fr": "Commande pour gérer votre abonnement",
+        "en-US": "Command to manage your subscription"
+      }
+    },
+    "subcommands": {
+      "check": {
+        "fr": "Vérifier votre abonnement",
+        "en-US": "Check your subscription"
+      },
+      "cancel": {
+        "fr": "Annuler votre abonnement",
+        "en-US": "Cancel your subscription"
+      },
+      "subscribe": {
+        "fr": "Récuperer le lien d'abonnement",
+        "en-US": "Get the subscription link"
+      },
+      "email": {
+        "fr": "Définir l'adresse email de votre compte sur le quel vous voulez accéder à Stripe",
+        "en-US": "Set the email address of your account on which you want to access Stripe"
+      },
+      "dashboard": {
+        "fr": "Ouvrir le tableau de bord de votre abonnement",
+        "en-US": "Open the dashboard of your subscription"
+      },
+      "status": {
+        "fr": "Afficher le statut de votre abonnement",
+        "en-US": "Display the status of your subscription"
+      }
+    },
+    "options": {
+      "email": {
+        "fr": "L'adresse email de votre compte",
+        "en-US": "The email address of your account"
+      }
+    },
+    "errors": {
+      "no-email": {
+        "fr": "Pour utiliser cette commande, vous devez avoir au préalable renseigné votre adresse email avec la commande </subscription email:1084112966984667246>",
+        "en-US": "To use this command, you must first have entered your email address with the command </subscription email:1084112966984667246>"
+      },
+      "no-subscription": {
+        "fr": "Vous n'avez pas d'abonnement actif",
+        "en-US": "You do not have an active subscription"
+      },
+      "already-subscribed": {
+        "fr": "Vous avez déjà un abonnement actif",
+        "en-US": "You already have an active subscription"
+      },
+      "invalid-email": {
+        "fr": "L'adresse email renseignée n'est pas valide",
+        "en-US": "The email address entered is not valid"
+      },
+      "email-exists": {
+        "fr": "L'adresse email renseignée est déjà utilisée par un autre utilisateur, si vous êtes le propriétaire de cette adresse email, venez sur le [serveur support](https://discord.gg/tFUJHr2htA) pour obtenir de l'aide",
+        "en-US": "The email address entered is already used by another user, if you are the owner of this email address, come to the [support server](https://discord.gg/tFUJHr2htA) to get help"
+      },
+      "already-defined": {
+        "fr": "Vous avez déjà renseigné une adresse email, venez sur le [serveur support](https://discord.gg/tFUJHr2htA) pour obtenir de l'aide si vous souhaitez la changer",
+        "en-US": "You have already entered an email address, come to the [support server](https://discord.gg/tFUJHr2htA) to get help if you want to change it"
+      }
+    },
+    "success": {
+      "subscription-found": {
+        "fr": "Vous avez un abonnement actif, vous pouvez le gérer sur le [tableau de bord](https://dashboard.stripe.com/login)",
+        "en-US": "You have an active subscription, you can manage it on the [dashboard](https://dashboard.stripe.com/login)"
+      },
+      "valid-email": {
+        "fr": "L'adresse email renseignée est valide et sera utilisée pour accéder à Stripe",
+        "en-US": "The email address entered is valid and will be used to access Stripe"
+      },
+      "subscriber-status": {
+        "trial": {
+          "fr": "Vous êtes actuellement en période d'essai, qui expire le <t:{trial_end}:R>",
+          "en-US": "You are currently in the trial period, which expires on <t:{trial_end}:R>"
+        },
+        "active": {
+          "fr": "Vous êtes actuellement abonné, votre abonnement expire le <t:{current_period_end}:R>",
+          "en-US": "You are currently subscribed, your subscription expires on <t:{current_period_end}:R>"
+        },
+        "canceled": {
+          "fr": "Vous avez annulé votre abonnement le <t:{canceled_at}:R>, vous perdrez l'accès à toutes les fonctionnalités premium le <t:{date_end}:R>",
+          "en-US": "You canceled your subscription on <t:{canceled_at}:R>, you will lose access to all premium features on <t:{date_end}:R>"
         }
       }
     }
