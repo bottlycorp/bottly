@@ -15,14 +15,6 @@ export default class Subscription extends Command {
     .setDescriptionLocalizations({ fr: subscription.command.description.fr })
     .setDMPermission(false)
     .addSubcommand(new SlashCommandSubcommandBuilder()
-      .setName("dashboard")
-      .setDescription(subscription.subcommands.dashboard["en-US"])
-      .setDescriptionLocalizations({ fr: subscription.subcommands.dashboard.fr }))
-    .addSubcommand(new SlashCommandSubcommandBuilder()
-      .setName("subscribe")
-      .setDescription(subscription.subcommands.subscribe["en-US"])
-      .setDescriptionLocalizations({ fr: subscription.subcommands.subscribe.fr }))
-    .addSubcommand(new SlashCommandSubcommandBuilder()
       .setName("email")
       .setDescription(subscription.subcommands.email["en-US"])
       .setDescriptionLocalizations({ fr: subscription.subcommands.email.fr })
@@ -34,37 +26,21 @@ export default class Subscription extends Command {
     .addSubcommand(new SlashCommandSubcommandBuilder()
       .setName("status")
       .setDescription(subscription.subcommands.status["en-US"])
-      .setDescriptionLocalizations({ fr: subscription.subcommands.status.fr }))
-    .addSubcommand(new SlashCommandSubcommandBuilder()
-      .setName("check")
-      .setDescription(subscription.subcommands.check["en-US"])
-      .setDescriptionLocalizations({ fr: subscription.subcommands.check.fr }));
+      .setDescriptionLocalizations({ fr: subscription.subcommands.status.fr }));
 
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
     await command.deferReply({ ephemeral: true });
+    await checkUser(command.user.id);
     const subcommand = command.options.getSubcommand();
     const user = await getUser(command.user.id);
-    await checkUser(command.user.id);
 
     let subscriber;
-    if (user.email == "" && subcommand !== "email") {
-      await command.editReply({
-        embeds: [simpleEmbed(subscription.errors["no-email"][command.locale === "fr" ? "fr" : "en-US"], "error", { f: command.user })]
-      });
-      return;
-    } else if (user.email !== "") {
+    if (user.email != "none") {
       subscriber = await findSubscriptionByEmail(user.email);
     }
 
     switch (subcommand) {
       case "email":
-        if (user.email !== "") {
-          await command.editReply({
-            embeds: [simpleEmbed(subscription.errors["already-defined"][command.locale === "fr" ? "fr" : "en-US"], "error", { f: command.user })]
-          });
-          return;
-        }
-
         const email = command.options.getString("email", true);
 
         if (!email.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)) {
@@ -78,9 +54,7 @@ export default class Subscription extends Command {
 
         if (emailExists.length > 0) {
           await command.editReply({
-            embeds: [
-              simpleEmbed(subscription.errors["email-exists"][command.locale === "fr" ? "fr" : "en-US"], "error", { f: command.user })
-            ]
+            embeds: [simpleEmbed(subscription.errors["email-exists"][command.locale === "fr" ? "fr" : "en-US"], "error", { f: command.user })]
           });
           return;
         }
@@ -90,19 +64,14 @@ export default class Subscription extends Command {
           embeds: [simpleEmbed(subscription.success["valid-email"][command.locale === "fr" ? "fr" : "en-US"], "success", { f: command.user })]
         });
         break;
-      case "check":
-        if (subscriber == null) {
+      case "status":
+        if (user.email === "none") {
           await command.editReply({
-            embeds: [simpleEmbed(subscription.errors["no-subscription"][command.locale === "fr" ? "fr" : "en-US"], "error", { f: command.user })]
+            embeds: [simpleEmbed(subscription.errors["no-email"][command.locale === "fr" ? "fr" : "en-US"], "error", { f: command.user })]
           });
           return;
         }
 
-        await command.editReply({
-          embeds: [simpleEmbed(subscription.success["subscription-found"][command.locale === "fr" ? "fr" : "en-US"], "success", { f: command.user })]
-        });
-        break;
-      case "status":
         if (subscriber == null) {
           await command.editReply({
             embeds: [simpleEmbed(subscription.errors["no-subscription"][command.locale === "fr" ? "fr" : "en-US"], "error", { f: command.user })]
@@ -112,42 +81,36 @@ export default class Subscription extends Command {
 
         if (subscriber.cancel_at != null && subscriber.canceled_at != null) {
           await command.editReply({
-            embeds: [
-              simpleEmbed(
-                msg(
-                  subscription.success["subscriber-status"].canceled[command.locale === "fr" ? "fr" : "en-US"], [
-                    subscriber.canceled_at,
-                    subscriber.cancel_at
-                  ]
-                ),
-                "error",
-                { f: command.user }
-              )
-            ]
+            embeds: [simpleEmbed(
+              msg(
+                subscription.success["subscriber-status"].canceled[command.locale === "fr" ? "fr" : "en-US"], [
+                  subscriber.canceled_at,
+                  subscriber.cancel_at
+                ]
+              ),
+              "error",
+              { f: command.user }
+            )]
           });
           return;
         }
 
         if (subscriber.status === "trialing" && subscriber.trial_end != null) {
           await command.editReply({
-            embeds: [
-              simpleEmbed(
-                msg(subscription.success["subscriber-status"].trial[command.locale === "fr" ? "fr" : "en-US"], [subscriber.trial_end]),
-                "pro",
-                { f: command.user }
-              )
-            ]
+            embeds: [simpleEmbed(
+              msg(subscription.success["subscriber-status"].trial[command.locale === "fr" ? "fr" : "en-US"], [subscriber.trial_end]),
+              "pro",
+              { f: command.user }
+            )]
           });
           return;
         } else if (subscriber.status === "active" && subscriber.current_period_end != null) {
           await command.editReply({
-            embeds: [
-              simpleEmbed(
-                msg(subscription.success["subscriber-status"].active[command.locale === "fr" ? "fr" : "en-US"], [subscriber.current_period_end]),
-                "pro",
-                { f: command.user }
-              )
-            ]
+            embeds: [simpleEmbed(
+              msg(subscription.success["subscriber-status"].active[command.locale === "fr" ? "fr" : "en-US"], [subscriber.current_period_end]),
+              "pro",
+              { f: command.user }
+            )]
           });
         }
         break;

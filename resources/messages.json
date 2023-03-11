@@ -107,25 +107,9 @@
       }
     },
     "subcommands": {
-      "check": {
-        "fr": "Vérifier votre abonnement",
-        "en-US": "Check your subscription"
-      },
-      "cancel": {
-        "fr": "Annuler votre abonnement",
-        "en-US": "Cancel your subscription"
-      },
-      "subscribe": {
-        "fr": "Récuperer le lien d'abonnement",
-        "en-US": "Get the subscription link"
-      },
       "email": {
         "fr": "Définir l'adresse email de votre compte sur le quel vous voulez accéder à Stripe",
         "en-US": "Set the email address of your account on which you want to access Stripe"
-      },
-      "dashboard": {
-        "fr": "Ouvrir le tableau de bord de votre abonnement",
-        "en-US": "Open the dashboard of your subscription"
       },
       "status": {
         "fr": "Afficher le statut de votre abonnement",
