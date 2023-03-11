@@ -3,7 +3,7 @@ import Command from "$core/commands/Command";
 import { simpleEmbed } from "$core/utils/Embed";
 import { msg } from "$core/utils/Message";
 import { createThread } from "$core/utils/Thread";
-import { getUser, isPremium } from "$core/utils/User";
+import { checkUser, getUser, isPremium } from "$core/utils/User";
 import { chat } from "$resources/messages.json";
 import { TextChannel, ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption } from "discord.js";
 
@@ -28,6 +28,7 @@ export default class Ask extends Command {
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
     await command.deferReply({ ephemeral: true });
     const question = command.options.getString("question", true);
+    await checkUser(command.user.id);
     const user = await getUser(command.user.id);
     const isPremiumUser = isPremium(user);
 
@@ -60,8 +61,6 @@ export default class Ask extends Command {
       temperature: 0.9,
       messages: [{ content: question, name: "User", role: "user" }]
     });
-
-    console.log(response.data);
 
     await thread.sendTyping();
 
