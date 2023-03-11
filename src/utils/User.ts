@@ -1,5 +1,6 @@
 import { prisma } from "$core/utils/Prisma";
 import { User } from "$core/utils/types/user.types";
+import "dotenv/config";
 
 /**
  * @param id
@@ -39,3 +40,7 @@ export const getUser = async(id: string) : Promise<User> => {
 export const updateUser = async(id: string, data: Partial<User>) : Promise<void> => {
   await prisma.user.update({ where: { id }, data });
 };
+
+export function isPremium(user: User) : boolean {
+  return user.premium || user.id == process.env.OWNER_ID;
+}

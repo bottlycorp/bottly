@@ -3,5 +3,9 @@ export type User = {
   createdAt: Date;
   lastAsked: Date;
   total: number;
-  monthly: number;
+  askUsage: number;
+  chatUsage: number;
+  imageUsage: number;
+  premium: boolean;
+  email: string;
 }
