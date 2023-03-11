@@ -1,6 +1,5 @@
 import { prisma } from "$core/utils/Prisma";
 import { Thread } from "$core/utils/types/thread.types";
-import dayjs from "dayjs";
 
 /**
  * @param threadId
