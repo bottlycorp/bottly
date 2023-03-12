@@ -146,6 +146,10 @@
       "already-defined": {
         "fr": "Vous avez déjà renseigné une adresse email, venez sur le [serveur support](https://discord.gg/tFUJHr2htA) pour obtenir de l'aide si vous souhaitez la changer",
         "en-US": "You have already entered an email address, come to the [support server](https://discord.gg/tFUJHr2htA) to get help if you want to change it"
+      },
+      "trial-exists": {
+        "fr": "Malheureusement, il semble que vous ayez déjà eu un essai gratuit, vous ne pouvez donc pas en avoir un autre, si vous pensez que c'est une erreur, venez sur le [serveur support](https://discord.gg/tFUJHr2htA) pour obtenir de l'aide",
+        "en-US": "Unfortunately, it seems that you have already had a free trial, so you can't have another one, if you think this is an error, come to the [support server](https://discord.gg/tFUJHr2htA) to get help"
       }
     },
     "success": {
@@ -159,12 +163,12 @@
       },
       "subscriber-status": {
         "trial": {
-          "fr": "Vous êtes actuellement en période d'essai, qui expire le <t:{trial_end}:R>",
-          "en-US": "You are currently in the trial period, which expires on <t:{trial_end}:R>"
+          "fr": "Vous êtes actuellement en période d'essai, qui expire le <t:{trial_end}:F>",
+          "en-US": "You are currently in the trial period, which expires on <t:{trial_end}:F>"
         },
         "active": {
-          "fr": "Vous êtes actuellement abonné, votre abonnement expire le <t:{current_period_end}:R>",
-          "en-US": "You are currently subscribed, your subscription expires on <t:{current_period_end}:R>"
+          "fr": ":tada: Vous êtes abonné à **GPT+**, votre abonnement expire le <t:{current_period_end}:F>, vous pouvez accéder à votre [tableau de bord](https://billing.stripe.com/p/login/28o15B9gDgmd7pS8ww)",
+          "en-US": ":tada: You are subscribed to **GPT+**, your subscription expires on <t:{current_period_end}:F>, you can access your [dashboard](https://billing.stripe.com/p/login/28o15B9gDgmd7pS8ww)"
         },
         "canceled": {
           "fr": "Vous avez annulé votre abonnement le <t:{canceled_at}:R>, vous perdrez l'accès à toutes les fonctionnalités premium le <t:{date_end}:R>",

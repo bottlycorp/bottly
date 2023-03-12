@@ -79,6 +79,13 @@ export default class Subscription extends Command {
           return;
         }
 
+        if (subscriber.status === "trialing" && user.trails > 1) {
+          await command.editReply({
+            embeds: [simpleEmbed(subscription.errors["trial-exists"][command.locale === "fr" ? "fr" : "en-US"], "error", { f: command.user })]
+          });
+          return;
+        }
+
         if (subscriber.cancel_at != null && subscriber.canceled_at != null) {
           await command.editReply({
             embeds: [simpleEmbed(
