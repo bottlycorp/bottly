@@ -11,7 +11,7 @@ const colors: Colors = {
   normal: 0x4353fc,
   error: 0xfc4343,
   success: 0x43fc43,
-  pro: 0xc7bb4e
+  pro: 0xd1f015
 };
 
 export function simpleEmbed(

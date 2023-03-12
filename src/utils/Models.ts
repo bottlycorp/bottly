@@ -7,12 +7,12 @@ export const Models = {
       question: "Answer the question \"{{text}}\" and put this answer in {{language}}"
     }
   }
-}
+};
 
 export const AskContextOptions = [
   { name: "🌐 Translate a text into a different language", value: "translation" },
   { name: "🧮 Solve a math problem", value: "math" }
-]
+];
 
 export const Locales = [
   { name: "🇺🇸 English", value: "en" },
@@ -25,9 +25,9 @@ export const Locales = [
   { name: "🇵🇹 Português", value: "pt" },
   { name: "🇷🇺 Русский", value: "ru" },
   { name: "🇨🇳 中文", value: "zh" }
-]
+];
 
-export function buildQuestion(text: string, context: string = "default", language: string) {
+export function buildQuestion(text: string, context = "default", language: string) : string {
   switch (context) {
     case "translation":
       return Models.ask.translation.replace("{{text}}", text).replace("{{language}}", Locales.find(l => l.value === language)?.name ?? "English");

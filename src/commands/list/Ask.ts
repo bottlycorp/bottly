@@ -50,7 +50,6 @@ export default class Ask extends Command {
     const question = command.options.getString("question", true);
     const context = command.options.getString("context", false);
     const language = command.options.getString("language", false);
-
     const finalQuestion = buildQuestion(question, context ?? "default", language ?? command.locale);
 
     const response = await Client.instance.openai.createChatCompletion({
