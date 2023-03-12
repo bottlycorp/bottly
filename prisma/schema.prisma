@@ -18,7 +18,16 @@ model User {
   chatUsage  Int      @default(20)
   imageUsage Int      @default(20)
   premium    Boolean  @default(false)
+  inTrial    Boolean  @default(false)
   email      String   @default("none")
+}
+
+model Trials {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  userId    String
+  startedAt DateTime @default(now())
+  endAt     DateTime @default(now())
 }
 
 model Thread {
