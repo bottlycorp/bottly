@@ -1,7 +1,7 @@
 import Command from "$core/commands/Command";
 import { history } from "$resources/messages.json";
 import { checkUser } from "$core/utils/User";
-import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
+import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandIntegerOption } from "discord.js";
 import { prisma } from "$core/utils/Prisma";
 import { simpleEmbed } from "$core/utils/Embed";
 import { msg } from "$core/utils/Message";
@@ -12,7 +12,11 @@ export default class History extends Command {
     .setName("history")
     .setDescription(history.command.description["en-US"])
     .setDescriptionLocalizations({ fr: history.command.description.fr })
-    .setDMPermission(false);
+    .setDMPermission(false)
+    .addIntegerOption(new SlashCommandIntegerOption()
+      .setName("page")
+      .setDescription("Number of the page")
+      .setRequired(false));
 
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
     await command.deferReply({ ephemeral: true });

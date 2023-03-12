@@ -1,5 +1,5 @@
 import Event from "$core/events/Event";
-import { getUser } from "$core/utils/User";
+import { checkUser, getUser } from "$core/utils/User";
 import { GuildMember } from "discord.js";
 
 export default class MemberJoin extends Event {
@@ -10,6 +10,7 @@ export default class MemberJoin extends Event {
 
   public async execute(member: GuildMember) : Promise<void> {
     if (member.guild.id !== `${process.env.SUPPORT_GUILD_ID}`) return;
+    await checkUser(member.id);
 
     const role = member.guild.roles.cache.get(`${process.env.SUPPORT_PREMIUM_ROLE_ID}`);
     if (!role) return;

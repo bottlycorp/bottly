@@ -22,23 +22,25 @@ export default class CheckPayements extends Task {
 
       emails.forEach(async(email) => {
         const subscriptions = await findAllSubscriptionsByEmail(email);
-        if (subscriptions.map((subscription) => subscription.status).includes("active")
-          || subscriptions.map((subscription) => subscription.status).includes("trialing")) {
-          const user = await prisma.user.findFirst({ where: { email } });
+        const user = await prisma.user.findFirst({ where: { email } });
+
+        if (subscriptions.map((subscription) => subscription.status).includes("active") && user?.premium === false) {
           if (!user) return;
-          premiumRole("add", user.id);
-          return;
+
+          const updatedUser = await prisma.user.update({
+            where: { id: user.id },
+            data: { premium: true }
+          });
+
+          premiumRole("add", updatedUser.id);
         }
 
         if (subscriptions.length === 0) {
-          const user = prisma.user.update({
-            where: { email },
-            data: { premium: false }
-          });
+          const user = await prisma.user.findFirst({ where: { email } });
+          if (!user) return;
 
-          user.then((user) => {
-            premiumRole("remove", user.id);
-          });
+          const updatedUser = await prisma.user.update({ where: { id: user.id }, data: { premium: false } });
+          premiumRole("remove", updatedUser.id);
         }
       });
     });
