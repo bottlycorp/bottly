@@ -1,5 +1,6 @@
 import Client from "$core/Client";
 import Task from "$core/tasks/Task";
+import Logger from "$core/utils/Logger";
 import { prisma } from "$core/utils/Prisma";
 import { premiumRole } from "$core/utils/Roles";
 import { findAllSubscriptionsByEmail } from "$core/utils/Stripe";
@@ -16,7 +17,11 @@ export default class CheckPayements extends Task {
     const customers = Client.instance.stripe.customers.list();
     customers.then((customers) => {
       customers.data.forEach((customer) => {
-        // @ts-ignore
+        if (!customer.email) {
+          Logger.error("Customer without email " + customer.email);
+          return;
+        }
+
         emails.push(customer.email);
       });
 
