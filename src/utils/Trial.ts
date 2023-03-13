@@ -6,7 +6,7 @@ export const startTrial = async(userId: string): Promise<boolean> => {
   const user = await getUser(userId);
   if (user.inTrial) return false;
 
-  await prisma.user.update({ where: { id: userId }, data: { inTrial: true, trialEnd: dayjs().add(3, "day").unix().toString(), premium: true } });
+  await prisma.user.update({ where: { id: userId }, data: { premium: true, inTrial: true, trialEnd: dayjs().add(3, "day").unix().toString() } });
   return true;
 };
 

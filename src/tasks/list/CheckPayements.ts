@@ -1,6 +1,5 @@
 import Client from "$core/Client";
 import Task from "$core/tasks/Task";
-import Logger from "$core/utils/Logger";
 import { prisma } from "$core/utils/Prisma";
 import { premiumRole } from "$core/utils/Roles";
 import { findAllSubscriptionsByEmail } from "$core/utils/Stripe";
@@ -13,35 +12,27 @@ export default class CheckPayements extends Task {
   }
 
   public run(): void {
-    const emails: string[] = [];
     const customers = Client.instance.stripe.customers.list();
     customers.then((customers) => {
-      customers.data.forEach((customer) => {
-        if (!customer.email) {
-          Logger.error("Customer without email " + customer.email);
-          return;
-        }
+      customers.data.forEach(async(customer) => {
+        if (!customer.email) return;
+        const subscriptions = await findAllSubscriptionsByEmail(customer.email);
+        const user = await prisma.user.findFirst({ where: { email: customer.email } });
 
-        emails.push(customer.email);
-      });
-
-      emails.forEach(async(email) => {
-        const subscriptions = await findAllSubscriptionsByEmail(email);
-        const user = await prisma.user.findFirst({ where: { email } });
-
-        if (subscriptions.map((subscription) => subscription.status).includes("active") && user?.premium === false) {
+        if (subscriptions.map((subscription) => subscription.status).includes("active") && (user?.premium === false || user?.inTrial === true)) {
           if (!user) return;
 
-          const updatedUser = await prisma.user.update({
+          if (user.inTrial) await prisma.user.update({
             where: { id: user.id },
-            data: { premium: true }
+            data: { inTrial: false, alreadyTried: false, trialEnd: "0", premium: true }
           });
+          else await prisma.user.update({ where: { id: user.id }, data: { premium: true } });
 
-          premiumRole("add", updatedUser.id);
+          premiumRole("add", user.id);
         }
 
-        if (subscriptions.length === 0) {
-          const user = await prisma.user.findFirst({ where: { email } });
+        if (subscriptions.length === 0 && user?.inTrial === false) {
+          const user = await prisma.user.findFirst({ where: { email: customer.email } });
           if (!user) return;
 
           const updatedUser = await prisma.user.update({ where: { id: user.id }, data: { premium: false } });
