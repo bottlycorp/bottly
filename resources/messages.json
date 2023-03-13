@@ -114,6 +114,10 @@
       "status": {
         "fr": "Afficher le statut de votre abonnement",
         "en-US": "Display the status of your subscription"
+      },
+      "trial": {
+        "fr": "Commencez votre essai gratuit de 3 jours",
+        "en-US": "Start your 3 days free trial"
       }
     },
     "options": {

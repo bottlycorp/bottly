@@ -26,7 +26,12 @@ export default class Subscription extends Command {
     .addSubcommand(new SlashCommandSubcommandBuilder()
       .setName("status")
       .setDescription(subscription.subcommands.status["en-US"])
-      .setDescriptionLocalizations({ fr: subscription.subcommands.status.fr }));
+      .setDescriptionLocalizations({ fr: subscription.subcommands.status.fr }))
+    .addSubcommand(new SlashCommandSubcommandBuilder()
+      .setName("trial")
+      .setDescription(subscription.subcommands.trial["en-US"])
+      .setDescriptionLocalizations({ fr: subscription.subcommands.trial.fr }));
+
 
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
     await command.deferReply({ ephemeral: true });
