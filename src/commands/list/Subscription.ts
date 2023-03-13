@@ -1,11 +1,20 @@
 import Command from "$core/commands/Command";
 import { subscription } from "$resources/messages.json";
 import { checkUser, getUser, updateUser } from "$core/utils/User";
-import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption, SlashCommandSubcommandBuilder } from "discord.js";
+import {
+  ButtonStyle,
+  ChatInputCommandInteraction,
+  SlashCommandBuilder,
+  SlashCommandStringOption,
+  SlashCommandSubcommandBuilder,
+  TextChannel
+} from "discord.js";
 import { simpleEmbed } from "$core/utils/Embed";
 import { prisma } from "$core/utils/Prisma";
 import { findSubscriptionByEmail } from "$core/utils/Stripe";
 import { msg } from "$core/utils/Message";
+import { ButtonBuilder } from "@discordjs/builders";
+import { startTrial } from "$core/utils/Trial";
 
 export default class Subscription extends Command {
 
@@ -31,7 +40,6 @@ export default class Subscription extends Command {
       .setName("trial")
       .setDescription(subscription.subcommands.trial["en-US"])
       .setDescriptionLocalizations({ fr: subscription.subcommands.trial.fr }));
-
 
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
     await command.deferReply({ ephemeral: true });
@@ -70,6 +78,18 @@ export default class Subscription extends Command {
         });
         break;
       case "status":
+        if (user.inTrial) {
+          await command.editReply({
+            embeds: [
+              simpleEmbed(
+                msg(subscription.success["subscriber-status"].trial[command.locale === "fr" ? "fr" : "en-US"],
+                  [user.trialEnd]), "pro", { f: command.user }
+              )
+            ]
+          });
+          return;
+        }
+
         if (user.email === "none") {
           await command.editReply({
             embeds: [simpleEmbed(subscription.errors["no-email"][command.locale === "fr" ? "fr" : "en-US"], "error", { f: command.user })]
@@ -80,13 +100,6 @@ export default class Subscription extends Command {
         if (subscriber == null) {
           await command.editReply({
             embeds: [simpleEmbed(subscription.errors["no-subscription"][command.locale === "fr" ? "fr" : "en-US"], "error", { f: command.user })]
-          });
-          return;
-        }
-
-        if (subscriber.status === "trialing" && user.trails > 1) {
-          await command.editReply({
-            embeds: [simpleEmbed(subscription.errors["trial-exists"][command.locale === "fr" ? "fr" : "en-US"], "error", { f: command.user })]
           });
           return;
         }
@@ -125,6 +138,46 @@ export default class Subscription extends Command {
             )]
           });
         }
+        break;
+      case "trial":
+        if (user.alreadyTrial || user.inTrial) {
+          await command.editReply({
+            embeds: [simpleEmbed(subscription.errors["trial-exists"][command.locale === "fr" ? "fr" : "en-US"], "error", { f: command.user })]
+          });
+          return;
+        }
+
+        const channel = await command.client.channels.fetch(command.channelId);
+        if (!channel || !(channel instanceof TextChannel)) return;
+        const collector = channel.createMessageComponentCollector({ time: 20000 });
+
+        collector.on("collect", async i => {
+          if (!i.isButton()) return;
+          if (i.customId == "start_trial_" + command.user.id) {
+            const status = await startTrial(command.user.id);
+            if (status) {
+              await i.update({
+                embeds: [simpleEmbed(subscription.success.trial.started[command.locale === "fr" ? "fr" : "en-US"], "pro", { f: command.user })],
+                components: []
+              });
+            } else {
+              await i.update({
+                embeds: [simpleEmbed(subscription.errors["trial-already"][command.locale === "fr" ? "fr" : "en-US"], "error", { f: command.user })],
+                components: []
+              });
+            }
+          }
+        });
+
+        const button = new ButtonBuilder()
+          .setCustomId("start_trial_" + command.user.id)
+          .setLabel(subscription.buttons.start[command.locale === "fr" ? "fr" : "en-US"])
+          .setStyle(ButtonStyle.Success);
+
+        await command.editReply({
+          embeds: [simpleEmbed(subscription.messages.trial.sure[command.locale === "fr" ? "fr" : "en-US"], "pro", { f: command.user })],
+          components: [{ type: 1, components: [button] }]
+        });
         break;
     }
   }

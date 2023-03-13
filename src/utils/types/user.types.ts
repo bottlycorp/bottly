@@ -6,7 +6,8 @@ export type User = {
   chatUsage: number;
   imageUsage: number;
   premium: boolean;
-  premiumLocked: boolean;
-  trails: number;
+  inTrial: boolean;
+  trialEnd: string;
+  alreadyTrial: boolean;
   email: string;
 }
