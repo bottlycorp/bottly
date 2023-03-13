@@ -8,7 +8,6 @@ export type Request = {
   channelId: string;
   messageLink: string;
   options: {
-    isPrivate: boolean;
     context: string;
     language: string;
   };
