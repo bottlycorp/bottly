@@ -1,4 +1,4 @@
-import { Client as DiscordClient, GatewayIntentBits, Partials } from "discord.js";
+import { Client as DiscordClient, GatewayIntentBits, Partials, WebhookClient } from "discord.js";
 import { Configuration, OpenAIApi } from "openai";
 import Logger from "$core/utils/Logger";
 import CommandManager from "$core/commands/CommandManager";
@@ -21,6 +21,8 @@ export default class Client extends DiscordClient {
 
   public readonly stripe: Stripe;
 
+  public readonly webhook: WebhookClient | null;
+
   constructor() {
     super({
       intents: [
@@ -40,6 +42,16 @@ export default class Client extends DiscordClient {
     this.stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY ?? "", {
       apiVersion: "2022-11-15"
     });
+
+    if (!process.env.WEBHOOK_URL) {
+      Logger.error("WEBHOOK_URL not found in .env file");
+      this.webhook = null;
+    } else {
+      this.webhook = new WebhookClient({ url: process.env.WEBHOOK_URL });
+      if (this.webhook) Logger.success("Webhook initialized");
+      else Logger.error("Webhook not initialized");
+    }
+
 
     this.eventManager = new EventManager();
     this.commandManager = new CommandManager();

@@ -5,7 +5,7 @@ export type Thread = {
   guildId: string;
   userId: string;
   messages: { content: string, role: "user" | "assistant" }[];
-  active: boolean; // For avoid spamming messages
+  active: boolean;
 }
 
 export type IAMessages = {
