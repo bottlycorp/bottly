@@ -154,6 +154,18 @@
       "trial-exists": {
         "fr": "Malheureusement, il semble que vous ayez déjà eu un essai gratuit, vous ne pouvez donc pas en avoir un autre, si vous pensez que c'est une erreur, venez sur le [serveur support](https://discord.gg/tFUJHr2htA) pour obtenir de l'aide",
         "en-US": "Unfortunately, it seems that you have already had a free trial, so you can't have another one, if you think this is an error, come to the [support server](https://discord.gg/tFUJHr2htA) to get help"
+      },
+      "trial-already": {
+        "fr": "Il semblerai que vous ayez déjà profité de votre essai gratuit, vous ne pouvez donc pas en avoir un autre, si vous pensez que c'est une erreur, venez sur le [serveur support](https://discord.gg/tFUJHr2htA) pour obtenir de l'aide",
+        "en-US": "It seems that you have already benefited from your free trial, so you can't have another one, if you think this is an error, come to the [support server](https://discord.gg/tFUJHr2htA) to get help"
+      }
+    },
+    "messages": {
+      "trial": {
+        "sure": {
+          "fr": "Êtes-vous sûr de vouloir commencer votre essai gratuit, vous ne pourrez pas revenir en arrière ni en bénéficier une seconde fois ?",
+          "en-US": "Are you sure you want to start your free trial, you will not be able to go back and you will not be able to benefit from it a second time?"
+        }
       }
     },
     "success": {
@@ -178,6 +190,18 @@
           "fr": "Vous avez annulé votre abonnement le <t:{canceled_at}:R>, vous perdrez l'accès à toutes les fonctionnalités premium le <t:{date_end}:R>",
           "en-US": "You canceled your subscription on <t:{canceled_at}:R>, you will lose access to all premium features on <t:{date_end}:R>"
         }
+      },
+      "trial": {
+        "started": {
+          "fr": "Votre essai gratuit a bien été démarré, il expirera dans 3 jours, utilisez la commande </subscription status> pour voir les avantages de l'abonnement",
+          "en-US": "Your free trial has been started, it will expire in 3 days, use the command </subscription status> to see the benefits of the subscription"
+        }
+      }
+    },
+    "buttons": {
+      "start": {
+        "fr": "Démarrer l'essai de 3 jours",
+        "en-US": "Start the 3 days trial"
       }
     }
   }
