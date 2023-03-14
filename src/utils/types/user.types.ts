@@ -1,7 +1,7 @@
 export type User = {
   id: string;
-  createdAt: Date;
-  lastAsked: Date;
+  createdAt: string;
+  lastAsked: string;
   askUsage: number;
   chatUsage: number;
   imageUsage: number;

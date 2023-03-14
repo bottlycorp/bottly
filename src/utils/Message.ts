@@ -10,3 +10,10 @@ export const msg = (message: string, params: (number | string)[]): string => {
 
   return message;
 };
+
+export const limit = (text: string, limit: number, suffix = "..."): string => {
+  if (text.length > limit) {
+    return text.substring(0, limit) + suffix;
+  }
+  return text;
+};
