@@ -4,6 +4,10 @@
       "trial": {
         "fr": "Vous avez atteint la limite de questions par mois, attendez le mois prochain pour le rechargement de votre quota.\n\n:sparkles: Vous pouvez aussi vous abonner pour avoir un quota illimité et des fonctionnalités supplémentaires.",
         "en-US": "You have reached the limit of questions per month, wait for next month for the reloading of your quota.\n\n:sparkles: You can also subscribe to have an unlimited quota and additional features."
+      },
+      "error": {
+        "fr": "Une erreur est survenue lors de l'affichage de l'historique",
+        "en-US": "An error occurred while displaying the history"
       }
     },
     "command": {
@@ -73,11 +77,23 @@
         "page": {
           "fr": "La page de l'historique à afficher",
           "en-US": "The page of the history to display"
+        },
+        "order": {
+          "fr": "L'ordre d'affichage des questions (ascendant ou descendant)",
+          "en-US": "The order of display of the questions (ascending or descending)"
         }
       },
       "embed": {
         "line": {
-          "default": "**{index}**. [{question}]({url}) - <t:{timestamp}:R>"
+          "default": "**{index}**. {question} - <t:{timestamp}:R>\n"
+        },
+        "last": {
+          "fr": "\n:clock1: Votre dernière question a été posée le <t:{last}:F>.\n",
+          "en-US": "\n:clock1: Your last question was asked on <t:{last}:F>.\n"
+        },
+        "usage": {
+          "fr": "\n:sparkles: Vous avez posé un total de **{length}** questions, il vous en reste **{remaining}** questions à poser, avant de devoir attendre le mois suivant. Découvrez *[comment retirer cette limite]({STRIPE_PREMIUM_URL})*",
+          "en-US": "\n:sparkles: You have asked a total of **{length}** questions, you have **{remaining}** questions left to ask, before having to wait for next month. Discover *[how to remove this limit]({STRIPE_PREMIUM_URL})*"
         },
         "line-blank": {
           "fr": "Vous n'avez encore posé aucune question au robot GPT",

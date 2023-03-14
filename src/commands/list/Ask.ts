@@ -17,7 +17,7 @@ export default class Ask extends Command {
     .setDescription(ask.command.description["en-US"])
     .setDescriptionLocalizations({ fr: ask.command.description.fr })
     .addStringOption(new SlashCommandStringOption()
-      .setName("question")
+      .setName("content")
       .setDescription(ask.command.options.question["en-US"])
       .setDescriptionLocalizations({ fr: ask.command.options.question.fr })
       .setRequired(true))
@@ -47,7 +47,7 @@ export default class Ask extends Command {
       }
     }
 
-    const question = command.options.getString("question", true);
+    const question = command.options.getString("content", true);
     const context = command.options.getString("context", false);
     const language = command.options.getString("language", false);
     const finalQuestion = buildQuestion(question, context ?? "default", language ?? command.locale);
@@ -96,25 +96,27 @@ export default class Ask extends Command {
       });
     }
 
-    await command.editReply({ embeds: [embed], components: [{ type: 1, components: buttons }] }).then(async(message) => {
+    await command.editReply({ embeds: [embed], components: [{ type: 1, components: buttons }] }).then(async() => {
       Logger.request(question);
 
       await prisma.requests.create({
         data: {
           userId: command.user.id,
-          guildId: command.guildId ?? "",
-          channelId: command.channelId,
-          messageLink: message.url,
+          guildName: command.guild?.name ?? "DM",
+          channelName: channel.name ?? "DM",
           question: question,
           answer: Buffer.from(text).toString("base64"),
           answeredAt: dayjs().toDate(),
           askedAt: askedAt,
+          timestamp: dayjs().unix().toString(),
           options: {
             context: context ?? "default",
             language: language ?? command.locale
           }
         }
       });
+
+      updateUser(command.user.id, { lastAsked: dayjs().unix().toString(), askUsage: user.askUsage - 1 });
 
       if (!isPremiumUser) {
         if (text !== "I don't know what to say...") {
