@@ -123,6 +123,8 @@ export default class Ask extends Command {
           await updateUser(command.user.id, { askUsage: user.askUsage - 1 });
         }
       }
+    }).catch(async() => {
+      await command.editReply({ embeds: [simpleEmbed(ask.errors.error[command.locale === "fr" ? "fr" : "en-US"], "error", { f: command.user })] });
     });
   }
 
