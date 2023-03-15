@@ -8,7 +8,7 @@ import "dotenv/config";
 export default class CheckPayements extends Task {
 
   constructor() {
-    super(5000);
+    super(60_000);
   }
 
   public run(): void {
