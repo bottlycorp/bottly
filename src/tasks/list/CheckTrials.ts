@@ -1,7 +1,7 @@
 import Client from "$core/Client";
 import Task from "$core/tasks/Task";
 import { prisma } from "$core/utils/Prisma";
-import { checkTrial } from "$core/utils/Trial";
+import { checkTrial, endTrial } from "$core/utils/Trial";
 import { ChannelType, TextChannel } from "discord.js";
 import "dotenv/config";
 
