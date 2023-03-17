@@ -8,6 +8,6 @@ export type User = {
   premium: boolean;
   inTrial: boolean;
   trialEnd: string;
-  alreadyTrial: boolean;
+  alreadyTried: boolean;
   email: string;
 }

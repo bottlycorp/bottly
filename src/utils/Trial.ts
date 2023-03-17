@@ -6,7 +6,7 @@ export const startTrial = async(userId: string): Promise<boolean> => {
   const user = await getUser(userId);
   if (user.inTrial) return false;
 
-  await prisma.user.update({ where: { id: userId }, data: { premium: true, inTrial: true, trialEnd: dayjs().add(1, "minutes").unix().toString() } });
+  await prisma.user.update({ where: { id: userId }, data: { premium: true, inTrial: true, trialEnd: dayjs().add(3, "days").unix().toString() } });
   return true;
 };
 
@@ -20,10 +20,9 @@ export const endTrial = async(userId: string): Promise<boolean> => {
 
 export const checkTrial = async(userId: string): Promise<boolean> => {
   const user = await getUser(userId);
-  console.log(user.inTrial);
   if (!user.inTrial) return false;
 
-  if (dayjs().isAfter(dayjs(user.trialEnd))) {
+  if (dayjs(user.trialEnd).isAfter(dayjs())) {
     await endTrial(userId);
     return true;
   }

@@ -140,7 +140,7 @@ export default class Subscription extends Command {
         }
         break;
       case "trial":
-        if (user.alreadyTrial || user.inTrial) {
+        if (user.alreadyTried || user.inTrial) {
           await command.editReply({
             embeds: [simpleEmbed(subscription.errors["trial-exists"][command.locale === "fr" ? "fr" : "en-US"], "error", { f: command.user })]
           });
