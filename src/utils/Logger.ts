@@ -14,7 +14,7 @@ export default {
   },
 
   request(message: string) {
-    console.log(chalk.blue("[REQUEST]") + chalk.gray("   ") + chalk.reset(message));
+    console.log(chalk.blue("[REQUEST]") + chalk.gray("      ") + chalk.reset(message));
   },
 
   where(message: string) {
