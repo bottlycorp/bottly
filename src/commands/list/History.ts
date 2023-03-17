@@ -61,11 +61,13 @@ export default class History extends Command {
     }
 
     lines += msg(history.command.embed.last[command.locale === "fr" ? "fr" : "en-US"], [user.lastAsked]);
-    lines += msg(history.command.embed.usage[command.locale === "fr" ? "fr" : "en-US"], [
-      requests.length,
-      user.askUsage,
-      "https://buy.stripe.com/28ocOQ3JWgnG0GQ145"
-    ]);
+    if (!user.premium) {
+      lines += msg(history.command.embed.usage[command.locale === "fr" ? "fr" : "en-US"], [
+        requests.length,
+        user.askUsage,
+        "https://buy.stripe.com/28ocOQ3JWgnG0GQ145"
+      ]);
+    }
 
     const embed = simpleEmbed(lines, "normal", {
       text: msg(history.command.embed.footer.default, [requests.length, Math.ceil(requests.length / 10)])
