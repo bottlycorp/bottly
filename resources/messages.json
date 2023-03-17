@@ -122,10 +122,22 @@
         "en-US": "Retrieve a previously made request"
       },
       "options": {
-        "id": {
-          "fr": "L'identifiant de la requête",
-          "en-US": "The request identifier"
+        "request": {
+          "fr": "La requête à récupérer",
+          "en-US": "The request to retrieve"
         }
+      }
+    },
+    "embed": {
+      "description": {
+        "fr": "Cette question a été posté le <t:{timestamp}:F> et a été traité en **{time}s**, a été envoyé dans le salon `{channel}` du serveur `{guild}`\n\n**Question**: {question}\n**Réponse**: {answer}\n\n**Contexte**: {context}\n**Langue demandé**: {lang}",
+        "en-US": "This question was posted on <t:{timestamp}:F> and was processed in **{time}** seconds.\n\nSent in `{channel}` on `{guild}`\n\n**Question**: {question}\n\n**Answer**: {answer}\n\n**Context**: {context}\n\n**Language requested**: {lang}"
+      }
+    },
+    "messages": {
+      "not-found": {
+        "fr": "Aucune requête ayant l'ID fourni n'a été trouvée peut être un problème de cache, essayez de réessayer dans quelques minutes ou de recharger Discord.",
+        "en-US": "No request with the provided ID was found maybe a cache problem, try to try again in a few minutes or reload Discord."
       }
     }
   },
