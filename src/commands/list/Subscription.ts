@@ -39,7 +39,11 @@ export default class Subscription extends Command {
     .addSubcommand(new SlashCommandSubcommandBuilder()
       .setName("trial")
       .setDescription(subscription.subcommands.trial["en-US"])
-      .setDescriptionLocalizations({ fr: subscription.subcommands.trial.fr }));
+      .setDescriptionLocalizations({ fr: subscription.subcommands.trial.fr }))
+    .addSubcommand(new SlashCommandSubcommandBuilder()
+      .setName("subscribe")
+      .setDescription(subscription.subcommands.subscribe["en-US"])
+      .setDescriptionLocalizations({ fr: subscription.subcommands.subscribe.fr }));
 
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
     await command.deferReply({ ephemeral: true });
@@ -177,6 +181,11 @@ export default class Subscription extends Command {
         await command.editReply({
           embeds: [simpleEmbed(subscription.messages.trial.sure[command.locale === "fr" ? "fr" : "en-US"], "pro", { f: command.user })],
           components: [{ type: 1, components: [button] }]
+        });
+        break;
+      case "subscribe":
+        await command.editReply({
+          embeds: [simpleEmbed(subscription.messages.subscribe[command.locale === "fr" ? "fr" : "en-US"], "pro", { f: command.user })]
         });
         break;
     }

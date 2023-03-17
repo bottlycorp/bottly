@@ -148,6 +148,10 @@
       "trial": {
         "fr": "Commencez votre essai gratuit de 3 jours",
         "en-US": "Start your 3 days free trial"
+      },
+      "subscribe": {
+        "fr": "Souscrire à l'abonnement premium",
+        "en-US": "Subscribe to the premium subscription"
       }
     },
     "options": {
@@ -196,12 +200,16 @@
           "fr": "Êtes-vous sûr de vouloir commencer votre essai gratuit, vous ne pourrez pas revenir en arrière ni en bénéficier une seconde fois ?",
           "en-US": "Are you sure you want to start your free trial, you will not be able to go back and you will not be able to benefit from it a second time?"
         }
+      },
+      "subscribe": {
+        "fr": "Abonnez vous [mensuellement](https://buy.stripe.com/28ocOQ3JWgnG0GQ145) pour 5.99€ pour avoir accès à toutes les fonctionnalités du bot, vous pouvez annuler votre abonnement à tout moment depuis le [tableau de bord](https://billing.stripe.com/p/login/28o15B9gDgmd7pS8ww), vous pouvez aussi vous abonner [annuellement](https://buy.stripe.com/aEU0245S47Ra9dmdQS) pour 59.99€ pour avoir accès à toutes les fonctionnalités du bot pour une durée d'un an, vous pouvez annuler votre abonnement à tout moment depuis le [tableau de bord](https://billing.stripe.com/p/login/28o15B9gDgmd7pS8ww)",
+        "en-US": "Subscribe [monthly](https://buy.stripe.com/28ocOQ3JWgnG0GQ145) for 5.99€ to have access to all the features of the bot, you can cancel your subscription at any time from the [dashboard](https://billing.stripe.com/p/login/28o15B9gDgmd7pS8ww), you can also subscribe [annually](https://buy.stripe.com/aEU0245S47Ra9dmdQS) for 59.99€ to have access to all the features of the bot for a period of one year, you can cancel your subscription at any time from the [dashboard](https://billing.stripe.com/p/login/28o15B9gDgmd7pS8ww)"
       }
     },
     "success": {
       "subscription-found": {
-        "fr": "Vous avez un abonnement actif, vous pouvez le gérer sur le [tableau de bord](https://dashboard.stripe.com/login)",
-        "en-US": "You have an active subscription, you can manage it on the [dashboard](https://dashboard.stripe.com/login)"
+        "fr": "Vous avez un abonnement actif, vous pouvez le gérer sur le [tableau de bord](https://billing.stripe.com/p/login/28o15B9gDgmd7pS8ww)",
+        "en-US": "You have an active subscription, you can manage it on the [dashboard](https://billing.stripe.com/p/login/28o15B9gDgmd7pS8ww)"
       },
       "valid-email": {
         "fr": "L'adresse email renseignée est valide et sera utilisée pour accéder à Stripe",
@@ -213,8 +221,8 @@
           "en-US": "You are currently in the trial period, which expires on <t:{trial_end}:F>"
         },
         "active": {
-          "fr": ":tada: Vous êtes abonné à **GPT+**, votre abonnement expire le <t:{current_period_end}:F>, vous pouvez accéder à votre [tableau de bord](https://billing.stripe.com/p/login/28o15B9gDgmd7pS8ww)",
-          "en-US": ":tada: You are subscribed to **GPT+**, your subscription expires on <t:{current_period_end}:F>, you can access your [dashboard](https://billing.stripe.com/p/login/28o15B9gDgmd7pS8ww)"
+          "fr": ":tada: Vous êtes abonné à **GPT Premium**, votre abonnement expire le <t:{current_period_end}:F>, vous pouvez accéder à votre [tableau de bord](https://billing.stripe.com/p/login/28o15B9gDgmd7pS8ww)",
+          "en-US": ":tada: You are subscribed to **GPT Premium**, your subscription expires on <t:{current_period_end}:F>, you can access your [dashboard](https://billing.stripe.com/p/login/28o15B9gDgmd7pS8ww)"
         },
         "canceled": {
           "fr": "Vous avez annulé votre abonnement le <t:{canceled_at}:R>, vous perdrez l'accès à toutes les fonctionnalités premium le <t:{date_end}:R>",
@@ -223,8 +231,8 @@
       },
       "trial": {
         "started": {
-          "fr": "Votre essai gratuit a bien été démarré, il expirera dans 3 jours, utilisez la commande </subscription status> pour voir les avantages de l'abonnement",
-          "en-US": "Your free trial has been started, it will expire in 3 days, use the command </subscription status> to see the benefits of the subscription"
+          "fr": "Votre essai gratuit a bien été démarré, il expirera dans 3 jours, utilisez la commande </subscription status:1084112966984667246> pour voir les avantages de l'abonnement",
+          "en-US": "Your free trial has been started, it will expire in 3 days, use the command </subscription status:1084112966984667246> to see the benefits of the subscription"
         }
       }
     },
