@@ -1,6 +1,7 @@
 import { prisma } from "$core/utils/Prisma";
 import { User } from "$core/utils/types/user.types";
 import "dotenv/config";
+import { Request } from "$core/utils/types/request.types";
 
 /**
  * @param id
@@ -54,3 +55,18 @@ export function typePremium(type: string) : boolean {
     default: return false;
   }
 }
+
+export const getRequests = async(userId: string, contain?: string) : Promise<Request[]> => {
+  const response = await prisma.requests.findMany({
+    where: {
+      userId: userId,
+      question: {
+        contains: contain == undefined ? " " : contain
+      }
+    }
+  });
+
+  if (!response) throw new Error("Request not found");
+  if (response.length == 0) return [];
+  return response;
+};
