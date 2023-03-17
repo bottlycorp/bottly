@@ -115,6 +115,20 @@
       }
     }
   },
+  "request": {
+    "command": {
+      "description": {
+        "fr": "Récupérer une requête préciédemment effectuée",
+        "en-US": "Retrieve a previously made request"
+      },
+      "options": {
+        "id": {
+          "fr": "L'identifiant de la requête",
+          "en-US": "The request identifier"
+        }
+      }
+    }
+  },
   "subscription": {
     "command": {
       "description": {
