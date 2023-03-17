@@ -25,7 +25,7 @@ export default class Ask extends Command {
       .setName("context")
       .setDescription(ask.command.options.context["en-US"])
       .setDescriptionLocalizations({ fr: ask.command.options.context.fr })
-      .addChoices(...AskContextOptions.map(c => ({ name: c.name, value: c.value }))))
+      .addChoices(...AskContextOptions.map(c => ({ name: c.name, value: c.value, nameLocalizations: { fr: c.name_localizations.fr } }))))
     .addStringOption(new SlashCommandStringOption()
       .setName("language")
       .setDescription(ask.command.options.lang["en-US"])
@@ -97,7 +97,7 @@ export default class Ask extends Command {
     }
 
     await command.editReply({ embeds: [embed], components: [{ type: 1, components: buttons }] }).then(async() => {
-      Logger.request(question);
+      Logger.request(finalQuestion);
 
       await prisma.requests.create({
         data: {

@@ -14,11 +14,16 @@ export const Models = {
 };
 
 export const AskContextOptions = [
-  { name: "🌐 Translate a text into a different language", value: "translation" },
-  { name: "🧮 Solve a math problem", value: "math" },
-  { name: "❓ Answer a question", value: "question" },
-  { name: "🪄 Write a story", value: "story" },
-  { name: "📝 Write a text", value: "text" }
+  { name: "🌐 Translate a text into a different language", value: "translation", name_localizations: {
+    fr: "🌐 Traduire un texte dans une autre langue" } },
+  { name: "🧮 Solve a math problem", value: "math", name_localizations: {
+    fr: "🧮 Résoudre un problème de mathématiques" } },
+  { name: "❓ Answer a question", value: "question", name_localizations: {
+    fr: "❓ Répondre à une question" } },
+  { name: "🪄 Write a story", value: "story", name_localizations: {
+    fr: "🪄 Écrire une histoire" } },
+  { name: "📝 Write a text", value: "text", name_localizations: {
+    fr: "📝 Écrire un texte" } }
 ];
 
 export const Locales = [
