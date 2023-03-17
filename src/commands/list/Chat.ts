@@ -1,7 +1,7 @@
 import Client from "$core/Client";
 import Command from "$core/commands/Command";
 import { simpleEmbed } from "$core/utils/Embed";
-import { msg } from "$core/utils/Message";
+import { limit, msg } from "$core/utils/Message";
 import { createThread } from "$core/utils/Thread";
 import { checkUser, getUser, isPremium } from "$core/utils/User";
 import { chat } from "$resources/messages.json";
@@ -48,7 +48,7 @@ export default class Ask extends Command {
     }
 
     const thread = await channel.threads.create({
-      name: command.options.getString("title", false) ?? `Chat with ${command.user.username}`,
+      name: limit(question, 50, "..."),
       autoArchiveDuration: 60,
       reason: "Chat with the bot"
     });
