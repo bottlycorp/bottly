@@ -102,6 +102,15 @@ export default class Ask extends Command {
     await command.editReply({ embeds: [embed], components: [{ type: 1, components: buttons }] }).then(async() => {
       Logger.request(finalQuestion);
 
+      await prisma.stats.create({
+        data: {
+          createdAt: dayjs().toDate(),
+          guildId: command.guild?.id ?? "DM",
+          userId: command.user.id,
+          type: "ask"
+        }
+      });
+
       await prisma.requests.create({
         data: {
           userId: command.user.id,

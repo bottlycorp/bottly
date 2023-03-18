@@ -6,6 +6,8 @@ import { chat } from "$resources/messages.json";
 import { TextChannel, ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption } from "discord.js";
 import Client from "$core/Client";
 import Command from "$core/commands/Command";
+import dayjs from "dayjs";
+import { prisma } from "$core/utils/Prisma";
 
 export default class Ask extends Command {
 
@@ -69,6 +71,15 @@ export default class Ask extends Command {
     const responseText = response.data.choices[0].message?.content ?? "I don't know what to say...";
     thread.send(msg(chat.command.messages.started[getLang(command.locale)], [question]));
     thread.send(responseText);
+
+    await prisma.stats.create({
+      data: {
+        createdAt: dayjs().unix().toString(),
+        guildId: command.guild?.id ?? "DM",
+        userId: command.user.id,
+        type: "chat"
+      }
+    });
 
     await createThread(thread.id, {
       userId: command.user.id,

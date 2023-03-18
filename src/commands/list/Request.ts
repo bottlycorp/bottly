@@ -7,6 +7,7 @@ import { getLang, msg } from "$core/utils/Message";
 import dayjs from "dayjs";
 import { Request as RequestTyoe } from "$core/utils/types/request.types";
 import { findContextOption, findLanguageOption } from "$core/utils/Models";
+import { prisma } from "$core/utils/Prisma";
 
 export default class Request extends Command {
 
@@ -39,6 +40,15 @@ export default class Request extends Command {
     }
 
     const timestamp = dayjs(request.answeredAt).diff(dayjs(request.askedAt), "second");
+
+    await prisma.stats.create({
+      data: {
+        createdAt: dayjs().unix().toString(),
+        guildId: command.guild?.id ?? "DM",
+        userId: command.user.id,
+        type: "request"
+      }
+    });
 
     await command.editReply({ embeds: [
       simpleEmbed(msg(msgRequest.embed.description[getLang(command.locale)], [
