@@ -1,4 +1,3 @@
-// Stripe, find subscription by email
 import Client from "$core/Client";
 import "dotenv/config";
 import Stripe from "stripe";
