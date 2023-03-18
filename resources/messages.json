@@ -130,8 +130,8 @@
     },
     "embed": {
       "description": {
-        "fr": "Cette question a été posté le <t:{timestamp}:F> et a été traité en **{time}s**, a été envoyé dans le salon `{channel}` du serveur `{guild}`\n\n**Question**: {question}\n**Réponse**: {answer}\n\n**Contexte**: {context}\n**Langue demandé**: {lang}",
-        "en-US": "This question was posted on <t:{timestamp}:F> and was processed in **{time}** seconds.\n\nSent in `{channel}` on `{guild}`\n\n**Question**: {question}\n\n**Answer**: {answer}\n\n**Context**: {context}\n\n**Language requested**: {lang}"
+        "fr": "Cette question a été posté le <t:{timestamp}:F> et a été traité en `{time}s`, a été envoyé dans le salon `{channel}` du serveur `{guild}`\n\n**Question**: {question}\n**Réponse**: {answer}\n\n**Contexte**: `{context}`\n**Langue demandé**: `{lang}`",
+        "en-US": "This question was posted on <t:{timestamp}:F> and was processed in `{time}s`, was sent to the channel `{channel}` of the server `{guild}`\n\n**Question**: {question}\n**Answer**: {answer}\n\n**Context**: `{context}`\n**Requested language**: `{lang}`"
       }
     },
     "messages": {
@@ -190,20 +190,20 @@
         "en-US": "The email address entered is not valid"
       },
       "email-exists": {
-        "fr": "L'adresse email renseignée est déjà utilisée par un autre utilisateur, si vous êtes le propriétaire de cette adresse email, venez sur le [serveur support](https://discord.gg/tFUJHr2htA) pour obtenir de l'aide",
-        "en-US": "The email address entered is already used by another user, if you are the owner of this email address, come to the [support server](https://discord.gg/tFUJHr2htA) to get help"
+        "fr": "L'adresse email renseignée est déjà utilisée par un autre utilisateur, si vous êtes le propriétaire de cette adresse email, venez sur le [serveur support]({SUPPORT_URL}) pour obtenir de l'aide",
+        "en-US": "The email address entered is already used by another user, if you are the owner of this email address, come to the [support server]({SUPPORT_URL}) to get help"
       },
       "already-defined": {
-        "fr": "Vous avez déjà renseigné une adresse email, venez sur le [serveur support](https://discord.gg/tFUJHr2htA) pour obtenir de l'aide si vous souhaitez la changer",
-        "en-US": "You have already entered an email address, come to the [support server](https://discord.gg/tFUJHr2htA) to get help if you want to change it"
+        "fr": "Vous avez déjà renseigné une adresse email, venez sur le [serveur support]({SUPPORT_URL}) pour obtenir de l'aide si vous souhaitez la changer",
+        "en-US": "You have already entered an email address, come to the [support server]({SUPPORT_URL}) to get help if you want to change it"
       },
       "trial-exists": {
-        "fr": "Malheureusement, il semble que vous ayez déjà eu un essai gratuit, vous ne pouvez donc pas en avoir un autre, si vous pensez que c'est une erreur, venez sur le [serveur support](https://discord.gg/tFUJHr2htA) pour obtenir de l'aide",
-        "en-US": "Unfortunately, it seems that you have already had a free trial, so you can't have another one, if you think this is an error, come to the [support server](https://discord.gg/tFUJHr2htA) to get help"
+        "fr": "Malheureusement, il semble que vous ayez déjà eu un essai gratuit, vous ne pouvez donc pas en avoir un autre, si vous pensez que c'est une erreur, venez sur le [serveur support]({SUPPORT_URL}) pour obtenir de l'aide",
+        "en-US": "Unfortunately, it seems that you have already had a free trial, so you can't have another one, if you think this is an error, come to the [support server]({SUPPORT_URL}) to get help"
       },
       "trial-already": {
-        "fr": "Il semblerai que vous ayez déjà profité de votre essai gratuit, vous ne pouvez donc pas en avoir un autre, si vous pensez que c'est une erreur, venez sur le [serveur support](https://discord.gg/tFUJHr2htA) pour obtenir de l'aide",
-        "en-US": "It seems that you have already benefited from your free trial, so you can't have another one, if you think this is an error, come to the [support server](https://discord.gg/tFUJHr2htA) to get help"
+        "fr": "Il semblerai que vous ayez déjà profité de votre essai gratuit, vous ne pouvez donc pas en avoir un autre, si vous pensez que c'est une erreur, venez sur le [serveur support]({SUPPORT_URL}) pour obtenir de l'aide",
+        "en-US": "It seems that you have already benefited from your free trial, so you can't have another one, if you think this is an error, come to the [support server]({SUPPORT_URL}) to get help"
       }
     },
     "messages": {
@@ -214,14 +214,14 @@
         }
       },
       "subscribe": {
-        "fr": "Abonnez vous [mensuellement](https://buy.stripe.com/28ocOQ3JWgnG0GQ145) pour 5.99€ pour avoir accès à toutes les fonctionnalités du bot, vous pouvez annuler votre abonnement à tout moment depuis le [tableau de bord](https://billing.stripe.com/p/login/28o15B9gDgmd7pS8ww), vous pouvez aussi vous abonner [annuellement](https://buy.stripe.com/aEU0245S47Ra9dmdQS) pour 59.99€ pour avoir accès à toutes les fonctionnalités du bot pour une durée d'un an, vous pouvez annuler votre abonnement à tout moment depuis le [tableau de bord](https://billing.stripe.com/p/login/28o15B9gDgmd7pS8ww)",
-        "en-US": "Subscribe [monthly](https://buy.stripe.com/28ocOQ3JWgnG0GQ145) for 5.99€ to have access to all the features of the bot, you can cancel your subscription at any time from the [dashboard](https://billing.stripe.com/p/login/28o15B9gDgmd7pS8ww), you can also subscribe [annually](https://buy.stripe.com/aEU0245S47Ra9dmdQS) for 59.99€ to have access to all the features of the bot for a period of one year, you can cancel your subscription at any time from the [dashboard](https://billing.stripe.com/p/login/28o15B9gDgmd7pS8ww)"
+        "fr": "Abonnez vous [mensuellement]({MONTH_SUB}) pour 5.99€ pour avoir accès à toutes les fonctionnalités du bot, vous pouvez annuler votre abonnement à tout moment depuis le [tableau de bord]({DASHBOARD_URL}), vous pouvez aussi vous abonner [annuellement]({ANN_SUB}) pour 59.99€ pour avoir accès à toutes les fonctionnalités du bot pour une durée d'un an, vous pouvez annuler votre abonnement à tout moment depuis le [tableau de bord]({DASHBOARD_URL})",
+        "en-US": "Subscribe [monthly]({MONTH_SUB}) for 5.99€ to have access to all the features of the bot, you can cancel your subscription at any time from the [dashboard]({DASHBOARD_URL}), you can also subscribe [annually]({SUPPORT_URL}) for 59.99€ to have access to all the features of the bot for a period of one year, you can cancel your subscription at any time from the [dashboard]({DASHBOARD_URL})"
       }
     },
     "success": {
       "subscription-found": {
-        "fr": "Vous avez un abonnement actif, vous pouvez le gérer sur le [tableau de bord](https://billing.stripe.com/p/login/28o15B9gDgmd7pS8ww)",
-        "en-US": "You have an active subscription, you can manage it on the [dashboard](https://billing.stripe.com/p/login/28o15B9gDgmd7pS8ww)"
+        "fr": "Vous avez un abonnement actif, vous pouvez le gérer sur le [tableau de bord]({DASHBOARD_URL})",
+        "en-US": "You have an active subscription, you can manage it on the [dashboard]({DASHBOARD_URL})"
       },
       "valid-email": {
         "fr": "L'adresse email renseignée est valide et sera utilisée pour accéder à Stripe",
@@ -233,8 +233,8 @@
           "en-US": "You are currently in the trial period, which expires on <t:{trial_end}:F>"
         },
         "active": {
-          "fr": ":tada: Vous êtes abonné à **GPT Premium**, votre abonnement expire le <t:{current_period_end}:F>, vous pouvez accéder à votre [tableau de bord](https://billing.stripe.com/p/login/28o15B9gDgmd7pS8ww)",
-          "en-US": ":tada: You are subscribed to **GPT Premium**, your subscription expires on <t:{current_period_end}:F>, you can access your [dashboard](https://billing.stripe.com/p/login/28o15B9gDgmd7pS8ww)"
+          "fr": ":tada: Vous êtes abonné à **GPT Premium**, votre abonnement expire le <t:{current_period_end}:F>, vous pouvez accéder à votre [tableau de bord]({DASHBOARD_URL})",
+          "en-US": ":tada: You are subscribed to **GPT Premium**, your subscription expires on <t:{current_period_end}:F>, you can access your [dashboard]({DASHBOARD_URL})"
         },
         "canceled": {
           "fr": "Vous avez annulé votre abonnement le <t:{canceled_at}:R>, vous perdrez l'accès à toutes les fonctionnalités premium le <t:{date_end}:R>",
