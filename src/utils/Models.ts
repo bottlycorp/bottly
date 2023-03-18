@@ -2,14 +2,10 @@ export const Models = {
   ask: {
     default: "Answer the question: \"{{text}}\", and put this answer in {{language}}",
     translation: "Translate the text \"{{text}}\" into {{language}}",
-    solve: {
-      math: "Solve the math problem \"{{text}}\", and put this answer in {{language}}",
-      question: "Answer the question \"{{text}}\" and put this answer in {{language}}"
-    },
-    write: {
-      story: "Write a story with the following plot/synopsis: \"{{text}}\" and put this answer in {{language}}",
-      text: "Write a text, with the following content: \"{{text}}\" and put this answer in {{language}}"
-    }
+    math: "Solve the math problem \"{{text}}\", and put this answer in {{language}}",
+    question: "Answer the question \"{{text}}\" and put this answer in {{language}}",
+    story: "Write a story with the following plot/synopsis: \"{{text}}\" and put this answer in {{language}}",
+    text: "Write a text, with the following content: \"{{text}}\" and put this answer in {{language}}"
   }
 };
 
@@ -23,7 +19,9 @@ export const AskContextOptions = [
   { name: "🪄 Write a story", value: "story", name_localizations: {
     fr: "🪄 Écrire une histoire" } },
   { name: "📝 Write a text", value: "text", name_localizations: {
-    fr: "📝 Écrire un texte" } }
+    fr: "📝 Écrire un texte" } },
+  { name: "🤔 None (default)", value: "default", name_localizations: {
+    fr: "🤔 Aucun (par défaut)" } }
 ];
 
 export function findContextOption(value: string): { name: string, value: string, name_localizations: { fr: string } } {
