@@ -10,6 +10,8 @@ import { findContextOption, findLanguageOption } from "$core/utils/Models";
 
 export default class Request extends Command {
 
+  public readonly guildOnly = false;
+
   public readonly slashCommand = new SlashCommandBuilder()
     .setName("request")
     .setDescription(msgRequest.command.description["en-US"])

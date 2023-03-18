@@ -3,6 +3,7 @@ import { readdirSync } from "fs";
 import Command from "$core/commands/Command";
 import Client from "$core/Client";
 import Logger from "$core/utils/Logger";
+import "dotenv/config";
 
 export default class CommandManager {
 
@@ -37,12 +38,14 @@ export default class CommandManager {
   }
 
   /**
-     * Register the slash commands (use it when the client is ready)
-     */
+    * Register the slash commands (use it when the client is ready)
+  */
   public async register() : Promise<void> {
     for (const command of this.commands.values()) {
       this.commands.map(command => command.slashCommand.toJSON());
-      await Client.instance.application?.commands.create(command.slashCommand);
+
+      if (command.guildOnly) await Client.instance.guilds.cache.get(process.env.SUPPORT_GUILD_ID ?? "")?.commands.create(command.slashCommand);
+      else await Client.instance.application?.commands.create(command.slashCommand);
     }
 
     Logger.info("Successfully registered application (/) commands");

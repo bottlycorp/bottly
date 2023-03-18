@@ -9,6 +9,8 @@ import "dotenv/config";
 
 export default class History extends Command {
 
+  public readonly guildOnly = false;
+
   public readonly slashCommand = new SlashCommandBuilder()
     .setName("history")
     .setDescription(history.command.description["en-US"])

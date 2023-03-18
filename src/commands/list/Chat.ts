@@ -9,6 +9,8 @@ import Command from "$core/commands/Command";
 
 export default class Ask extends Command {
 
+  public readonly guildOnly = false;
+
   public readonly slashCommand = new SlashCommandBuilder()
     .setName("chat")
     .setDescription(chat.command.description["en-US"])

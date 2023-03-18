@@ -13,6 +13,8 @@ import dayjs from "dayjs";
 
 export default class Ask extends Command {
 
+  public readonly guildOnly = false;
+
   public readonly slashCommand = new SlashCommandBuilder()
     .setName("ask")
     .setDescription(ask.command.description["en-US"])
