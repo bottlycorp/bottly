@@ -46,3 +46,11 @@ model Requests {
   options     Json     @default("{}")
   timestamp   String   @default("0")
 }
+
+model Stats {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  guildId   String
+  userId    String
+  type      String
+}
