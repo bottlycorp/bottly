@@ -254,5 +254,35 @@
         "en-US": "Start the 3 days trial"
       }
     }
+  },
+  "stats": {
+    "command": {
+      "description": {
+        "fr": "Affiche les statistiques du bot",
+        "en-US": "Displays the bot statistics"
+      },
+      "options": {
+        "guilds": {
+          "fr": "Choisir l'un des serveurs du bot",
+          "en-US": "Choose one of the bot's servers"
+        }
+      }
+    },
+    "graphic": {
+      "columns": {
+        "ask": {
+          "fr": "Utilisation de la commande /ask",
+          "en-US": "Usage of the /ask command"
+        },
+        "history": {
+          "fr": "Utilisation de la commande /history",
+          "en-US": "Usage of the /history command"
+        },
+        "request": {
+          "fr": "Utilisation de la commande /request",
+          "en-US": "Usage of the /request command"
+        }
+      }
+    }
   }
 }
