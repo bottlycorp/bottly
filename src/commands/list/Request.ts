@@ -27,29 +27,27 @@ export default class Request extends Command {
 
     const option = command.options.getString("request", true);
 
-    const request: RequestType = await prisma.requests.findUnique({ where: { id: option } });
+    const request: RequestTyoe = await getRequest(option);
 
     if (!request) {
       await command.editReply({ embeds: [
-        simpleEmbed(msgRequest.messages["not-found"][command.locale === "fr" ? "fr" : "en-US"], "error", { f: command.user })
+        simpleEmbed(msgRequest.messages["not-found"][getLang(command.locale)], "error", { f: command.user })
       ] });
       return;
     }
 
-    // get second time between askedAt and answeredAt with DayJS
     const timestamp = dayjs(request.answeredAt).diff(dayjs(request.askedAt), "second");
 
     await command.editReply({ embeds: [
-      simpleEmbed(msg(msgRequest.embed.description[command.locale === "fr" ? "fr" : "en-US"], [
+      simpleEmbed(msg(msgRequest.embed.description[getLang(command.locale)], [
         request.timestamp,
         timestamp,
         request.channelName,
         request.guildName,
         request.question,
-        // remove all FIRST line breaks
         Buffer.from(request.answer, "base64").toString("utf-8").replace(/^(\r\n|\r|\n)/, ""),
-        request.options.context,
-        request.options.language
+        command.locale === "fr" ? findContextOption(request.options.context).name_localizations.fr : findContextOption(request.options.context).name,
+        findLanguageOption(request.options.language)
       ]), "normal", { f: command.user })
     ] });
   }
