@@ -26,6 +26,16 @@ export const AskContextOptions = [
     fr: "📝 Écrire un texte" } }
 ];
 
+export function findContextOption(value: string): { name: string, value: string, name_localizations: { fr: string } } {
+  const option = AskContextOptions.find((option) => option.value === value);
+  return option ?? AskContextOptions[AskContextOptions.length - 1];
+}
+
+export const findLanguageOption = (value: string): string => {
+  const option = Locales.find((option) => option.value === value);
+  return option?.name ?? "Unknown";
+};
+
 export const Locales = [
   { name: "🇺🇸 English", value: "en" },
   { name: "🇫🇷 Français", value: "fr" },
@@ -39,19 +49,11 @@ export const Locales = [
   { name: "🇨🇳 中文", value: "zh" }
 ];
 
-export function buildQuestion(text: string, context = "default", language: string) : string {
-  switch (context) {
-    case "translation":
-      return Models.ask.translation.replace("{{text}}", text).replace("{{language}}", Locales.find(l => l.value === language)?.name ?? "English");
-    case "math":
-      return Models.ask.solve.math.replace("{{text}}", text).replace("{{language}}", Locales.find(l => l.value === language)?.name ?? "English");
-    case "question":
-      return Models.ask.solve.question.replace("{{text}}", text).replace("{{language}}", Locales.find(l => l.value === language)?.name ?? "English");
-    case "story":
-      return Models.ask.write.story.replace("{{text}}", text).replace("{{language}}", Locales.find(l => l.value === language)?.name ?? "English");
-    case "text":
-      return Models.ask.write.text.replace("{{text}}", text).replace("{{language}}", Locales.find(l => l.value === language)?.name ?? "English");
-    default:
-      return Models.ask.default.replace("{{text}}", text).replace("{{language}}", Locales.find(l => l.value === language)?.name ?? "English");
-  }
+export type BuildQuestionContext = "translation" | "math" | "question" | "story" | "text" | "default";
+export type BuildQuestionLanguage = "fr" | "en";
+
+export function buildQuestion(text: string, context: BuildQuestionContext = "default", language: BuildQuestionLanguage): string {
+  const baseText = Models.ask[context ?? "default"].replace("{{text}}", text);
+  const locale = Locales.find(lang => lang.value === language)?.name ?? "English";
+  return baseText.replace("{{language}}", locale);
 }
