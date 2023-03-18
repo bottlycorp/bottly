@@ -18,6 +18,8 @@ import Command from "$core/commands/Command";
 
 export default class Subscription extends Command {
 
+  public readonly guildOnly = false;
+
   public readonly slashCommand = new SlashCommandBuilder()
     .setName("subscription")
     .setDescription(subscription.command.description["en-US"])
@@ -96,7 +98,7 @@ export default class Subscription extends Command {
 
         if (user.email === "none") {
           await command.editReply({
-            embeds: [simpleEmbed(subscription.errors["no-email"][getLang(command.locale)], "error", { f: command.user })]
+            embeds: [simpleEmbed(msg(subscription.errors["no-email"][getLang(command.locale)], []), "error", { f: command.user })]
           });
           return;
         }
@@ -163,7 +165,7 @@ export default class Subscription extends Command {
             const status = await startTrial(command.user.id);
             if (status) {
               await i.update({
-                embeds: [simpleEmbed(subscription.success.trial.started[getLang(command.locale)], "pro", { f: command.user })],
+                embeds: [simpleEmbed(msg(subscription.success.trial.started[getLang(command.locale)], []), "pro", { f: command.user })],
                 components: []
               });
             } else {

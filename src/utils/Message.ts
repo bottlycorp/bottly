@@ -1,3 +1,4 @@
+import { getCommandId } from "$core/commands/CommandUtils";
 import "dotenv/config";
 
 const StripeRecord: Record<string, string> = {
@@ -5,6 +6,14 @@ const StripeRecord: Record<string, string> = {
   "{ANN_SUB}": process.env.STRIPE_YEARLY_SUB || "",
   "{MONTH_SUB}": process.env.STRIPE_MONTHLY_SUB || "",
   "{DASHBOARD_URL}": process.env.STRIPE_DASHBOARD_URL || ""
+};
+
+const CommandRecord: Record<string, string> = {
+  "{ASK_COMMNAND}": "ask",
+  "{CHAT_COMMAND}": "chat",
+  "{HISTORY_COMMAND}": "history",
+  "{REQUEST_COMMAND}": "request",
+  "{SUBSCRIPTION_COMMAND}": "subscription"
 };
 
 export const msg = (message: string, params: (number | string)[]): string => {
@@ -16,6 +25,12 @@ export const msg = (message: string, params: (number | string)[]): string => {
   if (words.some((word) => StripeRecord[word])) {
     for (const word of words) {
       if (StripeRecord[word]) message = message.replace(word, StripeRecord[word]);
+    }
+  }
+
+  if (words.some((word) => CommandRecord[word])) {
+    for (const word of words) {
+      if (CommandRecord[word]) message = message.replace(word, getCommandId(CommandRecord[word]));
     }
   }
 

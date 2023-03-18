@@ -6,8 +6,8 @@
         "en-US": "You have reached the limit of questions per month, wait for next month for the reloading of your quota.\n\n:sparkles: You can also subscribe to have an unlimited quota and additional features."
       },
       "error": {
-        "fr": "Une erreur est survenue lors de l'affichage de l'historique",
-        "en-US": "An error occurred while displaying the history"
+        "fr": "Une erreur est survenue lors de l'affichage de votre réponse",
+        "en-US": "An error occurred while displaying your answer"
       }
     },
     "command": {
@@ -174,8 +174,8 @@
     },
     "errors": {
       "no-email": {
-        "fr": "Pour utiliser cette commande, vous devez avoir au préalable renseigné votre adresse email avec la commande </subscription email:1084112966984667246>",
-        "en-US": "To use this command, you must first have entered your email address with the command </subscription email:1084112966984667246>"
+        "fr": "Pour utiliser cette commande, vous devez avoir au préalable renseigné votre adresse email avec la commande </subscription email:{SUBSCRIPTION_COMMAND}>",
+        "en-US": "To use this command, you must first have entered your email address with the command </subscription email:{SUBSCRIPTION_COMMAND}>"
       },
       "no-subscription": {
         "fr": "Vous n'avez pas d'abonnement actif",
@@ -243,8 +243,8 @@
       },
       "trial": {
         "started": {
-          "fr": "Votre essai gratuit a bien été démarré, il expirera dans 3 jours, utilisez la commande </subscription status:1084112966984667246> pour voir les avantages de l'abonnement",
-          "en-US": "Your free trial has been started, it will expire in 3 days, use the command </subscription status:1084112966984667246> to see the benefits of the subscription"
+          "fr": "Votre essai gratuit a bien été démarré, il expirera dans 3 jours, utilisez la commande </subscription status:{SUBSCRIPTION_COMMAND}> pour voir les avantages de l'abonnement",
+          "en-US": "Your free trial has been started, it will expire in 3 days, use the command </subscription status:{SUBSCRIPTION_COMMAND}> to see the benefits of the subscription"
         }
       }
     },
