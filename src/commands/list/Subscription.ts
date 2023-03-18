@@ -62,7 +62,7 @@ export default class Subscription extends Command {
 
         if (!email.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)) {
           await command.editReply({
-            embeds: [simpleEmbed(subscription.errors["invalid-email"][command.locale === "fr" ? "fr" : "en-US"], "error", { f: command.user })]
+            embeds: [simpleEmbed(subscription.errors["invalid-email"][getLang(command.locale)], "error", { f: command.user })]
           });
           return;
         }
@@ -71,14 +71,14 @@ export default class Subscription extends Command {
 
         if (emailExists.length > 0) {
           await command.editReply({
-            embeds: [simpleEmbed(subscription.errors["email-exists"][command.locale === "fr" ? "fr" : "en-US"], "error", { f: command.user })]
+            embeds: [simpleEmbed(subscription.errors["email-exists"][getLang(command.locale)], "error", { f: command.user })]
           });
           return;
         }
 
         await updateUser(command.user.id, { email });
         await command.editReply({
-          embeds: [simpleEmbed(subscription.success["valid-email"][command.locale === "fr" ? "fr" : "en-US"], "success", { f: command.user })]
+          embeds: [simpleEmbed(subscription.success["valid-email"][getLang(command.locale)], "success", { f: command.user })]
         });
         break;
       case "status":
@@ -86,7 +86,7 @@ export default class Subscription extends Command {
           await command.editReply({
             embeds: [
               simpleEmbed(
-                msg(subscription.success["subscriber-status"].trial[command.locale === "fr" ? "fr" : "en-US"],
+                msg(subscription.success["subscriber-status"].trial[getLang(command.locale)],
                   [user.trialEnd]), "pro", { f: command.user }
               )
             ]
@@ -96,14 +96,14 @@ export default class Subscription extends Command {
 
         if (user.email === "none") {
           await command.editReply({
-            embeds: [simpleEmbed(subscription.errors["no-email"][command.locale === "fr" ? "fr" : "en-US"], "error", { f: command.user })]
+            embeds: [simpleEmbed(subscription.errors["no-email"][getLang(command.locale)], "error", { f: command.user })]
           });
           return;
         }
 
         if (subscriber == null) {
           await command.editReply({
-            embeds: [simpleEmbed(subscription.errors["no-subscription"][command.locale === "fr" ? "fr" : "en-US"], "error", { f: command.user })]
+            embeds: [simpleEmbed(subscription.errors["no-subscription"][getLang(command.locale)], "error", { f: command.user })]
           });
           return;
         }
@@ -112,7 +112,7 @@ export default class Subscription extends Command {
           await command.editReply({
             embeds: [simpleEmbed(
               msg(
-                subscription.success["subscriber-status"].canceled[command.locale === "fr" ? "fr" : "en-US"], [
+                subscription.success["subscriber-status"].canceled[getLang(command.locale)], [
                   subscriber.canceled_at,
                   subscriber.cancel_at
                 ]
@@ -127,7 +127,7 @@ export default class Subscription extends Command {
         if (subscriber.status === "trialing" && subscriber.trial_end != null) {
           await command.editReply({
             embeds: [simpleEmbed(
-              msg(subscription.success["subscriber-status"].trial[command.locale === "fr" ? "fr" : "en-US"], [subscriber.trial_end]),
+              msg(subscription.success["subscriber-status"].trial[getLang(command.locale)], [subscriber.trial_end]),
               "pro",
               { f: command.user }
             )]
@@ -136,7 +136,7 @@ export default class Subscription extends Command {
         } else if (subscriber.status === "active" && subscriber.current_period_end != null) {
           await command.editReply({
             embeds: [simpleEmbed(
-              msg(subscription.success["subscriber-status"].active[command.locale === "fr" ? "fr" : "en-US"], [subscriber.current_period_end]),
+              msg(subscription.success["subscriber-status"].active[getLang(command.locale)], [subscriber.current_period_end]),
               "pro",
               { f: command.user }
             )]
@@ -146,7 +146,9 @@ export default class Subscription extends Command {
       case "trial":
         if (user.alreadyTried || user.inTrial) {
           await command.editReply({
-            embeds: [simpleEmbed(subscription.errors["trial-exists"][command.locale === "fr" ? "fr" : "en-US"], "error", { f: command.user })]
+            embeds: [
+              simpleEmbed(msg(subscription.errors["trial-exists"][getLang(command.locale)], []), "error", { f: command.user })
+            ]
           });
           return;
         }
@@ -161,12 +163,12 @@ export default class Subscription extends Command {
             const status = await startTrial(command.user.id);
             if (status) {
               await i.update({
-                embeds: [simpleEmbed(subscription.success.trial.started[command.locale === "fr" ? "fr" : "en-US"], "pro", { f: command.user })],
+                embeds: [simpleEmbed(subscription.success.trial.started[getLang(command.locale)], "pro", { f: command.user })],
                 components: []
               });
             } else {
               await i.update({
-                embeds: [simpleEmbed(subscription.errors["trial-already"][command.locale === "fr" ? "fr" : "en-US"], "error", { f: command.user })],
+                embeds: [simpleEmbed(subscription.errors["trial-already"][getLang(command.locale)], "error", { f: command.user })],
                 components: []
               });
             }
@@ -175,17 +177,19 @@ export default class Subscription extends Command {
 
         const button = new ButtonBuilder()
           .setCustomId("start_trial_" + command.user.id)
-          .setLabel(subscription.buttons.start[command.locale === "fr" ? "fr" : "en-US"])
+          .setLabel(subscription.buttons.start[getLang(command.locale)])
           .setStyle(ButtonStyle.Success);
 
         await command.editReply({
-          embeds: [simpleEmbed(subscription.messages.trial.sure[command.locale === "fr" ? "fr" : "en-US"], "pro", { f: command.user })],
+          embeds: [simpleEmbed(subscription.messages.trial.sure[getLang(command.locale)], "pro", { f: command.user })],
           components: [{ type: 1, components: [button] }]
         });
         break;
       case "subscribe":
         await command.editReply({
-          embeds: [simpleEmbed(subscription.messages.subscribe[command.locale === "fr" ? "fr" : "en-US"], "pro", { f: command.user })]
+          embeds: [
+            simpleEmbed(msg(subscription.messages.subscribe[getLang(command.locale)], []), "pro", { f: command.user })
+          ]
         });
         break;
     }

@@ -48,7 +48,7 @@ export default class History extends Command {
 
     let lines = "";
     if (requests.length === 0) {
-      lines = history.command.embed["line-blank"][command.locale === "fr" ? "fr" : "en-US"];
+      lines = history.command.embed["line-blank"][getLang(command.locale)];
     } else {
       for (let i = (page - 1) * 10; i < page * 10 && i < requests.length; i++) {
         if (requests[i]) {
@@ -61,12 +61,12 @@ export default class History extends Command {
       }
     }
 
-    lines += msg(history.command.embed.last[command.locale === "fr" ? "fr" : "en-US"], [user.lastAsked]);
+    lines += msg(history.command.embed.last[getLang(command.locale)], [user.lastAsked]);
     if (!user.premium) {
-      lines += msg(history.command.embed.usage[command.locale === "fr" ? "fr" : "en-US"], [
+      lines += msg(history.command.embed.usage[getLang(command.locale)], [
         requests.length,
         user.askUsage,
-        "https://buy.stripe.com/28ocOQ3JWgnG0GQ145"
+        process.env.STRIPE_MONTHLY_SUB || ""
       ]);
     }
 

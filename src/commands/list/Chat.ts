@@ -35,7 +35,7 @@ export default class Ask extends Command {
     if (!isPremiumUser) {
       if ((await getUser(command.user.id)).askUsage == 0) {
         command.editReply({
-          embeds: [simpleEmbed(chat.errors.trial[command.locale === "fr" ? "fr" : "en-US"], "error", { f: command.user })]
+          embeds: [simpleEmbed(chat.errors.trial[getLang(command.locale)], "error", { f: command.user })]
         });
         return;
       }
@@ -65,7 +65,7 @@ export default class Ask extends Command {
     await thread.sendTyping();
 
     const responseText = response.data.choices[0].message?.content ?? "I don't know what to say...";
-    thread.send(msg(chat.command.messages.started[command.locale === "fr" ? "fr" : "en-US"], [question]));
+    thread.send(msg(chat.command.messages.started[getLang(command.locale)], [question]));
     thread.send(responseText);
 
     await createThread(thread.id, {

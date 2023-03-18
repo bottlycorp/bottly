@@ -26,7 +26,7 @@ export default class Ask extends Command {
       .setName("context")
       .setDescription(ask.command.options.context["en-US"])
       .setDescriptionLocalizations({ fr: ask.command.options.context.fr })
-      .addChoices(...AskContextOptions.map(c => ({ name: c.name, value: c.value, nameLocalizations: { fr: c.name_localizations.fr } }))))
+      .addChoices(...AskContextOptions.map(c => ({ name: c.name, value: c.value, name_localizations: { fr: c.name_localizations.fr } }))))
     .addStringOption(new SlashCommandStringOption()
       .setName("language")
       .setDescription(ask.command.options.lang["en-US"])
@@ -43,15 +43,15 @@ export default class Ask extends Command {
 
     if (!isPremiumUser) {
       if ((await getUser(command.user.id)).askUsage == 0) {
-        command.editReply({ embeds: [simpleEmbed(ask.errors.trial[command.locale === "fr" ? "fr" : "en-US"], "error", { f: command.user })] });
+        command.editReply({ embeds: [simpleEmbed(ask.errors.trial[getLang(command.locale)], "error", { f: command.user })] });
         return;
       }
     }
 
     const question = command.options.getString("content", true);
-    const context = command.options.getString("context", false);
-    const language = command.options.getString("language", false);
-    const finalQuestion = buildQuestion(question, context ?? "default", language ?? command.locale);
+    const context: BuildQuestionContext = command.options.getString("context", false) ?? "default";
+    const language: BuildQuestionLanguage = command.options.getString("language", false) ?? command.locale;
+    const finalQuestion = buildQuestion(question, context, language);
 
     const response = await Client.instance.openai.createChatCompletion({
       model: "gpt-3.5-turbo",
@@ -120,12 +120,10 @@ export default class Ask extends Command {
       updateUser(command.user.id, { lastAsked: dayjs().unix().toString(), askUsage: user.askUsage - 1 });
 
       if (!isPremiumUser) {
-        if (text !== "I don't know what to say...") {
-          await updateUser(command.user.id, { askUsage: user.askUsage - 1 });
-        }
+        if (text !== "I don't know what to say...") await updateUser(command.user.id, { askUsage: user.askUsage - 1 });
       }
     }).catch(async() => {
-      await command.editReply({ embeds: [simpleEmbed(ask.errors.error[command.locale === "fr" ? "fr" : "en-US"], "error", { f: command.user })] });
+      await command.editReply({ embeds: [simpleEmbed(ask.errors.error[getLang(command.locale)], "error", { f: command.user })] });
     });
   }
 
