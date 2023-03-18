@@ -70,3 +70,9 @@ export const getRequests = async(userId: string, contain?: string) : Promise<Req
   if (response.length == 0) return [];
   return response;
 };
+
+export const getRequest = async(id: string) : Promise<Request> => {
+  const response = await prisma.requests.findUnique({ where: { id } });
+  if (!response) throw new Error("Request not found");
+  return response;
+};
