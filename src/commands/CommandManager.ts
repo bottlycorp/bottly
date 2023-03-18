@@ -1,6 +1,6 @@
 import { Collection } from "discord.js";
-import Command from "$core/commands/Command";
 import { readdirSync } from "fs";
+import Command from "$core/commands/Command";
 import Client from "$core/Client";
 import Logger from "$core/utils/Logger";
 

@@ -1,12 +1,12 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption } from "discord.js";
 import Command from "$core/commands/Command";
-import { checkUser } from "$core/utils/User";
-import { prisma } from "$core/utils/Prisma";
+import { checkUser, getRequest } from "$core/utils/User";
 import { request as msgRequest } from "$resources/messages.json";
 import { simpleEmbed } from "$core/utils/Embed";
-import { msg } from "$core/utils/Message";
+import { getLang, msg } from "$core/utils/Message";
 import dayjs from "dayjs";
-import { Request as RequestType } from "$core/utils/types/request.types";
+import { Request as RequestTyoe } from "$core/utils/types/request.types";
+import { findContextOption, findLanguageOption } from "$core/utils/Models";
 
 export default class Request extends Command {
 

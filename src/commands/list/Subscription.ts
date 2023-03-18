@@ -1,4 +1,3 @@
-import Command from "$core/commands/Command";
 import { subscription } from "$resources/messages.json";
 import { checkUser, getUser, updateUser } from "$core/utils/User";
 import {
@@ -12,9 +11,10 @@ import {
 import { simpleEmbed } from "$core/utils/Embed";
 import { prisma } from "$core/utils/Prisma";
 import { findSubscriptionByEmail } from "$core/utils/Stripe";
-import { msg } from "$core/utils/Message";
+import { msg, getLang } from "$core/utils/Message";
 import { ButtonBuilder } from "@discordjs/builders";
 import { startTrial } from "$core/utils/Trial";
+import Command from "$core/commands/Command";
 
 export default class Subscription extends Command {
 

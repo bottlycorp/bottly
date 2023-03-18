@@ -1,11 +1,11 @@
-import Client from "$core/Client";
-import Command from "$core/commands/Command";
 import { simpleEmbed } from "$core/utils/Embed";
-import { limit, msg } from "$core/utils/Message";
+import { limit, msg, getLang } from "$core/utils/Message";
 import { createThread } from "$core/utils/Thread";
 import { checkUser, getUser, isPremium } from "$core/utils/User";
 import { chat } from "$resources/messages.json";
 import { TextChannel, ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption } from "discord.js";
+import Client from "$core/Client";
+import Command from "$core/commands/Command";
 
 export default class Ask extends Command {
 

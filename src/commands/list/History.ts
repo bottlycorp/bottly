@@ -4,7 +4,8 @@ import { checkUser, getUser } from "$core/utils/User";
 import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandIntegerOption, SlashCommandStringOption } from "discord.js";
 import { prisma } from "$core/utils/Prisma";
 import { simpleEmbed } from "$core/utils/Embed";
-import { limit, msg } from "$core/utils/Message";
+import { getLang, limit, msg } from "$core/utils/Message";
+import "dotenv/config";
 
 export default class History extends Command {
 
