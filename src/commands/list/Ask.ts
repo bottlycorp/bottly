@@ -76,7 +76,7 @@ export default class Ask extends Command {
 
     const channel = await command.client.channels.fetch(command.channelId);
     if (!channel || !(channel instanceof TextChannel)) return;
-    const collector = channel.createMessageComponentCollector({ time: 20000 });
+    const collector = channel.createMessageComponentCollector({ time: 60000 });
 
     collector.on("collect", async i => {
       if (!i.isButton()) return;
