@@ -43,7 +43,7 @@ export default class Subscription extends Command {
       .setDescription(subscription.subcommands.trial["en-US"])
       .setDescriptionLocalizations({ fr: subscription.subcommands.trial.fr }))
     .addSubcommand(new SlashCommandSubcommandBuilder()
-      .setName("subscribe")
+      .setName("premium")
       .setDescription(subscription.subcommands.subscribe["en-US"])
       .setDescriptionLocalizations({ fr: subscription.subcommands.subscribe.fr }));
 
@@ -187,7 +187,7 @@ export default class Subscription extends Command {
           components: [{ type: 1, components: [button] }]
         });
         break;
-      case "subscribe":
+      case "premium":
         await command.editReply({
           embeds: [
             simpleEmbed(msg(subscription.messages.subscribe[getLang(command.locale)], []), "pro", { f: command.user })

@@ -18,7 +18,11 @@ export default class ChatListener extends Event {
 
     const chat = await getThread(channel.id);
     if (chat.active || chat.userId !== message.author.id) {
-      message.delete();
+      try {
+        message.delete();
+      } catch (error) {
+        channel.send("I don't have permission to delete messages, please contact the administrator of the server");
+      }
       return;
     }
 
@@ -54,7 +58,11 @@ export default class ChatListener extends Event {
         channel.send("An error occurred while processing your request, please try again later, contact support");
       }
     } else {
-      message.delete();
+      try {
+        message.delete();
+      } catch (error) {
+        channel.send("I don't have permission to delete messages, please contact the administrator of the server");
+      }
       return;
     }
   }

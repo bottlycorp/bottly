@@ -2,6 +2,7 @@ import { prisma } from "$core/utils/Prisma";
 import { User } from "$core/utils/types/user.types";
 import "dotenv/config";
 import { Request } from "$core/utils/types/request.types";
+import dayjs from "dayjs";
 
 /**
  * @param id
@@ -12,7 +13,7 @@ import { Request } from "$core/utils/types/request.types";
  */
 export const checkUser = async(id: string) : Promise<boolean> => {
   if (!(await prisma.user.findUnique({ where: { id } }))) {
-    await prisma.user.create({ data: { id } });
+    await prisma.user.create({ data: { id, createdAt: dayjs().unix().toString() } });
     return false;
   }
 
