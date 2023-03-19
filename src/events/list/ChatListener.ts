@@ -23,6 +23,7 @@ export default class ChatListener extends Event {
       } catch (error) {
         channel.send("I don't have permission to delete messages, please contact the administrator of the server");
       }
+      return;
     }
 
     await channel.sendTyping();
