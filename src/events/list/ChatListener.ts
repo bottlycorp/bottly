@@ -34,19 +34,25 @@ export default class ChatListener extends Event {
     chat.messages.push({ content: message.content, role: "user" });
 
     if (message.content) {
-      const response = await Client.instance.openai.createChatCompletion({
-        model: "gpt-3.5-turbo",
-        max_tokens: 1500,
-        temperature: 0.9,
-        messages: chat.messages
-      });
+      try {
+        const response = await Client.instance.openai.createChatCompletion({
+          model: "gpt-3.5-turbo",
+          max_tokens: 1500,
+          temperature: 0.9,
+          messages: chat.messages
+        });
 
-      const content = response.data.choices[0].message?.content ?? "I don't know what to say...";
+        if (response.data.choices[0].message?.content) {
+          const content = response.data.choices[0].message.content;
 
-      chat.messages.push({ content: content, role: "assistant" });
-
-      await updateThread(channel.id, chat);
-      await channel.send(content);
+          chat.messages.push({ content: content, role: "assistant" });
+          await updateThread(channel.id, chat);
+          await channel.send(content);
+        }
+      } catch (error) {
+        console.error(error);
+        channel.send("An error occurred while processing your request, please try again later");
+      }
     } else {
       try {
         message.delete();

@@ -187,7 +187,7 @@ export default class Subscription extends Command {
           components: [{ type: 1, components: [button] }]
         });
         break;
-      case "subscribe":
+      case "premium":
         await command.editReply({
           embeds: [
             simpleEmbed(msg(subscription.messages.subscribe[getLang(command.locale)], []), "pro", { f: command.user })
