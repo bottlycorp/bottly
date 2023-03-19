@@ -43,7 +43,7 @@ export default class Subscription extends Command {
       .setDescription(subscription.subcommands.trial["en-US"])
       .setDescriptionLocalizations({ fr: subscription.subcommands.trial.fr }))
     .addSubcommand(new SlashCommandSubcommandBuilder()
-      .setName("subscribe")
+      .setName("premium")
       .setDescription(subscription.subcommands.subscribe["en-US"])
       .setDescriptionLocalizations({ fr: subscription.subcommands.subscribe.fr }));
 
