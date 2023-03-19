@@ -4,7 +4,7 @@ import { prisma } from "$core/utils/Prisma";
 import { checkUser, getUser, isPremium } from "$core/utils/User";
 import { ask } from "$resources/messages.json";
 import { SlashCommandBooleanOption } from "@discordjs/builders";
-import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption, TextChannel, ActionRowBuilder, InteractionReplyOptions } from "discord.js";
+import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption, TextChannel, InteractionReplyOptions } from "discord.js";
 import { getLang } from "$core/utils/Message";
 import Client from "$core/Client";
 import Command from "$core/commands/Command";
