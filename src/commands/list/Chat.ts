@@ -51,7 +51,7 @@ export default class Ask extends Command {
       return;
     }
 
-    const member = await channel.guild.members.fetch(command.user.id);
+    const member = await channel.guild.members.fetch(Client.instance.user?.id ?? "1076862546658738236");
     if (channel.permissionsFor(member).has("ManageMessages")) {
       await command.editReply({ content: "I need the permission to manage messages, for delete optionals messages." });
       return;

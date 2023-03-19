@@ -16,6 +16,12 @@ export default class ChatListener extends Event {
     const channel = message.channel;
     if (!channel.isThread() || message.type !== MessageType.Default || !await checkThread(channel.id)) return;
 
+    const member = await channel.guild.members.fetch(Client.instance.user?.id ?? "1076862546658738236");
+    if (channel.permissionsFor(member).has("ManageMessages")) {
+      await channel.send({ content: "I need the permission to manage messages, for delete optionals messages." });
+      return;
+    }
+
     const chat = await getThread(channel.id);
     if (chat.active || chat.userId !== message.author.id) {
       try {
