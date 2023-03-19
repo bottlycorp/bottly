@@ -35,21 +35,12 @@ export default class Stats extends Command {
 
     if (guild) {
       guilds = await prisma.stats.findMany({
-        where: {
-          guildId: command.options.getString("guild", false) ?? ""
-        },
-
-        select: {
-          type: true,
-          createdAt: true
-        }
+        where: { guildId: command.options.getString("guild", false) ?? "" },
+        select: { type: true, createdAt: true }
       });
     } else {
       guilds = await prisma.stats.findMany({
-        select: {
-          type: true,
-          createdAt: true
-        }
+        select: { type: true, createdAt: true }
       });
     }
 
