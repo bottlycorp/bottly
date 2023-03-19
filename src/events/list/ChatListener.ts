@@ -18,8 +18,11 @@ export default class ChatListener extends Event {
 
     const chat = await getThread(channel.id);
     if (chat.active || chat.userId !== message.author.id) {
-      message.delete();
-      return;
+      try {
+        message.delete();
+      } catch (error) {
+        channel.send("I don't have permission to delete messages, please contact the administrator of the server");
+      }
     }
 
     await channel.sendTyping();
@@ -44,7 +47,11 @@ export default class ChatListener extends Event {
       await updateThread(channel.id, chat);
       await channel.send(content);
     } else {
-      message.delete();
+      try {
+        message.delete();
+      } catch (error) {
+        channel.send("I don't have permission to delete messages, please contact the administrator of the server");
+      }
       return;
     }
   }
