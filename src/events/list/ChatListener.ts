@@ -26,15 +26,14 @@ export default class ChatListener extends Event {
       return;
     }
 
-    await channel.sendTyping();
-    await updateThread(channel.id, {
-      active: true
-    });
+    await updateThread(channel.id, { active: true });
 
     chat.messages.push({ content: message.content, role: "user" });
 
     if (message.content) {
       try {
+        await channel.sendTyping();
+
         const response = await Client.instance.openai.createChatCompletion({
           model: "gpt-3.5-turbo",
           max_tokens: 1500,
@@ -42,16 +41,21 @@ export default class ChatListener extends Event {
           messages: chat.messages
         });
 
-        if (response.data.choices[0].message?.content) {
-          const content = response.data.choices[0].message.content;
+        const content = response.data.choices[0].message?.content ?? "An error occurred while processing your request";
 
-          chat.messages.push({ content: content, role: "assistant" });
-          await updateThread(channel.id, chat);
-          await channel.send(content);
+        chat.messages.push({ content: content, role: "assistant" });
+        await updateThread(channel.id, chat);
+
+        if (content.length >= 1500) {
+          const split = content.split("\n");
+          const first = split.slice(0, split.length / 2).join("\n");
+          const second = split.slice(split.length / 2, split.length).join("\n");
+          await channel.send(first);
+          await channel.send(second);
         }
       } catch (error) {
         console.error(error);
-        channel.send("An error occurred while processing your request, please try again later");
+        channel.send("An error occurred while processing your request, please try again later, contact support");
       }
     } else {
       try {
