@@ -1,46 +1,272 @@
 {
-  "history_title": {
-    "fr": "Historique des questions",
-    "en-US": "History of questions"
+  "ask": {
+    "errors": {
+      "trial": {
+        "fr": "Vous avez atteint la limite de questions par mois, attendez le mois prochain pour le rechargement de votre quota.\n\n:sparkles: Vous pouvez aussi vous abonner pour avoir un quota illimité et des fonctionnalités supplémentaires.",
+        "en-US": "You have reached the limit of questions per month, wait for next month for the reloading of your quota.\n\n:sparkles: You can also subscribe to have an unlimited quota and additional features."
+      },
+      "error": {
+        "fr": "Une erreur est survenue lors de l'affichage de votre réponse",
+        "en-US": "An error occurred while displaying your answer"
+      }
+    },
+    "command": {
+      "description": {
+        "fr": "Écrire ici la question à poser au robot GPT",
+        "en-US": "Write here the question to ask the GPT robot"
+      },
+      "options": {
+        "question": {
+          "fr": "La question à poser au robot GPT",
+          "en-US": "The question to ask the GPT robot"
+        },
+        "context": {
+          "fr": "Contexte de la question, pour avoir une réponse plus pertinente",
+          "en-US": "Question context, to have a more relevant answer"
+        },
+        "lang": {
+          "fr": "La langue shouaité pour la réponse, ou la traduction",
+          "en-US": "The desired language for the answer, or the translation"
+        }
+      }
+    },
+    "buttons": {
+      "chat": {
+        "fr": "Ouvrir une conversation",
+        "en-US": "Open a conversation"
+      }
+    }
   },
-  "history_description": {
-    "fr": "Voici l'historique de vos questions posées\n",
-    "en-US": "Here is the history of your asked questions\n"
+  "chat": {
+    "errors": {
+      "trial": {
+        "fr": "Vous avez atteint la limite de conversations par mois, attendez le mois prochain pour le rechargement de votre quota.\n\n:sparkles: Vous pouvez aussi vous abonner pour avoir un quota illimité et des fonctionnalités supplémentaires.",
+        "en-US": "You have reached the limit of conversations per month, wait for next month for the reloading of your quota.\n\n:sparkles: You can also subscribe to have an unlimited quota and additional features."
+      }
+    },
+    "command": {
+      "description": {
+        "fr": "Démarrer une conversation avec le robot GPT, sur la base d'une question initiale",
+        "en-US": "Start a conversation with the GPT robot, based on an initial question"
+      },
+      "options": {
+        "question": {
+          "fr": "La question à poser au robot GPT",
+          "en-US": "The question to ask the GPT robot"
+        },
+        "title": {
+          "fr": "Le titre de la conversation",
+          "en-US": "The title of the conversation"
+        }
+      },
+      "messages": {
+        "started": {
+          "fr": "**Question initiale**: {question}",
+          "en-US": "**Initial question**: {question}"
+        }
+      }
+    }
   },
-  "history_empty": {
-    "fr": "Vous n'avez posé aucune question pour le moment, utilisez la commande </ask:1077289203441864805> pour en poser une.\n",
-    "en-US": "You have not asked any questions yet, use the </ask:1077289203441864805> command to ask one.\n"
+  "history": {
+    "command": {
+      "description": {
+        "fr": "Afficher l'historique des questions posées au robot GPT",
+        "en-US": "Display the history of questions asked to the GPT robot"
+      },
+      "options": {
+        "page": {
+          "fr": "La page de l'historique à afficher",
+          "en-US": "The page of the history to display"
+        },
+        "order": {
+          "fr": "L'ordre d'affichage des questions (ascendant ou descendant)",
+          "en-US": "The order of display of the questions (ascending or descending)"
+        }
+      },
+      "embed": {
+        "line": {
+          "default": "**{index}**. {question} - <t:{timestamp}:R>\n"
+        },
+        "last": {
+          "fr": "\n:clock1: Votre dernière question a été posée le <t:{last}:F>.\n",
+          "en-US": "\n:clock1: Your last question was asked on <t:{last}:F>.\n"
+        },
+        "usage": {
+          "fr": "\n:sparkles: Vous avez posé un total de **{length}** questions, il vous en reste **{remaining}** questions à poser, avant de devoir attendre le mois suivant. Découvrez *[comment retirer cette limite]({STRIPE_PREMIUM_URL})*",
+          "en-US": "\n:sparkles: You have asked a total of **{length}** questions, you have **{remaining}** questions left to ask, before having to wait for next month. Discover *[how to remove this limit]({STRIPE_PREMIUM_URL})*"
+        },
+        "line-blank": {
+          "fr": "Vous n'avez encore posé aucune question au robot GPT",
+          "en-US": "You have not yet asked any question to the GPT robot"
+        },
+        "line-threads": {
+          "blank": {
+            "fr": "Vous n'avez pas encore démarré de conversation avec le robot GPT",
+            "en-US": "You have not yet started a conversation with the GPT robot"
+          },
+          "not-blank": {
+            "fr": "Vous avez démarré {count} conversation{plural} avec le robot GPT",
+            "en-US": "You have started {count} conversation{plural} with the GPT robot"
+          }
+        },
+        "footer": {
+          "default": "{page}/{pages}"
+        }
+      }
+    }
   },
-  "history_line": {
-    "fr": "**{id}.** [{question}]({messageLink}) - <t:{date}:R>\n",
-    "en-US": "**{id}.** [{question}]({messageLink}) - <t:{date}:R>\n"
+  "request": {
+    "command": {
+      "description": {
+        "fr": "Récupérer une requête préciédemment effectuée",
+        "en-US": "Retrieve a previously made request"
+      },
+      "options": {
+        "request": {
+          "fr": "La requête à récupérer",
+          "en-US": "The request to retrieve"
+        }
+      }
+    },
+    "embed": {
+      "description": {
+        "fr": "Cette question a été posté le <t:{timestamp}:F> et a été traité en `{time}s`, a été envoyé dans le salon `{channel}` du serveur `{guild}`\n\n**Question**: {question}\n**Réponse**: {answer}\n\n**Contexte**: `{context}`\n**Langue demandé**: `{lang}`",
+        "en-US": "This question was posted on <t:{timestamp}:F> and was processed in `{time}s`, was sent to the channel `{channel}` of the server `{guild}`\n\n**Question**: {question}\n**Answer**: {answer}\n\n**Context**: `{context}`\n**Requested language**: `{lang}`"
+      }
+    },
+    "messages": {
+      "not-found": {
+        "fr": "Aucune requête ayant l'ID fourni n'a été trouvée peut être un problème de cache, essayez de réessayer dans quelques minutes ou de recharger Discord.",
+        "en-US": "No request with the provided ID was found maybe a cache problem, try to try again in a few minutes or reload Discord."
+      }
+    }
   },
-  "history_footer": {
-    "fr": "\nTIP: Vous pouvez utiliser la commande </request:1077398819995668590> pour voir une demande spécifique",
-    "en-US": "\nTIP: Use the </request:1077398819995668590> command to view a specific request "
+  "subscription": {
+    "command": {
+      "description": {
+        "fr": "Commande pour gérer votre abonnement",
+        "en-US": "Command to manage your subscription"
+      }
+    },
+    "subcommands": {
+      "email": {
+        "fr": "Définir l'adresse email de votre compte sur le quel vous voulez accéder à Stripe",
+        "en-US": "Set the email address of your account on which you want to access Stripe"
+      },
+      "status": {
+        "fr": "Afficher le statut de votre abonnement",
+        "en-US": "Display the status of your subscription"
+      },
+      "trial": {
+        "fr": "Commencez votre essai gratuit de 3 jours",
+        "en-US": "Start your 3 days free trial"
+      },
+      "subscribe": {
+        "fr": "Souscrire à l'abonnement premium",
+        "en-US": "Subscribe to the premium subscription"
+      }
+    },
+    "options": {
+      "email": {
+        "fr": "L'adresse email de votre compte",
+        "en-US": "The email address of your account"
+      }
+    },
+    "errors": {
+      "no-email": {
+        "fr": "Pour utiliser cette commande, vous devez avoir au préalable renseigné votre adresse email avec la commande </subscription email:{SUBSCRIPTION_COMMAND}>",
+        "en-US": "To use this command, you must first have entered your email address with the command </subscription email:{SUBSCRIPTION_COMMAND}>"
+      },
+      "no-subscription": {
+        "fr": "Vous n'avez pas d'abonnement actif",
+        "en-US": "You do not have an active subscription"
+      },
+      "already-subscribed": {
+        "fr": "Vous avez déjà un abonnement actif",
+        "en-US": "You already have an active subscription"
+      },
+      "invalid-email": {
+        "fr": "L'adresse email renseignée n'est pas valide",
+        "en-US": "The email address entered is not valid"
+      },
+      "email-exists": {
+        "fr": "L'adresse email renseignée est déjà utilisée par un autre utilisateur, si vous êtes le propriétaire de cette adresse email, venez sur le [serveur support]({SUPPORT_URL}) pour obtenir de l'aide",
+        "en-US": "The email address entered is already used by another user, if you are the owner of this email address, come to the [support server]({SUPPORT_URL}) to get help"
+      },
+      "already-defined": {
+        "fr": "Vous avez déjà renseigné une adresse email, venez sur le [serveur support]({SUPPORT_URL}) pour obtenir de l'aide si vous souhaitez la changer",
+        "en-US": "You have already entered an email address, come to the [support server]({SUPPORT_URL}) to get help if you want to change it"
+      },
+      "trial-exists": {
+        "fr": "Malheureusement, il semble que vous ayez déjà eu un essai gratuit, vous ne pouvez donc pas en avoir un autre, si vous pensez que c'est une erreur, venez sur le [serveur support]({SUPPORT_URL}) pour obtenir de l'aide",
+        "en-US": "Unfortunately, it seems that you have already had a free trial, so you can't have another one, if you think this is an error, come to the [support server]({SUPPORT_URL}) to get help"
+      },
+      "trial-already": {
+        "fr": "Il semblerai que vous ayez déjà profité de votre essai gratuit, vous ne pouvez donc pas en avoir un autre, si vous pensez que c'est une erreur, venez sur le [serveur support]({SUPPORT_URL}) pour obtenir de l'aide",
+        "en-US": "It seems that you have already benefited from your free trial, so you can't have another one, if you think this is an error, come to the [support server]({SUPPORT_URL}) to get help"
+      }
+    },
+    "messages": {
+      "trial": {
+        "sure": {
+          "fr": "Êtes-vous sûr de vouloir commencer votre essai gratuit, vous ne pourrez pas revenir en arrière ni en bénéficier une seconde fois ?",
+          "en-US": "Are you sure you want to start your free trial, you will not be able to go back and you will not be able to benefit from it a second time?"
+        }
+      },
+      "subscribe": {
+        "fr": "Abonnez vous [mensuellement]({MONTH_SUB}) pour 5.99€ pour avoir accès à toutes les fonctionnalités du bot, vous pouvez annuler votre abonnement à tout moment depuis le [tableau de bord]({DASHBOARD_URL}), vous pouvez aussi vous abonner [annuellement]({ANN_SUB}) pour 59.99€ pour avoir accès à toutes les fonctionnalités du bot pour une durée d'un an, vous pouvez annuler votre abonnement à tout moment depuis le [tableau de bord]({DASHBOARD_URL})",
+        "en-US": "Subscribe [monthly]({MONTH_SUB}) for 5.99€ to have access to all the features of the bot, you can cancel your subscription at any time from the [dashboard]({DASHBOARD_URL}), you can also subscribe [annually]({SUPPORT_URL}) for 59.99€ to have access to all the features of the bot for a period of one year, you can cancel your subscription at any time from the [dashboard]({DASHBOARD_URL})"
+      }
+    },
+    "success": {
+      "subscription-found": {
+        "fr": "Vous avez un abonnement actif, vous pouvez le gérer sur le [tableau de bord]({DASHBOARD_URL})",
+        "en-US": "You have an active subscription, you can manage it on the [dashboard]({DASHBOARD_URL})"
+      },
+      "valid-email": {
+        "fr": "L'adresse email renseignée est valide et sera utilisée pour accéder à Stripe",
+        "en-US": "The email address entered is valid and will be used to access Stripe"
+      },
+      "subscriber-status": {
+        "trial": {
+          "fr": "Vous êtes actuellement en période d'essai, qui expire le <t:{trial_end}:F>",
+          "en-US": "You are currently in the trial period, which expires on <t:{trial_end}:F>"
+        },
+        "active": {
+          "fr": ":tada: Vous êtes abonné à **GPT Premium**, votre abonnement expire le <t:{current_period_end}:F>, vous pouvez accéder à votre [tableau de bord]({DASHBOARD_URL})",
+          "en-US": ":tada: You are subscribed to **GPT Premium**, your subscription expires on <t:{current_period_end}:F>, you can access your [dashboard]({DASHBOARD_URL})"
+        },
+        "canceled": {
+          "fr": "Vous avez annulé votre abonnement le <t:{canceled_at}:R>, vous perdrez l'accès à toutes les fonctionnalités premium le <t:{date_end}:R>",
+          "en-US": "You canceled your subscription on <t:{canceled_at}:R>, you will lose access to all premium features on <t:{date_end}:R>"
+        }
+      },
+      "trial": {
+        "started": {
+          "fr": "Votre essai gratuit a bien été démarré, il expirera dans 3 jours, utilisez la commande </subscription status:{SUBSCRIPTION_COMMAND}> pour voir les avantages de l'abonnement",
+          "en-US": "Your free trial has been started, it will expire in 3 days, use the command </subscription status:{SUBSCRIPTION_COMMAND}> to see the benefits of the subscription"
+        }
+      }
+    },
+    "buttons": {
+      "start": {
+        "fr": "Démarrer l'essai de 3 jours",
+        "en-US": "Start the 3 days trial"
+      }
+    }
   },
-  "history_request_content": {
-    "fr": "Cette question a été posé le <t:{date}:F> et a été envoyé dans le salon `#{channelName}`, du serveur `{guildName}`.\n\n:grey_question: {question}\n- __Contexte de la question__: {context}\n- __Langue de réponse__: {responseLang}\n\n:robot: __Réponse:__ {answer}",
-    "en-US": "This question was asked on <t:{date}:F> and was sent in the channel `#{channelName}`, from the server `{guildName}`.\n\n:grey_question: {question}\n- __Question context__: {context}\n- __Answer language__: {responseLang}\n\n:robot: __Response:__ {answer}"
-  },
-
-  "request_title": {
-    "fr": "Demande #{id}",
-    "en-US": "Request #{id}"
-  },
-
-  "ask_response_title": {
-    "fr": "Réponse à la question",
-    "en-US": "Response to the question"
-  },
-
-  "ask_response_description": {
-    "fr": ":man: {question}\n- Contexte de réponse: {context}\n- Langue de la réponse: {language}\n\n:robot: {answer}",
-    "en-US": ":man: {question}\n- Context: {context}\n- Answer language: {language}\n\n:robot: {answer}"
-  },
-
-  "open_ai_problem": {
-    "fr": "La communication avec l'API d'OpenAI à rencontré un problème, si cela persiste, [merci de contacter le support](https://discord.gg/hF4msEgbJs), ou de vérifier la [page status de OpenAI](https://status.openai.com/)",
-    "en-US": "The communication with the OpenAI API encountered a problem, if this persists, [please contact support](https://discord.gg/hF4msEgbJs), or check the [OpenAI status page](https://status.openai.com/)"
+  "stats": {
+    "command": {
+      "description": {
+        "fr": "Affiche les statistiques du bot",
+        "en-US": "Displays the bot statistics"
+      },
+      "options": {
+        "guilds": {
+          "fr": "Choisir l'un des serveurs du bot",
+          "en-US": "Choose one of the bot's servers"
+        }
+      }
+    }
   }
 }

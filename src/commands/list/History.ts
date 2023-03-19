@@ -1,65 +1,92 @@
-import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import Command from "$core/commands/Command";
-import { getRequests } from "$core/utils/Request";
-import { limit } from "$core/utils/Utils";
-import { msg } from "$core/utils/Message";
-import { clearHistoryButton } from "$core/utils/Buttons";
+import { history } from "$resources/messages.json";
+import { checkUser, getUser } from "$core/utils/User";
+import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandIntegerOption, SlashCommandStringOption } from "discord.js";
+import { prisma } from "$core/utils/Prisma";
 import { simpleEmbed } from "$core/utils/Embed";
+import { getLang, limit, msg } from "$core/utils/Message";
+import "dotenv/config";
+import dayjs from "dayjs";
 
-export default class HistoryCommand extends Command {
+export default class History extends Command {
+
+  public readonly guildOnly = false;
 
   public readonly slashCommand = new SlashCommandBuilder()
     .setName("history")
-    .setDescription("Watch your history of questions")
-    .setDescriptionLocalizations({
-      fr: "Voir votre historique de questions",
-      "en-US": "Watch your history of questions"
-    })
-    .addIntegerOption(option => option
+    .setDescription(history.command.description["en-US"])
+    .setDescriptionLocalizations({ fr: history.command.description.fr })
+    .setDMPermission(false)
+    .addIntegerOption(new SlashCommandIntegerOption()
       .setName("page")
-      .setDescription("The page to view")
-      .setDescriptionLocalizations({
-        fr: "La page à voir"
-      })
+      .setDescription(history.command.options.page["en-US"])
+      .setDescriptionLocalizations({ fr: history.command.options.page.fr })
       .setRequired(false))
-    .addBooleanOption(option => option
-      .setName("public")
-      .setDescription("Set your history as public")
-      .setDescriptionLocalizations({
-        fr: "Rendre le message qui affiche votre historique en public"
-      })
-      .setRequired(false));
+    .addStringOption(new SlashCommandStringOption()
+      .setName("order")
+      .setDescription(history.command.options.order["en-US"])
+      .setDescriptionLocalizations({ fr: history.command.options.order.fr })
+      .setRequired(false)
+      .addChoices(
+        { name: "Date (asc)", value: "asc" },
+        { name: "Date (desc)", value: "desc" }
+      ));
 
-  public async execute(command: ChatInputCommandInteraction) : Promise<void> {
-    let ephemeral = (command.options.getBoolean("public", false) ?? false) == false ? true : false;
+  public async execute(command: ChatInputCommandInteraction): Promise<void> {
+    await command.deferReply({ ephemeral: true });
+    await checkUser(command.user.id);
+    const user = await getUser(command.user.id);
 
-    await command.deferReply({ ephemeral: ephemeral });
-    let history = await getRequests(command.user.id);
-    let pageOption = command.options.getInteger("page", false) || 1;
+    const order = command.options.getString("order", false) ?? "desc";
+    const page = command.options.getInteger("page", false) ?? 1;
 
-    let description = msg("history_empty", [], command.locale);
+    const requests = await prisma.requests.findMany({
+      where: {
+        userId: command.user.id
+      },
+      orderBy: {
+        id: order === "desc" ? "desc" : "asc"
+      }
+    });
 
-    if (history.length > 0) {
-      description = msg("history_description", [], command.locale);
-
-      for (let i = (pageOption - 1) * 10; i < pageOption * 10 && i < history.length; i++) {
-        const question = history[i];
-        description += msg("history_line", [i + 1, limit(question.question, 40, "..."), question.messageLink, question.createdAt], command.locale);
+    let lines = "";
+    if (requests.length === 0) {
+      lines = history.command.embed["line-blank"][getLang(command.locale)];
+    } else {
+      for (let i = (page - 1) * 10; i < page * 10 && i < requests.length; i++) {
+        if (requests[i]) {
+          lines += msg(history.command.embed.line.default, [
+            i,
+            limit(requests[i].question, 40, "..."),
+            requests[i].timestamp
+          ]);
+        }
       }
     }
 
-    description += msg("history_footer", [], command.locale);
+    lines += msg(history.command.embed.last[getLang(command.locale)], [user.lastAsked]);
+    if (!user.premium) {
+      lines += msg(history.command.embed.usage[getLang(command.locale)], [
+        requests.length,
+        user.askUsage,
+        process.env.STRIPE_MONTHLY_SUB || ""
+      ]);
+    }
 
-    let buttons = [];
-    if (history.length > 0) buttons.push(clearHistoryButton);
-
-    const embed = simpleEmbed(description, "normal", msg("history_title", [], command.locale), {
-      text: `Page ${pageOption}/${Math.ceil(history.length / 10)}`,
-      iconURL: command.user.avatarURL() as string,
-      timestamp: true
+    await prisma.stats.create({
+      data: {
+        createdAt: dayjs().toDate(),
+        guildId: command.guild?.id ?? "DM",
+        userId: command.user.id,
+        type: "history"
+      }
     });
 
-    if (buttons.length > 0) await command.editReply({ embeds: [embed], components: [{ type: 1, components: buttons }] });
-    else await command.editReply({ embeds: [embed] });
+    const embed = simpleEmbed(lines, "normal", {
+      text: msg(history.command.embed.footer.default, [requests.length, Math.ceil(requests.length / 10)])
+    });
+
+    command.editReply({ embeds: [embed] });
   }
+
 }

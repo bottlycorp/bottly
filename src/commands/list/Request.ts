@@ -1,59 +1,67 @@
-import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
+import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption } from "discord.js";
 import Command from "$core/commands/Command";
-import { getRequests } from "$core/utils/Request";
-import { clearLineBreaks, limit, toString } from "$core/utils/Utils";
-import { contexts, msg } from "$core/utils/Message";
+import { checkUser, getRequest } from "$core/utils/User";
+import { request as msgRequest } from "$resources/messages.json";
 import { simpleEmbed } from "$core/utils/Embed";
-import { Request } from "$core/utils/types";
+import { getLang, msg } from "$core/utils/Message";
+import dayjs from "dayjs";
+import { Request as RequestTyoe } from "$core/utils/types/request.types";
+import { findContextOption, findLanguageOption } from "$core/utils/Models";
+import { prisma } from "$core/utils/Prisma";
 
-export default class RequestCommand extends Command {
+export default class Request extends Command {
+
+  public readonly guildOnly = false;
 
   public readonly slashCommand = new SlashCommandBuilder()
     .setName("request")
-    .setDescription("Watch an specific request of your asked questions")
-    .setDescriptionLocalizations({
-      fr: "Voir une requête spécifique de vos questions posées",
-      "en-US": "Watch an specific request of your asked questions"
-    })
-    .addIntegerOption(option => option
-      .setName("id")
-      .setDescription("The request ID to view")
-      .setDescriptionLocalizations({
-        fr: "L'ID de la requête à voir",
-        "en-US": "The request ID to view"
-      })
+    .setDescription(msgRequest.command.description["en-US"])
+    .setDescriptionLocalizations({ fr: msgRequest.command.description.fr })
+    .addStringOption(new SlashCommandStringOption()
+      .setName("request")
+      .setAutocomplete(true)
+      .setDescription(msgRequest.command.options.request["en-US"])
+      .setDescriptionLocalizations({ fr: msgRequest.command.options.request.fr })
       .setRequired(true));
 
-  public async execute(command: ChatInputCommandInteraction) : Promise<void> {
-    let request = command.options.getInteger("id", true);
-    let history = await getRequests(command.user.id);
+  public async execute(command: ChatInputCommandInteraction): Promise<void> {
+    await command.deferReply({ ephemeral: true });
+    await checkUser(command.user.id);
 
-    if (request > history.length) {
-      await command.reply({ embeds: [simpleEmbed("That request does not exist", "error")], ephemeral: true });
+    const option = command.options.getString("request", true);
+
+    const request: RequestTyoe = await getRequest(option);
+
+    if (!request) {
+      await command.editReply({ embeds: [
+        simpleEmbed(msgRequest.messages["not-found"][getLang(command.locale)], "error", { f: command.user })
+      ] });
       return;
     }
 
-    let requested: Request = history[request - 1];
-    let context = contexts[parseInt(requested.options.context)];
+    const timestamp = dayjs(request.answeredAt).diff(dayjs(request.askedAt), "second");
 
-    const embed = simpleEmbed(msg("history_request_content", [
-      requested.createdAt,
-      requested.channelName,
-      requested.guildName,
-      requested.question,
-      context[command.locale] ?? context["en-US"],
-      requested.options.lang ?? "Unknown",
-      clearLineBreaks(limit(toString(requested.answer), 1024, "..."), 2)
-    ], command.locale), "normal", msg("request_title", [
-      request
-    ], command.locale), {
-      text: command.user.tag,
-      iconURL: command.user.avatarURL() as string,
-      timestamp: true
+    await prisma.stats.create({
+      data: {
+        createdAt: dayjs().toDate(),
+        guildId: command.guild?.id ?? "DM",
+        userId: command.user.id,
+        type: "request"
+      }
     });
-  
-    await command.reply({ embeds: [embed], components: [{ type: 1, components: [{
-      type: 2, style: 5, label: "Go", url: requested.messageLink
-    }] }] });
+
+    await command.editReply({ embeds: [
+      simpleEmbed(msg(msgRequest.embed.description[getLang(command.locale)], [
+        request.timestamp,
+        timestamp,
+        request.channelName,
+        request.guildName,
+        request.question,
+        Buffer.from(request.answer, "base64").toString("utf-8").replace(/^(\r\n|\r|\n)/, ""),
+        command.locale === "fr" ? findContextOption(request.options.context).name_localizations.fr : findContextOption(request.options.context).name,
+        findLanguageOption(request.options.language)
+      ]), "normal", { f: command.user })
+    ] });
   }
+
 }

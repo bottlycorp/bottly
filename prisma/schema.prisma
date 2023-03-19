@@ -11,20 +11,46 @@ datasource db {
 }
 
 model User {
-  id        Int        @unique
-  language  String     @default("en")
-  createdAt DateTime   @default(now())
-  lastAsked DateTime   @default(now())
+  id           String  @id @unique
+  createdAt    String  @default("0")
+  lastAsked    String  @default("0")
+  askUsage     Int     @default(50)
+  chatUsage    Int     @default(20)
+  imageUsage   Int     @default(20)
+  premium      Boolean @default(false)
+  inTrial      Boolean @default(false)
+  trialEnd     String  @default("0")
+  alreadyTried Boolean @default(false)
+  email        String  @default("none")
+}
+
+model Thread {
+  threadId    String   @id
+  createdAt   DateTime @default(now())
+  lastMessage DateTime @default(now())
+  guildId     String
+  userId      String
+  messages    Json     @default("[]")
+  active      Boolean  @default(false)
 }
 
 model Requests {
   id          String   @id @default(cuid())
-  userId      BigInt
-  createdAt   Int   
+  userId      String
+  askedAt     DateTime @default(now())
   question    String
+  answeredAt  DateTime @default(now())
   answer      String
-  messageLink String
-  channelName String
   guildName   String
+  channelName String
   options     Json     @default("{}")
+  timestamp   String   @default("0")
+}
+
+model Stats {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  guildId   String
+  userId    String
+  type      String
 }
