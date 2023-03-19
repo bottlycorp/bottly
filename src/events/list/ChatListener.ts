@@ -40,12 +40,17 @@ export default class ChatListener extends Event {
       const content = response.data.choices[0].message?.content ?? "I don't know what to say...";
 
       chat.messages.push({ content: content, role: "assistant" });
-
       await updateThread(channel.id, chat);
-      await channel.send(content);
-    } else {
-      message.delete();
-      return;
+
+      // Check if the message is > 1999 characters, if so, split it into multiple messages
+      if (content.length > 1999) {
+        const messages = content.match(/.{1,1999}/g);
+        for (const message of messages ?? []) {
+          await channel.send(message);
+        }
+      } else {
+        await channel.send(content);
+      }
     }
   }
 
