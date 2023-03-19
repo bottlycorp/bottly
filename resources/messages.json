@@ -27,6 +27,10 @@
         "lang": {
           "fr": "La langue shouaité pour la réponse, ou la traduction",
           "en-US": "The desired language for the answer, or the translation"
+        },
+        "private": {
+          "fr": "Afficher la réponse en publique ou en privé",
+          "en-US": "Display the answer publicly or privately"
         }
       }
     },

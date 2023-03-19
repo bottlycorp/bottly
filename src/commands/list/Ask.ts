@@ -1,10 +1,10 @@
-import { getRevealButton, getUsageButton, simpleEmbed } from "$core/utils/Embed";
+import { getUsageButton, simpleEmbed } from "$core/utils/Embed";
 import { buildQuestion, AskContextOptions, Locales, BuildQuestionContext, BuildQuestionLanguage } from "$core/utils/Models";
 import { prisma } from "$core/utils/Prisma";
-import { checkUser, getUser, isPremium, updateUser } from "$core/utils/User";
+import { checkUser, getUser, isPremium } from "$core/utils/User";
 import { ask } from "$resources/messages.json";
-import { ButtonBuilder } from "@discordjs/builders";
-import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption, TextChannel } from "discord.js";
+import { SlashCommandBooleanOption } from "@discordjs/builders";
+import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption, TextChannel, ActionRowBuilder, InteractionReplyOptions } from "discord.js";
 import { getLang } from "$core/utils/Message";
 import Client from "$core/Client";
 import Command from "$core/commands/Command";
@@ -34,17 +34,22 @@ export default class Ask extends Command {
       .setDescription(ask.command.options.lang["en-US"])
       .setDescriptionLocalizations({ fr: ask.command.options.lang.fr })
       .addChoices(...Locales.map(l => ({ name: l.name, value: l.value }))))
+    .addBooleanOption(new SlashCommandBooleanOption()
+      .setName("private")
+      .setDescription(ask.command.options.private["en-US"])
+      .setDescriptionLocalizations({ fr: ask.command.options.private.fr }))
     .setDMPermission(false);
 
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
-    await command.deferReply({ ephemeral: true });
+    command.deferReply({ ephemeral: command.options.getBoolean("private", false) ?? true });
+
     const askedAt = dayjs().toDate();
     await checkUser(command.user.id);
     const user = await getUser(command.user.id);
     const isPremiumUser = isPremium(user);
 
     if (!isPremiumUser) {
-      if ((await getUser(command.user.id)).askUsage == 0) {
+      if (user.askUsage <= 0) {
         command.editReply({ embeds: [simpleEmbed(ask.errors.trial[getLang(command.locale)], "error", { f: command.user })] });
         return;
       }
@@ -59,47 +64,47 @@ export default class Ask extends Command {
       model: "gpt-3.5-turbo",
       max_tokens: 2000,
       temperature: 0.9,
-      messages: [{ content: finalQuestion, name: "User", role: "user" }]
+      messages: [{
+        content: finalQuestion,
+        role: "user"
+      }]
+    });
+
+    await prisma.user.update({
+      where: { id: command.user.id },
+      data: {
+        lastAsked: dayjs().unix().toString(),
+        askUsage: {
+          decrement: 1
+        }
+      }
     });
 
     const text = response.data.choices[0].message?.content ?? "I don't know what to say...";
 
     const embed = simpleEmbed(text, "normal", {
-      text: command.user.username,
-      timestamp: true,
-      iconURL: command.user.displayAvatarURL()
+      f: command.user
     });
-
-    const buttons: ButtonBuilder[] = [];
-    if (!isPremiumUser) buttons.push(getUsageButton(user.askUsage - 1));
-    buttons.push(getRevealButton(user.askUsage - 1));
 
     const channel = await command.client.channels.fetch(command.channelId);
     if (!channel || !(channel instanceof TextChannel)) return;
-    const collector = channel.createMessageComponentCollector({ time: 60000 });
 
-    collector.on("collect", async i => {
-      if (!i.isButton()) return;
-      if (i.customId.startsWith("reveal")) {
-        if (isPremiumUser) {
-          await i.update({ embeds: [embed], components: [] });
-          channel.send({ embeds: [embed.data], components: [] });
-          return;
-        }
-
-        const usageRemaining: number = parseInt(i.customId.split("_")[1]);
-        await i.update({ components: [{ type: 1, components: [getUsageButton(usageRemaining)] }] });
-        await channel.send({ embeds: [embed.data], components: [{ type: 1, components: [getUsageButton(usageRemaining)] }] });
-      }
-    });
-
+    let replyOptions: InteractionReplyOptions;
     if (!isPremiumUser) {
-      collector.on("end", async() => {
-        await command.editReply({ components: [{ type: 1, components: [getUsageButton(user.askUsage)] }] });
-      });
+      replyOptions = {
+        embeds: [embed],
+        components: [{
+          type: 1,
+          components: [getUsageButton(user.askUsage - 1)]
+        }]
+      };
+    } else {
+      replyOptions = {
+        embeds: [embed]
+      };
     }
 
-    await command.editReply({ embeds: [embed], components: [{ type: 1, components: buttons }] }).then(async() => {
+    await command.editReply(replyOptions).then(async() => {
       Logger.request(finalQuestion);
 
       await prisma.stats.create({
@@ -127,13 +132,8 @@ export default class Ask extends Command {
           }
         }
       });
-
-      await updateUser(command.user.id, { lastAsked: dayjs().unix().toString(), askUsage: user.askUsage - 1 });
-
-      if (!isPremiumUser) {
-        if (text !== "I don't know what to say...") await updateUser(command.user.id, { askUsage: user.askUsage - 1 });
-      }
-    }).catch(async() => {
+    }).catch(async(e) => {
+      console.error(e);
       await command.editReply({ embeds: [simpleEmbed(ask.errors.error[getLang(command.locale)], "error", { f: command.user })] });
     });
   }
