@@ -51,6 +51,12 @@ export default class Ask extends Command {
       return;
     }
 
+    const member = await channel.guild.members.fetch(command.user.id);
+    if (channel.permissionsFor(member).has("ManageMessages")) {
+      await command.editReply({ content: "I need the permission to manage messages, for delete optionals messages." });
+      return;
+    }
+
     const response = await Client.instance.openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       max_tokens: 1500,
