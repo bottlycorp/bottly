@@ -17,7 +17,7 @@ export default class ChatListener extends Event {
     if (!channel.isThread() || message.type !== MessageType.Default || !await checkThread(channel.id)) return;
 
     const member = await channel.guild.members.fetch(Client.instance.user?.id ?? "1076862546658738236");
-    if (channel.permissionsFor(member).has("ManageMessages")) {
+    if (!member.permissions.has("ManageMessages")) {
       await channel.send({ content: "I need the permission to manage messages, for delete optionals messages." });
       return;
     }
@@ -25,7 +25,7 @@ export default class ChatListener extends Event {
     const chat = await getThread(channel.id);
     if (chat.active || chat.userId !== message.author.id) {
       try {
-        await message.delete();
+        message.delete();
       } catch (error) {
         channel.send("I don't have permission to delete messages, please contact the administrator of the server");
       }
