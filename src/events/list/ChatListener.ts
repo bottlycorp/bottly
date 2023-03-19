@@ -25,7 +25,7 @@ export default class ChatListener extends Event {
     const chat = await getThread(channel.id);
     if (chat.active || chat.userId !== message.author.id) {
       try {
-        message.delete();
+        await message.delete();
       } catch (error) {
         channel.send("I don't have permission to delete messages, please contact the administrator of the server");
       }
