@@ -22,35 +22,40 @@ export default class ChatListener extends Event {
       return;
     }
 
-    await channel.sendTyping();
-    await updateThread(channel.id, {
-      active: true
-    });
+    await updateThread(channel.id, { active: true });
 
     chat.messages.push({ content: message.content, role: "user" });
 
     if (message.content) {
-      const response = await Client.instance.openai.createChatCompletion({
-        model: "gpt-3.5-turbo",
-        max_tokens: 1500,
-        temperature: 0.9,
-        messages: chat.messages
-      });
+      try {
+        await channel.sendTyping();
 
-      const content = response.data.choices[0].message?.content ?? "I don't know what to say...";
+        const response = await Client.instance.openai.createChatCompletion({
+          model: "gpt-3.5-turbo",
+          max_tokens: 1500,
+          temperature: 0.9,
+          messages: chat.messages
+        });
 
-      chat.messages.push({ content: content, role: "assistant" });
-      await updateThread(channel.id, chat);
+        const content = response.data.choices[0].message?.content ?? "An error occurred while processing your request";
 
-      // Check if the message is > 1999 characters, if so, split it into multiple messages
-      if (content.length > 1999) {
-        const messages = content.match(/.{1,1999}/g);
-        for (const message of messages ?? []) {
-          await channel.send(message);
+        chat.messages.push({ content: content, role: "assistant" });
+        await updateThread(channel.id, chat);
+
+        if (content.length >= 1500) {
+          const split = content.split("\n");
+          const first = split.slice(0, split.length / 2).join("\n");
+          const second = split.slice(split.length / 2, split.length).join("\n");
+          await channel.send(first);
+          await channel.send(second);
         }
-      } else {
-        await channel.send(content);
+      } catch (error) {
+        console.error(error);
+        channel.send("An error occurred while processing your request, please try again later, contact support");
       }
+    } else {
+      message.delete();
+      return;
     }
   }
 
