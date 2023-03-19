@@ -6,6 +6,7 @@ import EventManager from "$core/events/EventManager";
 import TaskManager from "$core/tasks/TaskManager";
 import "dotenv/config";
 import Stripe from "stripe";
+import dayjs from "dayjs";
 
 export default class Client extends DiscordClient {
 
@@ -22,6 +23,8 @@ export default class Client extends DiscordClient {
   public readonly stripe: Stripe;
 
   public readonly webhook: WebhookClient | null;
+
+  public month: number = (dayjs().month() + 1);
 
   constructor() {
     super({

@@ -128,7 +128,7 @@ export default class Ask extends Command {
         }
       });
 
-      updateUser(command.user.id, { lastAsked: dayjs().unix().toString(), askUsage: user.askUsage - 1 });
+      await updateUser(command.user.id, { lastAsked: dayjs().unix().toString(), askUsage: user.askUsage - 1 });
 
       if (!isPremiumUser) {
         if (text !== "I don't know what to say...") await updateUser(command.user.id, { askUsage: user.askUsage - 1 });

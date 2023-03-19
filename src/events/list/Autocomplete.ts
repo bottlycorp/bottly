@@ -26,13 +26,11 @@ export default class RequestAutocomplete extends Event {
         interaction.respond(requests.map(request => (
           {
             name: limit(request.question, 97, "..."),
-            // 97 = 100 - 3 (...), discord limit to 100 characters for autocomplete name
             value: request.id
           }
         )).slice(0, 25));
         break;
       case "stats":
-        // Search guilds with name containing the string, and get their name and id
         const guilds = Client.instance.guilds.cache
           .filter(guild => guild.name.toLowerCase().includes(interaction.options.getString("guild", true).toLowerCase()))
           .map(guild => ({ name: guild.name, id: guild.id }));

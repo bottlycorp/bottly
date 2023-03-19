@@ -43,7 +43,7 @@ export default class Request extends Command {
 
     await prisma.stats.create({
       data: {
-        createdAt: dayjs().unix().toString(),
+        createdAt: dayjs().toDate(),
         guildId: command.guild?.id ?? "DM",
         userId: command.user.id,
         type: "request"
