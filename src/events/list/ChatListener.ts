@@ -52,6 +52,8 @@ export default class ChatListener extends Event {
           const second = split.slice(split.length / 2, split.length).join("\n");
           await channel.send(first);
           await channel.send(second);
+        } else {
+          await channel.send(content);
         }
       } catch (error) {
         console.error(error);
