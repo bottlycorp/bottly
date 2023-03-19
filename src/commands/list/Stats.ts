@@ -4,7 +4,6 @@ import { ChartJSNodeCanvas } from "chartjs-node-canvas";
 import { prisma } from "$core/utils/Prisma";
 import { stats } from "$resources/messages.json";
 import Command from "$core/commands/Command";
-import { getLang } from "$core/utils/Message";
 
 export default class Stats extends Command {
 
@@ -46,10 +45,10 @@ export default class Stats extends Command {
 
     const data = guilds.reduce((acc, cur) => {
       const date = cur.createdAt.toISOString().split("T")[0];
-      if (!acc[date]) acc[date] = { ask: 0, history: 0, request: 0 };
+      if (!acc[date]) acc[date] = { ask: 0, history: 0, request: 0, chat: 0 };
       acc[date][cur.type]++;
       return acc;
-    }, {} as Record<string, { ask: number; history: number; request: number }>);
+    }, {} as Record<string, { ask: number; history: number; request: number; chat: number }>);
 
     const config: ChartConfiguration = {
       type: "line",
@@ -57,7 +56,7 @@ export default class Stats extends Command {
         labels: Object.keys(data),
         datasets: [
           {
-            label: stats.graphic.columns.ask[getLang(command.locale)],
+            label: "/ask",
             data: Object.values(data).map((v) => v.ask),
             backgroundColor: "#7289da",
             borderColor: "#7289da",
@@ -65,7 +64,7 @@ export default class Stats extends Command {
             tension: 0.4
           },
           {
-            label: stats.graphic.columns.history[getLang(command.locale)],
+            label: "/history",
             data: Object.values(data).map((v) => v.history),
             backgroundColor: "#99aab5",
             borderColor: "#99aab5",
@@ -73,10 +72,18 @@ export default class Stats extends Command {
             tension: 0.4
           },
           {
-            label: stats.graphic.columns.request[getLang(command.locale)],
+            label: "/request",
             data: Object.values(data).map((v) => v.request),
             backgroundColor: "#aabd6c",
             borderColor: "#aabd6c",
+            borderWidth: 1,
+            tension: 0.4
+          },
+          {
+            label: "/chat",
+            data: Object.values(data).map((v) => v.chat),
+            backgroundColor: "#f04747",
+            borderColor: "#f04747",
             borderWidth: 1,
             tension: 0.4
           }
@@ -109,7 +116,7 @@ export default class Stats extends Command {
     const chart = new ChartJSNodeCanvas({ height: 500, width: 1100 });
     files.push(new AttachmentBuilder(
       chart.renderToBufferSync(config),
-      { name: "cc-chart.png" }
+      { name: "stats-chart.png" }
     ));
     await command.editReply({ files });
   }

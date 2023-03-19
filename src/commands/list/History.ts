@@ -6,6 +6,7 @@ import { prisma } from "$core/utils/Prisma";
 import { simpleEmbed } from "$core/utils/Embed";
 import { getLang, limit, msg } from "$core/utils/Message";
 import "dotenv/config";
+import dayjs from "dayjs";
 
 export default class History extends Command {
 
@@ -71,6 +72,15 @@ export default class History extends Command {
         process.env.STRIPE_MONTHLY_SUB || ""
       ]);
     }
+
+    await prisma.stats.create({
+      data: {
+        createdAt: dayjs().toDate(),
+        guildId: command.guild?.id ?? "DM",
+        userId: command.user.id,
+        type: "history"
+      }
+    });
 
     const embed = simpleEmbed(lines, "normal", {
       text: msg(history.command.embed.footer.default, [requests.length, Math.ceil(requests.length / 10)])

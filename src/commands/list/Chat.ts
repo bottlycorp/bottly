@@ -1,4 +1,4 @@
-import { simpleEmbed } from "$core/utils/Embed";
+import { getUsageButton, simpleEmbed } from "$core/utils/Embed";
 import { limit, msg, getLang } from "$core/utils/Message";
 import { createThread } from "$core/utils/Thread";
 import { checkUser, getUser, isPremium } from "$core/utils/User";
@@ -30,14 +30,14 @@ export default class Ask extends Command {
     .setDMPermission(false);
 
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
-    await command.deferReply({ ephemeral: true });
     const question = command.options.getString("question", true);
+    await command.deferReply({ ephemeral: true });
     await checkUser(command.user.id);
     const user = await getUser(command.user.id);
     const isPremiumUser = isPremium(user);
 
     if (!isPremiumUser) {
-      if ((await getUser(command.user.id)).askUsage == 0) {
+      if (user.chatUsage <= 0) {
         command.editReply({
           embeds: [simpleEmbed(chat.errors.trial[getLang(command.locale)], "error", { f: command.user })]
         });
@@ -51,14 +51,6 @@ export default class Ask extends Command {
       return;
     }
 
-    const thread = await channel.threads.create({
-      name: limit(question, 50, "..."),
-      autoArchiveDuration: 60,
-      reason: "Chat with the bot"
-    });
-
-    await thread.members.add(command.user.id);
-
     const response = await Client.instance.openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       max_tokens: 1500,
@@ -66,15 +58,16 @@ export default class Ask extends Command {
       messages: [{ content: question, name: "User", role: "user" }]
     });
 
-    await thread.sendTyping();
+    const thread = await channel.threads.create({ name: limit(question, 50, "..."), autoArchiveDuration: 60, reason: "Chat with the bot" });
+    thread.members.add(command.user.id);
 
-    const responseText = response.data.choices[0].message?.content ?? "I don't know what to say...";
+    const responseText = response.data.choices[0].message?.content;
     thread.send(msg(chat.command.messages.started[getLang(command.locale)], [question]));
-    thread.send(responseText);
+    thread.send(responseText ?? "An communication error with OpenAI has occured.");
 
     await prisma.stats.create({
       data: {
-        createdAt: dayjs().unix().toString(),
+        createdAt: dayjs().toDate(),
         guildId: command.guild?.id ?? "DM",
         userId: command.user.id,
         type: "chat"
@@ -87,9 +80,21 @@ export default class Ask extends Command {
       messages: [{ content: question, role: "user" }]
     });
 
-    await command.editReply({
-      content: `Your chat has been created: ${thread}`
-    });
+    if (isPremiumUser) {
+      await command.editReply({
+        content: `Your chat has been created: ${thread}`
+      });
+    } else {
+      const user = await prisma.user.update({
+        where: { id: command.user.id },
+        data: { chatUsage: { decrement: 1 } }
+      });
+
+      await command.editReply({
+        content: `Your chat has been created: ${thread}`,
+        components: [{ type: 1, components: [getUsageButton(user.chatUsage)] }]
+      });
+    }
   }
 
 }
