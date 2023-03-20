@@ -15,7 +15,7 @@ model User {
   createdAt    String  @default("0")
   lastAsked    String  @default("0")
   askUsage     Int     @default(50)
-  chatUsage    Int     @default(20)
+  chatUsage    Int     @default(50)
   imageUsage   Int     @default(20)
   premium      Boolean @default(false)
   inTrial      Boolean @default(false)
