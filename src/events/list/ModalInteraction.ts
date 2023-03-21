@@ -6,6 +6,7 @@ import Event from "$core/events/Event";
 import { formatLinks, getLang, limit, msg } from "$core/utils/Message";
 import { getUser } from "$core/utils/User";
 import Client from "$core/Client";
+import { updateThread } from "$core/utils/Thread";
 
 export default class RequestAutocomplete extends Event {
 
@@ -100,7 +101,15 @@ export default class RequestAutocomplete extends Event {
       formatLinks(answer ?? chat.errors.openai[getLang(locale)])
     ];
 
-    // Sent the first and "reply" to second
+    const msgs = [];
+    msgs.push(
+      { content: content, role: "user" },
+      { content: formatLinks(answer ?? chat.errors.openai[getLang(locale)]), role: "assistant" }
+    );
+
+    // @ts-ignore
+    await updateThread(thread.id, { messages: msgs });
+
     thread.send(messages[0]).then((m) => {
       m.reply(messages[1]);
     });
