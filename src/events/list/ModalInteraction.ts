@@ -2,11 +2,11 @@ import { simpleEmbed } from "$core/utils/Embed";
 import { prisma } from "$core/utils/Prisma";
 import { Interaction, TextChannel, ThreadChannel } from "discord.js";
 import { chat } from "$resources/messages.json";
-import Event from "$core/events/Event";
 import { formatLinks, getLang, limit, msg } from "$core/utils/Message";
 import { getUser } from "$core/utils/User";
-import Client from "$core/Client";
 import { updateThread } from "$core/utils/Thread";
+import Event from "$core/events/Event";
+import Client from "$core/Client";
 
 export default class RequestAutocomplete extends Event {
 
@@ -29,7 +29,7 @@ export default class RequestAutocomplete extends Event {
     const channel = interaction.channel;
     if (!(channel instanceof TextChannel)) {
       await interaction.reply({
-        embeds: [simpleEmbed("Vous ne pouvez pas utiliser cette commande dans ce type de salon", "error", { f: interaction.user })],
+        embeds: [simpleEmbed(chat.errors.channel[getLang(interaction.locale)], "error", { f: interaction.user })],
         ephemeral: true
       });
       return;
@@ -45,14 +45,14 @@ export default class RequestAutocomplete extends Event {
     const thread = await prisma.thread.findFirst({ where: { modalId: customId } });
 
     if (!thread) {
-      interaction.reply({ embeds: [simpleEmbed("Une erreur c'est produite", "error", { f: interaction.user })] });
+      interaction.reply({ embeds: [simpleEmbed(chat.errors.thread[getLang(interaction.locale)], "error", { f: interaction.user })] });
       return;
     }
 
     const content = interaction.fields.getTextInputValue("content");
 
     await interaction.reply({
-      content: "<a:typing:1087703097498931290> Votre conversation est en cours de création",
+      content: chat.messages.creating[getLang(interaction.locale)],
       ephemeral: true
     });
 
@@ -72,8 +72,7 @@ export default class RequestAutocomplete extends Event {
         reason: "Create a conversation for the user"
       }).catch(async() => {
         await interaction.editReply({
-          content: ":thermometer_face: Quelque chose ne c'est pas passé comme prévu lors de la création du salon, réesseyez plus tard"
-          + "et si le problème persiste vérifier que le robot à les permissions nécessaire, ou contactez le support"
+          content: chat.errors.creating[getLang(interaction.locale)]
         });
       });
 
@@ -82,11 +81,11 @@ export default class RequestAutocomplete extends Event {
       this.create(threadChannel, content, customId, interaction.user.id, interaction.locale, answer);
 
       await interaction.editReply({
-        content: ":kissing: Votre conversation a été créee avec succès, vous pouvez la retrouver dans le salon <#" + threadChannel.id + ">"
+        content: msg(chat.messages.created[getLang(interaction.locale)], [threadChannel.id])
       });
     }).catch(async() => {
       await interaction.editReply({
-        content: ":head_bandage: Quelque chose ne c'est pas passé comme prévu, réesseyez plus tard et si le problème persiste, contactez le support"
+        content: chat.errors.response[getLang(interaction.locale)]
       });
     });
 

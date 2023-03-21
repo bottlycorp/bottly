@@ -54,6 +54,22 @@
       "openai": {
         "fr": "Une erreur est survenue lors de l'envoi de votre question à OpenAI, si cela se reproduit, vous pouvez contacter le support sur le [serveur support]({SUPPORT_SERVER_INVITE}).",
         "en-US": "An error occurred while sending your question to OpenAI, if it happens again, you can contact the support on the [support server]({SUPPORT_SERVER_INVITE})."      
+      },
+      "creating": {
+        "fr": ":thermometer_face: Quelque chose ne c'est pas passé comme prévu lors de la création du salon, réesseyez plus tard et si le problème persiste vérifier que le robot à les permissions nécessaire, ou contactez le support",
+        "en-US": ":thermometer_face: Something went wrong while creating the channel, please try again later and if the issue persists, make sure the bot has the necessary permissions or contact support."
+      },
+      "response": {
+        "fr": ":head_bandage: Quelque chose ne c'est pas passé comme prévu, réesseyez plus tard et si le problème persiste, contactez le support",
+        "en-US": ":head_bandage: Something went wrong, please try again later and if the issue persists, contact support."
+      },
+      "thread": {
+        "fr": ":head_bandage: Quelque chose ne c'est pas passé comme prévu pendant la création du salon, vérifier que le robot ai les permissions requises, si le problème perciste contactez un administrateur du serveur ou le support du robot",
+        "en-US": ":head_bandage: Something went wrong while creating the channel, please check that the bot has the necessary permissions. If the issue persists, contact a server administrator or the bot support."
+      },
+      "channel": {
+        "fr": "Vous ne pouvez utiliser cette commande dans ce type de salon",
+        "en-US": "You cannot use this command in this type of channel."
       }
     },
     "command": {
@@ -70,6 +86,14 @@
       "reply": {
         "fr": "Le salon de discussion a été créé, vous pouvez maintenant discuter avec le robot !",
         "en-US": "The discussion room has been created, you can now chat with the robot!"
+      },
+      "creating": {
+        "fr": "<a:typing:1087703097498931290> Votre conversation est en cours de création",
+        "en-US": "<a:typing:1087703097498931290> Your conversation is being created"
+      },
+      "created": {
+        "fr": ":kissing: Votre conversation a été créee avec succès, vous pouvez la retrouver dans le salon <#{id}>",
+        "en-US": ":kissing: Your conversation has been created successfully, you can find it in the channel <#{id}>"
       }
     }
   },
