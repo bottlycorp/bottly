@@ -61,9 +61,7 @@ export default class Client extends DiscordClient {
     this.taskManager = new TaskManager();
 
     this.on("ready", () => {
-      this.guilds.cache.forEach((guild) => {
-        Logger.where(`${guild.name} (${guild.memberCount} members) | ID: ${guild.id}`);
-      });
+      Logger.where("Actually in " + this.guilds.cache.size + " guilds for a total of " + this.users.cache.size + " users");
     });
   }
 

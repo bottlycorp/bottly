@@ -30,17 +30,25 @@ export default class Ask extends Command {
       }
     });
 
+    await prisma.stats.create({
+      data: {
+        userId: command.user.id,
+        guildId: command.guild.id,
+        type: "chat"
+      }
+    });
+
     const modal = new ModalBuilder()
       .setCustomId(randomId)
-      .setTitle("Démarrez une conversation")
+      .setTitle("Start a conversation")
       .addComponents(
         new ActionRowBuilder<TextInputBuilder>().addComponents(new TextInputBuilder()
           .setCustomId("content")
           .setStyle(TextInputStyle.Paragraph)
           .setRequired(true)
           .setMinLength(10)
-          .setLabel("La question initiale de la conversation")
-          .setPlaceholder("Qu'es ce que le 49.3"))
+          .setLabel("The question do you want to ask")
+          .setPlaceholder("What is the 49.3 ? #France"))
       );
 
     await command.showModal(modal);
