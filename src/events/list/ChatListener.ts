@@ -63,6 +63,7 @@ export default class ChatListener extends Event {
 
       await message.reply(formatLinks(firstMessage ?? "An error has occurred, or no response was found")).then(() => {
         message.reply(formatLinks(secondMessage ?? "An error has occurred, or no response was found"));
+        updateThread(channel.id, { active: false });
       });
       return;
     }
