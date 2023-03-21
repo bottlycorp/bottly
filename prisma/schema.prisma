@@ -26,6 +26,7 @@ model User {
 
 model Thread {
   threadId    String   @id
+  modalId     String   @default("none")
   createdAt   DateTime @default(now())
   lastMessage DateTime @default(now())
   guildId     String
