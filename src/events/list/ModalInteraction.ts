@@ -95,6 +95,8 @@ export default class RequestAutocomplete extends Event {
     await prisma.thread.updateMany({ where: { modalId: customId }, data: { threadId: thread.id } });
     await prisma.user.update({ where: { id: userId }, data: { chatUsage: { decrement: 1 } } });
 
+    if (!answer) answer = chat.errors.openai[getLang(locale)];
+
     const messages = [
       msg(chat.messages.started[getLang(locale)], [content]),
       formatLinks(answer ?? chat.errors.openai[getLang(locale)])
@@ -108,6 +110,17 @@ export default class RequestAutocomplete extends Event {
 
     // @ts-ignore
     await updateThread(thread.id, { messages: msgs });
+
+    if (answer.length > 1500) {
+      const firstMessage = answer.slice(0, 1500);
+      const secondMessage = answer.slice(1500, answer.length);
+
+      thread.send(messages[0]).then((m) => {
+        m.reply(firstMessage);
+        m.reply(secondMessage);
+      });
+      return;
+    }
 
     thread.send(messages[0]).then((m) => {
       m.reply(messages[1]);
