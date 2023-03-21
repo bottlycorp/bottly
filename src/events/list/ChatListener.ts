@@ -14,8 +14,11 @@ export default class ChatListener extends Event {
     if (!await checkThread(message.channel.id)) return;
     const thread = await getThread(message.channel.id);
 
+    if (message.mentions.users.size > 0) return;
+    if (message.content.startsWith(".")) return;
+
     if (!thread) return;
-    if (thread.active) {
+    if (thread.active && message.author.id !== Client.instance.user?.id) {
       message.delete();
       return;
     }
@@ -28,10 +31,6 @@ export default class ChatListener extends Event {
       return;
     }
 
-    if (message.mentions.users.size > 0) return;
-    if (message.content.startsWith(".")) return;
-
-
     if (message.author.id !== thread?.userId && message.author.id !== Client.instance.user?.id) {
       message.delete();
       return;
@@ -42,12 +41,16 @@ export default class ChatListener extends Event {
 
     await updateThread(channel.id, { active: true });
 
+    thread.messages.push({ content: message.content, role: "user" });
+
     const response = await Client.instance.openai.createChatCompletion({
       model: "gpt-3.5-turbo",
-      messages: [{ content: message.content, role: "user" }],
+      messages: thread.messages,
       max_tokens: 1500,
       temperature: 0.9
     });
+
+    await updateThread(channel.id, { messages: thread.messages });
 
     if (!response.data.choices[0].message?.content) {
       await message.reply(formatLinks("An error has occurred, or no response was found"));
@@ -58,8 +61,9 @@ export default class ChatListener extends Event {
       const firstMessage = response.data.choices[0].message?.content?.slice(0, 1500);
       const secondMessage = response.data.choices[0].message?.content?.slice(1500, response.data.choices[0].message?.content?.length);
 
-      await message.reply(formatLinks(firstMessage ?? "An error has occurred, or no response was found"));
-      await message.reply(formatLinks(secondMessage ?? "An error has occurred, or no response was found"));
+      await message.reply(formatLinks(firstMessage ?? "An error has occurred, or no response was found")).then(() => {
+        message.reply(formatLinks(secondMessage ?? "An error has occurred, or no response was found"));
+      });
       return;
     }
 

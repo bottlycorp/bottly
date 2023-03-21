@@ -50,44 +50,60 @@ export default class RequestAutocomplete extends Event {
 
     const content = interaction.fields.getTextInputValue("content");
 
-    const threadChannel = await channel.threads.create({
-      name: limit(content, 50, "..."),
-      autoArchiveDuration: 1440,
-      reason: "Create a conversation for the user"
+    await interaction.reply({
+      content: "<a:typing:1087703097498931290> Votre conversation est en cours de création",
+      ephemeral: true
     });
 
-
-    const response = await Client.instance.openai.createChatCompletion({
+    await Client.instance.openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [{ content: content, role: "user" }],
       max_tokens: 1500,
       temperature: 0.9
-    });
+    }).then(async response => {
+      let answer: string;
+      if (response.data.choices[0].message?.content) answer = response.data.choices[0].message.content;
+      else answer = chat.errors.openai[getLang(interaction.locale)];
 
-    let answer: string;
-    if (response.data.choices[0].message?.content) answer = response.data.choices[0].message.content;
-    else answer = chat.errors.openai[getLang(interaction.locale)];
+      const threadChannel = await channel.threads.create({
+        name: limit(content, 50, "..."),
+        autoArchiveDuration: 1440,
+        reason: "Create a conversation for the user"
+      }).catch(async() => {
+        await interaction.editReply({
+          content: ":thermometer_face: Quelque chose ne c'est pas passé comme prévu lors de la création du salon, réesseyez plus tard"
+          + "et si le problème persiste vérifier que le robot à les permissions nécessaire, ou contactez le support"
+        });
+      });
 
-    // this.create(threadChannel, content, customId, interaction.user.id, interaction.locale, answer);
+      if (!threadChannel) return;
 
-    await interaction.reply({
-      embeds: [simpleEmbed(answer, "success", { f: interaction.user })]
+      this.create(threadChannel, content, customId, interaction.user.id, interaction.locale, answer);
+
+      await interaction.editReply({
+        content: ":kissing: Votre conversation a été créee avec succès, vous pouvez la retrouver dans le salon <#" + threadChannel.id + ">"
+      });
+    }).catch(async() => {
+      await interaction.editReply({
+        content: ":head_bandage: Quelque chose ne c'est pas passé comme prévu, réesseyez plus tard et si le problème persiste, contactez le support"
+      });
     });
 
   }
 
   public create = async(thread: ThreadChannel, content: string, customId: string, userId: string, locale: string, answer?: string): Promise<void> => {
-    // await prisma.thread.updateMany({ where: { modalId: customId }, data: { threadId: thread.id } });
-    // await prisma.user.update({ where: { id: userId }, data: { chatUsage: { decrement: 1 } } });
+    await prisma.thread.updateMany({ where: { modalId: customId }, data: { threadId: thread.id } });
+    await prisma.user.update({ where: { id: userId }, data: { chatUsage: { decrement: 1 } } });
 
     const messages = [
       msg(chat.messages.started[getLang(locale)], [content]),
       formatLinks(answer ?? chat.errors.openai[getLang(locale)])
     ];
 
-    for (const message of messages) {
-      console.log(message);
-    }
+    // Sent the first and "reply" to second
+    thread.send(messages[0]).then((m) => {
+      m.reply(messages[1]);
+    });
   };
 
 }
