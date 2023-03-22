@@ -298,5 +298,43 @@
         }
       }
     }
+  },
+  "contexts": {
+    "discussion": {
+      "title": {
+        "fr": "Contexte de la discussion",
+        "en-US": "Discussion context"
+      },
+      "messages": {
+        "errors": {
+          "error": {
+            "fr": "Une erreur est survenue lors de la génération du contexte, veuillez réessayer",
+            "en-US": "An error occurred while generating the context, please try again"
+          },
+          "no-context": {
+            "fr": "Aucun contexte trouvé",
+            "en-US": "No context found"
+          },
+          "missed": {
+            "fr": "Vous avez manqué le message, veuillez réessayer",
+            "en-US": "You missed the message, please try again"
+          }
+        },
+        "success": {
+          "analyzing": {
+            "fr": "<a:typing:1087703097498931290> Je suis en train d'analyser les `{MSG}` derniers messages",
+            "en-US": "<a:typing:1087703097498931290> I'm analyzing the `{MSG}` last messages"
+          },
+          "context-ask": {
+            "fr": "Peut tu me dire le contexte de la conversation suivante, de quoi ils parlent ?",
+            "en-US": "Can you tell me the context of the following conversation, what are they talking about ?"
+          },
+          "choose-count": {
+            "fr": "Combien de messages voulez vous contexter ?",
+            "en-US": "How many messages do you want to contextualize?"
+          }
+        }
+      }
+    }
   }
 }
