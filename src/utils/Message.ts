@@ -53,3 +53,7 @@ export const getLang = (locale: string): "en-US" | "fr" => {
   else return "en-US";
   // TODO: Add more languages here
 };
+
+export const formatLinks = (markdown: string): string => {
+  return markdown.replace(/\[([\w\s]+)\]\((.+?)\)/g, "$2");
+};

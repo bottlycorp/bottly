@@ -11,6 +11,7 @@ export default class Ready extends Event {
 
   public async execute(): Promise<void> {
     Client.instance.commandManager.register();
+    Client.instance.contextManager.register();
     Logger.success("Client has been successfully initialized.");
 
     Client.instance.user?.setActivity({

@@ -20,7 +20,7 @@ export default class MonthlyCharge extends Task {
         where: {},
         data: {
           imageUsage: 20,
-          chatUsage: 50,
+          chatUsage: 20,
           askUsage: 50
         }
       });
