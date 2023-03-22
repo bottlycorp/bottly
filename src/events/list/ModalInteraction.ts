@@ -111,9 +111,9 @@ export default class RequestAutocomplete extends Event {
     // @ts-ignore
     await updateThread(thread.id, { messages: msgs });
 
-    if (answer.length > 1500) {
+    if (answer.length >= 1999) {
       const firstMessage = answer.slice(0, 1500);
-      const secondMessage = answer.slice(1500, answer.length);
+      const secondMessage = answer.slice(1599, answer.length);
 
       thread.send(messages[0]).then((m) => {
         m.reply(firstMessage);
