@@ -7,6 +7,8 @@ import TaskManager from "$core/tasks/TaskManager";
 import "dotenv/config";
 import Stripe from "stripe";
 import dayjs from "dayjs";
+import ContextManager from "./contexts/ContextManager";
+
 
 export default class Client extends DiscordClient {
 
@@ -17,6 +19,8 @@ export default class Client extends DiscordClient {
   public readonly eventManager: EventManager;
 
   public readonly commandManager: CommandManager;
+
+  public readonly contextManager: ContextManager;
 
   public readonly taskManager: TaskManager;
 
@@ -58,6 +62,7 @@ export default class Client extends DiscordClient {
 
     this.eventManager = new EventManager();
     this.commandManager = new CommandManager();
+    this.contextManager = new ContextManager();
     this.taskManager = new TaskManager();
 
     this.on("ready", () => {
