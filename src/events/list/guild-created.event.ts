@@ -1,9 +1,9 @@
 import Event from "$core/events/event";
-import Logger from "$core/utils/logger.utils";
-import Client from "$core/lient";
+import Logger from "$core/utils/logger";
+import Client from "$core/client";
 import { Guild } from "discord.js";
 import "dotenv/config";
-import { simpleEmbed } from "$core/utils/embed.utils";
+import { simpleEmbed } from "$core/utils/embed";
 
 export default class onInvited extends Event {
 

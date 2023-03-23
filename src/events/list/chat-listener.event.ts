@@ -1,6 +1,6 @@
-import Client from "$core/lient";
+import Client from "$core/client";
 import Event from "$core/events/event";
-import { checkThread, getThread, updateThread } from "$core/utils/thread.utils";
+import { checkThread, getThread, updateThread } from "$core/utils/thread";
 import { Message, MessageType } from "discord.js";
 
 export default class ChatListener extends Event {

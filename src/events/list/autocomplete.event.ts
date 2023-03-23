@@ -1,7 +1,7 @@
-import Client from "$core/lient";
+import Client from "$core/client";
 import Event from "$core/events/event";
-import { limit } from "$core/utils/message.utils";
-import { getRequests } from "$core/utils/user.utils";
+import { limit } from "$core/utils/message";
+import { getRequests } from "$core/utils/user";
 import { Interaction } from "discord.js";
 
 export default class RequestAutocomplete extends Event {

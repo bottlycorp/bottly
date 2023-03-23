@@ -1,6 +1,6 @@
 import { Client as DiscordClient, GatewayIntentBits, Partials, WebhookClient } from "discord.js";
 import { Configuration, OpenAIApi } from "openai";
-import Logger from "$core/utils/logger.utils";
+import Logger from "$core/utils/logger";
 import CommandManager from "$core/commands/command.manager";
 import EventManager from "$core/events/event.manager";
 import TaskManager from "$core/tasks/task.manager";

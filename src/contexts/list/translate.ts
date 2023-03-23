@@ -7,9 +7,9 @@ import {
 } from "discord.js";
 import { contexts } from "$resources/messages.json";
 import { SelectMenuBuilder } from "@discordjs/builders";
-import { Locales } from "$core/utils/models.utils";
-import Client from "$core/lient";
-import { getLang } from "$core/utils/message.utils";
+import { Locales } from "$core/utils/models";
+import Client from "$core/client";
+import { getLang } from "$core/utils/message";
 import Context from "$core/contexts/context";
 
 export default class They extends Context {

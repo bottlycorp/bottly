@@ -1,8 +1,8 @@
 import { lstatSync, readdirSync } from "fs";
 import { join } from "path";
 import Event from "$core/events/event";
-import Client from "$core/lient";
-import Logger from "$core/utils/logger.utils";
+import Client from "$core/client";
+import Logger from "$core/utils/logger";
 
 export default class EventManager {
 

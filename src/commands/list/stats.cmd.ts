@@ -1,7 +1,7 @@
 import { AttachmentBuilder, ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption } from "discord.js";
 import { ChartConfiguration } from "chart.js";
 import { ChartJSNodeCanvas } from "chartjs-node-canvas";
-import { prisma } from "$core/utils/prisma.utils";
+import { prisma } from "$core/utils/prisma";
 import { stats } from "$resources/messages.json";
 import Command from "$core/commands/command";
 

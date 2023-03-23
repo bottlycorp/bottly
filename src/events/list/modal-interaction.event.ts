@@ -1,12 +1,12 @@
-import { simpleEmbed } from "$core/utils/embed.utils";
-import { prisma } from "$core/utils/prisma.utils";
+import { simpleEmbed } from "$core/utils/embed";
+import { prisma } from "$core/utils/prisma";
 import { Interaction, TextChannel, ThreadChannel } from "discord.js";
 import { chat } from "$resources/messages.json";
-import { formatLinks, getLang, limit, msg } from "$core/utils/message.utils";
-import { getUser } from "$core/utils/user.utils";
-import { updateThread } from "$core/utils/thread.utils";
+import { formatLinks, getLang, limit, msg } from "$core/utils/message";
+import { getUser } from "$core/utils/user";
+import { updateThread } from "$core/utils/thread";
 import Event from "$core/events/event";
-import Client from "$core/lient";
+import Client from "$core/client";
 
 export default class RequestAutocomplete extends Event {
 

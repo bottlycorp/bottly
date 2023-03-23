@@ -2,8 +2,8 @@ import { chat } from "$resources/messages.json";
 import Command from "$core/commands/command";
 import { ActionRowBuilder, ChatInputCommandInteraction, ModalBuilder, SlashCommandBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
 import "dotenv/config";
-import { prisma } from "$core/utils/prisma.utils";
-import { checkUser } from "$core/utils/user.utils";
+import { prisma } from "$core/utils/prisma";
+import { checkUser } from "$core/utils/user";
 
 export default class Ask extends Command {
 
