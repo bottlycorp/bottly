@@ -1,7 +1,7 @@
-import Client from "$core/client";
+import Client from "$core/lient";
 import Task from "$core/tasks/task";
-import Logger from "$core/utils/logger";
-import { prisma } from "$core/utils/prisma";
+import Logger from "$core/utils/logger.utils";
+import { prisma } from "$core/utils/prisma.utils";
 import dayjs from "dayjs";
 import "dotenv/config";
 

@@ -6,8 +6,8 @@ import {
 } from "discord.js";
 import { contexts, ask } from "$resources/messages.json";
 import Context from "$core/contexts/context";
-import Client from "$core/client";
-import { getLang, msg } from "$core/utils/message";
+import Client from "$core/lient";
+import { getLang, msg } from "$core/utils/message.utils";
 
 export default class They extends Context {
 

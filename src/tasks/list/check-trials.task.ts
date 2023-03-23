@@ -1,6 +1,6 @@
 import Task from "$core/tasks/task";
-import { prisma } from "$core/utils/prisma";
-import { checkTrial } from "$core/utils/trial";
+import { prisma } from "$core/utils/prisma.utils";
+import { checkTrial } from "$core/utils/trial.utils";
 import "dotenv/config";
 
 export default class CheckTrials extends Task {

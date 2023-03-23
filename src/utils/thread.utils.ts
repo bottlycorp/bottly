@@ -1,4 +1,4 @@
-import { prisma } from "$core/utils/prisma";
+import { prisma } from "$core/utils/prisma.utils";
 import { Thread } from "$core/utils/types/thread.types";
 
 /**

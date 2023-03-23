@@ -7,10 +7,10 @@ import {
   ComponentType
 } from "discord.js";
 import { contexts } from "$resources/messages.json";
-import { getLang, msg } from "$core/utils/message";
-import { simpleEmbed } from "$core/utils/embed";
+import { getLang, msg } from "$core/utils/message.utils";
+import { simpleEmbed } from "$core/utils/embed.utils";
 import Context from "$core/contexts/context";
-import Client from "$core/client";
+import Client from "$core/lient";
 import { SelectMenuBuilder } from "@discordjs/builders";
 
 interface IMessage {

@@ -1,5 +1,5 @@
 import { subscription } from "$resources/messages.json";
-import { checkUser, getUser, updateUser } from "$core/utils/user";
+import { checkUser, getUser, updateUser } from "$core/utils/user.utils";
 import {
   ButtonStyle,
   ChatInputCommandInteraction,
@@ -8,12 +8,12 @@ import {
   SlashCommandSubcommandBuilder,
   TextChannel
 } from "discord.js";
-import { simpleEmbed } from "$core/utils/embed";
-import { prisma } from "$core/utils/prisma";
-import { findSubscriptionByEmail } from "$core/utils/stripe";
-import { msg, getLang } from "$core/utils/message";
+import { simpleEmbed } from "$core/utils/embed.utils";
+import { prisma } from "$core/utils/prisma.utils";
+import { findSubscriptionByEmail } from "$core/utils/stripe.utils";
+import { msg, getLang } from "$core/utils/message.utils";
 import { ButtonBuilder } from "@discordjs/builders";
-import { startTrial } from "$core/utils/trial";
+import { startTrial } from "$core/utils/trial.utils";
 import Command from "$core/commands/command";
 
 export default class Subscription extends Command {

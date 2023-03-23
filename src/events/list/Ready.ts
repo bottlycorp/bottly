@@ -1,6 +1,6 @@
 import Event from "$core/events/event";
-import Logger from "$core/utils/logger";
-import Client from "$core/client";
+import Logger from "$core/utils/logger.utils";
+import Client from "$core/lient";
 import { ActivityType } from "discord.js";
 
 export default class Ready extends Event {

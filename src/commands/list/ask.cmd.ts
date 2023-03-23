@@ -2,14 +2,14 @@ import dayjs from "dayjs";
 import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption, TextChannel } from "discord.js";
 import Command from "$core/commands/command";
 import { ask } from "$resources/messages.json";
-import { AskContextOptions, buildQuestion, BuildQuestionContext, BuildQuestionLanguage, Locales } from "$core/utils/models";
-import { checkUser, getUser, isPremium, updateUser } from "$core/utils/user";
-import { getRevealButton, getUsageButton, simpleEmbed } from "$core/utils/embed";
-import { getLang } from "$core/utils/message";
-import Client from "$core/client";
+import { AskContextOptions, buildQuestion, BuildQuestionContext, BuildQuestionLanguage, Locales } from "$core/utils/models.utils";
+import { checkUser, getUser, isPremium, updateUser } from "$core/utils/user.utils";
+import { getRevealButton, getUsageButton, simpleEmbed } from "$core/utils/embed.utils";
+import { getLang } from "$core/utils/message.utils";
+import Client from "$core/lient";
 import { ButtonBuilder } from "@discordjs/builders";
-import logger from "$core/utils/logger";
-import { prisma } from "$core/utils/prisma";
+import logger from "$core/utils/logger.utils";
+import { prisma } from "$core/utils/prisma.utils";
 
 export default class Ask extends Command {
 

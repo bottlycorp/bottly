@@ -1,4 +1,4 @@
-import Client from "$core/client";
+import Client from "$core/lient";
 import "dotenv/config";
 
 export const premiumRole: (action: "add" | "remove", userId: string) => Promise<void> = async(action, member) => {
