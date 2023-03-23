@@ -1,5 +1,5 @@
 import Client from "$core/client";
-import Task from "$core/tasks/taskk";
+import Task from "$core/tasks/task";
 import { prisma } from "$core/utils/prisma";
 import { premiumRole } from "$core/utils/roles";
 import { findAllSubscriptionsByEmail } from "$core/utils/stripe";

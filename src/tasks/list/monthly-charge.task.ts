@@ -1,5 +1,5 @@
 import Client from "$core/client";
-import Task from "$core/tasks/taskk";
+import Task from "$core/tasks/task";
 import Logger from "$core/utils/logger";
 import { prisma } from "$core/utils/prisma";
 import dayjs from "dayjs";
