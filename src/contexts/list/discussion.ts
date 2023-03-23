@@ -92,10 +92,11 @@ export default class They extends Context {
           if (response.data.choices[0].text) {
             await interaction.editReply(response.data.choices[0].text);
             collector.stop();
-          } else {
-            await interaction.editReply({ embeds: [simpleEmbed(contexts.discussion.messages.errors.error[getLang(locale)], "error", { f: user })] });
-            collector.stop();
+            return;
           }
+
+          await interaction.editReply({ embeds: [simpleEmbed(contexts.discussion.messages.errors.error[getLang(locale)], "error", { f: user })] });
+          collector.stop();
         }
       });
     }

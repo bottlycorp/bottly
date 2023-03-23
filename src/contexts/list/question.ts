@@ -36,7 +36,7 @@ export default class They extends Context {
         temperature: 0.9
       });
 
-      if (!response.data.choices[0].message?.content) {
+      if (response.data.choices[0].message?.content) {
         await interaction.editReply({ content: response.data.choices[0].message?.content });
         return;
       }
