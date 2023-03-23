@@ -45,7 +45,16 @@ export default class Stats extends Command {
 
     const data = guilds.reduce((acc, cur) => {
       const date = cur.createdAt.toISOString().split("T")[0];
-      if (!acc[date]) acc[date] = { ask: 0, history: 0, request: 0, chat: 0, contextDiscussion: 0, contextQuestion: 0, contextTranslate: 0 };
+      if (!acc[date]) acc[date] = {
+        ask: 0,
+        history: 0,
+        request: 0,
+        chat: 0,
+        contextDiscussion: 0,
+        contextQuestion: 0,
+        contextTranslate: 0,
+        chatActivity: 0
+      };
       acc[date][cur.type]++;
       return acc;
     }, {} as Record<string, {
@@ -56,6 +65,7 @@ export default class Stats extends Command {
       contextDiscussion: number;
       contextQuestion: number;
       contextTranslate: number;
+      chatActivity: number;
     }>);
 
     const config: ChartConfiguration = {
@@ -92,6 +102,14 @@ export default class Stats extends Command {
             data: Object.values(data).map((v) => v.chat),
             backgroundColor: "#f04747",
             borderColor: "#f04747",
+            borderWidth: 1,
+            tension: 0.4
+          },
+          {
+            label: "Chat Activity",
+            data: Object.values(data).map((v) => v.chatActivity),
+            backgroundColor: "#f939af",
+            borderColor: "#f939af",
             borderWidth: 1,
             tension: 0.4
           },

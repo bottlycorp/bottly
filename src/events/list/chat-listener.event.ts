@@ -1,5 +1,6 @@
 import Client from "$core/client";
 import Event from "$core/events/event";
+import { prisma } from "$core/utils/prisma";
 import { checkThread, getThread, updateThread } from "$core/utils/thread";
 import { Message, MessageType } from "discord.js";
 
@@ -39,6 +40,14 @@ export default class ChatListener extends Event {
           max_tokens: 1500,
           temperature: 0.9,
           messages: chat.messages
+        });
+
+        await prisma.stats.create({
+          data: {
+            type: "chatActivity",
+            guildId: channel.guild.id,
+            userId: message.author.id
+          }
         });
 
         const content = response.data.choices[0].message?.content ?? "An error occurred while processing your request";

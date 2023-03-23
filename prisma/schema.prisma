@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -15,7 +12,7 @@ model User {
   createdAt    String  @default("0")
   lastAsked    String  @default("0")
   askUsage     Int     @default(50)
-  chatUsage    Int     @default(20)
+  chatUsage    Int     @default(50)
   imageUsage   Int     @default(20)
   premium      Boolean @default(false)
   inTrial      Boolean @default(false)
@@ -32,6 +29,7 @@ model Thread {
   userId      String
   messages    Json     @default("[]")
   active      Boolean  @default(false)
+  modalId     String   @default("none")
 }
 
 model Requests {
