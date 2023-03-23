@@ -58,7 +58,6 @@ export default class Client extends DiscordClient {
       else Logger.error("Webhook not initialized");
     }
 
-
     this.eventManager = new EventManager();
     this.commandManager = new CommandManager();
     this.contextManager = new ContextManager();

@@ -64,6 +64,8 @@ export default class They extends Context {
           if (translated.data.choices[0].message?.content) {
             await interaction.editReply({ content: translated.data.choices[0].message.content, components: [] });
             collector.stop();
+
+            return;
           }
 
           await interaction.editReply({ content: "An error occured while translating the message", components: [] });
