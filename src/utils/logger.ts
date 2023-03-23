@@ -1,31 +1,31 @@
-import chalk from "chalk";
+import { blue, gray, green, red, reset, yellow } from "colors";
 
 export default {
   info(message: string) {
-    console.log(chalk.yellow("[INFO]") + chalk.gray("         ") + chalk.reset(message));
+    console.log(yellow("[INFO]") + gray("         ") + reset(message));
   },
 
   success(message: string) {
-    console.log(chalk.green("[SUCCESS]") + chalk.gray("      ") + chalk.reset(message));
+    console.log(green("[SUCCESS]") + gray("      ") + reset(message));
   },
 
   error(message: string) {
-    console.log(chalk.red("[ERROR]") + chalk.gray("        ") + chalk.reset(message));
+    console.log(red("[ERROR]") + gray("        ") + reset(message));
   },
 
   request(message: string) {
-    console.log(chalk.blue("[REQUEST]") + chalk.gray("      ") + chalk.reset(message));
+    console.log(blue("[REQUEST]") + gray("      ") + reset(message));
   },
 
   chat(message: string) {
-    console.log(chalk.blue("[CHAT]") + chalk.gray("      ") + chalk.reset(message));
+    console.log(blue("[CHAT]") + gray("      ") + reset(message));
   },
 
   context(message: string) {
-    console.log(chalk.blue("[CONTEXT]") + chalk.gray("      ") + chalk.reset(message));
+    console.log(blue("[CONTEXT]") + gray("      ") + reset(message));
   },
 
   where(message: string) {
-    console.log(chalk.blue("[WHERE I AM]") + chalk.gray("   ") + chalk.reset(message));
+    console.log(blue("[WHERE I AM]") + gray("   ") + reset(message));
   }
 };

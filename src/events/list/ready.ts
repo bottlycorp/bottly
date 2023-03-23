@@ -11,14 +11,21 @@ export default class Ready extends Event {
 
   public async execute(): Promise<void> {
     Client.instance.commandManager.register();
-    Logger.success("Client has been successfully initialized.");
+    await Client.instance.taskManager.load();
 
     Client.instance.user?.setActivity({
       name: "GPT-3",
       type: ActivityType.Playing
     });
 
-    Client.instance.taskManager.load();
+
+    let members = 0;
+    Client.instance.guilds.cache.forEach((guild) => {
+      members += guild.memberCount;
+    });
+
+    Logger.success(`Logged in as ${Client.instance.user?.tag}!`);
+    Logger.info(`Serving ${Client.instance.guilds.cache.size} servers with ${members} members`);
   }
 
 }

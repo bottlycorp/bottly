@@ -10,16 +10,16 @@
 		"start": "npm run db:generate && node -r @swc-node/register -r tsconfig-paths/register ./src/client.ts",
 		"db:generate": "prisma generate",
 		"db:to": "prisma format && prisma generate && prisma db push",
-    "lint": "eslint ./src",
-    "lint:fix": "eslint ./src --fix"
+		"lint": "eslint ./src",
+		"lint:fix": "eslint ./src --fix"
 	},
 	"dependencies": {
 		"@bluzzi/eslint-config": "^0.8.8",
 		"@discordjs/builders": "^1.4.0",
-		"chalk": "^4.1.2",
-		"dayjs": "^1.11.7",
 		"chart.js": "^3.9.1",
 		"chartjs-node-canvas": "^4.1.6",
+		"colors": "^1.4.0",
+		"dayjs": "^1.11.7",
 		"discord.js": "^14.3.0",
 		"eslint": "^8.35.0",
 		"openai": "^3.2.1",
