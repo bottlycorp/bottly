@@ -12,6 +12,8 @@ import { simpleEmbed } from "$core/utils/embed";
 import Context from "$core/contexts/context";
 import Client from "$core/client";
 import { SelectMenuBuilder } from "@discordjs/builders";
+import logger from "$core/utils/logger";
+import { prisma } from "$core/utils/prisma";
 
 interface IMessage {
   content: string;
@@ -90,6 +92,16 @@ export default class They extends Context {
           });
 
           if (response.data.choices[0].text) {
+            logger.context("Conversation context generated.");
+
+            await prisma.stats.create({
+              data: {
+                type: "contextDiscussion",
+                guildId: interaction.guildId ?? "DM",
+                userId: interaction.user.id ?? "DM"
+              }
+            });
+
             await interaction.editReply(response.data.choices[0].text);
             collector.stop();
             return;

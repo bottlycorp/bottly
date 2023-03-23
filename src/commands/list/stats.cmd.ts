@@ -45,10 +45,18 @@ export default class Stats extends Command {
 
     const data = guilds.reduce((acc, cur) => {
       const date = cur.createdAt.toISOString().split("T")[0];
-      if (!acc[date]) acc[date] = { ask: 0, history: 0, request: 0, chat: 0 };
+      if (!acc[date]) acc[date] = { ask: 0, history: 0, request: 0, chat: 0, contextDiscussion: 0, contextQuestion: 0, contextTranslate: 0 };
       acc[date][cur.type]++;
       return acc;
-    }, {} as Record<string, { ask: number; history: number; request: number; chat: number }>);
+    }, {} as Record<string, {
+      ask: number;
+      history: number;
+      request: number;
+      chat: number;
+      contextDiscussion: number;
+      contextQuestion: number;
+      contextTranslate: number;
+    }>);
 
     const config: ChartConfiguration = {
       type: "line",
@@ -84,6 +92,30 @@ export default class Stats extends Command {
             data: Object.values(data).map((v) => v.chat),
             backgroundColor: "#f04747",
             borderColor: "#f04747",
+            borderWidth: 1,
+            tension: 0.4
+          },
+          {
+            label: "Ctx: Translate",
+            data: Object.values(data).map((v) => v.contextTranslate),
+            backgroundColor: "#974be3",
+            borderColor: "#974be3",
+            borderWidth: 1,
+            tension: 0.4
+          },
+          {
+            label: "Ctx: Question",
+            data: Object.values(data).map((v) => v.contextQuestion),
+            backgroundColor: "#4be376",
+            borderColor: "#4be376",
+            borderWidth: 1,
+            tension: 0.4
+          },
+          {
+            label: "Ctx: Discussion",
+            data: Object.values(data).map((v) => v.contextDiscussion),
+            backgroundColor: "#c5e34b",
+            borderColor: "#c5e34b",
             borderWidth: 1,
             tension: 0.4
           }

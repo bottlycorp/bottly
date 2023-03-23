@@ -8,6 +8,8 @@ import { contexts, ask } from "$resources/messages.json";
 import Context from "$core/contexts/context";
 import Client from "$core/client";
 import { getLang, msg } from "$core/utils/message";
+import logger from "$core/utils/logger";
+import { prisma } from "$core/utils/prisma";
 
 export default class They extends Context {
 
@@ -37,6 +39,16 @@ export default class They extends Context {
       });
 
       if (response.data.choices[0].message?.content) {
+        logger.context(targetMessage.content);
+
+        await prisma.stats.create({
+          data: {
+            type: "contextQuestion",
+            guildId: interaction.guildId ?? "DM",
+            userId: interaction.user.id ?? "DM"
+          }
+        });
+
         await interaction.editReply({ content: response.data.choices[0].message?.content });
         return;
       }

@@ -17,6 +17,14 @@ export default {
     console.log(chalk.blue("[REQUEST]") + chalk.gray("      ") + chalk.reset(message));
   },
 
+  chat(message: string) {
+    console.log(chalk.blue("[CHAT]") + chalk.gray("      ") + chalk.reset(message));
+  },
+
+  context(message: string) {
+    console.log(chalk.blue("[CONTEXT]") + chalk.gray("      ") + chalk.reset(message));
+  },
+
   where(message: string) {
     console.log(chalk.blue("[WHERE I AM]") + chalk.gray("   ") + chalk.reset(message));
   }

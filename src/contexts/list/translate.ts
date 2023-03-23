@@ -11,6 +11,8 @@ import { Locales } from "$core/utils/models";
 import Client from "$core/client";
 import { getLang } from "$core/utils/message";
 import Context from "$core/contexts/context";
+import { prisma } from "$core/utils/prisma";
+import logger from "$core/utils/logger";
 
 export default class They extends Context {
 
@@ -62,6 +64,16 @@ export default class They extends Context {
           });
 
           if (translated.data.choices[0].message?.content) {
+            logger.context("Translate the message \"" + message + "\" in " + language);
+
+            await prisma.stats.create({
+              data: {
+                type: "contextTranslate",
+                guildId: interaction.guildId ?? "DM",
+                userId: interaction.user.id ?? "DM"
+              }
+            });
+
             await interaction.editReply({ content: translated.data.choices[0].message.content, components: [] });
             collector.stop();
 
