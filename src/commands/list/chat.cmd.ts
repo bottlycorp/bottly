@@ -3,7 +3,7 @@ import Command from "$core/commands/Command";
 import { ActionRowBuilder, ChatInputCommandInteraction, ModalBuilder, SlashCommandBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
 import "dotenv/config";
 import { prisma } from "$core/utils/Prisma";
-import { checkUser } from "$core/utils/User";
+import { checkUser } from "$core/utils/user";
 
 export default class Ask extends Command {
 

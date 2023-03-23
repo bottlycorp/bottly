@@ -1,9 +1,9 @@
 import { Collection } from "discord.js";
 import { readdirSync } from "fs";
-import Client from "$core/Client";
-import Logger from "$core/utils/Logger";
+import Client from "$core/client";
+import Logger from "$core/utils/logger";
+import Context from "$core/contexts/context";
 import "dotenv/config";
-import Context from "$core/contexts/Context";
 
 export default class ContextManager {
 

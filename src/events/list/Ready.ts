@@ -1,6 +1,6 @@
-import Event from "$core/events/Event";
-import Logger from "$core/utils/Logger";
-import Client from "$core/Client";
+import Event from "$core/events/event";
+import Logger from "$core/utils/logger";
+import Client from "$core/client";
 import { ActivityType } from "discord.js";
 
 export default class Ready extends Event {
@@ -11,7 +11,6 @@ export default class Ready extends Event {
 
   public async execute(): Promise<void> {
     Client.instance.commandManager.register();
-    Client.instance.contextManager.register();
     Logger.success("Client has been successfully initialized.");
 
     Client.instance.user?.setActivity({

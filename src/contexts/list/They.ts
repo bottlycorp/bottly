@@ -7,10 +7,10 @@ import {
   ComponentType
 } from "discord.js";
 import { contexts } from "$resources/messages.json";
-import { getLang, msg } from "$core/utils/Message";
-import { simpleEmbed } from "$core/utils/Embed";
-import Context from "$core/contexts/Context";
-import Client from "$core/Client";
+import { getLang, msg } from "$core/utils/message";
+import { simpleEmbed } from "$core/utils/embed";
+import Context from "$core/contexts/context";
+import Client from "$core/client";
 import { SelectMenuBuilder } from "@discordjs/builders";
 
 interface IMessage {
@@ -21,8 +21,6 @@ interface IMessage {
 export default class They extends Context {
 
   public guildOnly = true;
-
-  public earlyAccess = true;
 
   public readonly context = new ContextMenuCommandBuilder()
     .setName(contexts.discussion.title["en-US"])

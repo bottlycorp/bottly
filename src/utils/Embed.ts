@@ -54,3 +54,10 @@ export function getUsageButton(usage: number) : ButtonBuilder {
   else button.setLabel(`⛽ ${usage}/50 (monthly)`);
   return button;
 }
+
+export function getRevealButton(usage: number) : ButtonBuilder {
+  return new ButtonBuilder()
+    .setCustomId(`reveal_${usage}`)
+    .setLabel("Reveal")
+    .setStyle(ButtonStyle.Secondary);
+}

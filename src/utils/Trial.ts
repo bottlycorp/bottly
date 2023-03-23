@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { prisma } from "./Prisma";
-import { getUser } from "./User";
+import { prisma } from "./prisma";
+import { getUser } from "./user";
 
 export const startTrial = async(userId: string): Promise<boolean> => {
   const user = await getUser(userId);

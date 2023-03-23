@@ -1,5 +1,5 @@
-import Event from "$core/events/Event";
-import { checkUser, getUser } from "$core/utils/User";
+import Event from "$core/events/event";
+import { checkUser, getUser } from "$core/utils/user";
 import { GuildMember } from "discord.js";
 
 export default class MemberJoin extends Event {

@@ -1,4 +1,4 @@
-import Client from "$core/Client";
+import Client from "$core/client";
 import "dotenv/config";
 import Stripe from "stripe";
 

@@ -1,4 +1,4 @@
-import { getCommandId } from "$core/commands/CommandUtils";
+import { getCommandId } from "$core/commands/command.utils";
 import "dotenv/config";
 
 const StripeRecord: Record<string, string> = {

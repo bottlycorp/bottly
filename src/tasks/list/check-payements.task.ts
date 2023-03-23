@@ -1,8 +1,8 @@
-import Client from "$core/Client";
-import Task from "$core/tasks/Task";
-import { prisma } from "$core/utils/Prisma";
-import { premiumRole } from "$core/utils/Roles";
-import { findAllSubscriptionsByEmail } from "$core/utils/Stripe";
+import Client from "$core/client";
+import Task from "$core/tasks/task";
+import { prisma } from "$core/utils/prisma";
+import { premiumRole } from "$core/utils/roles";
+import { findAllSubscriptionsByEmail } from "$core/utils/stripe";
 import "dotenv/config";
 
 export default class CheckPayements extends Task {

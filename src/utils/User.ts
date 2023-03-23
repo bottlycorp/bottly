@@ -1,4 +1,4 @@
-import { prisma } from "$core/utils/Prisma";
+import { prisma } from "$core/utils/prisma";
 import { User } from "$core/utils/types/user.types";
 import "dotenv/config";
 import { Request } from "$core/utils/types/request.types";

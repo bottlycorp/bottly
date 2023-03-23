@@ -35,16 +35,16 @@ export const findLanguageOption = (value: string): string => {
 };
 
 export const Locales = [
-  { name: "🇺🇸 English", value: "en" },
-  { name: "🇫🇷 Français", value: "fr" },
-  { name: "🇪🇸 Español", value: "es" },
-  { name: "🇮🇹 Italiano", value: "it" },
-  { name: "🇩🇪 Deutsch", value: "de" },
-  { name: "🇯🇵 日本語", value: "ja" },
-  { name: "🇰🇷 한국어", value: "ko" },
-  { name: "🇵🇹 Português", value: "pt" },
-  { name: "🇷🇺 Русский", value: "ru" },
-  { name: "🇨🇳 中文", value: "zh" }
+  { name: "🇺🇸 English", value: "en", longValue: "English" },
+  { name: "🇫🇷 Français", value: "fr", longValue: "Français" },
+  { name: "🇪🇸 Español", value: "es", longValue: "Español" },
+  { name: "🇮🇹 Italiano", value: "it", longValue: "Italiano" },
+  { name: "🇩🇪 Deutsch", value: "de", longValue: "Deutsch" },
+  { name: "🇯🇵 日本語", value: "ja", longValue: "日本語" },
+  { name: "🇰🇷 한국어", value: "ko", longValue: "한국어" },
+  { name: "🇵🇹 Português", value: "pt", longValue: "Português" },
+  { name: "🇷🇺 Русский", value: "ru", longValue: "Русский" },
+  { name: "🇨🇳 中文", value: "zh", longValue: "中文" }
 ];
 
 export type BuildQuestionContext = "translation" | "math" | "question" | "story" | "text" | "default";

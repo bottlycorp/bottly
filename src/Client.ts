@@ -1,14 +1,13 @@
 import { Client as DiscordClient, GatewayIntentBits, Partials, WebhookClient } from "discord.js";
 import { Configuration, OpenAIApi } from "openai";
-import Logger from "$core/utils/Logger";
-import CommandManager from "$core/commands/CommandManager";
-import EventManager from "$core/events/EventManager";
-import TaskManager from "$core/tasks/TaskManager";
+import Logger from "$core/utils/logger";
+import CommandManager from "$core/commands/command.manager";
+import EventManager from "$core/events/event.manager";
+import TaskManager from "$core/tasks/task.manager";
 import "dotenv/config";
 import Stripe from "stripe";
 import dayjs from "dayjs";
-import ContextManager from "./contexts/ContextManager";
-
+import ContextManager from "./contexts/context.manager";
 
 export default class Client extends DiscordClient {
 
@@ -66,7 +65,9 @@ export default class Client extends DiscordClient {
     this.taskManager = new TaskManager();
 
     this.on("ready", () => {
-      Logger.where("Actually in " + this.guilds.cache.size + " guilds for a total of " + this.users.cache.size + " users");
+      this.guilds.cache.forEach((guild) => {
+        Logger.where(`${guild.name} (${guild.memberCount} members) | ID: ${guild.id}`);
+      });
     });
   }
 

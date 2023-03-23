@@ -300,6 +300,18 @@
     }
   },
   "contexts": {
+    "config": {
+      "question": {
+        "fr": "Répond à cette question \"{QUESTION}\"",
+        "en-US": "Answer this question \"{QUESTION}\""
+      },
+      "translate": {
+        "select": {
+          "fr": "Langue de sortie",
+          "en-US": "Output language"
+        }
+      }
+    },
     "discussion": {
       "title": {
         "fr": "Contexte de la discussion",
@@ -333,6 +345,44 @@
             "fr": "Combien de messages voulez vous contexter ?",
             "en-US": "How many messages do you want to contextualize?"
           }
+        }
+      }
+    },
+    "question": {
+      "title": {
+        "fr": "Répondre à une question",
+        "en-US": "Answer a question"
+      },
+      "messages": {
+        "errors": {},
+        "success": {
+          "answering": {
+            "fr": "<a:typing:1087703097498931290> Je suis en train de répondre à ta question",
+            "en-US": "<a:typing:1087703097498931290> I'm answering your question"
+          }
+        }
+      }
+    },
+    "translate": {
+      "title": {
+        "fr": "Traduire",
+        "en-US": "Translate"
+      },
+      "messages": {
+        "errors": {
+
+        },
+        "success": {
+          "answering": {
+            "fr": "<a:typing:1087703097498931290> Traduction en cours",
+            "en-US": "<a:typing:1087703097498931290> Translation in progress"
+          }
+        }
+      },
+      "options": {
+        "to": {
+          "fr": "Langue de destination",
+          "en-US": "Destination language"
         }
       }
     }

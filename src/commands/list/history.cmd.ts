@@ -1,10 +1,10 @@
-import Command from "$core/commands/Command";
+import Command from "$core/commands/command";
 import { history } from "$resources/messages.json";
-import { checkUser, getUser } from "$core/utils/User";
+import { checkUser, getUser } from "$core/utils/user";
 import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandIntegerOption, SlashCommandStringOption } from "discord.js";
-import { prisma } from "$core/utils/Prisma";
-import { simpleEmbed } from "$core/utils/Embed";
-import { getLang, limit, msg } from "$core/utils/Message";
+import { prisma } from "$core/utils/prisma";
+import { simpleEmbed } from "$core/utils/embed";
+import { getLang, limit, msg } from "$core/utils/message";
 import "dotenv/config";
 import dayjs from "dayjs";
 

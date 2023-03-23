@@ -1,7 +1,7 @@
-import Client from "$core/Client";
-import Task from "$core/tasks/Task";
-import Logger from "$core/utils/Logger";
-import { prisma } from "$core/utils/Prisma";
+import Client from "$core/client";
+import Task from "$core/tasks/task";
+import Logger from "$core/utils/logger";
+import { prisma } from "$core/utils/prisma";
 import dayjs from "dayjs";
 import "dotenv/config";
 
@@ -20,7 +20,7 @@ export default class MonthlyCharge extends Task {
         where: {},
         data: {
           imageUsage: 20,
-          chatUsage: 20,
+          chatUsage: 50,
           askUsage: 50
         }
       });
