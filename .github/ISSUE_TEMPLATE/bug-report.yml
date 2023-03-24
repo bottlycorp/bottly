@@ -24,8 +24,8 @@ body:
       label: Bug priority
       description: Please be realistic. If you need to expand on your reasoning, please use the Problem Description field above.
       options:
-        - Faible (légèrement gênant)
-        - Moyenne (gênant)
-        - Haute (gênant pour l'ensemble des utilisateurs)
+        - Low (slightly annoying)
+        - Medium (annoying)
+        - High (annoying for all users)
     validations:
       required: true
