@@ -22,7 +22,7 @@ export const checkTrial = async(userId: string): Promise<boolean> => {
   const user = await getUser(userId);
   if (!user.inTrial) return false;
 
-  if (dayjs(user.trialEnd).isAfter(dayjs())) {
+  if (dayjs().isAfter(dayjs(user.trialEnd))) {
     await endTrial(userId);
     return true;
   }
