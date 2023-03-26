@@ -56,6 +56,8 @@ export default class They extends Context {
           await interaction.deferUpdate();
           const language = interaction.values[0];
 
+          await interaction.editReply({ content: contexts.translate.messages.success.answering[getLang(interaction.locale)], components: [] });
+
           const translated = await Client.instance.openai.createChatCompletion({
             messages: [{ content: "Translate the message \"" + message + "\" in " + language, role: "user" }],
             model: "gpt-3.5-turbo",
