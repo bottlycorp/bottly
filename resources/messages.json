@@ -8,6 +8,14 @@
       "error": {
         "fr": "Une erreur est survenue lors de l'affichage de votre réponse",
         "en-US": "An error occurred while displaying your answer"
+      },
+      "guildOnly": {
+        "fr": "Cette commande ne peut être utilisée que dans un serveur",
+        "en-US": "This command can only be used in a server"
+      },
+      "permissions": {
+        "fr": "Pour fonctionner convenablement, j'ai besoins de la permission `Envoyer des messages`, `Envoyer des embeds`.",
+        "en-US": "To work properly, I need the permission `Send messages`, `Send embeds`."
       }
     },
     "command": {

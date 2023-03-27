@@ -43,6 +43,17 @@ export default class Ask extends Command {
     const user = await getUser(command.user.id);
     const isPremiumUser = isPremium(user);
 
+    if (!command.guild) {
+      await command.reply({ embeds: [simpleEmbed(ask.errors.guildOnly[getLang(command.locale)], "error", { f: command.user })] });
+      return;
+    }
+
+    const member = await command.guild?.members.fetch(process.env.CLIENT_ID ?? "010101");
+    if (!member.permissions.has("SendMessages") || !member.permissions.has("ManageMessages") || !member.permissions.has("EmbedLinks")) {
+      await command.reply({ embeds: [simpleEmbed(ask.errors.permissions[getLang(command.locale)], "error", { f: command.user })] });
+      return;
+    }
+
     if (!isPremiumUser) {
       if ((await getUser(command.user.id)).askUsage == 0) {
         command.editReply({ embeds: [simpleEmbed(ask.errors.trial[getLang(command.locale)], "error", { f: command.user })] });
