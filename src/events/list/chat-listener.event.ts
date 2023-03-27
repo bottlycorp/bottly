@@ -1,5 +1,6 @@
 import Client from "$core/client";
 import Event from "$core/events/event";
+import { BuildChatContext, getResponseModal } from "$core/utils/models";
 import { prisma } from "$core/utils/prisma";
 import { checkThread, getThread, updateThread } from "$core/utils/thread";
 import { Message, MessageType } from "discord.js";
@@ -28,8 +29,7 @@ export default class ChatListener extends Event {
     }
 
     await updateThread(channel.id, { active: true });
-
-    chat.messages.push({ content: message.content, role: "user" });
+    chat.messages.push({ content: getResponseModal(chat.context as BuildChatContext, message.content), role: "user" });
 
     if (message.content) {
       try {
@@ -61,6 +61,8 @@ export default class ChatListener extends Event {
           const second = split.slice(split.length / 2, split.length).join("\n");
           await channel.send(first);
           await channel.send(second);
+        } else {
+          await channel.send(content);
         }
       } catch (error) {
         console.error(error);
