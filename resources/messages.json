@@ -76,12 +76,18 @@
       "description": {
         "fr": "Démarrer une conversation avec le robot GPT, sur la base d'une question initiale",
         "en-US": "Start a conversation with the GPT robot, based on an initial question"
+      },
+      "options": {
+        "context": {
+          "fr": "Contexte de la discussion",
+          "en-US": "Context of the discussion"
+        }
       }
     },
     "messages": {
       "started": {
-        "fr": "La première question de la conversation a été posée, vous pouvez maintenant poser vos questions.\n\n:warning: Si vous ne posez pas de question pendant 5 minutes, la conversation sera automatiquement arrêtée.\n:octagonal_sign: Pour arrêter la conversation, envoyez `stop`.\n:eyeglasses: Pour parler sans que le bot prend en compte le message commencez vos messages avec un `.` ou mentionnez quelqu'un\n\n:incoming_envelope: __Question initiale__ : *{question}*\n",
-        "en-US": "The first question of the conversation has been asked, you can now ask your questions.\n\n:warning: If you do not ask a question for 5 minutes, the conversation will automatically stop.\n:octagonal_sign: To stop the conversation, send `stop`.\n:eyeglasses: To speak without the bot taking into account the message start your messages with a `.` or mention someone\n\n:incoming_envelope: __Initial question__: {question}\n"
+        "fr": "La première question de la conversation a été posée, vous pouvez maintenant poser vos questions.\n\n:octagonal_sign: Pour arrêter la conversation, envoyez `stop`.\n:eyeglasses: Pour parler sans que le bot prend en compte le message commencez vos messages avec un `.` ou mentionnez quelqu'un\n\n:incoming_envelope: __Question initiale__ : {question}\n",
+        "en-US": "The first question of the conversation has been asked, you can now ask your questions.\n\n:octagonal_sign: To stop the conversation, send `stop`.\n:eyeglasses: To speak without the bot taking into account the message, start your messages with a `.` or mention someone\n\n:incoming_envelope: __Initial question__ : {question}\n"
       },
       "reply": {
         "fr": "Le salon de discussion a été créé, vous pouvez maintenant discuter avec le robot !",
@@ -300,6 +306,18 @@
     }
   },
   "contexts": {
+    "config": {
+      "question": {
+        "fr": "Répond à cette question \"{QUESTION}\"",
+        "en-US": "Answer this question \"{QUESTION}\""
+      },
+      "translate": {
+        "select": {
+          "fr": "Langue de sortie",
+          "en-US": "Output language"
+        }
+      }
+    },
     "discussion": {
       "title": {
         "fr": "Contexte de la discussion",
@@ -333,6 +351,44 @@
             "fr": "Combien de messages voulez vous contexter ?",
             "en-US": "How many messages do you want to contextualize?"
           }
+        }
+      }
+    },
+    "question": {
+      "title": {
+        "fr": "Répondre à une question",
+        "en-US": "Answer a question"
+      },
+      "messages": {
+        "errors": {},
+        "success": {
+          "answering": {
+            "fr": "<a:typing:1087703097498931290> Je suis en train de répondre à ta question",
+            "en-US": "<a:typing:1087703097498931290> I'm answering your question"
+          }
+        }
+      }
+    },
+    "translate": {
+      "title": {
+        "fr": "Traduire",
+        "en-US": "Translate"
+      },
+      "messages": {
+        "errors": {
+
+        },
+        "success": {
+          "answering": {
+            "fr": "<a:typing:1087703097498931290> Traduction en cours",
+            "en-US": "<a:typing:1087703097498931290> Translation in progress"
+          }
+        }
+      },
+      "options": {
+        "to": {
+          "fr": "Langue de destination",
+          "en-US": "Destination language"
         }
       }
     }
