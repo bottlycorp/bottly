@@ -22,12 +22,12 @@ export default class Stats extends Command {
       .setRequired(false));
 
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
+    await command.deferReply({ ephemeral: true });
+
     if (command.guildId !== process.env.SUPPORT_GUILD_ID) {
       await command.editReply("This command is only available in the Support Guild");
       return;
     }
-
-    await command.deferReply({ ephemeral: true });
 
     let guilds: { type: string; createdAt: Date }[] = [];
     const guild = command.options.getString("guild", false);
