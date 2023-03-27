@@ -16,7 +16,7 @@ import logger from "$core/utils/logger";
 
 export default class They extends Context {
 
-  public guildOnly = true;
+  public guildOnly = false;
 
   public readonly context = new ContextMenuCommandBuilder()
     .setName(contexts.translate.title["en-US"])

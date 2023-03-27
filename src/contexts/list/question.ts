@@ -13,7 +13,7 @@ import { prisma } from "$core/utils/prisma";
 
 export default class They extends Context {
 
-  public guildOnly = true;
+  public guildOnly = false;
 
   public readonly context = new ContextMenuCommandBuilder()
     .setName(contexts.question.title["en-US"])
