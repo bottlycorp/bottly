@@ -23,8 +23,15 @@ export const Models = {
     text: "Write a text, with the following content: \"{{text}}\" and put this answer in {{language}}"
   },
   chat: {
-    friend: "You are talking to a friend, and he/she asks you: \"{{text}}\" in {{language}}",
-    wfriend: "You are talking to your worst friend, and he/she asks you: \"{{text}}\" in {{language}}",
+    "dev-mobile": "Answer as a mobile developer, to the question: \"{{text}}\" in {{language}}",
+    "dev-web": "Answer as a web developer, to the question: \"{{text}}\" in {{language}}",
+    "dev-backend": "Answer as a backend developer, to the question: \"{{text}}\" in {{language}}",
+    "dev-frontend": "Answer as a frontend developer, to the question: \"{{text}}\" in {{language}}",
+    "dev-fullstack": "Answer as a fullstack developer, to the question: \"{{text}}\" in {{language}}",
+    devops: "Answer as a devoops, to the question: \"{{text}}\" in {{language}}",
+    student: "Answer as a student, to the question: \"{{text}}\" in {{language}}",
+    friend: "Answer as a good friend, to the question: \"{{text}}\" in {{language}}",
+    wfriend: "Answer as your worst friend, to the question: \"{{text}}\" in {{language}}",
     dog: "Answer as a dog, to the question: \"{{text}}\" in {{language}}",
     cat: "Answer as a cat, to the question: \"{{text}}\" in {{language}}",
     scientist: "Answer as a scientist, to the question: \"{{text}}\" in {{language}}",
@@ -41,6 +48,13 @@ export const Models = {
 
 export const ResponseModals = {
   chat: {
+    "dev-mobile": "Answer as a mobile developer to {{text}}",
+    "dev-web": "Answer as a web developer to {{text}}",
+    "dev-backend": "Answer as a back-end developper to {{text}}",
+    "dev-frontend": "Answer as a front-end developper to {{text}}",
+    "dev-fullstack": "Answer as a full-stack developper to {{text}}",
+    "devops": "Answer as a devoops to {{text}}",
+    student: "Answer as a student to {{text}}",
     friend: "Answer as a friend to {{text}}",
     wfriend: "Answer as your worst friend to {{text}}",
     dog: "Answer as a dog to {{text}}",
@@ -58,17 +72,17 @@ export const ResponseModals = {
 };
 
 export const ChatContextOptions = [
-  { name: "📱 Respond as a mobile developer", value: "mobile", name_localizations: {
+  { name: "📱 Respond as a mobile developer", value: "dev-mobile", name_localizations: {
     fr: "📱 Répondre comme un développeur mobile" } },
-  { name: "🖥️ Respond as a web developer", value: "web", name_localizations: {
+  { name: "🖥️ Respond as a web developer", value: "dev-web", name_localizations: {
     fr: "🖥️ Répondre comme un développeur web" } },
-  { name: "🚗 Respond as a back-end developper", value: "web", name_localizations: {
+  { name: "🚗 Respond as a back-end developper", value: "dev-backend", name_localizations: {
     fr: "🚗 Répondre comme un développeur back-end" } },
-  { name: "🌳 Respond as a front-end developper", value: "web", name_localizations: {
+  { name: "🌳 Respond as a front-end developper", value: "dev-frontend", name_localizations: {
     fr: "🌳 Répondre comme un développeur front-end" } },
-  { name: "👨 Respond as a full-stack developper", value: "web", name_localizations: {
+  { name: "👨 Respond as a full-stack developper", value: "dev-fullstack", name_localizations: {
     fr: "👨 Répondre comme un développeur full-stack" } },
-  { name: "🎭 Respond as a devops developper", value: "web", name_localizations: {
+  { name: "🎭 Respond as a devops developper", value: "devops", name_localizations: {
     fr: "🎭 Répondre comme un développeur devops" } },
   { name: "🎓 Respond as a student", value: "student", name_localizations: {
     fr: "🎓 Répondre comme un étudiant" } },
@@ -86,8 +100,6 @@ export const ChatContextOptions = [
     fr: "🧬 Répondre comme un scientifique" } },
   { name: "🦸 Respond as a superhero", value: "superhero", name_localizations: {
     fr: "🦸 Répondre comme un super-héros" } },
-  { name: "📗 Respond as a teacher", value: "teacher", name_localizations: {
-    fr: "📗 Répondre comme un professeur" } },
   { name: "🕹️ Respond as a gamer", value: "gamer", name_localizations: {
     fr: "🕹️ Répondre comme un joueur" } },
   { name: "🛸 Respond as an alien", value: "alien", name_localizations: {
