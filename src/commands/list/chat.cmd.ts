@@ -1,9 +1,18 @@
 import { chat } from "$resources/messages.json";
 import Command from "$core/commands/command";
-import { ActionRowBuilder, ChatInputCommandInteraction, ModalBuilder, SlashCommandBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
+import {
+  ActionRowBuilder,
+  ChatInputCommandInteraction,
+  ModalBuilder,
+  SlashCommandBuilder,
+  SlashCommandStringOption,
+  TextInputBuilder,
+  TextInputStyle
+} from "discord.js";
 import "dotenv/config";
 import { prisma } from "$core/utils/prisma";
 import { checkUser } from "$core/utils/user";
+import { ChatContextOptions } from "$core/utils/models";
 
 export default class Ask extends Command {
 
@@ -13,6 +22,11 @@ export default class Ask extends Command {
     .setName("chat")
     .setDescription(chat.command.description["en-US"])
     .setDescriptionLocalizations({ fr: chat.command.description.fr })
+    .addStringOption(new SlashCommandStringOption()
+      .setName("context")
+      .setDescription(chat.command.options.context["en-US"])
+      .setDescriptionLocalizations({ fr: chat.command.options.context.fr })
+      .addChoices(...ChatContextOptions.map(c => ({ name: c.name, value: c.value, name_localizations: { fr: c.name_localizations.fr } }))))
     .setDMPermission(false);
 
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
@@ -26,7 +40,8 @@ export default class Ask extends Command {
         modalId: randomId,
         userId: command.user.id,
         guildId: command.guild.id,
-        threadId: randomId // Temporary data, will be updated when the thread is created
+        threadId: randomId, // Temporary data, will be updated when the thread is created
+        context: command.options.getString("context", false) ?? "default"
       }
     });
 

@@ -6,6 +6,8 @@ export type Thread = {
   userId: string;
   messages: { content: string, role: "user" | "assistant" }[];
   active: boolean;
+  modalId: string;
+  context: string;
 }
 
 export type IAMessages = {

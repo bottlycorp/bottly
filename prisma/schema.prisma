@@ -30,6 +30,7 @@ model Thread {
   messages    Json     @default("[]")
   active      Boolean  @default(false)
   modalId     String   @default("none")
+  context     String   @default("default")
 }
 
 model Requests {
