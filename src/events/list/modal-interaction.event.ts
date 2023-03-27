@@ -7,6 +7,7 @@ import { getUser } from "$core/utils/user";
 import { updateThread } from "$core/utils/thread";
 import Event from "$core/events/event";
 import Client from "$core/client";
+import { buildChat } from "$core/utils/models";
 
 export default class RequestAutocomplete extends Event {
 
@@ -58,7 +59,10 @@ export default class RequestAutocomplete extends Event {
 
     await Client.instance.openai.createChatCompletion({
       model: "gpt-3.5-turbo",
-      messages: [{ content: content, role: "user" }],
+      messages: [{
+        content: buildChat(content, thread.context, getLang(interaction.locale)),
+        role: "user"
+      }],
       max_tokens: 1500,
       temperature: 0.9
     }).then(async response => {
