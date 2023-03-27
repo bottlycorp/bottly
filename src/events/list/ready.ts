@@ -11,6 +11,7 @@ export default class Ready extends Event {
 
   public async execute(): Promise<void> {
     Client.instance.commandManager.register();
+    Client.instance.contextManager.register();
     await Client.instance.taskManager.load();
 
     Client.instance.user?.setActivity({

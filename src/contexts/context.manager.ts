@@ -42,8 +42,10 @@ export default class ContextManager {
   */
   public async register() : Promise<void> {
     for (const command of this.contexts.values()) {
+
       this.contexts.map(context => context.context.toJSON());
-      await Client.instance.application?.commands.create(command.context);
+      if (command.guildOnly) await Client.instance.guilds.cache.get(process.env.SUPPORT_GUILD_ID ?? "")?.commands.create(command.context);
+      else await Client.instance.application?.commands.create(command.context);
     }
 
     Logger.info("Successfully registered application contexts");
