@@ -20,13 +20,13 @@
     },
     "command": {
       "description": {
-        "fr": "Écrire ici la question à poser au robot GPT",
-        "en-US": "Write here the question to ask the GPT robot"
+        "fr": "Écrire ici la question à poser au robot Bottly",
+        "en-US": "Write here the question to ask the Bottly robot"
       },
       "options": {
         "question": {
-          "fr": "La question à poser au robot GPT",
-          "en-US": "The question to ask the GPT robot"
+          "fr": "La question à poser au robot Bottly",
+          "en-US": "The question to ask the Bottly robot"
         },
         "context": {
           "fr": "Contexte de la question, pour avoir une réponse plus pertinente",
@@ -82,8 +82,8 @@
     },
     "command": {
       "description": {
-        "fr": "Démarrer une conversation avec le robot GPT, sur la base d'une question initiale",
-        "en-US": "Start a conversation with the GPT robot, based on an initial question"
+        "fr": "Démarrer une conversation avec le robot Bottly, sur la base d'une question initiale",
+        "en-US": "Start a conversation with the Bottly robot, based on an initial question"
       },
       "options": {
         "context": {
@@ -114,8 +114,8 @@
   "history": {
     "command": {
       "description": {
-        "fr": "Afficher l'historique des questions posées au robot GPT",
-        "en-US": "Display the history of questions asked to the GPT robot"
+        "fr": "Afficher l'historique des questions posées au robot Bottly",
+        "en-US": "Display the history of questions asked to the Bottly robot"
       },
       "options": {
         "page": {
@@ -140,17 +140,17 @@
           "en-US": "\n:sparkles: You have asked a total of **{length}** questions, you have **{remaining}** questions left to ask, before having to wait for next month. Discover *[how to remove this limit]({STRIPE_PREMIUM_URL})*"
         },
         "line-blank": {
-          "fr": "Vous n'avez encore posé aucune question au robot GPT",
-          "en-US": "You have not yet asked any question to the GPT robot"
+          "fr": "Vous n'avez encore posé aucune question au robot Bottly",
+          "en-US": "You have not yet asked any question to the Bottly robot"
         },
         "line-threads": {
           "blank": {
-            "fr": "Vous n'avez pas encore démarré de conversation avec le robot GPT",
-            "en-US": "You have not yet started a conversation with the GPT robot"
+            "fr": "Vous n'avez pas encore démarré de conversation avec le robot Bottly",
+            "en-US": "You have not yet started a conversation with the Bottly robot"
           },
           "not-blank": {
-            "fr": "Vous avez démarré {count} conversation{plural} avec le robot GPT",
-            "en-US": "You have started {count} conversation{plural} with the GPT robot"
+            "fr": "Vous avez démarré {count} conversation{plural} avec le robot Bottly",
+            "en-US": "You have started {count} conversation{plural} with the Bottly robot"
           }
         },
         "footer": {
@@ -277,8 +277,8 @@
           "en-US": "You are currently in the trial period, which expires on <t:{trial_end}:F>"
         },
         "active": {
-          "fr": ":tada: Vous êtes abonné à **GPT Premium**, votre abonnement expire le <t:{current_period_end}:F>, vous pouvez accéder à votre [tableau de bord]({DASHBOARD_URL})",
-          "en-US": ":tada: You are subscribed to **GPT Premium**, your subscription expires on <t:{current_period_end}:F>, you can access your [dashboard]({DASHBOARD_URL})"
+          "fr": ":tada: Vous êtes abonné à **Bottly Premium**, votre abonnement expire le <t:{current_period_end}:F>, vous pouvez accéder à votre [tableau de bord]({DASHBOARD_URL})",
+          "en-US": ":tada: You are subscribed to **Bottly Premium**, your subscription expires on <t:{current_period_end}:F>, you can access your [dashboard]({DASHBOARD_URL})"
         },
         "canceled": {
           "fr": "Vous avez annulé votre abonnement le <t:{canceled_at}:R>, vous perdrez l'accès à toutes les fonctionnalités premium le <t:{date_end}:R>",
