@@ -1,9 +1,12 @@
 {
-	"name": "gpt",
+	"name": "bottly",
 	"description": "An Discord bot allow users ask questions to ChatGPT",
 	"version": "2.0.0",
 	"main": "build/Client.js",
-	"author": "Gaëtan H (Steellgold)",
+	"authors": [
+		"Gaëtan H (Steellgold)",
+		"Bluzzi"
+	],
 	"license": "MIT",
 	"scripts": {
 		"dev": "npx nodemon --exec node -r @swc-node/register ./src/client.ts",
