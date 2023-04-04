@@ -1,4 +1,4 @@
-![GPT](https://user-images.githubusercontent.com/51505384/227486729-3d124eb8-3b64-4f07-8a74-021eeb95634d.png)
+![Group 30 (1)](https://user-images.githubusercontent.com/51505384/229898313-79daaad4-eefd-48f7-af99-44453bc14460.png)
 
 ## Environments variables
 
