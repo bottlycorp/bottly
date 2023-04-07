@@ -1,13 +1,13 @@
 import { Client as DiscordClient, GatewayIntentBits, Partials, WebhookClient } from "discord.js";
 import { Configuration, OpenAIApi } from "openai";
-import Logger from "$core/utils/logger";
+import { BColors } from "bettercolors";
 import CommandManager from "$core/commands/command.manager";
 import EventManager from "$core/events/event.manager";
 import TaskManager from "$core/tasks/task.manager";
-import "dotenv/config";
 import Stripe from "stripe";
 import dayjs from "dayjs";
 import ContextManager from "./contexts/context.manager";
+import "dotenv/config";
 
 export default class Client extends DiscordClient {
 
@@ -27,6 +27,8 @@ export default class Client extends DiscordClient {
 
   public readonly webhook: WebhookClient | null;
 
+  public readonly colors: BColors;
+
   public month: number = (dayjs().month() + 1);
 
   constructor() {
@@ -39,6 +41,15 @@ export default class Client extends DiscordClient {
     });
 
     Client.instance = this;
+
+    this.colors = new BColors({
+      date: {
+        enabled: true,
+        format: "DD/MM/YYYY HH:mm:ss",
+        surrounded: "()"
+      }
+    });
+
     this.login(process.env.TOKEN);
 
     this.openai = new OpenAIApi(new Configuration({
@@ -50,12 +61,12 @@ export default class Client extends DiscordClient {
     });
 
     if (!process.env.WEBHOOK_URL) {
-      Logger.error("WEBHOOK_URL not found in .env file");
+      this.colors.error("WEBHOOK_URL not found in .env file");
       this.webhook = null;
     } else {
       this.webhook = new WebhookClient({ url: process.env.WEBHOOK_URL });
-      if (this.webhook) Logger.success("Webhook initialized");
-      else Logger.error("Webhook not initialized");
+      if (this.webhook) this.colors.success("Webhook initialized");
+      else this.colors.error("Webhook failed to initialize");
     }
 
     this.eventManager = new EventManager();
@@ -66,5 +77,4 @@ export default class Client extends DiscordClient {
 
 }
 
-Logger.info("The client is being initialized...");
 new Client();

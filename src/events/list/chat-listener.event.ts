@@ -1,9 +1,9 @@
-import Client from "$core/client";
-import Event from "$core/events/event";
 import { BuildChatContext, getResponseModal } from "$core/utils/models";
 import { prisma } from "$core/utils/prisma";
 import { checkThread, getThread, updateThread } from "$core/utils/thread";
 import { Message, MessageType } from "discord.js";
+import Client from "$core/client";
+import Event from "$core/events/event";
 
 export default class ChatListener extends Event {
 

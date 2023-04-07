@@ -1,7 +1,6 @@
 import { Collection } from "discord.js";
 import { readdirSync } from "fs";
 import Client from "$core/client";
-import Logger from "$core/utils/logger";
 import Context from "$core/contexts/context";
 import "dotenv/config";
 
@@ -25,7 +24,7 @@ export default class ContextManager {
       i++;
     }
 
-    Logger.info(`${i} context(s) loaded`);
+    Client.instance.colors.info(`${i} context(s) loaded`);
   }
 
   private async listener() : Promise<void> {
@@ -48,7 +47,7 @@ export default class ContextManager {
       else await Client.instance.application?.commands.create(command.context);
     }
 
-    Logger.info("Successfully registered application contexts");
+    Client.instance.colors.info("Successfully registered application contexts");
   }
 
 }

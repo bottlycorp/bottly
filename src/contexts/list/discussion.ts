@@ -9,11 +9,10 @@ import {
 import { contexts } from "$resources/messages.json";
 import { getLang, msg } from "$core/utils/message";
 import { simpleEmbed } from "$core/utils/embed";
+import { SelectMenuBuilder } from "@discordjs/builders";
+import { prisma } from "$core/utils/prisma";
 import Context from "$core/contexts/context";
 import Client from "$core/client";
-import { SelectMenuBuilder } from "@discordjs/builders";
-import logger from "$core/utils/logger";
-import { prisma } from "$core/utils/prisma";
 
 interface IMessage {
   content: string;
@@ -92,7 +91,7 @@ export default class They extends Context {
           });
 
           if (response.data.choices[0].text) {
-            logger.context("Conversation context generated.");
+            Client.instance.colors.info("Conversation context generated.");
 
             await prisma.stats.create({
               data: {

@@ -1,6 +1,6 @@
-import Event from "$core/events/event";
 import { checkUser, getUser } from "$core/utils/user";
 import { GuildMember } from "discord.js";
+import Event from "$core/events/event";
 
 export default class MemberJoin extends Event {
 

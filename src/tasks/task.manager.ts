@@ -1,5 +1,5 @@
 import { readdirSync } from "fs";
-import Logger from "$core/utils/logger";
+import Client from "$core/client";
 
 export default class TaskManager {
 
@@ -9,13 +9,13 @@ export default class TaskManager {
     let i = 0;
     for (const file of files) {
       const dynamicImport = await import(`./list/${file}`);
-      Logger.info(`Loading task ${dynamicImport.default.name}`);
+      Client.instance.colors.info(`Loading task ${dynamicImport.default.name}`);
 
       new dynamicImport.default();
       i++;
     }
 
-    Logger.info(`${i} tasks loaded`);
+    Client.instance.colors.info(`${i} tasks loaded`);
   }
 
 }

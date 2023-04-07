@@ -5,9 +5,9 @@ import { chat } from "$resources/messages.json";
 import { formatLinks, getLang, limit, msg } from "$core/utils/message";
 import { getUser } from "$core/utils/user";
 import { updateThread } from "$core/utils/thread";
+import { buildChat } from "$core/utils/models";
 import Event from "$core/events/event";
 import Client from "$core/client";
-import { buildChat } from "$core/utils/models";
 
 export default class RequestAutocomplete extends Event {
 
