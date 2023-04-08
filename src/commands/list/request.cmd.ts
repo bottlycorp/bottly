@@ -25,7 +25,6 @@ export default class Request extends Command {
       .setRequired(true));
 
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
-    await command.deferReply({ ephemeral: true });
     await checkUser(command.user.id);
 
     const option = command.options.getString("request", true);
@@ -33,13 +32,15 @@ export default class Request extends Command {
     const request: RequestType | null = await getRequest(option);
 
     if (!request) {
-      await command.editReply({ embeds: [
+      await command.reply({ embeds: [
         simpleEmbed(msgRequest.messages["not-found"][getLang(command.locale)], "error", { f: command.user })
-      ] });
+      ], ephemeral: true });
       return;
     }
 
     const timestamp = dayjs(request.answeredAt).diff(dayjs(request.askedAt), "second");
+
+    await command.deferReply({ ephemeral: true });
 
     await prisma.stats.create({
       data: {

@@ -18,6 +18,9 @@ export default class ChatListener extends Event {
     const channel = message.channel;
     if (!channel.isThread() || message.type !== MessageType.Default || !await checkThread(channel.id)) return;
 
+    if (message.mentions.users.size > 0) return;
+    if (message.content.startsWith(".")) return;
+
     const chat = await getThread(channel.id);
     if (chat.active || chat.userId !== message.author.id) {
       try {
@@ -33,14 +36,14 @@ export default class ChatListener extends Event {
 
     if (message.content) {
       try {
-        await channel.sendTyping();
-
         const response = await Client.instance.openai.createChatCompletion({
           model: "gpt-3.5-turbo",
           max_tokens: 1500,
           temperature: 0.9,
           messages: chat.messages
         });
+
+        await channel.sendTyping();
 
         await prisma.stats.create({
           data: {

@@ -36,26 +36,25 @@ export default class Ask extends Command {
     .setDMPermission(false);
 
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
-    await command.deferReply({ ephemeral: true });
     const askedAt = dayjs().toDate();
     await checkUser(command.user.id);
     const user = await getUser(command.user.id);
     const isPremiumUser = isPremium(user);
 
     if (!command.guild) {
-      await command.reply({ embeds: [simpleEmbed(ask.errors.guildOnly[getLang(command.locale)], "error", { f: command.user })] });
+      await command.reply({ embeds: [simpleEmbed(ask.errors.guildOnly[getLang(command.locale)], "error", { f: command.user })], ephemeral: true });
       return;
     }
 
     const member = await command.guild?.members.fetch(process.env.CLIENT_ID ?? "010101");
     if (!member.permissions.has("SendMessages") || !member.permissions.has("ManageMessages") || !member.permissions.has("EmbedLinks")) {
-      await command.reply({ embeds: [simpleEmbed(ask.errors.permissions[getLang(command.locale)], "error", { f: command.user })] });
+      await command.reply({ embeds: [simpleEmbed(ask.errors.permissions[getLang(command.locale)], "error", { f: command.user })], ephemeral: true });
       return;
     }
 
     if (!isPremiumUser) {
       if ((await getUser(command.user.id)).askUsage == 0) {
-        command.editReply({ embeds: [simpleEmbed(ask.errors.trial[getLang(command.locale)], "error", { f: command.user })] });
+        command.reply({ embeds: [simpleEmbed(ask.errors.trial[getLang(command.locale)], "error", { f: command.user })], ephemeral: true });
         return;
       }
     }
@@ -64,6 +63,8 @@ export default class Ask extends Command {
     const context: BuildQuestionContext = command.options.getString("context", false) ?? "default";
     const language: BuildQuestionLanguage = command.options.getString("language", false) ?? command.locale;
     const finalQuestion = buildQuestion(question, context, language);
+
+    await command.deferReply({ ephemeral: true });
 
     const response = await Client.instance.openai.createChatCompletion({
       model: "gpt-3.5-turbo",
