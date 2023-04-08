@@ -53,7 +53,7 @@ export default class ChatListener extends Event {
         });
 
         const content = response.data.choices[0].message?.content ?? "An error occurred while processing your request";
-        Client.instance.colors.info(`[CHAT] ${message.author.username} (${chat.context}) - ${content}`);
+        Client.instance.colors.info(`[CHAT] ${message.author.username} (${chat.context}) - ${message.content}`);
 
         chat.messages.push({ content: content, role: "assistant" });
         await updateThread(channel.id, chat);
