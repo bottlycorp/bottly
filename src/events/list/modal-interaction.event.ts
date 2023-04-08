@@ -84,9 +84,23 @@ export default class RequestAutocomplete extends Event {
 
       this.create(threadChannel, content, customId, interaction.user.id, interaction.locale, answer);
 
-      await interaction.editReply({
-        content: msg(chat.messages.created[getLang(interaction.locale)], [threadChannel.id])
-      });
+      if (answer.length < 1999) {
+        await interaction.editReply({
+          content: msg(chat.messages.created[getLang(interaction.locale)], [threadChannel.id])
+        });
+        return;
+      } else {
+        const firstMessage = answer.slice(0, 1500);
+        const secondMessage = answer.slice(1599, answer.length);
+
+        await interaction.editReply({
+          content: msg(chat.messages.created[getLang(interaction.locale)], [threadChannel.id])
+        });
+
+        threadChannel.send(firstMessage).then((m) => {
+          m.reply(secondMessage);
+        });
+      }
     }).catch(async() => {
       await interaction.editReply({
         content: chat.errors.response[getLang(interaction.locale)]
