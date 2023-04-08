@@ -9,8 +9,6 @@ export default class TaskManager {
     let i = 0;
     for (const file of files) {
       const dynamicImport = await import(`./list/${file}`);
-      Client.instance.colors.info(`Loading task ${dynamicImport.default.name}`);
-
       new dynamicImport.default();
       i++;
     }
