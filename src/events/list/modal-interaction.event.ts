@@ -57,10 +57,13 @@ export default class RequestAutocomplete extends Event {
       ephemeral: true
     });
 
+    const qquest = buildChat(content, thread.context, getLang(interaction.locale))
+    Client.instance.colors.info(`[CHAT] ${interaction.user.tag} (${interaction.user.id}) asked: ${qquest}`);
+
     await Client.instance.openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [{
-        content: buildChat(content, thread.context, getLang(interaction.locale)),
+        content: qquest,
         role: "user"
       }],
       max_tokens: 1500,
