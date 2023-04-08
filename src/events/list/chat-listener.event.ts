@@ -33,6 +33,7 @@ export default class ChatListener extends Event {
 
     await updateThread(channel.id, { active: true });
     chat.messages.push({ content: getResponseModal(chat.context as BuildChatContext, message.content), role: "user" });
+    await channel.sendTyping();
 
     if (message.content) {
       try {
@@ -42,8 +43,6 @@ export default class ChatListener extends Event {
           temperature: 0.9,
           messages: chat.messages
         });
-
-        await channel.sendTyping();
 
         await prisma.stats.create({
           data: {
