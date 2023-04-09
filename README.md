@@ -1,4 +1,4 @@
-![Group 30 (1)](https://user-images.githubusercontent.com/51505384/229898313-79daaad4-eefd-48f7-af99-44453bc14460.png)
+![Banner](https://user-images.githubusercontent.com/51505384/229898313-79daaad4-eefd-48f7-af99-44453bc14460.png)
 
 ## Environments variables
 
