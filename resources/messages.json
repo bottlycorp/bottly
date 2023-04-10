@@ -313,6 +313,42 @@
       }
     }
   },
+  "privacy": {
+    "command": {
+      "description": {
+        "fr": "Affiche la politique de confidentialité du bot",
+        "en-US": "Displays the bot's privacy policy"
+      }
+    },
+    "texts": {
+      "sections": {
+        "first": {
+          "en-US": "We use the information you provide only to respond to your requests and to improve our services.  We will not share, sell, or use your information for any purpose other than as set forth in this Privacy Policy.",
+          "fr": "Nous utilisons les informations que vous nous fournissez uniquement pour répondre à vos demandes et pour améliorer nos services. Nous ne partagerons, ne vendrons ou n'utiliserons pas vos informations à d'autres fins que celles prévues dans cette politique de confidentialité."
+        },
+        "second": {
+          "en-US": "We take steps to ensure that the information you provide to us is secure. Data transmitted over the Internet cannot be guaranteed to be 100% secure; however, we take steps to ensure that your information is handled securely and in accordance with applicable laws.",
+          "fr": "Nous prenons des mesures pour nous assurer que les informations que vous nous fournissez sont sécurisées. Les données transmises sur Internet ne peuvent pas être garanties à 100% sécurisées; cependant, nous prenons des mesures pour nous assurer que vos informations sont traitées de manière sécurisée et conformément aux lois applicables."
+        },
+        "third": {
+          "en-US": "We may change this privacy notice from time to time. If we make such a change, we will notify you by email or by posting a notice on the Discord servers or on our support server.",
+          "fr": "Nous pouvons modifier cette notice de confidentialité de temps en temps. Si nous apportons un tel changement, nous vous en informerons par e-mail ou en publiant un avis sur les serveurs Discord ou sur notre serveur de support."
+        },
+        "fourth": {
+          "en-US": "You can delete your entire data by contacting support, in the future a command will be made to do this manually",
+          "fr": "Vous pouvez supprimer toutes vos données en contactant le support, à l'avenir une commande sera faite pour le faire manuellement"
+        },
+        "fifth": {
+          "en-US": "The user's messages are stored from the moment you speak in a conversation or ask a question to be retrieved in the request history (accessible via /history) so that the AI keeps track of your old messages.",
+          "fr": "Les messages de l'utilisateur sont stockés à partir du moment où vous parlez dans une conversation ou posez une question pour être récupérés dans l'historique des demandes (accessible via /history) afin que l'IA garde une trace de vos anciens messages."
+        },
+        "sixth": {
+          "en-US": "Please take the time to read this policy carefully and feel free to contact us with any questions you may have regarding the privacy practices of the bot.",
+          "fr": "Veuillez prendre le temps de lire attentivement cette politique et n'hésitez pas à nous contacter si vous avez des questions concernant les pratiques de confidentialité de ce bot."
+        }
+      }
+    }
+  },
   "contexts": {
     "config": {
       "question": {
