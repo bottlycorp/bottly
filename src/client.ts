@@ -46,7 +46,7 @@ export default class Client extends DiscordClient {
       date: {
         enabled: true,
         format: "DD/MM/YYYY HH:mm:ss",
-        surrounded: "()"
+        surrounded: "[]"
       }
     });
 
