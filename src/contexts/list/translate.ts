@@ -8,11 +8,10 @@ import {
 import { contexts } from "$resources/messages.json";
 import { SelectMenuBuilder } from "@discordjs/builders";
 import { Locales } from "$core/utils/models";
-import Client from "$core/client";
 import { getLang } from "$core/utils/message";
-import Context from "$core/contexts/context";
 import { prisma } from "$core/utils/prisma";
-import logger from "$core/utils/logger";
+import Client from "$core/client";
+import Context from "$core/contexts/context";
 
 export default class They extends Context {
 
@@ -66,7 +65,7 @@ export default class They extends Context {
           });
 
           if (translated.data.choices[0].message?.content) {
-            logger.context("Translate the message \"" + message + "\" in " + language);
+            Client.instance.colors.info("Translate the message \"" + message + "\" in " + language);
 
             await prisma.stats.create({
               data: {

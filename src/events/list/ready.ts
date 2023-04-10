@@ -1,7 +1,6 @@
-import Event from "$core/events/event";
-import Logger from "$core/utils/logger";
-import Client from "$core/client";
 import { ActivityType } from "discord.js";
+import Event from "$core/events/event";
+import Client from "$core/client";
 
 export default class Ready extends Event {
 
@@ -25,8 +24,8 @@ export default class Ready extends Event {
       members += guild.memberCount;
     });
 
-    Logger.success(`Logged in as ${Client.instance.user?.tag}!`);
-    Logger.info(`Serving ${Client.instance.guilds.cache.size} servers with ${members} members`);
+    Client.instance.colors.success(`Logged in as ${Client.instance.user?.tag}!`);
+    Client.instance.colors.info(`Serving ${Client.instance.guilds.cache.size} servers with ${members} members`);
   }
 
 }

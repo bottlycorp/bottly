@@ -57,7 +57,7 @@ export function typePremium(type: string) : boolean {
   }
 }
 
-export const getRequests = async(userId: string, contain?: string) : Promise<Request[]> => {
+export const getRequests = async(userId: string, contain?: string) : Promise<Request[] | null> => {
   const response = await prisma.requests.findMany({
     where: {
       userId: userId,
@@ -67,13 +67,13 @@ export const getRequests = async(userId: string, contain?: string) : Promise<Req
     }
   });
 
-  if (!response) throw new Error("Request not found");
+  if (!response) return null;
   if (response.length == 0) return [];
   return response;
 };
 
-export const getRequest = async(id: string) : Promise<Request> => {
+export const getRequest = async(id: string) : Promise<Request | null> => {
   const response = await prisma.requests.findUnique({ where: { id } });
-  if (!response) throw new Error("Request not found");
+  if (!response) return null;
   return response;
 };

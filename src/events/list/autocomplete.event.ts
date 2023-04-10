@@ -1,8 +1,8 @@
-import Client from "$core/client";
-import Event from "$core/events/event";
 import { limit } from "$core/utils/message";
 import { getRequests } from "$core/utils/user";
 import { Interaction } from "discord.js";
+import Client from "$core/client";
+import Event from "$core/events/event";
 
 export default class RequestAutocomplete extends Event {
 
@@ -18,7 +18,7 @@ export default class RequestAutocomplete extends Event {
       case "request":
         const requests = await getRequests(interaction.user.id, interaction.options.getString("request", true));
 
-        if (!requests.length) {
+        if (!requests) {
           await interaction.respond([]);
           return;
         }

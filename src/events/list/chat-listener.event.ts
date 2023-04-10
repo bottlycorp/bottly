@@ -1,9 +1,9 @@
-import Client from "$core/client";
-import Event from "$core/events/event";
 import { BuildChatContext, getResponseModal } from "$core/utils/models";
 import { prisma } from "$core/utils/prisma";
 import { checkThread, getThread, updateThread } from "$core/utils/thread";
 import { Message, MessageType } from "discord.js";
+import Client from "$core/client";
+import Event from "$core/events/event";
 
 export default class ChatListener extends Event {
 
@@ -18,6 +18,9 @@ export default class ChatListener extends Event {
     const channel = message.channel;
     if (!channel.isThread() || message.type !== MessageType.Default || !await checkThread(channel.id)) return;
 
+    if (message.mentions.users.size > 0) return;
+    if (message.content.startsWith(".")) return;
+
     const chat = await getThread(channel.id);
     if (chat.active || chat.userId !== message.author.id) {
       try {
@@ -30,11 +33,10 @@ export default class ChatListener extends Event {
 
     await updateThread(channel.id, { active: true });
     chat.messages.push({ content: getResponseModal(chat.context as BuildChatContext, message.content), role: "user" });
+    await channel.sendTyping();
 
     if (message.content) {
       try {
-        await channel.sendTyping();
-
         const response = await Client.instance.openai.createChatCompletion({
           model: "gpt-3.5-turbo",
           max_tokens: 1500,

@@ -5,7 +5,7 @@ import { request as msgRequest } from "$resources/messages.json";
 import { simpleEmbed } from "$core/utils/embed";
 import { getLang, msg } from "$core/utils/message";
 import dayjs from "dayjs";
-import { Request as RequestTyoe } from "$core/utils/types/request.types";
+import { Request as RequestType } from "$core/utils/types/request.types";
 import { findContextOption, findLanguageOption } from "$core/utils/models";
 import { prisma } from "$core/utils/prisma";
 
@@ -25,21 +25,22 @@ export default class Request extends Command {
       .setRequired(true));
 
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
-    await command.deferReply({ ephemeral: true });
     await checkUser(command.user.id);
 
     const option = command.options.getString("request", true);
 
-    const request: RequestTyoe = await getRequest(option);
+    const request: RequestType | null = await getRequest(option);
 
     if (!request) {
-      await command.editReply({ embeds: [
+      await command.reply({ embeds: [
         simpleEmbed(msgRequest.messages["not-found"][getLang(command.locale)], "error", { f: command.user })
-      ] });
+      ], ephemeral: true });
       return;
     }
 
     const timestamp = dayjs(request.answeredAt).diff(dayjs(request.askedAt), "second");
+
+    await command.deferReply({ ephemeral: true });
 
     await prisma.stats.create({
       data: {

@@ -1,5 +1,4 @@
 import { chat } from "$resources/messages.json";
-import Command from "$core/commands/command";
 import {
   ActionRowBuilder,
   ChatInputCommandInteraction,
@@ -13,6 +12,7 @@ import "dotenv/config";
 import { prisma } from "$core/utils/prisma";
 import { checkUser } from "$core/utils/user";
 import { ChatContextOptions } from "$core/utils/models";
+import Command from "$core/commands/command";
 
 export default class Ask extends Command {
 

@@ -2,7 +2,6 @@ import { lstatSync, readdirSync } from "fs";
 import { join } from "path";
 import Event from "$core/events/event";
 import Client from "$core/client";
-import Logger from "$core/utils/logger";
 
 export default class EventManager {
 
@@ -25,7 +24,7 @@ export default class EventManager {
       }
     }
 
-    Logger.info(`${this.listeners} listener${this.listeners > 1 ? "s" : ""} loaded`);
+    Client.instance.colors.info(`${this.listeners} listener${this.listeners > 1 ? "s" : ""} loaded`);
   }
 
 }
