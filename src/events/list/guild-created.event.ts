@@ -13,16 +13,15 @@ export default class onInvited extends Event {
   public async execute(guid: Guild): Promise<void> {
     if (Client.instance.webhook === null) return;
 
-    const bots = guid.members.cache.filter(m => m.user.bot).size;
-    const humans = guid.members.cache.filter(m => !m.user.bot).size;
-
-    const text = `**${guid.name}** (${guid.id}) has invited me to their server with **${guid.memberCount}** members (${bots} bots, ${humans} humans)`;
+    const text = `**${guid.name}** (${guid.id}) has invited me to their server with **${guid.memberCount}** members`;
 
     let footer = "Now " + Client.instance.guilds.cache.size + " guilds";
     const owner = await guid.fetchOwner();
     if (owner) footer += " | Owner: " + owner.user.tag;
 
-    Client.instance.colors.info(text);
+    Client.instance.colors.info(
+      "The bot has been invited to a new guild: " + guid.name + " (" + guid.id + " - " + guid.memberCount + " members"
+    );
     Client.instance.webhook.send({ embeds: [simpleEmbed(text, "success", { iconURL: guid.iconURL() ?? undefined, text: footer })] });
   }
 
