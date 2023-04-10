@@ -111,7 +111,7 @@ export default class Ask extends Command {
     }
 
     await command.editReply({ embeds: [embed], components: [{ type: 1, components: buttons }] }).then(async() => {
-      Client.instance.colors.info(finalQuestion);
+      Client.instance.colors.info(`${command.user.username} asked a question: ${question}`);
 
       await prisma.stats.create({
         data: {
