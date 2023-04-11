@@ -6,7 +6,7 @@ import { simpleEmbed } from "$core/utils/embed";
 
 export default class Stats extends Command {
 
-  public readonly guildOnly = true;
+  public readonly guildOnly = false;
 
   public readonly slashCommand = new SlashCommandBuilder()
     .setName("privacy")
