@@ -10,7 +10,6 @@ export default class Stats extends Command {
 
   public readonly slashCommand = new SlashCommandBuilder()
     .setName("privacy")
-    .setDefaultMemberPermissions(0)
     .setDescription("Get the privacy policy of the bot");
 
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
