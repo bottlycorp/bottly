@@ -157,6 +157,12 @@
           "default": "{page}/{pages}"
         }
       }
+    },
+    "errors": {
+      "permissions": {
+        "fr": "Pour utiliser cette commande, j'ai besoins des permissions `Envoyer des messages`, `Embed links` et `Gérer les messages`",
+        "en-US": "To use this command, I need the permissions `Send messages`, `Embed links` and `Manage messages`"
+      }
     }
   },
   "request": {

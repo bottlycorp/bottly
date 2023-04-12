@@ -38,6 +38,16 @@ export default class History extends Command {
     await command.deferReply({ ephemeral: true });
     await checkUser(command.user.id);
     const user = await getUser(command.user.id);
+    if (!command.guild) return;
+
+    const member = await command.guild?.members.fetch(process.env.CLIENT_ID ?? "010101");
+    if (!member.permissions.has("SendMessages") || !member.permissions.has("ManageMessages") || !member.permissions.has("EmbedLinks")) {
+      await command.reply({
+        embeds: [simpleEmbed(history.errors.permissions[getLang(command.locale)], "error", { f: command.user })],
+        ephemeral: true
+      });
+      return;
+    }
 
     const order = command.options.getString("order", false) ?? "desc";
     const page = command.options.getInteger("page", false) ?? 1;
