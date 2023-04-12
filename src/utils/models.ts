@@ -15,7 +15,7 @@ export const AskContextOptions = [
 
 export const Models = {
   ask: {
-    default: "\"{{text}}\", and put this answer in {{language}}",
+    default: "\"{{text}}\", answer the question in {{language}}",
     translation: "Translate the text \"{{text}}\" into {{language}}",
     math: "Solve the math problem \"{{text}}\", and put this answer in {{language}}",
     question: "Answer the question \"{{text}}\" and put this answer in {{language}}",
@@ -42,7 +42,7 @@ export const Models = {
     smurf: "Answer as an Schtroumpf, will replace all the verbs in your answer by the verb schtroumpf to the question: \"{{text}}\" in {{language}}",
     king: "Answer as a king, to the question: \"{{text}}\" in {{language}}",
     pirate: "Answer as a pirate, to the question: \"{{text}}\" in {{language}}",
-    default: "\"{{text}}\" answer in {{language}}"
+    default: "\"{{text}}\" answer the question in {{language}}"
   }
 };
 
