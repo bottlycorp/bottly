@@ -15,34 +15,34 @@ export const AskContextOptions = [
 
 export const Models = {
   ask: {
-    default: "Answer the question in quotes: \"{{text}}\" in {{language}}",
+    default: "Answer the question in quotes: \"{{text}}\" put the response in {{language}}",
     translation: "Translate the text \"{{text}}\" into {{language}}",
-    math: "Solve the math problem \"{{text}}\", and put this answer in {{language}}",
-    question: "Answer the question \"{{text}}\" and put this answer in {{language}}",
-    story: "Write a story with the following plot/synopsis: \"{{text}}\" and put this answer in {{language}}",
-    text: "Write a text, with the following content: \"{{text}}\" and put this answer in {{language}}"
+    math: "Solve the math problem \"{{text}}\", and put the response in {{language}}",
+    question: "Answer the question \"{{text}}\" and put the response in {{language}}",
+    story: "Write a story with the following plot/synopsis: \"{{text}}\" and put the response in {{language}}",
+    text: "Write a text, with the following content: \"{{text}}\" and put the response in {{language}}"
   },
   chat: {
-    devmobile: "Answer as a mobile developer, to the question: \"{{text}}\" in {{language}}",
-    devweb: "Answer as a web developer, to the question: \"{{text}}\" in {{language}}",
-    devbackend: "Answer as a backend developer, to the question: \"{{text}}\" in {{language}}",
-    devfrontend: "Answer as a frontend developer, to the question: \"{{text}}\" in {{language}}",
-    devfullstack: "Answer as a fullstack developer, to the question: \"{{text}}\" in {{language}}",
-    devops: "Answer as a devoops, to the question: \"{{text}}\" in {{language}}",
-    student: "Answer as a student, to the question: \"{{text}}\" in {{language}}",
-    friend: "Answer as a good friend, to the question: \"{{text}}\" in {{language}}",
-    wfriend: "Answer as your worst friend, to the question: \"{{text}}\" in {{language}}",
-    dog: "Answer as a dog, to the question: \"{{text}}\" in {{language}}",
-    cat: "Answer as a cat, to the question: \"{{text}}\" in {{language}}",
-    scientist: "Answer as a scientist, to the question: \"{{text}}\" in {{language}}",
-    superhero: "Answer as a superhero, to the question: \"{{text}}\" in {{language}}",
-    teacher: "Answer as a teacher, to the question: \"{{text}}\" in {{language}}",
-    gamer: "Answer as a gamer, to the question: \"{{text}}\" in {{language}}",
-    alien: "Answer as an alien, to the question: \"{{text}}\" in {{language}}",
-    smurf: "Answer as an Schtroumpf, will replace all the verbs in your answer by the verb schtroumpf to the question: \"{{text}}\" in {{language}}",
-    king: "Answer as a king, to the question: \"{{text}}\" in {{language}}",
-    pirate: "Answer as a pirate, to the question: \"{{text}}\" in {{language}}",
-    default: "Answer the question in quotes: \"{{text}}\" in {{language}}"
+    devmobile: "Answer as a mobile developer, to the question: \"{{text}}\" and put the response in {{language}}",
+    devweb: "Answer as a web developer, to the question: \"{{text}}\" and put the response in {{language}}",
+    devbackend: "Answer as a backend developer, to the question: \"{{text}}\" and put the response in {{language}}",
+    devfrontend: "Answer as a frontend developer, to the question: \"{{text}}\" and put the response in {{language}}",
+    devfullstack: "Answer as a fullstack developer, to the question: \"{{text}}\" and put the response in {{language}}",
+    devops: "Answer as a devoops, to the question: \"{{text}}\" and put the response in {{language}}",
+    student: "Answer as a student, to the question: \"{{text}}\" and put the response in {{language}}",
+    friend: "Answer as a good friend, to the question: \"{{text}}\" and put the response in {{language}}",
+    wfriend: "Answer as your worst friend, to the question: \"{{text}}\" and put the response in {{language}}",
+    dog: "Answer as a dog, to the question: \"{{text}}\" and put the response in {{language}}",
+    cat: "Answer as a cat, to the question: \"{{text}}\" and put the response in {{language}}",
+    scientist: "Answer as a scientist, to the question: \"{{text}}\" and put the response in {{language}}",
+    superhero: "Answer as a superhero, to the question: \"{{text}}\" and put the response in {{language}}",
+    teacher: "Answer as a teacher, to the question: \"{{text}}\" and put the response in {{language}}",
+    gamer: "Answer as a gamer, to the question: \"{{text}}\" and put the response in {{language}}",
+    alien: "Answer as an alien, to the question: \"{{text}}\" and put the response in {{language}}",
+    smurf: "Answer as an Schtroumpf to the question \"{{text}}\" and put the response in {{language}}",
+    king: "Answer as a king, to the question: \"{{text}}\" and put the response in {{language}}",
+    pirate: "Answer as a pirate, to the question: \"{{text}}\" and put the response in {{language}}",
+    default: "Answer the question in quotes: \"{{text}}\" and put the response in {{language}}"
   }
 };
 
@@ -67,7 +67,7 @@ export const ResponseModals = {
     smurf: "Answer as an Schtroumpf to {{text}}",
     king: "Answer as a king to {{text}}",
     pirate: "Answer as a pirate to {{text}}",
-    default: "Answer to the question in quotes: \"{{text}}\" in {{language}}"
+    default: "Answer to the question in quotes: \"{{text}}\""
   }
 };
 
