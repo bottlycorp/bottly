@@ -71,7 +71,7 @@ export default class Ask extends Command {
       model: "gpt-3.5-turbo",
       max_tokens: 2000,
       temperature: 0.9,
-      messages: [{ content: finalQuestion, name: "User", role: "user" }]
+      messages: [{ content: question, name: "User", role: "user" }]
     });
 
     const text = response.data.choices[0].message?.content ?? "I don't know what to say...";
