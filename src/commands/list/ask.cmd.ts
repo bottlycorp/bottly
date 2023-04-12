@@ -36,6 +36,7 @@ export default class Ask extends Command {
     .setDMPermission(false);
 
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
+    Client.instance.colors.log("Ask used by " + command.user.tag + " (" + command.user.id + ")");
     const askedAt = dayjs().toDate();
     await checkUser(command.user.id);
     const user = await getUser(command.user.id);

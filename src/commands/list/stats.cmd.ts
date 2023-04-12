@@ -4,6 +4,7 @@ import { ChartJSNodeCanvas } from "chartjs-node-canvas";
 import { prisma } from "$core/utils/prisma";
 import { stats } from "$resources/messages.json";
 import Command from "$core/commands/command";
+import Client from "$core/client";
 
 export default class Stats extends Command {
 
@@ -22,6 +23,7 @@ export default class Stats extends Command {
       .setRequired(false));
 
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
+    Client.instance.colors.log("Stats used by " + command.user.tag + " (" + command.user.id + ")");
     await command.deferReply({ ephemeral: true });
 
     if (command.guildId !== process.env.SUPPORT_GUILD_ID) {

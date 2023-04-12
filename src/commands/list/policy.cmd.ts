@@ -3,6 +3,7 @@ import Command from "$core/commands/command";
 import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
 import { getLang } from "$core/utils/message";
 import { simpleEmbed } from "$core/utils/embed";
+import Client from "$core/client";
 
 export default class Stats extends Command {
 
@@ -14,6 +15,7 @@ export default class Stats extends Command {
     .setDescription("Get the privacy policy of the bot");
 
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
+    Client.instance.colors.log("Privacy used by " + command.user.tag + " (" + command.user.id + ")");
     const texts = [
       privacy.texts.sections.first[getLang(command.locale)],
       privacy.texts.sections.second[getLang(command.locale)],

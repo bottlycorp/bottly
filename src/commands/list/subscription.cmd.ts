@@ -15,6 +15,7 @@ import { msg, getLang } from "$core/utils/message";
 import { ButtonBuilder } from "@discordjs/builders";
 import { startTrial } from "$core/utils/trial";
 import Command from "$core/commands/command";
+import Client from "$core/client";
 
 export default class Subscription extends Command {
 
@@ -48,6 +49,7 @@ export default class Subscription extends Command {
       .setDescriptionLocalizations({ fr: subscription.subcommands.subscribe.fr }));
 
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
+    Client.instance.colors.log("Subsc used by " + command.user.tag + " (" + command.user.id + ")");
     await command.deferReply({ ephemeral: true });
     await checkUser(command.user.id);
     const subcommand = command.options.getSubcommand();

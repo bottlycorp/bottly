@@ -7,6 +7,7 @@ import { simpleEmbed } from "$core/utils/embed";
 import { getLang, limit, msg } from "$core/utils/message";
 import "dotenv/config";
 import dayjs from "dayjs";
+import Client from "$core/client";
 
 export default class History extends Command {
 
@@ -33,6 +34,7 @@ export default class History extends Command {
       ));
 
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
+    Client.instance.colors.log("History used by " + command.user.tag + " (" + command.user.id + ")");
     await command.deferReply({ ephemeral: true });
     await checkUser(command.user.id);
     const user = await getUser(command.user.id);

@@ -13,6 +13,7 @@ import { prisma } from "$core/utils/prisma";
 import { checkUser } from "$core/utils/user";
 import { ChatContextOptions } from "$core/utils/models";
 import Command from "$core/commands/command";
+import Client from "$core/client";
 
 export default class Ask extends Command {
 
@@ -30,6 +31,7 @@ export default class Ask extends Command {
     .setDMPermission(false);
 
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
+    Client.instance.colors.log("Chat used by " + command.user.tag + " (" + command.user.id + ")");
     const randomId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     if (!command.guild) return;
 

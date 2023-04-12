@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import { Request as RequestType } from "$core/utils/types/request.types";
 import { findContextOption, findLanguageOption } from "$core/utils/models";
 import { prisma } from "$core/utils/prisma";
+import Client from "$core/client";
 
 export default class Request extends Command {
 
@@ -25,6 +26,7 @@ export default class Request extends Command {
       .setRequired(true));
 
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
+    Client.instance.colors.log("Request used by " + command.user.tag + " (" + command.user.id + ")");
     await checkUser(command.user.id);
 
     const option = command.options.getString("request", true);
