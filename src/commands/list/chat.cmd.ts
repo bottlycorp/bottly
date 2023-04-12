@@ -14,6 +14,8 @@ import { checkUser } from "$core/utils/user";
 import { ChatContextOptions } from "$core/utils/models";
 import Command from "$core/commands/command";
 import Client from "$core/client";
+import { simpleEmbed } from "$core/utils/embed";
+import { getLang } from "$core/utils/message";
 
 export default class Ask extends Command {
 
@@ -34,6 +36,18 @@ export default class Ask extends Command {
     Client.instance.colors.log("Chat used by " + command.user.tag + " (" + command.user.id + ")");
     const randomId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     if (!command.guild) return;
+
+    const member = await command.guild?.members.fetch(process.env.CLIENT_ID ?? "010101");
+    if (
+      !member.permissions.has("SendMessages")
+      || !member.permissions.has("ManageMessages")
+      || !member.permissions.has("EmbedLinks")
+      || !member.permissions.has("CreatePublicThreads")
+      || !member.permissions.has("SendMessagesInThreads")
+    ) {
+      await command.reply({ embeds: [simpleEmbed(chat.errors.permissions[getLang(command.locale)], "error", { f: command.user })], ephemeral: true });
+      return;
+    }
 
     await checkUser(command.user.id);
 

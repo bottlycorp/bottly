@@ -1,13 +1,13 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption } from "discord.js";
-import Command from "$core/commands/command";
 import { checkUser, getRequest } from "$core/utils/user";
-import { request as msgRequest } from "$resources/messages.json";
+import { request as msgRequest, ask } from "$resources/messages.json";
 import { simpleEmbed } from "$core/utils/embed";
 import { getLang, msg } from "$core/utils/message";
-import dayjs from "dayjs";
 import { Request as RequestType } from "$core/utils/types/request.types";
 import { findContextOption, findLanguageOption } from "$core/utils/models";
 import { prisma } from "$core/utils/prisma";
+import Command from "$core/commands/command";
+import dayjs from "dayjs";
 import Client from "$core/client";
 
 export default class Request extends Command {
@@ -27,7 +27,14 @@ export default class Request extends Command {
 
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
     Client.instance.colors.log("Request used by " + command.user.tag + " (" + command.user.id + ")");
+    if (!command.guild) return;
     await checkUser(command.user.id);
+
+    const member = await command.guild?.members.fetch(process.env.CLIENT_ID ?? "010101");
+    if (!member.permissions.has("SendMessages") || !member.permissions.has("ManageMessages") || !member.permissions.has("EmbedLinks")) {
+      await command.reply({ embeds: [simpleEmbed(ask.errors.permissions[getLang(command.locale)], "error", { f: command.user })], ephemeral: true });
+      return;
+    }
 
     const option = command.options.getString("request", true);
 

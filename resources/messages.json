@@ -56,8 +56,8 @@
         "en-US": "You have reached the limit of conversations per month, wait for next month for the reloading of your quota.\n\n:sparkles: You can also subscribe to have an unlimited quota and additional features."
       },
       "permissions": {
-        "fr": "Pour fonctionner convenablement, j'ai besoins de la permission `Envoyer des messages`, `Gérer les messages` et `Créer des fils de discussion`.",
-        "en-US": "To work properly, I need the permission `Send messages`, `Manage messages` and `Create thread`."
+        "fr": "Pour fonctionner convenablement, j'ai besoins de la permission `Envoyer des messages`, `Gérer les messages`, `Créer des fils de discussion` et `Envoyer des messages dans les fils de discussion`.",
+        "en-US": "To work properly, I need the permission `Send messages`, `Manage messages`, `Create public threads` and `Send messages in threads`."
       },
       "openai": {
         "fr": "Une erreur est survenue lors de l'envoi de votre question à OpenAI, si cela se reproduit, vous pouvez contacter le support sur le [serveur support]({SUPPORT_SERVER_INVITE}).",
@@ -248,6 +248,10 @@
       "trial-already": {
         "fr": "Il semblerai que vous ayez déjà profité de votre essai gratuit, vous ne pouvez donc pas en avoir un autre, si vous pensez que c'est une erreur, venez sur le [serveur support]({SUPPORT_URL}) pour obtenir de l'aide",
         "en-US": "It seems that you have already benefited from your free trial, so you can't have another one, if you think this is an error, come to the [support server]({SUPPORT_URL}) to get help"
+      },
+      "in-guild": {
+        "fr": "Vous devez être dans un serveur pour utiliser cette commande",
+        "en-US": "You must be in a server to use this command"
       }
     },
     "messages": {

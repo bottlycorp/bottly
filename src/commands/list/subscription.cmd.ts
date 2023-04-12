@@ -55,6 +55,13 @@ export default class Subscription extends Command {
     const subcommand = command.options.getSubcommand();
     const user = await getUser(command.user.id);
 
+    if (!command.guild) {
+      await command.editReply({
+        embeds: [simpleEmbed(subscription.errors["in-guild"][getLang(command.locale)], "error", { f: command.user })]
+      });
+      return;
+    }
+
     let subscriber;
     if (user.email != "none") {
       subscriber = await findSubscriptionByEmail(user.email);

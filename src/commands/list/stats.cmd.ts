@@ -25,9 +25,17 @@ export default class Stats extends Command {
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
     Client.instance.colors.log("Stats used by " + command.user.tag + " (" + command.user.id + ")");
     await command.deferReply({ ephemeral: true });
+    if (!command.guild) return;
 
     if (command.guildId !== process.env.SUPPORT_GUILD_ID) {
       await command.editReply("This command is only available in the Support Guild");
+      return;
+    }
+
+
+    const member = await command.guild?.members.fetch(process.env.CLIENT_ID ?? "010101");
+    if (!member.permissions.has("SendMessages") || !member.permissions.has("ManageMessages") || !member.permissions.has("EmbedLinks")) {
+      await command.reply({ content: "I don't have the permissions to send messages, manage messages or embed links", ephemeral: true });
       return;
     }
 

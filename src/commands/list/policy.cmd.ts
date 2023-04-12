@@ -1,4 +1,4 @@
-import { privacy } from "$resources/messages.json";
+import { privacy, ask } from "$resources/messages.json";
 import Command from "$core/commands/command";
 import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
 import { getLang } from "$core/utils/message";
@@ -15,6 +15,14 @@ export default class Stats extends Command {
 
   public async execute(command: ChatInputCommandInteraction): Promise<void> {
     Client.instance.colors.log("Privacy used by " + command.user.tag + " (" + command.user.id + ")");
+    if (!command.guild) return;
+
+    const member = await command.guild?.members.fetch(process.env.CLIENT_ID ?? "010101");
+    if (!member.permissions.has("SendMessages") || !member.permissions.has("ManageMessages") || !member.permissions.has("EmbedLinks")) {
+      await command.reply({ embeds: [simpleEmbed(ask.errors.permissions[getLang(command.locale)], "error", { f: command.user })], ephemeral: true });
+      return;
+    }
+
     const texts = [
       privacy.texts.sections.first[getLang(command.locale)],
       privacy.texts.sections.second[getLang(command.locale)],
