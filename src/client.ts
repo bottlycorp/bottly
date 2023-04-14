@@ -6,6 +6,7 @@ import { version } from "../package.json";
 import { getStringEnv } from "./utils/env-variable";
 import { sep } from "path";
 import { BColors } from "bettercolors";
+import { Configuration, OpenAIApi } from "openai";
 
 export const client = new DiscordClient({
   intents: [
@@ -21,6 +22,10 @@ export const colors = new BColors({
     surrounded: "[]"
   }
 });
+
+export const openai = new OpenAIApi(new Configuration({
+  apiKey: getStringEnv("OPENAI_API_KEY")
+}));
 
 colors.info(`Starting Bottly v${version}...`);
 client.login(getStringEnv("BOT_TOKEN"));

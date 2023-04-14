@@ -107,14 +107,12 @@ export const listener = async(client: Client, commands: CommandsCollection): Pro
 
     if (!commandExecute) return;
 
-    colors.log(`${userWithId(interaction.user)} used the command "${interaction.commandName}"`);
+    colors.log(`${userWithId(interaction.user)} used the command "${interaction.commandName}" (${interaction.id})`);
     commandExecute(interaction);
   });
 };
 
 export const register = async(client: Client, commandsBuilder: CommandsBuilderCollection): Promise<void> => {
-  await client.application?.commands.set([]);
-
   for (const commandBuilder of commandsBuilder.values()) {
     await client.application?.commands.create(commandBuilder);
   }

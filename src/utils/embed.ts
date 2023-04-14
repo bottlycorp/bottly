@@ -2,12 +2,13 @@ import { EmbedBuilder, EmbedData } from "discord.js";
 import { global } from "./config";
 import { isHexColor } from "./validator";
 
-type EmbedType = "info" | "success" | "error";
+type EmbedType = "info" | "success" | "error" | "premium";
 
 const colors: Record<EmbedType, string> = {
   "success": global.colors.success,
   "error": global.colors.error,
-  "info": global.colors.primary
+  "info": global.colors.primary,
+  "premium": global.colors.premium
 };
 
 export const simpleEmbed = (content: string, type: EmbedType = "info", title?: string): EmbedBuilder => {
