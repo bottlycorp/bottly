@@ -5,7 +5,6 @@ import { listener, load as loadCommands, register } from "$core/utils/handler/co
 import { version } from "../package.json";
 import { getStringEnv } from "./utils/env-variable";
 import { sep } from "path";
-import { prisma } from "./utils/prisma";
 import { BColors } from "bettercolors";
 
 export const client = new DiscordClient({
@@ -41,17 +40,4 @@ client.once("ready", async() => {
   colors.info("Successfully registered application (/) commands");
 
   colors.success("The client has been successfully started!");
-
-  registerGuilds();
 });
-
-const registerGuilds = async(): Promise<void> => {
-  const guilds = await client.guilds.fetch();
-
-  const res = await prisma.guild.createMany({
-    data: guilds.map((guild) => ({ id: guild.id })),
-    skipDuplicates: true
-  });
-
-  if (res.count > 0) colors.info(`The bot has joined ${res.count} server(s) during his offline time`);
-};

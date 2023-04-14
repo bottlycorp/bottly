@@ -107,14 +107,15 @@ export const listener = async(client: Client, commands: CommandsCollection): Pro
 
     if (!commandExecute) return;
 
-    colors.info(`${userWithId(interaction.user)} used the command "${interaction.commandName}"`);
+    colors.log(`${userWithId(interaction.user)} used the command "${interaction.commandName}"`);
     commandExecute(interaction);
   });
 };
 
 export const register = async(client: Client, commandsBuilder: CommandsBuilderCollection): Promise<void> => {
-  const guild = await client.guilds.fetch("1076863331517874240");
-  await guild.commands.set(
-    commandsBuilder.map((command) => command.toJSON())
-  );
+  await client.application?.commands.set([]);
+
+  for (const commandBuilder of commandsBuilder.values()) {
+    await client.application?.commands.create(commandBuilder);
+  }
 };

@@ -8,12 +8,14 @@ export const commands = {
     },
     description: {
       "en-US": "Check the ping of the bot.",
-      fr: "Vérifier le ping du bot."
+      fr: "Vérifier le ping du bot.",
+      "pt-BR": "Verifique o ping do bot."
     },
     exec: {
       success: {
         "en-US": "The ping is **{timestamp}**ms",
-        fr: "Le ping est de **{timestamp}**ms"
+        fr: "Le ping est de **{timestamp}**ms",
+        "pt-BR": "O ping é **{timestamp}**ms"
       }
     }
   }

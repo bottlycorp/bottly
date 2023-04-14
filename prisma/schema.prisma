@@ -1,8 +1,57 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
 generator client {
   provider = "prisma-client-js"
 }
 
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+model User {
+  id           String         @id @default(cuid())
+  username     String
+  createdAt    DateTime
+  userId       String         @unique
+  usages       Usage[]
+  subscription Subscription[]
+}
+
+model Usage {
+  id           String @id
+  cmdAsk       Int
+  cmdChat      Int
+  cmdTranslate Int
+  ctxAsk       Int
+  ctxTranslate Int
+  ctxContext   Int
+  user         User   @relation(fields: [userId], references: [id])
+  userId       String
+}
+
+enum BillingType {
+  MONTHLY
+  ANNUAL
+}
+
+enum SubscriptionType {
+  USER
+  SERVER
+}
+
+enum SubscriptionTier {
+  I
+  II
+  III
+}
+
+model Subscription {
+  id               String           @id @default(cuid())
+  startDate        DateTime
+  endDate          DateTime
+  billingType      BillingType
+  subscriptionType SubscriptionType
+  tier             SubscriptionTier
+  isExpired        Boolean
+  user             User?            @relation(fields: [userId], references: [id])
+  userId           String?
 }
