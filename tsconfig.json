@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "commonjs",
+    "module": "CommonJS",
 
     "outDir": "./build/",
 
@@ -12,8 +12,7 @@
 
     "baseUrl": ".",
     "paths": {
-      "$core/*": ["./src/*"],
-      "$resources/*": ["./resources/*"]
+      "$core/*": ["./src/*"]
     }
   }
 }
