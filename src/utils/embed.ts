@@ -1,63 +1,39 @@
-import { ButtonBuilder } from "@discordjs/builders";
-import { ButtonStyle, EmbedBuilder, User } from "discord.js";
+import { EmbedBuilder, EmbedData } from "discord.js";
+import { global } from "./config";
+import { isHexColor } from "./validator";
 
-type EmbedType = "normal" | "error" | "success" | "pro";
+type EmbedType = "info" | "success" | "error";
 
-type Colors = {
-  [key in EmbedType]: number;
+const colors: Record<EmbedType, string> = {
+  "success": global.colors.success,
+  "error": global.colors.error,
+  "info": global.colors.primary
 };
 
-const colors: Colors = {
-  normal: 0x4353fc,
-  error: 0xfc4343,
-  success: 0x43fc43,
-  pro: 0xd6bd40
-};
+export const simpleEmbed = (content: string, type: EmbedType = "info", title?: string): EmbedBuilder => {
+  const color = colors[type];
 
-export function simpleEmbed(
-  message: string,
-  type: EmbedType = "normal",
-  footer: {
-    text?: string;
-    iconURL?: string;
-    timestamp?: boolean;
-    f?: User;
-  }
-) : EmbedBuilder {
-  const embed = new EmbedBuilder().setColor(colors[type]);
+  if (!isHexColor(color)) throw new Error("Invalid config: \"colors\" field in information.json need to be a valid hex color code");
 
-  if (message) embed.setDescription(message);
+  const embed = new EmbedBuilder()
+    .setColor(color)
+    .setDescription(content);
 
-  if (footer) {
-    if (footer.iconURL) embed.setFooter({ iconURL: footer.iconURL, text: footer.text ?? "" });
-
-    if (footer.f) {
-      embed.setFooter({
-        iconURL: footer.f.displayAvatarURL(),
-        text: footer.text ?? footer.f.tag
-      });
-    }
-
-    embed.setTimestamp();
-  }
+  if (title) embed.setTitle(title);
 
   return embed;
-}
+};
 
-export function getUsageButton(usage: number) : ButtonBuilder {
-  const button = new ButtonBuilder()
-    .setCustomId("limit")
-    .setStyle(ButtonStyle.Secondary)
-    .setDisabled(true);
+export const getBaseEmbed = (type: EmbedType = "info"): EmbedBuilder => {
+  const color = colors[type];
 
-  if (usage == 0) button.setLabel("⛽ Monthly limit reached");
-  else button.setLabel(`⛽ ${usage}/50 (monthly)`);
-  return button;
-}
+  if (!isHexColor(color)) throw new Error("Invalid config: \"colors\" field in information.json need to be a valid hex color code");
 
-export function getRevealButton(usage: number) : ButtonBuilder {
-  return new ButtonBuilder()
-    .setCustomId(`reveal_${usage}`)
-    .setLabel("Reveal")
-    .setStyle(ButtonStyle.Secondary);
-}
+  return new EmbedBuilder().setColor(color);
+};
+
+export const buildEmbed = (jsonEmbed: object): EmbedBuilder => {
+  if (!(jsonEmbed satisfies EmbedData)) throw new Error("Database embed does not satisfies EmbedData type.");
+
+  return new EmbedBuilder(jsonEmbed);
+};
