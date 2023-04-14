@@ -39,7 +39,7 @@ export default class ChatListener extends Event {
       try {
         const response = await Client.instance.openai.createChatCompletion({
           model: "gpt-3.5-turbo",
-          max_tokens: 1500,
+          max_tokens: 2000,
           temperature: 0.9,
           messages: chat.messages
         });
