@@ -4,7 +4,7 @@ export type Command = Base & {
   groups?: Record<string, SubCommandGroup>;
   subcmds?: Record<string, SubCommand>;
   options?: Record<string, Base>;
-  exec?: Record<string, LocalizationMap>;
+  exec?: Record<string, LocalizationMap | Record<string, LocalizationMap>>;
 };
 
 export type SubCommandGroup = Base & {
