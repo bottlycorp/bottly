@@ -40,12 +40,6 @@ export const commands = {
           fr: "Révéler au public",
           "pt-BR": "Revelar ao público",
           "es-ES": "Revelar al público"
-        },
-        translate: {
-          "en-US": "Translate",
-          fr: "Traduire",
-          "pt-BR": "Traduzir",
-          "es-ES": "Traducir"
         }
       },
       success: {

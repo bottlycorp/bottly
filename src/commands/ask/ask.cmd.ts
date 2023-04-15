@@ -39,10 +39,6 @@ export const execute: CommandExecute = async(command: CommandInteraction) => {
     .setCustomId("reveal")
     .setLabel(translate(command.locale, commands.ask.exec.buttons.reveal))
     .setStyle(ButtonStyle.Primary);
-  const translateButton = new ButtonBuilder()
-    .setCustomId("translate")
-    .setLabel(translate(command.locale, commands.ask.exec.buttons.translate))
-    .setStyle(ButtonStyle.Primary);
 
   await openai.createChatCompletion({
     messages: [{
@@ -67,7 +63,28 @@ export const execute: CommandExecute = async(command: CommandInteraction) => {
         embeds: [simpleEmbed(translate(command.locale, commands.ask.exec.success, {
           response: response?.data.choices[0].message?.content ?? "No response"
         }), "success")],
-        components: [{ type: 1, components: [revealButton, translateButton] }]
+        components: [{ type: 1, components: [revealButton] }]
+      });
+
+      channel.createMessageComponentCollector({
+        filter: (interaction) => interaction.user.id === command.user.id,
+        time: 60000
+      }).on("collect", (interaction) => {
+        if (interaction.customId === "reveal") {
+          interaction.update({
+            embeds: [simpleEmbed(translate(command.locale, commands.ask.exec.success, {
+              response: response?.data.choices[0].message?.content ?? "No response"
+            }), "success")],
+            components: []
+          });
+
+          interaction.deleteReply();
+          channel.send({
+            embeds: [simpleEmbed(translate(command.locale, commands.ask.exec.success, {
+              response: response?.data.choices[0].message?.content ?? "No response"
+            }), "success")]
+          });
+        }
       });
     }
   });

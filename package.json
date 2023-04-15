@@ -10,6 +10,7 @@
     "lint:fix": "eslint ./src --fix"
   },
   "dependencies": {
+    "@discordjs/builders": "^1.6.1",
     "bettercolors": "^1.0.0",
     "cron": "^2.3.0",
     "dayjs": "^1.11.7",
