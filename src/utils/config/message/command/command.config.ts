@@ -40,6 +40,32 @@ export const commands = {
           fr: "Révéler au public",
           "pt-BR": "Revelar ao público",
           "es-ES": "Revelar al público"
+        },
+        reveal_text: {
+          "en-US": ":grey_question: {question}\n\n{response}",
+          fr: ":grey_question: {question}\n\n{response}",
+          "pt-BR": ":grey_question: {question}\n\n{response}",
+          "es-ES": ":grey_question: {question}\n\n{response}"
+        },
+        revealed: {
+          "en-US": ":smile: The question has been revealed to the public",
+          fr: ":smile: La question a été révélée au public",
+          "pt-BR": ":smile: A pergunta foi revelada ao público",
+          "es-ES": ":smile: La pregunta ha sido revelada al público"
+        },
+        reveal_timeout: {
+          "en-US": [
+            "The reveal time has elapsed, the question has not been revealed to the public",
+            "\n\n- You can find the question in your history by doing `/history`"].join(""),
+          fr: [
+            "Le temps de révélation est écoulé, la question n'a pas été révélée au public",
+            "\n\n- Vous pouvez retrouver la question dans votre historique en faisant `/history`"].join(""),
+          "pt-BR": [
+            "O tempo de revelação expirou, a pergunta não foi revelada ao público",
+            "\n\n- Você pode encontrar a pergunta em seu histórico fazendo `/history`"].join(""),
+          "es-ES": [
+            "Se ha agotado el tiempo de revelación, la pregunta no se ha revelado al público",
+            "\n\n- Puede encontrar la pregunta en su historial haciendo `/history`"].join("")
         }
       },
       success: {

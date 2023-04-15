@@ -11,7 +11,13 @@ const colors: Record<EmbedType, string> = {
   "premium": global.colors.premium
 };
 
-export const simpleEmbed = (content: string, type: EmbedType = "info", title?: string): EmbedBuilder => {
+type Footer = {
+  text: string;
+  icon_url?: string | undefined;
+  timestamp?: boolean;
+}
+
+export const simpleEmbed = (content: string, type: EmbedType = "info", title?: string, footer?: Footer): EmbedBuilder => {
   const color = colors[type];
 
   if (!isHexColor(color)) throw new Error("Invalid config: \"colors\" field in information.json need to be a valid hex color code");
@@ -19,6 +25,14 @@ export const simpleEmbed = (content: string, type: EmbedType = "info", title?: s
   const embed = new EmbedBuilder()
     .setColor(color)
     .setDescription(content);
+
+  if (footer) {
+    if (footer.timestamp) embed.setTimestamp();
+    embed.setFooter({
+      text: footer.text,
+      iconURL: footer.icon_url
+    });
+  }
 
   if (title) embed.setTitle(title);
 
