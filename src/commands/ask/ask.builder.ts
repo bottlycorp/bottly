@@ -1,4 +1,4 @@
-import { commands } from "$core/utils/config/message/command";
+import { ask } from "./ask.config";
 import { EnableInDev } from "$core/utils/handler";
 import { SlashCommandDefition } from "$core/utils/handler/command";
 import { SlashCommandBuilder, SlashCommandStringOption } from "discord.js";
@@ -6,11 +6,11 @@ import { SlashCommandBuilder, SlashCommandStringOption } from "discord.js";
 export const enableInDev: EnableInDev = true;
 
 export const slashCommand: SlashCommandDefition = new SlashCommandBuilder()
-  .setName(commands.ask.name["en-US"])
-  .setNameLocalizations(commands.ask.name)
-  .setDescription(commands.ask.description["en-US"])
-  .setDescriptionLocalizations(commands.ask.description)
+  .setName(ask.config.name["en-US"])
+  .setNameLocalizations(ask.config.name)
+  .setDescription(ask.config.description["en-US"])
+  .setDescriptionLocalizations(ask.config.description)
   .addStringOption(new SlashCommandStringOption()
     .setName("question")
-    .setDescription(commands.ask.options.question.description["en-US"])
+    .setDescription(ask.config.options.question.description["en-US"])
     .setRequired(true));

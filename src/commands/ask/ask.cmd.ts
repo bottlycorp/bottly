@@ -1,21 +1,21 @@
-import {  colors, openai } from "$core/client";
-import { commands, models } from "$core/utils/config/message/command";
+import { colors, openai } from "$core/client";
 import { translate } from "$core/utils/config/message/message.util";
 import { newQuestion } from "$core/utils/data/question";
 import { userExist } from "$core/utils/data/user";
 import { simpleEmbed } from "$core/utils/embed";
 import { CommandExecute } from "$core/utils/handler/command";
 import { ButtonBuilder, ButtonStyle, CacheType, Channel, CommandInteraction, CommandInteractionOption, TextChannel } from "discord.js";
+import { ask, models } from "./ask.config";
 
 export const execute: CommandExecute = async(command: CommandInteraction) => {
-  const question: CommandInteractionOption<CacheType> = command.options.get(commands.ask.options.question.name["en-US"], true);
+  const question: CommandInteractionOption<CacheType> = command.options.get(ask.config.options.question.name["en-US"], true);
   const value: string | number | boolean | undefined = question.value;
   const guild = command.guild;
   await userExist(command.user);
 
   if (!guild) {
     command.reply({
-      embeds: [simpleEmbed(translate(command.locale, commands.ask.exec.error, {
+      embeds: [simpleEmbed(translate(command.locale, ask.config.exec.error, {
         error: "Execute the command in a guild"
       }), "error")], ephemeral: true
     });
@@ -26,7 +26,7 @@ export const execute: CommandExecute = async(command: CommandInteraction) => {
 
   if (typeof value !== "string") {
     command.reply({
-      embeds: [simpleEmbed(translate(command.locale, commands.ask.exec.error, {
+      embeds: [simpleEmbed(translate(command.locale, ask.config.exec.error, {
         error: "Value is not a string"
       }), "error")], ephemeral: true
     });
@@ -39,7 +39,7 @@ export const execute: CommandExecute = async(command: CommandInteraction) => {
 
   if (!channel || !(channel instanceof TextChannel)) {
     command.reply({
-      embeds: [simpleEmbed(translate(command.locale, commands.ask.exec.error, {
+      embeds: [simpleEmbed(translate(command.locale, ask.config.exec.error, {
         error: "Execute the command in a text based channel"
       }), "error")], ephemeral: true
     });
@@ -52,7 +52,7 @@ export const execute: CommandExecute = async(command: CommandInteraction) => {
 
   const revealButton = new ButtonBuilder()
     .setCustomId("reveal")
-    .setLabel(translate(command.locale, commands.ask.exec.buttons.reveal))
+    .setLabel(translate(command.locale, ask.config.exec.buttons.reveal))
     .setStyle(ButtonStyle.Primary);
 
   const askedAt = new Date();
@@ -69,7 +69,7 @@ export const execute: CommandExecute = async(command: CommandInteraction) => {
     model: "gpt-3.5-turbo"
   }).catch((error: Error) => {
     command.editReply({
-      embeds: [simpleEmbed(translate(command.locale, commands.ask.exec.error, {
+      embeds: [simpleEmbed(translate(command.locale, ask.config.exec.error, {
         error: error.message
       }), "error")]
     });
@@ -78,7 +78,7 @@ export const execute: CommandExecute = async(command: CommandInteraction) => {
       const repliedAt = new Date();
 
       command.editReply({
-        embeds: [simpleEmbed(translate(command.locale, commands.ask.exec.success, {
+        embeds: [simpleEmbed(translate(command.locale, ask.config.exec.success, {
           response: response?.data.choices[0].message?.content ?? "No response"
         }), "info")],
         components: [{ type: 1, components: [revealButton] }]
@@ -105,7 +105,7 @@ export const execute: CommandExecute = async(command: CommandInteraction) => {
           });
 
           channel.send({
-            embeds: [simpleEmbed(translate(command.locale, commands.ask.exec.buttons.reveal_text, {
+            embeds: [simpleEmbed(translate(command.locale, ask.config.exec.buttons.reveal_text, {
               question: value,
               locale: command.locale,
               response: response?.data.choices[0].message?.content ?? "No response"
