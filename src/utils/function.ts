@@ -1,4 +1,4 @@
-import { Guild, User } from "discord.js";
+import { CommandInteraction, Guild, User } from "discord.js";
 import { existsSync, statSync } from "fs";
 
 export const folderExist = (path: string): boolean => {
@@ -7,6 +7,10 @@ export const folderExist = (path: string): boolean => {
 
 export const userWithId = (user: User): string => {
   return `${user.tag} (${user.id})`;
+};
+
+export const interactionWithId = (interaction: CommandInteraction): string => {
+  return `${interaction.commandName} (${interaction.id})`;
 };
 
 export const guildWithId = (guild: Guild): string => {
