@@ -8,90 +8,88 @@ generator client {
 }
 
 model User {
-  id           String        @id @default(cuid())
-  username     String
-  createdAt    DateTime      @default(now())
-  userId       String        @unique
-  usages       Usage[]
-  subscription Subscription?
-  contexts     Context[]
-  questions    Question[]
+  id        String     @id @default(cuid())
+  username  String
+  createdAt Int
+  userId    String     @unique
+  usages    Usage?
+  // subscription Subscription?
+  // contexts  Context[]
+  questions Question[]
+  privacy   Privacy?
 }
 
 model Question {
-  id        String    @id @default(cuid())
+  id        String @id @default(cuid())
   question  String
   answer    String
-  createdAt DateTime
-  repliedAt DateTime?
-  user      User      @relation(fields: [userId], references: [id])
-  userId    String
+  createdAt Int
+  repliedAt Int
+  user      User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  userId    String @unique
 }
 
-model Channel {
-  id        String @id
-  name      String
-  channelID String @unique
-  numAsks   Int
-  numChats  Int
-}
-
-model Server {
-  id        String @id @default(cuid())
-  name      String
-  serverID  String @unique
-  numAsks   Int
-  numChats  Int
-  numTrans  Int
-  numCtx    Int
-  numCtxAsk Int
-}
+// model Channel {
+//   id        String @id
+//   name      String
+//   channelID String @unique
+//   numAsks   Int
+//   numChats  Int
+// }
 
 model Usage {
-  id           String @id
+  id           String @id @default(cuid())
   cmdAsk       Int
   cmdChat      Int
   cmdTranslate Int
   ctxAsk       Int
   ctxTranslate Int
   ctxContext   Int
-  user         User   @relation(fields: [userId], references: [id])
-  userId       String
+  user         User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  userId       String @unique
 }
 
-model Context {
-  id        String   @id @default(cuid())
-  context   String
-  createdAt DateTime
-  user      User     @relation(fields: [userId], references: [id])
-  usedCount Int
-  userId    String
-}
+// model Context {
+//   id        String   @id @default(cuid())
+//   context   String
+//   createdAt DateTime
+//   user      User     @relation(fields: [userId], references: [userId])
+//   usedCount Int
+//   userId    String
+// }
 
-enum BillingType {
-  MONTHLY
-  ANNUAL
-}
+// enum BillingType {
+//   MONTHLY
+//   ANNUAL
+// }
 
-enum SubscriptionType {
-  USER
-  SERVER
-}
+// enum SubscriptionType {
+//   USER
+//   SERVER
+// }
 
-enum SubscriptionTier {
-  I
-  II
-  III
-}
+// enum SubscriptionTier {
+//   Starter
+//   Advanced
+//   Optimal
+// }
 
-model Subscription {
-  id               String           @id @default(cuid())
-  startDate        DateTime
-  endDate          DateTime
-  billingType      BillingType
-  subscriptionType SubscriptionType
-  tier             SubscriptionTier
-  isExpired        Boolean
-  user             User             @relation(fields: [userId], references: [id])
-  userId           String           @unique
+// model Subscription {
+//   id               String           @id @default(cuid())
+//   startDate        DateTime
+//   endDate          DateTime
+//   billingType      BillingType
+//   subscriptionType SubscriptionType
+//   tier             SubscriptionTier
+//   isExpired        Boolean
+//   user             User             @relation(fields: [userId], references: [userId])
+//   userId           String           @unique
+// }
+
+model Privacy {
+  id          String  @id @default(cuid())
+  collectChat Boolean
+  autoDelete  Boolean
+  user        User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  userId      String  @unique
 }

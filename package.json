@@ -1,7 +1,7 @@
 {
   "name": "discord-bot",
   "version": "1.0.0",
-  "description": "RoxBot discord bot",
+  "description": "Bottly discord bot",
   "main": "./build/src/client.js",
   "scripts": {
     "dev": "npx nodemon --exec node -r @swc-node/register -r tsconfig-paths/register ./src/client.ts dev",
