@@ -36,6 +36,11 @@ export const ask = {
           fr: "Révéler au public",
           "pt-BR": "Revelar ao público"
         },
+        usage: {
+          "en-US": "{left}/{max} uses left",
+          fr: "{left}/{max} utilisations restantes",
+          "pt-BR": "{left}/{max} usos restantes"
+        },
         reveal_text: {
           "en-US": ":grey_question: {question}\n\n{response}",
           fr: ":grey_question: {question}\n\n{response}",

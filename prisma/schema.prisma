@@ -8,10 +8,9 @@ generator client {
 }
 
 model User {
-  id        String     @id @default(cuid())
   username  String
   createdAt Int
-  userId    String     @unique
+  userId    String     @id @unique
   usages    Usage?
   // subscription Subscription?
   // contexts  Context[]
@@ -20,13 +19,13 @@ model User {
 }
 
 model Question {
-  id        String @id @default(cuid())
+  id        String @id @unique @default(cuid())
   question  String
   answer    String
   createdAt Int
   repliedAt Int
   user      User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
-  userId    String @unique
+  userId    String
 }
 
 // model Channel {
@@ -87,9 +86,8 @@ model Usage {
 // }
 
 model Privacy {
-  id          String  @id @default(cuid())
   collectChat Boolean
   autoDelete  Boolean
   user        User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
-  userId      String  @unique
+  userId      String  @id @unique
 }

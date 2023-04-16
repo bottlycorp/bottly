@@ -1,28 +1,17 @@
-import { colors, openai } from "$core/client";
+import { MAX_USE_IN_MONTH, colors, openai } from "$core/client";
 import { translate } from "$core/utils/config/message/message.util";
 import { newQuestion } from "$core/utils/data/question";
 import { userExist } from "$core/utils/data/user";
 import { simpleEmbed } from "$core/utils/embed";
 import { CommandExecute } from "$core/utils/handler/command";
-import { ButtonBuilder, ButtonStyle, CacheType, Channel, CommandInteraction, CommandInteractionOption, TextChannel } from "discord.js";
+import { ButtonBuilder, ButtonStyle, CacheType, CommandInteraction, CommandInteractionOption, TextChannel } from "discord.js";
 import { ask, models } from "./ask.config";
+import { DayJS } from "$core/utils/day-js";
 
-export const execute: CommandExecute = async(command: CommandInteraction) => {
+export const execute: CommandExecute = async(command: CommandInteraction, channel: TextChannel) => {
   const question: CommandInteractionOption<CacheType> = command.options.get(ask.config.options.question.name["en-US"], true);
   const value: string | number | boolean | undefined = question.value;
-  const guild = command.guild;
   await userExist(command.user);
-
-  if (!guild) {
-    command.reply({
-      embeds: [simpleEmbed(translate(command.locale, ask.config.exec.error, {
-        error: "Execute the command in a guild"
-      }), "error")], ephemeral: true
-    });
-
-    colors.error("Execute the command in a guild");
-    return;
-  }
 
   if (typeof value !== "string") {
     command.reply({
@@ -35,27 +24,23 @@ export const execute: CommandExecute = async(command: CommandInteraction) => {
     return;
   }
 
-  const channel: Channel | null = await command.client.channels.fetch(command.channelId);
-
-  if (!channel || !(channel instanceof TextChannel)) {
-    command.reply({
-      embeds: [simpleEmbed(translate(command.locale, ask.config.exec.error, {
-        error: "Execute the command in a text based channel"
-      }), "error")], ephemeral: true
-    });
-
-    colors.error("Execute the command in a text based channel");
-    return;
-  }
-
   command.deferReply({ ephemeral: true });
 
+  const usageButton = new ButtonBuilder()
+    .setCustomId("usage")
+    .setLabel(translate(command.locale, ask.config.exec.buttons.usage, {
+      left: 3,
+      max: MAX_USE_IN_MONTH
+    }))
+    .setStyle(ButtonStyle.Secondary)
+    .setDisabled(true)
+    .setEmoji("⛽");
   const revealButton = new ButtonBuilder()
     .setCustomId("reveal")
     .setLabel(translate(command.locale, ask.config.exec.buttons.reveal))
     .setStyle(ButtonStyle.Primary);
 
-  const askedAt = new Date();
+  const askedAt = DayJS().unix();
   await openai.createChatCompletion({
     messages: [{
       content: translate(command.locale, models, {
@@ -75,49 +60,64 @@ export const execute: CommandExecute = async(command: CommandInteraction) => {
     });
   }).then(async(response) => {
     if (response) {
-      const repliedAt = new Date();
+      const repliedAt = DayJS().unix();
 
       command.editReply({
         embeds: [simpleEmbed(translate(command.locale, ask.config.exec.success, {
           response: response?.data.choices[0].message?.content ?? "No response"
         }), "info")],
-        components: [{ type: 1, components: [revealButton] }]
+        components: [{ type: 1, components: [revealButton, usageButton] }]
       });
 
       await newQuestion(command.user.id, {
-        question: value,
-        answer: response?.data.choices[0].message?.content ?? "No response",
-        askedAt: askedAt,
-        repliedAt: repliedAt,
-        channel: channel,
-        server: guild,
-        context: "Not implemented yet",
-        user: command.user
+        data: {
+          question: value,
+          answer: response?.data.choices[0].message?.content ?? "No response",
+          createdAt: askedAt,
+          repliedAt: repliedAt,
+          user: {
+            connect: {
+              userId: command.user.id
+            }
+          }
+        }
       });
 
-      channel.createMessageComponentCollector({
+      const collector = channel.createMessageComponentCollector({
         filter: (interaction) => interaction.user.id === command.user.id,
         time: 5000
       }).on("collect", async(interaction) => {
         if (interaction.customId === "reveal") {
           interaction.update({
-            components: [{ type: 1, components: [revealButton.setDisabled(true)] }]
+            components: [{ type: 1, components: [revealButton.setDisabled(true), usageButton] }]
           });
 
           channel.send({
-            embeds: [simpleEmbed(translate(command.locale, ask.config.exec.buttons.reveal_text, {
-              question: value,
-              locale: command.locale,
-              response: response?.data.choices[0].message?.content ?? "No response"
-            }), "info", "", {
-              text: command.user.username,
-              icon_url: command.user.avatarURL() ?? undefined,
-              timestamp: true
-            })]
+            embeds: [
+              simpleEmbed(
+                translate(
+                  command.locale,
+                  ask.config.exec.buttons.reveal_text,
+                  {
+                    question: value,
+                    locale: command.locale,
+                    response: response?.data.choices[0].message?.content ?? "No response"
+                  }
+                ), "info", "", {
+                  text: command.user.username,
+                  icon_url: command.user.avatarURL() ?? undefined,
+                  timestamp: true
+                }
+              )
+            ]
           });
+
+          collector.stop("Revealed");
         }
       }).on("end", () => {
-        command.editReply({ components: [{ type: 1, components: [revealButton.setDisabled(true)] }] });
+        if (collector.endReason !== "Revealed") {
+          command.editReply({ components: [{ type: 1, components: [revealButton.setDisabled(true), usageButton] }] });
+        }
       });
     }
   });

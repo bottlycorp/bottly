@@ -1,19 +1,12 @@
-import { Guild, TextChannel, User } from "discord.js";
 import { prisma } from "../prisma";
 import { colors } from "$core/client";
+import { Prisma } from "@prisma/client";
 
-type Question = {
-  question: string;
-  answer: string;
-  channel: TextChannel;
-  server: Guild;
-  context: string;
-  user: User;
-  askedAt: Date;
-  repliedAt: Date;
-};
+type QuestionIncludeAll = Prisma.QuestionGetPayload<{
+  include: { user: false };
+}>
 
-export const newQuestion = async(userId: string, question: Question): Promise<boolean> => {
+export const newQuestion = async(userId: string, question: Prisma.QuestionCreateArgs): Promise<boolean> => {
   await prisma.user.update({
     where: {
       userId: userId
@@ -21,33 +14,30 @@ export const newQuestion = async(userId: string, question: Question): Promise<bo
     data: {
       questions: {
         create: {
-          question: question.question,
-          answer: question.answer,
-          createdAt: question.askedAt,
-          repliedAt: question.repliedAt
+          question: question.data.question,
+          answer: question.data.answer,
+          createdAt: question.data.createdAt,
+          repliedAt: question.data.repliedAt
         }
       }
     }
   });
 
-  colors.info(`New question created for user ${userId}, question: ${question.question}`);
+  colors.info(`New question created for user ${userId}, question: ${question.data.question}`);
   return true;
 };
 
-export const getQuestions = async(userId: string): Promise<Question[]> => {
-  await prisma.user.findUnique({
+export const getQuestions = async(userId: string): Promise<QuestionIncludeAll | null> => {
+  await prisma.question.findMany({
     where: {
       userId: userId
-    },
-    select: {
-      questions: true
     }
-  }).then((user) => {
-    return user?.questions ?? [];
+  }).then((questions) => {
+    colors.info(`Found ${questions.length} questions for user ${userId}`);
+    return questions;
   }).catch(() => {
-    return [];
+    colors.error(`Error finding questions for user ${userId}`);
   });
 
-  colors.info(`Getting questions for user ${userId}`);
-  return [];
+  return null;
 };

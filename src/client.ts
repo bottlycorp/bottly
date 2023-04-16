@@ -8,6 +8,8 @@ import { sep } from "path";
 import { BColors } from "bettercolors";
 import { Configuration, OpenAIApi } from "openai";
 
+export const MAX_USE_IN_MONTH = 50;
+
 export const client = new DiscordClient({
   intents: [
     GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent,

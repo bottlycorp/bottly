@@ -108,8 +108,6 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
       interaction.options.getSubcommandGroup() ?? undefined
     ));
 
-    if (!commandExecute) return;
-
     if (!interaction.guild) {
       interaction.reply({
         embeds: [simpleEmbed(translate(interaction.locale, global.config.exec.error, {
@@ -145,7 +143,6 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
     }
 
     const member = await interaction.guild.members.fetch(client.user.id);
-    console.log(member.user.username);
     const missingPermissions = member.permissions.missing([
       "SendMessages",
       "EmbedLinks",
@@ -158,7 +155,6 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
       "AddReactions",
       "AttachFiles"
     ]);
-    console.log(missingPermissions);
 
     if (missingPermissions && missingPermissions.length > 0) {
       interaction.reply({
@@ -168,11 +164,13 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
       });
 
       colors.error([
-        `${userWithId(interaction.user)} tried to use the command "${interactionWithId(interaction)})`,
+        `${userWithId(interaction.user)} tried to use the command "${interactionWithId(interaction)}`,
         " but the bot doesn't have the permissions: " + missingPermissions.map((permission) => `\`${permission}\``).join(", ")
       ].join(""));
       return;
     }
+
+    if (!commandExecute) return;
 
     colors.log(`${userWithId(interaction.user)} used the command "${interactionWithId(interaction)})`);
     commandExecute(interaction, channel);

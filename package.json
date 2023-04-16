@@ -7,7 +7,12 @@
     "dev": "npx nodemon --exec node -r @swc-node/register -r tsconfig-paths/register ./src/client.ts dev",
     "start": "node -r @swc-node/register -r tsconfig-paths/register ./src/client.ts",
     "lint": "eslint ./src",
-    "lint:fix": "eslint ./src --fix"
+    "lint:fix": "eslint ./src --fix",
+    "db:push": "prisma db push",
+    "db:pull": "prisma db pull",
+    "db:generate": "prisma generate",
+    "db:studio": "prisma studio",
+    "db:format": "prisma format"
   },
   "dependencies": {
     "@discordjs/builders": "^1.6.1",
