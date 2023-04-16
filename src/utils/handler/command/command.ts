@@ -1,12 +1,15 @@
-import { Client, Collection, SlashCommandSubcommandBuilder, SlashCommandSubcommandGroupBuilder } from "discord.js";
+import { Channel, Client, Collection, SlashCommandSubcommandBuilder, SlashCommandSubcommandGroupBuilder, TextChannel } from "discord.js";
 import { CommandExecute, CommandsBuilderCollection, CommandsCollection, LoadedCommands } from "./command.type";
 import { existsSync, readdirSync, statSync } from "fs";
 import { sep } from "path";
 import { isDevEnvironment } from "$core/utils/environment";
 import { haveSubcommands, serializeCommandName } from "./command.util";
-import { folderExist, userWithId } from "$core/utils/function";
+import { folderExist, interactionWithId, userWithId } from "$core/utils/function";
 import { subCommandDirName, subCommandGroupDirNamePrefix } from "./command.const";
 import { colors } from "$core/client";
+import { simpleEmbed } from "$core/utils/embed";
+import { translate } from "$core/utils/config/message/message.util";
+import { global } from "$core/utils/config/message/command";
 
 export const load = async(commandsFolder: string): Promise<LoadedCommands> => {
   const commands: CommandsCollection = new Collection();
@@ -95,7 +98,7 @@ export const load = async(commandsFolder: string): Promise<LoadedCommands> => {
   };
 };
 
-export const listener = async(client: Client, commands: CommandsCollection): Promise<void> => {
+export const listener = async(client: Client<true>, commands: CommandsCollection): Promise<void> => {
   client.on("interactionCreate", async(interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
@@ -107,8 +110,72 @@ export const listener = async(client: Client, commands: CommandsCollection): Pro
 
     if (!commandExecute) return;
 
-    colors.log(`${userWithId(interaction.user)} used the command "${interaction.commandName}" (${interaction.id})`);
-    commandExecute(interaction);
+    if (!interaction.guild) {
+      interaction.reply({
+        embeds: [simpleEmbed(translate(interaction.locale, global.config.exec.error, {
+          error: translate(interaction.locale, global.config.exec.notInAGuild)
+        }), "error")], ephemeral: true
+      });
+
+      colors.error(`${userWithId(interaction.user)} tried to use the command "${interactionWithId(interaction)}) in DM`);
+      return;
+    }
+
+    const channel: Channel | null = await interaction.client.channels.fetch(interaction.channelId);
+    if (!channel) {
+      interaction.reply({
+        embeds: [simpleEmbed(translate(interaction.locale, global.config.exec.error, {
+          error: translate(interaction.locale, global.config.exec.channelNotFound)
+        }), "error")], ephemeral: true
+      });
+
+      colors.error(`${userWithId(interaction.user)} tried to use the command "${interactionWithId(interaction)}) in a channel that doesn't exist`);
+      return;
+    }
+
+    if (!(channel instanceof TextChannel)) {
+      interaction.reply({
+        embeds: [simpleEmbed(translate(interaction.locale, global.config.exec.error, {
+          error: translate(interaction.locale, global.config.exec.notInATextChannel)
+        }), "error")], ephemeral: true
+      });
+
+      colors.error(`${userWithId(interaction.user)} tried to use the command "${interactionWithId(interaction)}) not in a text channel`);
+      return;
+    }
+
+    const member = await interaction.guild.members.fetch(client.user.id);
+    console.log(member.user.username);
+    const missingPermissions = member.permissions.missing([
+      "SendMessages",
+      "EmbedLinks",
+      "ManageThreads",
+      "SendMessagesInThreads",
+      "CreatePrivateThreads",
+      "CreatePublicThreads",
+      "AddReactions",
+      "UseApplicationCommands",
+      "AddReactions",
+      "AttachFiles"
+    ]);
+    console.log(missingPermissions);
+
+    if (missingPermissions && missingPermissions.length > 0) {
+      interaction.reply({
+        embeds: [simpleEmbed(translate(interaction.locale, global.config.exec.botPermissionsNotFound, {
+          permissions: missingPermissions.map((permission) => `\`${permission}\``).join(", ")
+        }), "error")], ephemeral: true
+      });
+
+      colors.error([
+        `${userWithId(interaction.user)} tried to use the command "${interactionWithId(interaction)})`,
+        " but the bot doesn't have the permissions: " + missingPermissions.map((permission) => `\`${permission}\``).join(", ")
+      ].join(""));
+      return;
+    }
+
+    colors.log(`${userWithId(interaction.user)} used the command "${interactionWithId(interaction)})`);
+    commandExecute(interaction, channel);
   });
 };
 
