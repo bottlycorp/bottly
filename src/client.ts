@@ -1,4 +1,4 @@
-import { Client as DiscordClient } from "discord.js";
+import { Client as DiscordClient, GatewayIntentBits, Partials } from "discord.js";
 import { load as loadTasks } from "$core/utils/handler/task";
 import { load as loadEvents } from "$core/utils/handler/event";
 import { listener, load as loadCommands, register } from "$core/utils/handler/command";
@@ -10,9 +10,10 @@ import { Configuration, OpenAIApi } from "openai";
 
 export const client = new DiscordClient({
   intents: [
+    GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildIntegrations
   ],
-  partials: [
-  ]
+  partials: [Partials.Message, Partials.Channel, Partials.Reaction]
 });
 
 export const colors = new BColors({
