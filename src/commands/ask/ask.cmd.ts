@@ -3,11 +3,11 @@ import { translate } from "$core/utils/config/message/message.util";
 import { newQuestion } from "$core/utils/data/question";
 import { simpleEmbed } from "$core/utils/embed";
 import { CommandExecute } from "$core/utils/handler/command";
-import { ButtonBuilder, ButtonStyle, CacheType, CommandInteraction, CommandInteractionOption, TextChannel } from "discord.js";
+import { ButtonBuilder, ButtonStyle, CacheType, CommandInteractionOption } from "discord.js";
 import { ask, models } from "./ask.config";
 import { DayJS } from "$core/utils/day-js";
 
-export const execute: CommandExecute = async(command: CommandInteraction, channel: TextChannel) => {
+export const execute: CommandExecute = async(command, channel, user) => {
   const question: CommandInteractionOption<CacheType> = command.options.get(ask.config.options.question.name["en-US"], true);
   const value: string | number | boolean | undefined = question.value;
 
@@ -27,7 +27,7 @@ export const execute: CommandExecute = async(command: CommandInteraction, channe
   const usageButton = new ButtonBuilder()
     .setCustomId("usage")
     .setLabel(translate(command.locale, ask.config.exec.buttons.usage, {
-      left: 3,
+      left: user?.usages?.cmdAsk ?? 0,
       max: MAX_USE_IN_MONTH
     }))
     .setStyle(ButtonStyle.Secondary)

@@ -26,3 +26,7 @@ export const replaceVariables = (content: string, variables: Record<string, stri
 
   return msg;
 };
+
+export const limitString = (content: string, limit: number): string => {
+  return content.length > limit ? `${content.slice(0, limit)}...` : content;
+};

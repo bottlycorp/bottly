@@ -27,10 +27,13 @@ export const newQuestion = async(userId: string, question: Prisma.QuestionCreate
   return true;
 };
 
-export const getQuestions = async(userId: string): Promise<QuestionIncludeAll[] | null> => {
+export const getQuestions = async(userId: string, orderBy: "asc" | "desc" = "desc"): Promise<QuestionIncludeAll[] | null> => {
   const questions = await prisma.question.findMany({
     where: {
       userId: userId
+    },
+    orderBy: {
+      createdAt: orderBy
     }
   });
 
