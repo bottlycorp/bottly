@@ -27,17 +27,16 @@ export const newQuestion = async(userId: string, question: Prisma.QuestionCreate
   return true;
 };
 
-export const getQuestions = async(userId: string): Promise<QuestionIncludeAll | null> => {
-  await prisma.question.findMany({
+export const getQuestions = async(userId: string): Promise<QuestionIncludeAll[] | null> => {
+  const questions = await prisma.question.findMany({
     where: {
       userId: userId
     }
-  }).then((questions) => {
-    colors.info(`Found ${questions.length} questions for user ${userId}`);
-    return questions;
-  }).catch(() => {
-    colors.error(`Error finding questions for user ${userId}`);
   });
 
-  return null;
+  if (questions == null) {
+    return null;
+  }
+
+  return questions;
 };

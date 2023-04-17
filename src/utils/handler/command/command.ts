@@ -10,6 +10,7 @@ import { colors } from "$core/client";
 import { simpleEmbed } from "$core/utils/embed";
 import { translate } from "$core/utils/config/message/message.util";
 import { global } from "$core/utils/config/message/command";
+import { getUser } from "$core/utils/data/user";
 
 export const load = async(commandsFolder: string): Promise<LoadedCommands> => {
   const commands: CommandsCollection = new Collection();
@@ -173,7 +174,9 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
     if (!commandExecute) return;
 
     colors.log(`${userWithId(interaction.user)} used the command "${interactionWithId(interaction)})`);
-    commandExecute(interaction, channel);
+
+    const user = await getUser(interaction.user.id);
+    commandExecute(interaction, channel, user);
   });
 };
 

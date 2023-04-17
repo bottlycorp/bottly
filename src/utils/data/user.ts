@@ -4,28 +4,9 @@ import { colors } from "$core/client";
 import { DayJS } from "../day-js";
 import { Prisma } from "@prisma/client";
 
-type UserIncludeAll = Prisma.UserGetPayload<{
+export type UserIncludeAll = Prisma.UserGetPayload<{
   include: { questions: true; privacy: true; usages: true };
 }>
-
-export const userExist = async(userToFind: DiscordUser): Promise<boolean> => {
-  await prisma.user.findUnique({
-    where: {
-      userId: userToFind.id
-    }
-  }).then(async(user) => {
-    if (user) {
-      colors.info(`User ${user.username} (${user.userId}) found`);
-      return true;
-    }
-
-    colors.info(`User ${userToFind.username} (${userToFind.id}) not found, creating... new user`);
-    await newUser(userToFind);
-    return false;
-  });
-
-  return false;
-};
 
 export const newUser = async(userToCreate: DiscordUser): Promise<boolean> => {
   await prisma.user.create({

@@ -1,7 +1,6 @@
 import { MAX_USE_IN_MONTH, colors, openai } from "$core/client";
 import { translate } from "$core/utils/config/message/message.util";
 import { newQuestion } from "$core/utils/data/question";
-import { userExist } from "$core/utils/data/user";
 import { simpleEmbed } from "$core/utils/embed";
 import { CommandExecute } from "$core/utils/handler/command";
 import { ButtonBuilder, ButtonStyle, CacheType, CommandInteraction, CommandInteractionOption, TextChannel } from "discord.js";
@@ -11,7 +10,6 @@ import { DayJS } from "$core/utils/day-js";
 export const execute: CommandExecute = async(command: CommandInteraction, channel: TextChannel) => {
   const question: CommandInteractionOption<CacheType> = command.options.get(ask.config.options.question.name["en-US"], true);
   const value: string | number | boolean | undefined = question.value;
-  await userExist(command.user);
 
   if (typeof value !== "string") {
     command.reply({

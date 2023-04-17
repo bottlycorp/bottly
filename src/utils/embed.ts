@@ -17,7 +17,14 @@ type Footer = {
   timestamp?: boolean;
 }
 
-export const simpleEmbed = (content: string, type: EmbedType = "info", title?: string, footer?: Footer): EmbedBuilder => {
+export const simpleEmbed = (
+  content: string,
+  type: EmbedType = "info",
+  title?: string,
+  footer?: Footer,
+  thumbailUrl?: string,
+  pictureUrl?: string
+): EmbedBuilder => {
   const color = colors[type];
 
   if (!isHexColor(color)) throw new Error("Invalid config: \"colors\" field in information.json need to be a valid hex color code");
@@ -33,6 +40,9 @@ export const simpleEmbed = (content: string, type: EmbedType = "info", title?: s
       iconURL: footer.icon_url
     });
   }
+
+  if (thumbailUrl) embed.setThumbnail(thumbailUrl);
+  if (pictureUrl) embed.setImage(pictureUrl);
 
   if (title) embed.setTitle(title);
 
