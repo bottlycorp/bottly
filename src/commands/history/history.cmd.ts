@@ -1,44 +1,44 @@
 import { MAX_USE_IN_MONTH, colors } from "$core/client";
 import { translate } from "$core/utils/config/message/message.util";
-import { UserIncludeAll } from "$core/utils/data/user";
 import { CommandExecute } from "$core/utils/handler/command";
-import { ButtonStyle, CommandInteraction, TextChannel } from "discord.js";
+import { ButtonStyle } from "discord.js";
 import { history } from "./history.config";
 import { simpleEmbed } from "$core/utils/embed";
 import { ask } from "../ask/ask.config";
 import { ButtonBuilder } from "@discordjs/builders";
+import { getQuestions } from "$core/utils/data/question";
+import { limitString } from "$core/utils/function";
 
-export const execute: CommandExecute = async(command: CommandInteraction, channel: TextChannel, user: UserIncludeAll | null) => {
+export const execute: CommandExecute = async(command, channel, user) => {
+  command.deferReply({ ephemeral: true });
 
-  const questions = user?.questions;
+  const questions = await getQuestions(command.user.id);
+  const valuePage: number = command.options.getInteger(history.config.options.page.name["en-US"], false) ?? 1;
+  const perPage: number = command.options.getInteger(history.config.options.per.name["en-US"], false) ?? 10;
 
   if (questions == null) {
-    command.reply({
-      content: "You have no questions",
-      ephemeral: true
-    });
-
+    command.editReply({ content: "You have no questions" });
     colors.info("User has no questions");
     return;
   }
 
   let lines = "";
-  for (let i = 0; i < questions.length; i++) {
+  for (let i = (valuePage - 1) * perPage; i < valuePage * perPage && i < questions.length; i++) {
     lines += translate(command.locale, history.config.exec.success.line, {
       index: i + 1,
-      question: questions[i].question,
+      question: limitString(questions[i].question, 40),
       timestamp: questions[i].createdAt
     });
   }
 
   lines += "\n" + translate(command.locale, history.config.exec.success.notPremiumLine, {
-    left: 3
+    left: user?.usages?.cmdAsk ?? 0
   }) + "\n";
 
   lines += translate(command.locale, history.config.exec.success.settings) + "\n";
   lines += translate(command.locale, history.config.exec.success.statsLine, {
-    count: questions.length,
-    total: 301
+    count: 10, // TODO: Store the month count
+    total: questions.length
   });
 
   const usageButton = new ButtonBuilder()
@@ -51,15 +51,18 @@ export const execute: CommandExecute = async(command: CommandInteraction, channe
     .setDisabled(true)
     .setEmoji({ name: "⛽" });
 
-  command.reply({
+  command.editReply({
     embeds: [
       simpleEmbed(lines, "info", "", {
-        text: translate(command.locale, history.config.exec.success.footer, { page: 1, total: 1 }),
+        text: translate(command.locale, history.config.exec.success.footer, {
+          page: valuePage,
+          total: Math.ceil(questions.length / perPage),
+          per: perPage
+        }),
         icon_url: command.user.avatarURL() || undefined,
         timestamp: true
       })
     ],
-    components: [{ type: 1, components: [usageButton] }],
-    ephemeral: true
+    components: [{ type: 1, components: [usageButton] }]
   });
 };

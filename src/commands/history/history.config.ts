@@ -5,6 +5,28 @@ export const history = {
     name: {
       "en-US": "history"
     },
+    options: {
+      page: {
+        name: {
+          "en-US": "page"
+        },
+        description: {
+          "en-US": "The page to show",
+          fr: "La page à afficher",
+          "pt-BR": "A página a ser mostrada"
+        }
+      },
+      per: {
+        name: {
+          "en-US": "per"
+        },
+        description: {
+          "en-US": "The number of questions to show per page",
+          fr: "Le nombre de questions à afficher par page",
+          "pt-BR": "O número de perguntas a serem mostradas por página"
+        }
+      }
+    },
     description: {
       "en-US": "Show the history of your asked questions",
       fr: "Affiche l'historique de vos questions posées",
@@ -20,7 +42,9 @@ export const history = {
       },
       success: {
         footer: {
-          "en-US": "{page}/{total} pages"
+          "en-US": "{page}/{total} pages (x{per} per page)",
+          fr: "{page}/{total} pages (x{per} par page)",
+          "pt-BR": "{page}/{total} páginas (x{per} por página)"
         },
         line: {
           "en-US": "**{index}.** {question} - <t:{timestamp}:R>\n"
