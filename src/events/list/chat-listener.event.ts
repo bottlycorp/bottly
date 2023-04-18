@@ -68,7 +68,12 @@ export default class ChatListener extends Event {
         }
       } catch (error) {
         console.error(error);
-        channel.send("An error occurred while processing your request, please try again later, contact support");
+        channel.send([
+          "An error occurred while processing your request, please try again later, contact support",
+          "This update will be released at the same time as the next version of Bottly will be available!",
+          "Stay up to date via our Disord server by linking the announcements channel to your Discord to not miss any announcements",
+          ":link: Support Discord Server: https://discord.gg/tFUJHr2htA"
+        ].join("\n"));
       }
     } else {
       try {
