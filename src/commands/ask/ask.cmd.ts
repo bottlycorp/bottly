@@ -26,7 +26,6 @@ export const execute: CommandExecute = async(command, channel, user) => {
     return;
   }
 
-  // define the unix day-1 timestamp
   const askedAt = DayJS().unix();
   await openai.createChatCompletion({
     messages: [
