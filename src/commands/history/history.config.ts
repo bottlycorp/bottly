@@ -60,6 +60,13 @@ export const history = {
             "atualize para o plano Premium para fazer um número ilimitado de perguntas"
           ].join(" ")
         },
+        voterLine: {
+          fr: [
+            ":identification_card: Vous avez pour Bottly durant les dernières `12 heures`, ce qui vous permet d'être à 30 utilisations au lieu de 20"
+          ].join(" "),
+          "en-US": ":identification_card: You have Bottly for the last `12 hours`, which allows you to be at 30 uses instead of 20",
+          "pt-BR": ":identification_card: Você tem Bottly por `12 horas`, o que permite que você esteja em 30 usos em vez de 20"
+        },
         statsLine: {
           "en-US": ":bar_chart: You asked `{count}` questions this month, and `{total}` questions in total",
           fr: ":bar_chart: Vous avez posé `{count}` questions ce mois-ci, et `{total}` questions au total",
