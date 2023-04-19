@@ -12,15 +12,24 @@ export const ask = {
       "en-US": "ask"
     },
     options: {
-      question: {
+      prompt: {
         name: {
-          "en-US": "question",
-          "pt-BR": "pergunta"
+          "en-US": "prompt"
         },
         description: {
           "en-US": "The question to ask to the Artificial Intelligence",
           fr: "La question à poser à l'Intelligence Artificielle",
           "pt-BR": "A pergunta a ser feita à Inteligência Artificial"
+        }
+      },
+      context: {
+        name: {
+          "en-US": "context"
+        },
+        description: {
+          "en-US": "The context of the question",
+          fr: "Le contexte de la question",
+          "pt-BR": "O contexto da pergunta"
         }
       }
     },
@@ -30,39 +39,6 @@ export const ask = {
       "pt-BR": "Faça uma pergunta à Inteligência Artificial"
     },
     exec: {
-      buttons: {
-        reveal: {
-          "en-US": "Reveal to public",
-          fr: "Révéler au public",
-          "pt-BR": "Revelar ao público"
-        },
-        usage: {
-          "en-US": "{left}/{max} uses left",
-          fr: "{left}/{max} utilisations restantes",
-          "pt-BR": "{left}/{max} usos restantes"
-        },
-        reveal_text: {
-          "en-US": ":grey_question: {question}\n\n{response}",
-          fr: ":grey_question: {question}\n\n{response}",
-          "pt-BR": ":grey_question: {question}\n\n{response}"
-        },
-        revealed: {
-          "en-US": ":smile: The question has been revealed to the public",
-          fr: ":smile: La question a été révélée au public",
-          "pt-BR": ":smile: A pergunta foi revelada ao público"
-        },
-        reveal_timeout: {
-          "en-US": [
-            "The reveal time has elapsed, the question has not been revealed to the public",
-            "\n\n- You can find the question in your history by doing `/history`"].join(""),
-          fr: [
-            "Le temps de révélation est écoulé, la question n'a pas été révélée au public",
-            "\n\n- Vous pouvez retrouver la question dans votre historique en faisant `/history`"].join(""),
-          "pt-BR": [
-            "O tempo de revelação expirou, a pergunta não foi revelada ao público",
-            "\n\n- Você pode encontrar a pergunta em seu histórico fazendo `/history`"].join("")
-        }
-      },
       success: {
         "en-US": "{response}"
       },
