@@ -3,17 +3,19 @@ import { MAX_USES, UserIncludeAll } from "$core/utils/data/user";
 import { ButtonStyle, CommandInteraction, Interaction } from "discord.js";
 import { translate } from "./message/message.util";
 import { global } from "./message/command";
+import { emojiByUsage } from "../function";
 
 export const usageButton = (command: CommandInteraction | Interaction, user: UserIncludeAll | null) : ButtonBuilder => {
+  console.log((user?.usages?.usage ?? 1) == 0 ? 0 : (user?.usages?.usage ?? 1) - 1);
   return new ButtonBuilder()
     .setCustomId("usage")
     .setLabel(translate(command.locale, global.config.exec.buttons.usage, {
-      left: ((user?.usages?.usage ?? 1) - 1) ?? 0,
+      left: (user?.usages?.usage ?? 1) == 0 ? 0 : (user?.usages?.usage ?? 1) - 1,
       max: MAX_USES["FREE"]
     }))
     .setStyle(ButtonStyle.Secondary)
     .setDisabled(true)
-    .setEmoji({ name: "⛽" });
+    .setEmoji(emojiByUsage(MAX_USES["FREE"], (user?.usages?.usage ?? 1) == 0 ? 0 : (user?.usages?.usage ?? 1) - 1));
 };
 
 export const revealButton = (command: CommandInteraction | Interaction) : ButtonBuilder => {

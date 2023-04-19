@@ -1,4 +1,4 @@
-import { CommandInteraction, Guild, User } from "discord.js";
+import { APIMessageComponentEmoji, CommandInteraction, Guild, User } from "discord.js";
 import { existsSync, statSync } from "fs";
 
 export const folderExist = (path: string): boolean => {
@@ -29,4 +29,22 @@ export const replaceVariables = (content: string, variables: Record<string, stri
 
 export const limitString = (content: string, limit: number): string => {
   return content.length > limit ? `${content.slice(0, limit)}...` : content;
+};
+
+const battery: APIMessageComponentEmoji = { name: "🔋" };
+const mediumBattery: APIMessageComponentEmoji = { name: "low_battery", id: "1098286582303293560" };
+const lowBattery: APIMessageComponentEmoji = { name: "🪫" };
+const emptyBattery: APIMessageComponentEmoji = { name: "empty_battery", id: "1098291005800841287" };
+
+export const emojiByUsage = (usageMax: number, usaged: number): APIMessageComponentEmoji => {
+  const percentage = usaged / usageMax;
+  console.log(usageMax);
+  console.log(usaged);
+  console.log(percentage);
+
+  if (percentage >= 0.75) return battery;
+  if (percentage >= 0.5) return mediumBattery;
+  if (percentage >= 0.25) return lowBattery;
+  if (percentage >= 0) return emptyBattery;
+  return emptyBattery;
 };

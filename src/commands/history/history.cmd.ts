@@ -5,6 +5,7 @@ import { history } from "./history.config";
 import { simpleEmbed } from "$core/utils/embed";
 import { limitString } from "$core/utils/function";
 import { usageButton } from "$core/utils/config/buttons";
+import { DayJS } from "$core/utils/day-js";
 
 export const execute: CommandExecute = async(command, channel, user) => {
   const questions = user.questions;
@@ -37,8 +38,14 @@ export const execute: CommandExecute = async(command, channel, user) => {
   }
 
   // lines += translate(command.locale, history.config.exec.success.settings) + "\n";
+
+  let askedThisDay = 0;
+  for (const question of questions) {
+    if (DayJS(question.createdAt * 1000).isSame(DayJS(), "day")) askedThisDay++;
+  }
+
   lines += translate(command.locale, history.config.exec.success.statsLine, {
-    count: 10, // TODO: Store the month count
+    count: askedThisDay,
     total: questions.length
   });
 
