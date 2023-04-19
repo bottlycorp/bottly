@@ -3,13 +3,20 @@ import { prisma } from "../prisma";
 import { colors } from "$core/client";
 import { DayJS } from "../day-js";
 import { Prisma } from "@prisma/client";
+import { UsageMax } from "@prisma/client";
+import { userWithId } from "../function";
 
 export type UserIncludeAll = Prisma.UserGetPayload<{
-  include: { questions: true; privacy: true; usages: true };
+  include: { questions: true; privacy: true; usages: true; votes: true };
 }>
 
-export const newUser = async(userToCreate: DiscordUser): Promise<boolean> => {
-  await prisma.user.create({
+export const MAX_USES: Record<UsageMax, number> = {
+  [UsageMax.FREE]: 20,
+  [UsageMax.PREMIUM]: 50
+};
+
+export const newUser = async(userToCreate: DiscordUser): Promise<UserIncludeAll> => {
+  const user = await prisma.user.create({
     data: {
       username: userToCreate.username,
       userId: userToCreate.id,
@@ -22,42 +29,53 @@ export const newUser = async(userToCreate: DiscordUser): Promise<boolean> => {
       },
       usages: {
         create: {
-          cmdAsk: 20,
-          cmdChat: 20,
-          cmdTranslate: 20,
-          ctxAsk: 20,
-          ctxContext: 20,
-          ctxTranslate: 20
+          max: UsageMax.FREE,
+          usage: MAX_USES[UsageMax.FREE]
+        }
+      },
+      isPremium: false,
+      questions: {},
+      votes: {
+        create: {
+          active: false,
+          allVotes: {},
+          count: 0,
+          firstVote: "",
+          lastVote: ""
         }
       }
-    }
-  }).then(() => {
-    colors.info(`New user created: ${userToCreate.username} (${userToCreate.id})`);
-  }).catch(() => {
-    colors.error(`Error creating new user: ${userToCreate.username} (${userToCreate.id})`);
-  });
-
-  return true;
-};
-
-export const getUser = async(userId: string): Promise<UserIncludeAll | null> => {
-  const user = await prisma.user.findUnique({
-    where: {
-      userId: userId
     },
     include: {
       questions: true,
       privacy: true,
-      usages: true
+      usages: true,
+      votes: true
+    }
+  });
+
+  console.log("createdUser", user);
+  return user;
+};
+
+export const getUser = async(userId: DiscordUser): Promise<UserIncludeAll> => {
+  const user = await prisma.user.findUnique({
+    where: {
+      userId: typeof userId === "string" ? userId : userId.id
+    },
+    include: {
+      questions: true,
+      privacy: true,
+      usages: true,
+      votes: true
     }
   });
 
   if (!user) {
-    colors.info(`User ${userId} not found`);
-    return null;
+    colors.info(`User ${userWithId(userId)} not found`);
+    return newUser(userId);
   }
 
-  colors.info(`User ${user.username} (${user.userId}) found`);
+  colors.info(`User ${userWithId(userId)} found`);
   return user;
 };
 
@@ -90,4 +108,20 @@ export const deleteUser = async(userId: string): Promise<boolean> => {
   });
 
   return true;
+};
+
+export const getMaxUsage = (user: UserIncludeAll): number => {
+  if (user.isPremium && user.votes?.active) {
+    return MAX_USES[UsageMax.PREMIUM] + 10;
+  }
+
+  if (user.isPremium && !user.votes?.active) {
+    return MAX_USES[UsageMax.PREMIUM];
+  }
+
+  if (user.votes?.active && !user.isPremium) {
+    return MAX_USES[UsageMax.FREE] + 10;
+  }
+
+  return MAX_USES[UsageMax.FREE];
 };

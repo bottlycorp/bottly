@@ -3,6 +3,7 @@ export const global = {
     primary: "#4353fc",
     success: "#43fc43",
     error: "#fc4343",
-    premium: "#d6bd40"
+    premium: "#d6bd40",
+    vote: "#260B1A"
   }
 };

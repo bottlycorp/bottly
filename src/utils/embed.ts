@@ -2,13 +2,14 @@ import { EmbedBuilder, EmbedData } from "discord.js";
 import { global } from "./config";
 import { isHexColor } from "./validator";
 
-type EmbedType = "info" | "success" | "error" | "premium";
+type EmbedType = "info" | "success" | "error" | "premium" | "vote";
 
 const colors: Record<EmbedType, string> = {
   "success": global.colors.success,
   "error": global.colors.error,
   "info": global.colors.primary,
-  "premium": global.colors.premium
+  "premium": global.colors.premium,
+  "vote": global.colors.vote
 };
 
 type Footer = {
