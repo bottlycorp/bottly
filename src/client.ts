@@ -7,8 +7,8 @@ import { getStringEnv } from "./utils/env-variable";
 import { sep } from "path";
 import { BColors } from "bettercolors";
 import { Configuration, OpenAIApi } from "openai";
-
-export const MAX_USE_IN_MONTH = 20;
+import { AutoPoster } from "topgg-autoposter";
+import { isDevEnvironment } from "./utils/environment";
 
 export const client = new DiscordClient({
   intents: [
@@ -17,6 +17,14 @@ export const client = new DiscordClient({
   ],
   partials: [Partials.Message, Partials.Channel, Partials.Reaction]
 });
+
+if (!isDevEnvironment) {
+  const poster = AutoPoster(getStringEnv("TOPGG_TOKEN"), client);
+
+  poster.on("posted", () => {
+    colors.success("Posted stats to Top.gg!");
+  });
+}
 
 export const colors = new BColors({
   date: {

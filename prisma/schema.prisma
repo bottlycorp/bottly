@@ -1,93 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-}
-
-generator client {
-  provider = "prisma-client-js"
 }
 
 model User {
   username  String
   createdAt Int
   userId    String     @id @unique
-  usages    Usage?
-  // subscription Subscription?
-  // contexts  Context[]
-  questions Question[]
   privacy   Privacy?
+  questions Question[]
+  usages    Usage?
+  votes     Vote?
+  isPremium Boolean    @default(false)
 }
 
 model Question {
   id        String @id @unique @default(cuid())
-  question  String
-  answer    String
-  createdAt Int
-  repliedAt Int
+  question  String @default("")
+  answer    String @default("")
+  createdAt Int    @default(0)
+  repliedAt Int    @default(0)
   user      User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
   userId    String
 }
 
-// model Channel {
-//   id        String @id
-//   name      String
-//   channelID String @unique
-//   numAsks   Int
-//   numChats  Int
-// }
-
 model Usage {
-  id           String @id @default(cuid())
-  cmdAsk       Int
-  cmdChat      Int
-  cmdTranslate Int
-  ctxAsk       Int
-  ctxTranslate Int
-  ctxContext   Int
-  user         User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
-  userId       String @unique
+  id     String   @id @default(cuid())
+  usage  Int      @default(20)
+  max    UsageMax @default(FREE)
+  user   User     @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  userId String   @unique
 }
 
-// model Context {
-//   id        String   @id @default(cuid())
-//   context   String
-//   createdAt DateTime
-//   user      User     @relation(fields: [userId], references: [userId])
-//   usedCount Int
-//   userId    String
-// }
-
-// enum BillingType {
-//   MONTHLY
-//   ANNUAL
-// }
-
-// enum SubscriptionType {
-//   USER
-//   SERVER
-// }
-
-// enum SubscriptionTier {
-//   Starter
-//   Advanced
-//   Optimal
-// }
-
-// model Subscription {
-//   id               String           @id @default(cuid())
-//   startDate        DateTime
-//   endDate          DateTime
-//   billingType      BillingType
-//   subscriptionType SubscriptionType
-//   tier             SubscriptionTier
-//   isExpired        Boolean
-//   user             User             @relation(fields: [userId], references: [userId])
-//   userId           String           @unique
-// }
-
 model Privacy {
-  collectChat Boolean
-  autoDelete  Boolean
+  collectChat Boolean @default(false)
+  autoDelete  Boolean @default(false)
   user        User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
   userId      String  @id @unique
+}
+
+enum UsageMax {
+  FREE
+  PREMIUM
+}
+
+model Vote {
+  id        String  @id @default(cuid())
+  count     Int     @default(0)
+  lastVote  String  @default("none")
+  firstVote String  @default("none")
+  allVotes  Json    @default("[]")
+  active    Boolean @default(true)
+  user      User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  userId    String  @unique
 }
