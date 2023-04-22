@@ -90,7 +90,8 @@ export const execute: CommandExecute = async(command, channel, user) => {
               components: [
                 revealButton(command).setDisabled(true).setLabel(translate(command.locale, global.config.exec.buttons.reveal)),
                 usageButton(command, user)
-              ] }]
+              ]
+            }]
           });
           clearInterval(interval);
         }

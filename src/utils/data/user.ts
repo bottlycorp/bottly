@@ -53,7 +53,6 @@ export const newUser = async(userToCreate: DiscordUser): Promise<UserIncludeAll>
     }
   });
 
-  console.log("createdUser", user);
   return user;
 };
 

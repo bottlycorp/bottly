@@ -6,7 +6,6 @@ import { global } from "./message/command";
 import { emojiByUsage } from "../function";
 
 export const usageButton = (command: CommandInteraction | Interaction, user: UserIncludeAll | null) : ButtonBuilder => {
-  console.log((user?.usages?.usage ?? 1) == 0 ? 0 : (user?.usages?.usage ?? 1) - 1);
   return new ButtonBuilder()
     .setCustomId("usage")
     .setLabel(translate(command.locale, global.config.exec.buttons.usage, {

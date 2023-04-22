@@ -4,7 +4,7 @@ import { Prisma } from "@prisma/client";
 import { User } from "discord.js";
 import { userWithId } from "../function";
 
-type QuestionIncludeAll = Prisma.QuestionGetPayload<{
+export type QuestionIncludeAll = Prisma.QuestionGetPayload<{
   include: { user: false };
 }>
 
@@ -29,10 +29,13 @@ export const newQuestion = async(user: User, question: Prisma.QuestionCreateArgs
   return true;
 };
 
-export const getQuestions = async(userId: string): Promise<QuestionIncludeAll[] | null> => {
+export const getQuestions = async(userId: string, contains?: string): Promise<QuestionIncludeAll[] | null> => {
   const questions = await prisma.question.findMany({
     where: {
-      userId: userId
+      userId: userId,
+      question: {
+        contains: contains
+      }
     },
     orderBy: {
       createdAt: "desc"
@@ -44,4 +47,25 @@ export const getQuestions = async(userId: string): Promise<QuestionIncludeAll[] 
   }
 
   return questions;
+};
+
+export const isQuestionExist = async(id: string, userId: string): Promise<boolean> => {
+  const question = await prisma.question.findUnique({
+    where: {
+      id: id
+    },
+    select: {
+      userId: true
+    }
+  });
+
+  if (question == null) {
+    return false;
+  }
+
+  if (question.userId !== userId) {
+    return false;
+  }
+
+  return true;
 };
