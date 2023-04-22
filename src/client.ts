@@ -55,5 +55,7 @@ client.once("ready", async() => {
   await register(client, loadedCommands.builders);
   colors.info("Successfully registered application (/) commands");
 
+  const members = client.guilds.cache.reduce((a, b) => a + b.memberCount, 0);
+  colors.log(`Bottly in ready for ${client.guilds.cache.size} guilds and ${members} users!`);
   colors.success("The client has been successfully started!");
 });

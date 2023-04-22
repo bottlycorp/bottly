@@ -31,41 +31,34 @@ export const newQuestion = async(user: User, question: Prisma.QuestionCreateArgs
 
 export const getQuestions = async(userId: string, contains?: string): Promise<QuestionIncludeAll[] | null> => {
   const questions = await prisma.question.findMany({
-    where: {
-      userId: userId,
-      question: {
-        contains: contains
-      }
-    },
-    orderBy: {
-      createdAt: "desc"
-    }
+    where: { userId: userId, question: { contains: contains } },
+    orderBy: { createdAt: "desc" }
   });
 
-  if (questions == null) {
-    return null;
-  }
-
+  if (questions == null) return null;
   return questions;
 };
 
 export const isQuestionExist = async(id: string, userId: string): Promise<boolean> => {
   const question = await prisma.question.findUnique({
-    where: {
-      id: id
-    },
-    select: {
-      userId: true
-    }
+    where: { id: id },
+    select: { userId: true }
   });
 
-  if (question == null) {
-    return false;
-  }
-
-  if (question.userId !== userId) {
-    return false;
-  }
+  if (question == null) return false;
+  if (question.userId !== userId) return false;
 
   return true;
+};
+
+export const getQuestion = async(id: string, userId: string): Promise<QuestionIncludeAll | null> => {
+  const question = await prisma.question.findUnique({
+    where: { id: id },
+    include: { user: false }
+  });
+
+  if (question == null) return null;
+  if (question.userId !== userId) return null;
+
+  return question;
 };

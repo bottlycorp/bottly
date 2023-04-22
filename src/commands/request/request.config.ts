@@ -33,6 +33,23 @@ export const request = {
         "en-US": "The question you want to recover does not exist, or it is not yours!",
         fr: "La question que vous voulez récupérer n'existe pas, ou elle ne vous appartient pas !",
         "pt-BR": "A pergunta que você deseja recuperar não existe ou não é sua!"
+      },
+      question: {
+        "en-US": [
+          "This question was asked the <t:{date}:F> (<t:{date2}:R>) and has been answered in `{time}s`, ",
+          "has been sent in `{channel}` from `{guild}`.",
+          "\n\n**Question:** {question}\n**Answer:** {answer}"
+        ].join(""),
+        fr: [
+          "Cette question a été posée le <t:{date}:F> (<t:{date2}:R>) et a été répondue en `{time}s`, ",
+          "a été envoyée dans `{channel}` depuis `{guild}`.",
+          "\n\n**Question:** {question}\n**Réponse:** {answer}"
+        ].join(""),
+        "pt-BR": [
+          "Esta pergunta foi feita em <t:{date}:F> (<t:{date2}:R>) e foi respondida em `{time}s`, ",
+          "foi enviada em `{channel}` de `{guild}`.",
+          "\n\n**Pergunta:** {question}\n**Resposta:** {answer}"
+        ].join("")
       }
     }
   }

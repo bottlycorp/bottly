@@ -1,9 +1,10 @@
 import { colors } from "$core/client";
 import { translate } from "$core/utils/config/message/message.util";
-import { isQuestionExist } from "$core/utils/data/question";
+import { getQuestion, isQuestionExist } from "$core/utils/data/question";
 import { simpleEmbed } from "$core/utils/embed";
 import { CommandExecute } from "$core/utils/handler/command";
 import { request } from "./request.config";
+import { DayJS } from "$core/utils/day-js";
 
 export const execute: CommandExecute = async(command, channel, user) => {
   const questions = user.questions;
@@ -27,6 +28,45 @@ export const execute: CommandExecute = async(command, channel, user) => {
         })
       ]
     });
+
+    colors.error("Question does not exist");
     return;
   }
+
+  const data = await getQuestion(question, user.userId);
+
+  if (data == null) {
+    command.editReply({
+      embeds: [
+        simpleEmbed(translate(command.locale, request.config.exec.thisQuestionDoesNotExist), "error", "", {
+          text: command.user.username,
+          icon_url: command.user.avatarURL() ?? undefined,
+          timestamp: true
+        })
+      ]
+    });
+
+    colors.error("Question is null");
+    return;
+  }
+
+  const timestamp = DayJS((data.repliedAt * 1000)).diff(DayJS((data.createdAt * 1000)), "second");
+
+  command.editReply({
+    embeds: [
+      simpleEmbed(translate(command.locale, request.config.exec.question, {
+        date: data.createdAt,
+        date2: data.repliedAt,
+        time: timestamp,
+        channel: "Not defined",
+        guild: "Not defined",
+        question: data.question,
+        answer: data.answer
+      }), "info", "", {
+        text: command.user.username,
+        icon_url: command.user.avatarURL() ?? undefined,
+        timestamp: true
+      })
+    ]
+  });
 };
