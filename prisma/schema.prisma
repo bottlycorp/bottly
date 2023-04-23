@@ -8,15 +8,15 @@ datasource db {
 }
 
 model User {
-  username  String
-  createdAt Int
-  userId    String     @id @unique
-  privacy   Privacy?
-  questions Question[]
+  username    String
+  createdAt   Int
+  userId      String       @id @unique
+  privacy     Privacy?
+  questions   Question[]
   discussions Discussion[]
-  usages    Usage?
-  votes     Vote?
-  isPremium Boolean    @default(false)
+  usages      Usage?
+  votes       Vote?
+  isPremium   Boolean      @default(false)
 }
 
 model Question {
@@ -61,19 +61,23 @@ model Vote {
 }
 
 model Discussion {
-  id        String  @id @default(cuid())
-  createdAt Int     @default(0)
-  lastMessage Int @default(0)
-  messages  Message[]
-  userId    String 
-  user      User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  id            String    @id @default(cuid())
+  createdAt     Int       @default(0)
+  lastMessage   Int       @default(0)
+  lastMessageAt Int       @default(0)
+  messages      Message[]
+  writing       Boolean   @default(false)
+  active        Boolean   @default(true)
+  context       String    @default("default")
+  userId        String
+  user          User      @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
 
 model Message {
-  id        String  @id @default(cuid())
-  createdAt Int     @default(0)
-  message   String  @default("Lorem imspu mipsu")
-  isBot     Boolean @default(false)
-  discussion Discussion @relation(fields: [discussionId], references: [id], onDelete: Cascade)
+  id           String     @id @default(cuid())
+  createdAt    Int        @default(0)
+  message      String     @default("Lorem imspu mipsu")
+  isBot        Boolean    @default(false)
+  discussion   Discussion @relation(fields: [discussionId], references: [id], onDelete: Cascade)
   discussionId String
 }

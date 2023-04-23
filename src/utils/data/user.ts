@@ -127,3 +127,7 @@ export const getMaxUsage = (user: UserIncludeAll): number => {
 
   return MAX_USES[UsageMax.FREE];
 };
+
+export const haveActiveDiscussion = (user: UserIncludeAll): boolean => {
+  return Object.values(user.discussions).some((discussion) => discussion.active);
+};

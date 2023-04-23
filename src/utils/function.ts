@@ -11,7 +11,7 @@ export const userWithId = (user: User): string => {
 };
 
 export const interactionWithId = (interaction: CommandInteraction): string => {
-  return `${interaction.commandName} (${interaction.id})`;
+  return `"${interaction.commandName}" (${interaction.id})`;
 };
 
 export const guildWithId = (guild: Guild): string => {

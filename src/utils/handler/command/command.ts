@@ -119,7 +119,7 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
         }), "error")], ephemeral: true
       });
 
-      colors.error(`${userWithId(interaction.user)} tried to use the command "${interactionWithId(interaction)}) in DM`);
+      colors.error(`${userWithId(interaction.user)} tried to use the command ${interactionWithId(interaction)} in DM`);
       return;
     }
 
@@ -131,7 +131,7 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
         }), "error")], ephemeral: true
       });
 
-      colors.error(`${userWithId(interaction.user)} tried to use the command "${interactionWithId(interaction)}) in a channel that doesn't exist`);
+      colors.error(`${userWithId(interaction.user)} tried to use the command ${interactionWithId(interaction)} in a channel that doesn't exist`);
       return;
     }
 
@@ -142,7 +142,7 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
         }), "error")], ephemeral: true
       });
 
-      colors.error(`${userWithId(interaction.user)} tried to use the command "${interactionWithId(interaction)}) not in a text channel`);
+      colors.error(`${userWithId(interaction.user)} tried to use the command ${interactionWithId(interaction)} not in a text channel`);
       return;
     }
 
@@ -168,7 +168,7 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
       });
 
       colors.error([
-        `${userWithId(interaction.user)} tried to use the command "${interactionWithId(interaction)}`,
+        `${userWithId(interaction.user)} tried to use the command ${interactionWithId(interaction)}`,
         " but the bot doesn't have the permissions: " + missingPermissions.map((permission) => `\`${permission}\``).join(", ")
       ].join(""));
       return;
@@ -190,11 +190,11 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
         // components: [{ type: 1, components: [voteButton(interaction)] }]
       });
 
-      colors.error(`${userWithId(interaction.user)} tried to use the command "${interactionWithId(interaction)}) but he has no more usages`);
+      colors.error(`${userWithId(interaction.user)} tried to use the command ${interactionWithId(interaction)} but he has no more usages`);
       return;
     }
 
-    colors.log(`${userWithId(interaction.user)} used the command "${interactionWithId(interaction)})`);
+    colors.log(`${userWithId(interaction.user)} used the command ${interactionWithId(interaction)}`);
     commandExecute(interaction, channel, user);
   });
 };
