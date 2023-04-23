@@ -11,6 +11,7 @@ import { updateUser } from "$core/utils/data/user";
 import { Prompts } from "@bottlycorp/prompts/build/prompt.type";
 import { revealButton, usageButton } from "$core/utils/config/buttons";
 import { global } from "$core/utils/config/message/command";
+import { getLocale } from "$core/utils/data/locale";
 
 export const execute: CommandExecute = async(command, channel, user) => {
   const question: CommandInteractionOption<CacheType> = command.options.get(ask.config.options.prompt.name["en-US"], true);
@@ -30,7 +31,8 @@ export const execute: CommandExecute = async(command, channel, user) => {
   await openai.createChatCompletion({
     messages: [
       { role: "system", content: translate(command.locale, getPrompt(context?.value as Prompts), {
-        user: command.user.username
+        user: command.user.username,
+        lang: getLocale(command.locale)
       }) },
       { role: "user", content: value }
     ],

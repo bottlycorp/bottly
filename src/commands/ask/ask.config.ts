@@ -31,6 +31,16 @@ export const ask = {
           fr: "Le contexte de la question",
           "pt-BR": "O contexto da pergunta"
         }
+      },
+      lang: {
+        name: {
+          "en-US": "lang"
+        },
+        description: {
+          "en-US": "The language in which the bot will answer",
+          fr: "Langue dans la quel le bot va répondre",
+          "pt-BR": "Língua na qual o bot irá responder"
+        }
       }
     },
     description: {
