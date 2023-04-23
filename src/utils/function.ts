@@ -1,3 +1,4 @@
+import { colors } from "$core/client";
 import { APIMessageComponentEmoji, CommandInteraction, Guild, User } from "discord.js";
 import { existsSync, statSync } from "fs";
 
@@ -37,14 +38,11 @@ const lowBattery: APIMessageComponentEmoji = { name: "🪫" };
 const emptyBattery: APIMessageComponentEmoji = { name: "empty_battery", id: "1098291005800841287" };
 
 export const emojiByUsage = (usageMax: number, usaged: number): APIMessageComponentEmoji => {
-  const percentage = usaged / usageMax;
-  console.log(usageMax);
-  console.log(usaged);
-  console.log(percentage);
+  if (usaged == 0) return emptyBattery;
+  if (usaged >= 1 && usaged <= 4) return lowBattery;
+  if (usaged >= 5 && usaged <= 14) return mediumBattery;
+  if (usaged >= 15 && usaged <= usageMax) return battery;
 
-  if (percentage >= 0.75) return battery;
-  if (percentage >= 0.5) return mediumBattery;
-  if (percentage >= 0.25) return lowBattery;
-  if (percentage >= 0) return emptyBattery;
-  return emptyBattery;
+  colors.error("Error: usage is not in range");
+  return battery;
 };
