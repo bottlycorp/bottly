@@ -1,4 +1,4 @@
-import { sortLocalesList } from "$core/utils/data/locale";
+import { sortLocalesList } from "$core/utils/locale";
 import { EnableInDev } from "$core/utils/handler";
 import { EventExecute, EventName } from "$core/utils/handler/event";
 import { Prompts } from "@bottlycorp/prompts";

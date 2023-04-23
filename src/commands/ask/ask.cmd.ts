@@ -11,7 +11,7 @@ import { updateUser } from "$core/utils/data/user";
 import { Prompts } from "@bottlycorp/prompts/build/prompt.type";
 import { revealButton, usageButton } from "$core/utils/config/buttons";
 import { global } from "$core/utils/config/message/command";
-import { getLocale, localeExists, localeToString } from "$core/utils/data/locale";
+import { getLocale, localeExists, localeToString } from "$core/utils/locale";
 
 export const execute: CommandExecute = async(command, channel, user) => {
   const question: CommandInteractionOption<CacheType> = command.options.get(ask.config.options.prompt.name["en-US"], true);

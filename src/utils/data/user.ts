@@ -1,13 +1,13 @@
 import { User as DiscordUser } from "discord.js";
-import { prisma } from "../prisma";
+import { prisma } from "$core/utils/prisma";
 import { colors } from "$core/client";
-import { DayJS } from "../day-js";
+import { DayJS } from "$core/utils/day-js";
 import { Prisma } from "@prisma/client";
 import { UsageMax } from "@prisma/client";
-import { userWithId } from "../function";
+import { userWithId } from "$core/utils/function";
 
 export type UserIncludeAll = Prisma.UserGetPayload<{
-  include: { questions: true; privacy: true; usages: true; votes: true };
+  include: { questions: true; privacy: true; usages: true; votes: true; discussions: true };
 }>
 
 export const MAX_USES: Record<UsageMax, number> = {
@@ -43,13 +43,15 @@ export const newUser = async(userToCreate: DiscordUser): Promise<UserIncludeAll>
           firstVote: "",
           lastVote: ""
         }
-      }
+      },
+      discussions: {}
     },
     include: {
       questions: true,
       privacy: true,
       usages: true,
-      votes: true
+      votes: true,
+      discussions: true
     }
   });
 
@@ -65,7 +67,8 @@ export const getUser = async(userId: DiscordUser): Promise<UserIncludeAll> => {
       questions: true,
       privacy: true,
       usages: true,
-      votes: true
+      votes: true,
+      discussions: true
     }
   });
 

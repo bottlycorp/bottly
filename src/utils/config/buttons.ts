@@ -5,11 +5,11 @@ import { translate } from "./message/message.util";
 import { global } from "./message/command";
 import { emojiByUsage } from "../function";
 
-export const usageButton = (command: CommandInteraction | Interaction, user: UserIncludeAll | null) : ButtonBuilder => {
+export const usageButton = (command: CommandInteraction | Interaction, user: UserIncludeAll | null, reduce = true) : ButtonBuilder => {
   return new ButtonBuilder()
     .setCustomId("usage")
     .setLabel(translate(command.locale, global.config.exec.buttons.usage, {
-      left: (user?.usages?.usage ?? 1) == 0 ? 0 : (user?.usages?.usage ?? 1) - 1,
+      left: reduce ? (user?.usages?.usage ?? 1) == 0 ? 0 : (user?.usages?.usage ?? 1) - 1 : (user?.usages?.usage ?? 1),
       max: MAX_USES["FREE"]
     }))
     .setStyle(ButtonStyle.Secondary)

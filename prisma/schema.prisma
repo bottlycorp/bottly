@@ -13,6 +13,7 @@ model User {
   userId    String     @id @unique
   privacy   Privacy?
   questions Question[]
+  discussions Discussion[]
   usages    Usage?
   votes     Vote?
   isPremium Boolean    @default(false)
@@ -57,4 +58,22 @@ model Vote {
   active    Boolean @default(true)
   user      User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
   userId    String  @unique
+}
+
+model Discussion {
+  id        String  @id @default(cuid())
+  createdAt Int     @default(0)
+  lastMessage Int @default(0)
+  messages  Message[]
+  userId    String 
+  user      User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
+}
+
+model Message {
+  id        String  @id @default(cuid())
+  createdAt Int     @default(0)
+  message   String  @default("Lorem imspu mipsu")
+  isBot     Boolean @default(false)
+  discussion Discussion @relation(fields: [discussionId], references: [id], onDelete: Cascade)
+  discussionId String
 }

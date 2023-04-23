@@ -62,7 +62,7 @@ export const execute: CommandExecute = async(command, channel, user) => {
       })
     ],
     components: [{ type: 1, components: [
-      usageButton(command, user)
+      usageButton(command, user, false)
     ] }]
   });
 };
