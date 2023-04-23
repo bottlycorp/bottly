@@ -11,11 +11,12 @@ import { updateUser } from "$core/utils/data/user";
 import { Prompts } from "@bottlycorp/prompts/build/prompt.type";
 import { revealButton, usageButton } from "$core/utils/config/buttons";
 import { global } from "$core/utils/config/message/command";
-import { getLocale } from "$core/utils/data/locale";
+import { getLocale, localeExists, localeToString } from "$core/utils/data/locale";
 
 export const execute: CommandExecute = async(command, channel, user) => {
   const question: CommandInteractionOption<CacheType> = command.options.get(ask.config.options.prompt.name["en-US"], true);
   const context: CommandInteractionOption<CacheType> | null = command.options.get(ask.config.options.context.name["en-US"], false);
+  const lang: string = command.options.getString(ask.config.options.lang.name["en-US"], false) ?? localeToString(command.locale);
   const value: string | number | boolean | undefined = question.value;
 
   if (typeof value !== "string") {
@@ -27,12 +28,21 @@ export const execute: CommandExecute = async(command, channel, user) => {
     return;
   }
 
+  if (!localeExists(lang)) {
+    command.editReply({
+      embeds: [simpleEmbed(translate(command.locale, ask.config.exec.error, { error: "Locale does not exist" }), "error")]
+    });
+
+    colors.error("Locale does not exist");
+    return;
+  }
+
   const askedAt = DayJS().unix();
   await openai.createChatCompletion({
     messages: [
       { role: "system", content: translate(command.locale, getPrompt(context?.value as Prompts), {
         user: command.user.username,
-        lang: getLocale(command.locale)
+        lang: getLocale(lang)
       }) },
       { role: "user", content: value }
     ],

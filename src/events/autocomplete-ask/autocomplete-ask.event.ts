@@ -1,3 +1,4 @@
+import { sortLocalesList } from "$core/utils/data/locale";
 import { EnableInDev } from "$core/utils/handler";
 import { EventExecute, EventName } from "$core/utils/handler/event";
 import { Prompts } from "@bottlycorp/prompts";
@@ -12,5 +13,13 @@ export const execute: EventExecute<"interactionCreate"> = async(interaction: Int
   if (!interaction.isAutocomplete()) return;
   if (interaction.commandName !== "ask") return;
 
-  interaction.respond(Prompts);
+  const focused = interaction.options.getFocused(true);
+
+  if (focused.name === "context") {
+    interaction.respond(Prompts);
+  } else if (focused.name === "lang") {
+    interaction.respond(sortLocalesList(focused.value));
+  } else {
+    interaction.respond([]);
+  }
 };

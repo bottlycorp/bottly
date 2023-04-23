@@ -21,7 +21,6 @@ export const execute: EventExecute<"interactionCreate"> = async(interaction: Int
 
   if (requests == null) {
     interaction.respond([]);
-
     colors.info("User has no questions");
     return;
   }

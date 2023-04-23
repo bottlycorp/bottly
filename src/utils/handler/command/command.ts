@@ -11,7 +11,7 @@ import { simpleEmbed } from "$core/utils/embed";
 import { translate } from "$core/utils/config/message/message.util";
 import { global } from "$core/utils/config/message/command";
 import { getUser } from "$core/utils/data/user";
-import { voteButton } from "$core/utils/config/buttons";
+// import { voteButton } from "$core/utils/config/buttons";
 
 const limitedUsageCommands = ["ask", "chat"];
 
@@ -182,11 +182,12 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
     if (limitedUsageCommands.includes(interaction.commandName) && (user?.usages?.usage ?? 0) <= 0) {
       interaction.editReply({
         embeds: [
-          simpleEmbed(translate(interaction.locale, global.config.exec.noMoreUsages), "error"),
-          simpleEmbed(translate(interaction.locale, global.config.exec.orGetPremium), "premium"),
-          simpleEmbed(translate(interaction.locale, global.config.exec.voteNow), "vote")
-        ],
-        components: [{ type: 1, components: [voteButton(interaction)] }]
+          simpleEmbed(translate(interaction.locale, global.config.exec.noMoreUsages), "error")
+          // simpleEmbed(translate(interaction.locale, global.config.exec.orGetPremium), "premium"),
+          // simpleEmbed(translate(interaction.locale, global.config.exec.voteNow), "vote")
+        ]
+        // ],
+        // components: [{ type: 1, components: [voteButton(interaction)] }]
       });
 
       colors.error(`${userWithId(interaction.user)} tried to use the command "${interactionWithId(interaction)}) but he has no more usages`);

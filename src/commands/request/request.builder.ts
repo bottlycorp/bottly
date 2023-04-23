@@ -7,7 +7,6 @@ export const enableInDev: EnableInDev = true;
 
 export const slashCommand: SlashCommandDefition = new SlashCommandBuilder()
   .setName(request.config.name["en-US"])
-  .setNameLocalizations(request.config.name)
   .setDescription(request.config.description["en-US"])
   .setDescriptionLocalizations(request.config.description)
   .addStringOption(new SlashCommandStringOption()

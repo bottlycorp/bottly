@@ -1,3 +1,5 @@
+import { Locale } from "discord.js";
+
 export type Locales = { name: string; value: string }[];
 
 export const localesList = [
@@ -34,6 +36,12 @@ export const localesList = [
   { name: "Vietnamese", value: "vi" }
 ];
 
+export const localeExists = (locale: string): boolean => {
+  const localeData = localesList.find((data) => data.value === locale);
+  if (!localeData) return false;
+  return true;
+};
+
 export const sortLocalesList = (contains: string): Locales => {
   const locales = localesList.filter((locale) => locale.name.includes(contains));
   return locales.slice(0, 25);
@@ -43,4 +51,8 @@ export const getLocale = (locale: string): string => {
   const localeData = localesList.find((data) => data.value === locale);
   if (!localeData) return "en-US";
   return localeData.name;
+};
+
+export const localeToString = (locale: Locale): string => {
+  return locale.toString();
 };
