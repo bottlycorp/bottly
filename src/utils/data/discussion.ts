@@ -1,0 +1,56 @@
+import { prisma } from "$core/utils/prisma";
+import { Prisma } from "@prisma/client";
+import { DayJS } from "../day-js";
+import { UserIncludeAll } from "./user";
+
+export type DiscussionIncludeAll = Prisma.DiscussionGetPayload<{
+  include: { messages: true; user: true };
+}>
+
+export const getDiscussion = async(channelId: string): Promise<DiscussionIncludeAll | null> => {
+  const discussion = await prisma.discussion.findUnique({
+    where: {
+      channelId: channelId
+    },
+    include: {
+      messages: true,
+      user: true
+    }
+  });
+
+  if (discussion == null) {
+    return null;
+  }
+
+  return discussion;
+};
+
+export const existDiscussion = async(channelId: string): Promise<boolean> => {
+  const discussion = await prisma.discussion.findUnique({
+    where: {
+      channelId: channelId
+    }
+  });
+
+  return !!discussion;
+};
+
+export const newDiscussion = async(channelId: string, userId: string, context: string): Promise<boolean> => {
+  const created = await prisma.discussion.create({
+    data: {
+      channelId: channelId,
+      userId: userId,
+      active: true,
+      messages: {},
+      context: context,
+      title: "default",
+      createdAt: DayJS().unix()
+    }
+  });
+
+  return !!created;
+};
+
+export const haveActiveDiscussion = (user: UserIncludeAll): boolean => {
+  return Object.values(user.discussions).some((discussion) => discussion.active);
+};
