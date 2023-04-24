@@ -6,7 +6,7 @@ import { isDevEnvironment } from "$core/utils/environment";
 import { haveSubcommands, serializeCommandName } from "./command.util";
 import { folderExist, interactionWithId, userWithId } from "$core/utils/function";
 import { subCommandDirName, subCommandGroupDirNamePrefix } from "./command.const";
-import { colors } from "$core/client";
+import { client, colors } from "$core/client";
 import { simpleEmbed } from "$core/utils/embed";
 import { translate } from "$core/utils/config/message/message.util";
 import { global } from "$core/utils/config/message/command";
@@ -203,4 +203,17 @@ export const register = async(client: Client, commandsBuilder: CommandsBuilderCo
   for (const commandBuilder of commandsBuilder.values()) {
     await client.application?.commands.create(commandBuilder);
   }
+};
+
+export const findCommand = async(cmd: string, subCommand?: string): Promise<string> => {
+  const commands = await client.application?.commands.fetch();
+  const command = commands?.find((command) => command.name === cmd);
+  if (!command) return "cmdNotFound";
+
+  if (!subCommand) return "</" + command.name + ":" + command.id + ">";
+
+  const subCommandGroup = command.options.find((option) => option.name === subCommand);
+  if (!subCommandGroup) return "subCommandGroupNotFound";
+
+  return "</" + command.name + " " + subCommandGroup.name + ":" + command.id + ">";
 };
