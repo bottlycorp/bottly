@@ -16,6 +16,7 @@ model User {
   discussions Discussion[]
   usages      Usage?
   votes       Vote?
+  tips        Tips?
   isPremium   Boolean      @default(false)
 }
 
@@ -63,12 +64,13 @@ model Vote {
 model Discussion {
   id            String    @id @default(cuid())
   createdAt     Int       @default(0)
-  lastMessage   Int       @default(0)
   lastMessageAt Int       @default(0)
   messages      Message[]
   writing       Boolean   @default(false)
   active        Boolean   @default(true)
+  title         String    @default("default")
   context       String    @default("default")
+  channelId     String    @default("default") @unique
   userId        String
   user          User      @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
@@ -80,4 +82,11 @@ model Message {
   isBot        Boolean    @default(false)
   discussion   Discussion @relation(fields: [discussionId], references: [id], onDelete: Cascade)
   discussionId String
+}
+
+model Tips {
+  id                String  @id @default(cuid())
+  chatPremiumSaveIt Boolean @default(true)
+  userId            String  @unique
+  user              User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
