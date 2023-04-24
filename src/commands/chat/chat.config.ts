@@ -65,7 +65,13 @@ export const chat = {
       }
     },
     exec: {
-      buttons: {},
+      buttons: {
+        hidePremiumTip: {
+          "en-US": "Don't show this tip again",
+          fr: "Ne plus afficher ce conseil",
+          "pt-BR": "Não mostre este conselho novamente"
+        }
+      },
       channelTemporaryTitle: {
         "en-US": "Discussion with {user}",
         fr: "Discussion avec {user}",
@@ -75,6 +81,46 @@ export const chat = {
         "en-US": "<a:typing:1087703097498931290> Your discussion is being created please wait...",
         fr: "<a:typing:1087703097498931290> Votre discussion est en cours de création, veuillez patienter...",
         "pt-BR": "<a:typing:1087703097498931290> Sua conversa está sendo criada, por favor, aguarde..."
+      },
+      discussionOpened: {
+        "en-US": [
+          ":wave: I'm here to help you, you can start talking to me\n",
+          "- If you want to stop the discussion, use the command {chatStop}",
+          ["- You can speak with other people with a `.` before your message or if your message contains `@mention` (or reply",
+            "to a message with ping enabled)"].join(" "),
+          "- Each message you send count for 1 usage (check your usage with the command {history})",
+          "{premiumTip}"
+        ].join("\n"),
+        fr: [
+          ":wave: Je suis là pour vous aider, vous pouvez commencer à parler avec moi\n",
+          "- Si vous voulez arrêter la discussion, utilisez la commande {chatStop}",
+          ["- Vous pouvez parler avec d'autres personnes en mettant un `.` avant votre message ou si votre message contient `@mention`",
+            "(ou en répondant à un message avec le ping activé)"].join(" "),
+          "- Chaque message que vous envoyez compte pour 1 utilisation (vérifiez votre utilisation avec la commande {history})",
+          "{premiumTip}"
+        ].join("\n"),
+        "pt-BR": [
+          ":wave: Estou aqui para ajudá-lo, você pode começar a falar comigo\n",
+          "- Se você quiser parar a conversa, use o comando {chatStop}",
+          ["- Você pode falar com outras pessoas colocando um `.` antes da sua mensagem ou se a sua mensagem contiver `@mention` (ou responder",
+            "a uma mensagem com ping ativado)"].join(" "),
+          "- Cada mensagem que você enviar conta como 1 uso (verifique seu uso com o comando {history})",
+          "{premiumTip}"
+        ].join("\n")
+      },
+      premiumTip: {
+        "en-US": [
+          "\n**Premium Tip:** When the discussion is over, you can download it in HTML format",
+          "with the button at the bottom of the discussion"
+        ].join(" "),
+        fr: [
+          "\n**Conseil Premium:** Lorsque la discussion est terminée, vous pouvez la télécharger au format HTML",
+          "avec le bouton en bas de la discussion"
+        ].join(" "),
+        "pt-BR": [
+          "\n**Dica Premium:** Quando a conversa terminar, você pode baixá-la no formato HTML",
+          "com o botão na parte inferior da conversa"
+        ].join(" ")
       }
     }
   }
