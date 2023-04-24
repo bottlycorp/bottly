@@ -1,10 +1,14 @@
-import { colors } from "$core/client";
+import { client, colors } from "$core/client";
 import { translate } from "$core/utils/config/message/message.util";
-import { haveActiveDiscussion } from "$core/utils/data/user";
+import { updateUser } from "$core/utils/data/user";
 import { CommandExecute } from "$core/utils/handler/command";
-import { ChannelType, ThreadChannel } from "discord.js";
+import { ButtonStyle, ChannelType, ThreadChannel } from "discord.js";
 import { ThreadAutoArchiveDuration } from "discord.js";
 import { chat } from "../chat.config";
+import { simpleEmbed } from "$core/utils/embed";
+import { findCommand } from "$core/utils/handler/command/command";
+import { ButtonBuilder } from "@discordjs/builders";
+import { haveActiveDiscussion, newDiscussion } from "$core/utils/data/discussion";
 
 export const execute: CommandExecute = async(command, channel, user) => {
   if (haveActiveDiscussion(user)) {
@@ -29,13 +33,66 @@ export const execute: CommandExecute = async(command, channel, user) => {
   });
 
   if (thread) {
+    await newDiscussion(thread.id, command.user.id, "default");
+
     command.editReply({
       content: `Your \`${privateThread ? "private" : "public"}\` discussion has been created, you can find it here: <#${thread.id}>`
     });
 
+    thread.members.add(command.user);
+
+    const hideButton = new ButtonBuilder()
+      .setStyle(ButtonStyle.Primary)
+      .setCustomId("hide")
+      .setLabel(translate(command.locale, chat.config.exec.buttons.hidePremiumTip));
+
     thread.send({
-      content: "Welcome to your discussion <@" + command.user.id + ">"
+      embeds: [
+        simpleEmbed(translate(command.locale, chat.config.exec.discussionOpened, {
+          chatStop: await findCommand("chat", "stop"),
+          premiumTip: user.tips?.chatPremiumSaveIt ? translate(command.locale, chat.config.exec.premiumTip) : "",
+          history: await findCommand("history")
+        }))
+      ],
+      components: !user.tips?.chatPremiumSaveIt ? [] : [{ type: 1, components: [hideButton] }]
     });
+
+    if (user.tips?.chatPremiumSaveIt) {
+      const collector = thread.createMessageComponentCollector({
+        filter: (interaction) => interaction.user.id === command.user.id,
+        time: 1000 * 4
+      });
+
+      collector.on("collect", async(interaction) => {
+        if (interaction.customId === "hide") {
+          await interaction.update({
+            embeds: [
+              simpleEmbed(translate(command.locale, chat.config.exec.discussionOpened, {
+                chatStop: await findCommand("chat", "stop"),
+                premiumTip: "",
+                history: await findCommand("history")
+              }))
+            ],
+            components: []
+          });
+        }
+
+        await updateUser(command.user.id, { tips: { update: { chatPremiumSaveIt: false } } });
+      }).on("end", () => {
+        thread.messages.fetch().then((messages) => {
+          const msgs = messages.filter((message) => message.author.id === client.user?.id);
+          const message = msgs.first();
+
+          if (!message) return;
+
+          message.edit({
+            components: [{ type: 1, components: [hideButton.setDisabled(true)] }]
+          });
+        });
+      });
+    }
+
+    colors.success(`Created a ${privateThread ? "private" : "public"} discussion for ${command.user.username}`);
   } else {
     command.editReply("An error occurred while creating your discussion");
   }
