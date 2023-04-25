@@ -82,6 +82,11 @@ export const chat = {
         fr: "<a:typing:1087703097498931290> Votre discussion est en cours de création, veuillez patienter...",
         "pt-BR": "<a:typing:1087703097498931290> Sua conversa está sendo criada, por favor, aguarde..."
       },
+      alreadyActiveDiscussion: {
+        "en-US": "You already have an active discussion, you can stop it with the command {chatStop}",
+        fr: "Vous avez déjà une discussion active, vous pouvez l'arrêter avec la commande {chatStop}",
+        "pt-BR": "Você já tem uma conversa ativa, você pode pará-la com o comando {chatStop}"
+      },
       private: {
         "en-US": "private",
         fr: "privée",

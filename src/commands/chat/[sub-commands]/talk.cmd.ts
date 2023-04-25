@@ -12,7 +12,9 @@ import { haveActiveDiscussion, newDiscussion } from "$core/utils/data/discussion
 
 export const execute: CommandExecute = async(command, channel, user) => {
   if (haveActiveDiscussion(user)) {
-    command.editReply("You have an active discussion");
+    command.editReply(translate(command.locale, chat.config.exec.alreadyActiveDiscussion, {
+      chatStop: await findCommand("chat", "stop")
+    }));
     colors.error("User tried to start a discussion while having an active discussion");
     return;
   }
