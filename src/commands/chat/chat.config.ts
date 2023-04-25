@@ -82,6 +82,21 @@ export const chat = {
         fr: "<a:typing:1087703097498931290> Votre discussion est en cours de création, veuillez patienter...",
         "pt-BR": "<a:typing:1087703097498931290> Sua conversa está sendo criada, por favor, aguarde..."
       },
+      private: {
+        "en-US": "private",
+        fr: "privée",
+        "pt-BR": "privada"
+      },
+      public: {
+        "en-US": "public",
+        fr: "publique",
+        "pt-BR": "pública"
+      },
+      channelCreated: {
+        "en-US": "Your `{type}` discussion is created, you can start talking to me in the <#{id}> channel",
+        fr: "Votre discussion `{type}` est créée, vous pouvez commencer à parler avec moi dans le salon <#{id}>",
+        "pt-BR": "Sua conversa `{type}` foi criada, você pode começar a falar comigo no canal <#{id}>"
+      },
       discussionOpened: {
         "en-US": [
           ":wave: I'm here to help you, you can start talking to me\n",

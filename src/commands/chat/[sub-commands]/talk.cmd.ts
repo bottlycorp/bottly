@@ -36,7 +36,10 @@ export const execute: CommandExecute = async(command, channel, user) => {
     await newDiscussion(thread.id, command.user.id, "default");
 
     command.editReply({
-      content: `Your \`${privateThread ? "private" : "public"}\` discussion has been created, you can find it here: <#${thread.id}>`
+      embeds: [simpleEmbed(translate(command.locale, chat.config.exec.channelCreated, {
+        type: privateThread ? translate(command.locale, chat.config.exec.private) : translate(command.locale, chat.config.exec.public),
+        id: thread.id
+      }))]
     });
 
     thread.members.add(command.user);
@@ -60,7 +63,7 @@ export const execute: CommandExecute = async(command, channel, user) => {
     if (user.tips?.chatPremiumSaveIt) {
       const collector = thread.createMessageComponentCollector({
         filter: (interaction) => interaction.user.id === command.user.id,
-        time: 1000 * 4
+        time: 1000 * 60
       });
 
       collector.on("collect", async(interaction) => {
