@@ -5,8 +5,19 @@ import { simpleEmbed } from "$core/utils/embed";
 import { CommandExecute } from "$core/utils/handler/command";
 import { request } from "./request.config";
 import { DayJS } from "$core/utils/day-js";
+import { TextChannel } from "discord.js";
+import { userWithId } from "$core/utils/function";
+import { global } from "$core/utils/config/message/command";
 
-export const execute: CommandExecute = async(command, channel, user) => {
+export const execute: CommandExecute = async(command, user) => {
+  const channel = command.channel;
+  if (!(channel instanceof TextChannel)) {
+    command.editReply(translate(command.locale, global.config.exec.notInATextChannel));
+
+    colors.error(userWithId(command.user) + " tried to get a question while not being in a text channel");
+    return;
+  }
+
   const questions = user.questions;
   const question = command.options.getString(request.config.options.question.name["en-US"], true) ?? 1;
 

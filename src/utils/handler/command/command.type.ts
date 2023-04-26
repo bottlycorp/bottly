@@ -1,10 +1,20 @@
 import { UserIncludeAll } from "$core/utils/data/user";
-import { ChatInputCommandInteraction, Collection, SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder, TextChannel } from "discord.js";
+import {
+  ChatInputCommandInteraction,
+  Collection,
+  SlashCommandBuilder,
+  SlashCommandSubcommandsOnlyBuilder,
+  ThreadChannel
+} from "discord.js";
 
 export type SlashCommandDefition = SlashCommandSubcommandsOnlyBuilder |
   Omit<SlashCommandBuilder, "addSubcommandGroup" | "addSubcommand">;
 
-export type CommandExecute = (command: ChatInputCommandInteraction, channel: TextChannel, user: UserIncludeAll) => Promise<void>;
+export type CommandExecute = (
+  command: ChatInputCommandInteraction,
+  user: UserIncludeAll,
+  thread?: ThreadChannel
+) => Promise<void>;
 
 export type LoadedCommands = {
   commands: CommandsCollection;

@@ -1,4 +1,9 @@
-import { Channel, Client, Collection, SlashCommandSubcommandBuilder, SlashCommandSubcommandGroupBuilder, TextChannel } from "discord.js";
+import {
+  Client,
+  Collection,
+  SlashCommandSubcommandBuilder,
+  SlashCommandSubcommandGroupBuilder
+} from "discord.js";
 import { CommandExecute, CommandsBuilderCollection, CommandsCollection, LoadedCommands } from "./command.type";
 import { existsSync, readdirSync, statSync } from "fs";
 import { sep } from "path";
@@ -123,29 +128,6 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
       return;
     }
 
-    const channel: Channel | null = await interaction.client.channels.fetch(interaction.channelId);
-    if (!channel) {
-      interaction.reply({
-        embeds: [simpleEmbed(translate(interaction.locale, global.config.exec.error, {
-          error: translate(interaction.locale, global.config.exec.channelNotFound)
-        }), "error")], ephemeral: true
-      });
-
-      colors.error(`${userWithId(interaction.user)} tried to use the command ${interactionWithId(interaction)} in a channel that doesn't exist`);
-      return;
-    }
-
-    if (!(channel instanceof TextChannel)) {
-      interaction.reply({
-        embeds: [simpleEmbed(translate(interaction.locale, global.config.exec.error, {
-          error: translate(interaction.locale, global.config.exec.notInATextChannel)
-        }), "error")], ephemeral: true
-      });
-
-      colors.error(`${userWithId(interaction.user)} tried to use the command ${interactionWithId(interaction)} not in a text channel`);
-      return;
-    }
-
     const member = await interaction.guild.members.fetch(client.user.id);
     const missingPermissions = member.permissions.missing([
       "SendMessages",
@@ -195,7 +177,7 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
     }
 
     colors.log(`${userWithId(interaction.user)} used the command ${interactionWithId(interaction)}`);
-    commandExecute(interaction, channel, user);
+    commandExecute(interaction, user);
   });
 };
 

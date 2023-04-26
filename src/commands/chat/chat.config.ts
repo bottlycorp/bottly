@@ -87,6 +87,45 @@ export const chat = {
         fr: "Vous avez déjà une discussion active, vous pouvez l'arrêter avec la commande {chatStop}",
         "pt-BR": "Você já tem uma conversa ativa, você pode pará-la com o comando {chatStop}"
       },
+      notHaveActiveDiscussion: {
+        "en-US": "You don't have an active discussion, you can start one with the command {chatTalk}",
+        fr: "Vous n'avez pas de discussion active, vous pouvez en démarrer une avec la commande {chatTalk}",
+        "pt-BR": "Você não tem uma conversa ativa, você pode começar uma com o comando {chatTalk}"
+      },
+      notTheAuthor: {
+        "en-US": "You are not the author of this discussion so you can stop it",
+        fr: "Vous n'êtes pas l'auteur de cette discussion, vous ne pouvez donc pas l'arrêter",
+        "pt-BR": "Você não é o autor desta conversa, portanto não pode pará-la"
+      },
+      stopped: {
+        "en-US": [
+          "The discussion has been stopped correctly, there was a total of `{count}` messages exchanged.",
+          ":sparkles: If you **Premium** you can click on the button below to download the discussion in PDF/HTML format."
+        ].join("\n"),
+        fr: [
+          "La discussion a correctement été arrêtée, il y a eu un total de `{count}` messages échangés.",
+          ":sparkles: Si vous êtes **Premium**, vous pouvez cliquer sur le bouton ci-dessous pour télécharger la discussion au format PDF/HTML."
+        ].join("\n"),
+        "pt-BR": [
+          "A conversa foi interrompida corretamente, houve um total de `{count}` mensagens trocadas.",
+          ":sparkles: Se você é **Premium**, você pode clicar no botão abaixo para baixar a conversa no formato PDF/HTML."
+        ].join("\n")
+      },
+      creatingFile: {
+        "en-US": "<a:typing:1087703097498931290> Your discussion is being downloaded, please wait...",
+        fr: "<a:typing:1087703097498931290> Votre discussion est en cours de téléchargement, veuillez patienter...",
+        "pt-BR": "<a:typing:1087703097498931290> Sua conversa está sendo baixada, por favor, aguarde..."
+      },
+      createdFile: {
+        "en-US": "Your discussion has been downloaded you can download it with the file below",
+        fr: "Votre discussion a été téléchargée, vous pouvez la télécharger avec le fichier ci-dessous",
+        "pt-BR": "Sua conversa foi baixada, você pode baixá-la com o arquivo abaixo"
+      },
+      cantDownload: {
+        "en-US": ":sparkles: What a shame, you are not **Premium** so you can't download the discussion in HTML format.",
+        fr: ":sparkles: Quel dommage, vous n'êtes pas **Premium** donc vous ne pouvez pas télécharger la discussion au format HTML.",
+        "pt-BR": ":sparkles: Que pena, você não é **Premium** então você não pode baixar a conversa no formato HTML."
+      },
       private: {
         "en-US": "private",
         fr: "privée",
@@ -101,6 +140,20 @@ export const chat = {
         "en-US": "Your `{type}` discussion is created, you can start talking to me in the <#{id}> channel",
         fr: "Votre discussion `{type}` est créée, vous pouvez commencer à parler avec moi dans le salon <#{id}>",
         "pt-BR": "Sua conversa `{type}` foi criada, você pode começar a falar comigo no canal <#{id}>"
+      },
+      deletedData: {
+        "en-US": [
+          "The data of this discussion has been deleted because you have set that you don't want your data to be saved in your",
+          "privacy settings."
+        ].join(" "),
+        fr: [
+          "Les données de cette conversation viennent d'être supprimées parce que vous avez défini que vous ne voulez pas que vos",
+          "données soient enregistrées dans vos paramètres de vie privée."
+        ].join(" "),
+        "pt-BR": [
+          "Os dados desta conversa foram excluídos porque você definiu que não deseja que seus dados sejam salvos em seu",
+          "configurações de privacidade."
+        ].join(" ")
       },
       discussionOpened: {
         "en-US": [

@@ -54,3 +54,44 @@ export const newDiscussion = async(channelId: string, userId: string, context: s
 export const haveActiveDiscussion = (user: UserIncludeAll): boolean => {
   return Object.values(user.discussions).some((discussion) => discussion.active);
 };
+
+export const isADiscussion = async(channelId: string): Promise<boolean> => {
+  const discussion = await prisma.discussion.findUnique({
+    where: {
+      channelId: channelId
+    }
+  });
+
+  return !!discussion;
+};
+
+export const isTheAuthor = async(channelId: string, userId: string): Promise<boolean> => {
+  const discussion = await prisma.discussion.findUnique({
+    where: {
+      channelId: channelId
+    }
+  });
+
+  return discussion?.userId === userId;
+};
+
+export const updateDiscussion = async(channelId: string, data: Prisma.DiscussionUpdateInput): Promise<boolean> => {
+  const updated = await prisma.discussion.update({
+    where: {
+      channelId: channelId
+    },
+    data: data
+  });
+
+  return !!updated;
+};
+
+export const deleteDiscussion = async(channelId: string): Promise<boolean> => {
+  const deleted = await prisma.discussion.delete({
+    where: {
+      channelId: channelId
+    }
+  });
+
+  return !!deleted;
+};

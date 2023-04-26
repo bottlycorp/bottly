@@ -37,3 +37,10 @@ export const voteButton = (command: CommandInteraction | Interaction) : ButtonBu
     .setURL("https://top.gg/bot/1076862546658738236/vote")
     .setStyle(ButtonStyle.Link);
 };
+
+export const downloadButton = (command: CommandInteraction | Interaction, id: string) : ButtonBuilder => {
+  return new ButtonBuilder()
+    .setLabel(translate(command.locale, global.config.exec.buttons.download))
+    .setCustomId("download_" + id)
+    .setStyle(ButtonStyle.Primary);
+};

@@ -50,40 +50,6 @@ enum UsageMax {
   PREMIUM
 }
 
-enum Locale {
-  id // Indonesian
-  en_US // English
-  en_GB // English
-  bg // Bulgarian
-  zh_CN // Chinese
-  zh_TW // Chinese
-  hr // Croatian
-  cs // Czech
-  da // Danish
-  nl // Dutch
-  fi // Finnish
-  fr // French
-  de // German
-  el // Greek
-  hi // Hindi
-  hu // Hungarian
-  it // Italian
-  ja // Japanese
-  ko // Korean
-  lt // Lithuanian
-  no // Norwegian 
-  pl // Polish
-  pt_BR // Portuguese
-  ro // Romanian
-  ru // Russian
-  es_ES // Spanish 
-  sv_SE // Swedish
-  th // Thai 
-  tr // Turkish
-  uk // Ukrainian
-  vi // Vietnamese
-}
-
 model Vote {
   id        String  @id @default(cuid())
   count     Int     @default(0)
@@ -96,17 +62,18 @@ model Vote {
 }
 
 model Discussion {
-  id            String    @id @default(cuid())
-  createdAt     Int       @default(0)
-  lastMessageAt Int       @default(0)
-  messages      Message[]
-  writing       Boolean   @default(false)
-  active        Boolean   @default(true)
-  title         String    @default("default")
-  context       String    @default("default")
-  channelId     String    @default("default") @unique
-  userId        String
-  user          User      @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  id             String    @id @default(cuid())
+  createdAt      Int       @default(0)
+  firstMessageAt Int       @default(0)
+  lastMessageAt  Int       @default(0)
+  messages       Message[]
+  writing        Boolean   @default(false)
+  active         Boolean   @default(true)
+  title          String    @default("default")
+  channelId      String    @unique @default("default")
+  contextId      String    @default("default")
+  userId         String
+  user           User      @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
 
 model Message {

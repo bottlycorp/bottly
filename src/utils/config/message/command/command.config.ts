@@ -47,6 +47,11 @@ export const global = {
           "pt-BR": [
             "O tempo de revelação expirou, a pergunta não foi revelada ao público",
             "\n\n- Você pode encontrar a pergunta em seu histórico fazendo `/history`"].join("")
+        },
+        download: {
+          "en-US": "🖨️ Download",
+          fr: "🖨️ Télécharger",
+          "pt-BR": "🖨️ Baixar"
         }
       },
       voteNow: {
@@ -117,6 +122,16 @@ export const global = {
         "en-US": "I am not in this server",
         fr: "Je ne suis pas sur ce serveur",
         "pt-BR": "Eu não estou neste servidor"
+      },
+      notInAThread: {
+        "en-US": "Execute the command in a thread",
+        fr: "Exécutez la commande dans un fil de discussion",
+        "pt-BR": "Execute o comando em um thread"
+      },
+      parentNotFound: {
+        "en-US": "The parent channel was not found",
+        fr: "Le salon parent n'a pas été trouvé",
+        "pt-BR": "O canal pai não foi encontrado"
       }
     }
   }

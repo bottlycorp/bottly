@@ -20,6 +20,7 @@
     "bettercolors": "^1.0.0",
     "cron": "^2.3.0",
     "dayjs": "^1.11.7",
+    "discord-html-transcripts": "^3.1.4",
     "discord.js": "^14.9.0",
     "gpt3-tokenizer": "^1.1.5",
     "openai": "^3.2.1",
