@@ -7,6 +7,40 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Locale {
+  id // Indonesian
+  en_US // English
+  en_GB // English
+  bg // Bulgarian
+  zh_CN // Chinese
+  zh_TW // Chinese
+  hr // Croatian
+  cs // Czech
+  da // Danish
+  nl // Dutch
+  fi // Finnish
+  fr // French
+  de // German
+  el // Greek
+  hi // Hindi
+  hu // Hungarian
+  it // Italian
+  ja // Japanese
+  ko // Korean
+  lt // Lithuanian
+  no // Norwegian 
+  pl // Polish
+  pt_BR // Portuguese
+  ro // Romanian
+  ru // Russian
+  es_ES // Spanish 
+  sv_SE // Swedish
+  th // Thai 
+  tr // Turkish
+  uk // Ukrainian
+  vi // Vietnamese
+}
+
 model User {
   username    String
   createdAt   Int
@@ -18,6 +52,7 @@ model User {
   votes       Vote?
   tips        Tips?
   isPremium   Boolean      @default(false)
+  locale      Locale       @default(en_US)
 }
 
 model Question {
@@ -61,26 +96,39 @@ model Vote {
   userId    String  @unique
 }
 
+enum ThreadType {
+  public
+  private
+}
+
 model Discussion {
-  id             String    @id @default(cuid())
-  createdAt      Int       @default(0)
-  firstMessageAt Int       @default(0)
-  lastMessageAt  Int       @default(0)
+  id             String     @id @default(cuid())
+  createdAt      Int        @default(0)
+  firstMessageAt Int        @default(0)
+  lastMessageAt  Int        @default(0)
   messages       Message[]
-  writing        Boolean   @default(false)
-  active         Boolean   @default(true)
-  title          String    @default("default")
-  channelId      String    @unique @default("default")
-  contextId      String    @default("default")
+  count          Int        @default(0)
+  writing        Boolean    @default(false)
+  active         Boolean    @default(true)
+  title          String     @default("default")
+  channelId      String     @unique @default("default")
+  contextId      String     @default("default")
+  type           ThreadType @default(public)
   userId         String
-  user           User      @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  user           User       @relation(fields: [userId], references: [userId], onDelete: Cascade)
+}
+
+enum Role {
+  user
+  bot // assistant
+  system
 }
 
 model Message {
   id           String     @id @default(cuid())
   createdAt    Int        @default(0)
   message      String     @default("Lorem imspu mipsu")
-  isBot        Boolean    @default(false)
+  role         Role       @default(user)
   discussion   Discussion @relation(fields: [discussionId], references: [id], onDelete: Cascade)
   discussionId String
 }
