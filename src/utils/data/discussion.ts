@@ -4,7 +4,7 @@ import { DayJS } from "../day-js";
 import { UserIncludeAll } from "./user";
 
 export type DiscussionIncludeAll = Prisma.DiscussionGetPayload<{
-  include: { messages: true; user: true };
+  include: { messages: true; user: { include: { usages: true; privacy: true } } };
 }>
 
 export const getDiscussion = async(channelId: string): Promise<DiscussionIncludeAll | null> => {
@@ -14,7 +14,7 @@ export const getDiscussion = async(channelId: string): Promise<DiscussionInclude
     },
     include: {
       messages: true,
-      user: true
+      user: { include: { usages: true, privacy: true } }
     }
   });
 
@@ -25,24 +25,13 @@ export const getDiscussion = async(channelId: string): Promise<DiscussionInclude
   return discussion;
 };
 
-export const existDiscussion = async(channelId: string): Promise<boolean> => {
-  const discussion = await prisma.discussion.findUnique({
-    where: {
-      channelId: channelId
-    }
-  });
-
-  return !!discussion;
-};
-
-export const newDiscussion = async(channelId: string, userId: string, context: string): Promise<boolean> => {
+export const newDiscussion = async(channelId: string, userId: string): Promise<boolean> => {
   const created = await prisma.discussion.create({
     data: {
       channelId: channelId,
       userId: userId,
       active: true,
       messages: {},
-      context: context,
       title: "default",
       createdAt: DayJS().unix()
     }
