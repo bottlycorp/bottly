@@ -83,9 +83,9 @@ export const chat = {
         "pt-BR": "{emojiTyping} Sua conversa está sendo criada, por favor, aguarde..."
       },
       alreadyActiveDiscussion: {
-        "en-US": "You already have an active discussion, you can stop it with the command {chatStop}",
-        fr: "Vous avez déjà une discussion active, vous pouvez l'arrêter avec la commande {chatStop}",
-        "pt-BR": "Você já tem uma conversa ativa, você pode pará-la com o comando {chatStop}"
+        "en-US": "You already have an active discussion, you can stop it with the command {chatStop} in the <#{thread}> channel",
+        fr: "Vous avez déjà une discussion active, vous pouvez l'arrêter avec la commande {chatStop} dans le salon <#{thread}>",
+        "pt-BR": "Você já tem uma conversa ativa, você pode pará-la com o comando {chatStop} no canal <#{thread}>"
       },
       notHaveActiveDiscussion: {
         "en-US": "You don't have an active discussion, you can start one with the command {chatTalk}",

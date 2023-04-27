@@ -21,7 +21,10 @@ export const execute: CommandExecute = async(command, user) => {
   }
 
   if (haveActiveDiscussion(user)) {
-    command.editReply(translate(command.locale, chat.config.exec.alreadyActiveDiscussion, { chatStop: await findCommand("chat", "stop") }));
+    command.editReply(translate(command.locale, chat.config.exec.alreadyActiveDiscussion, {
+      chatStop: await findCommand("chat", "stop"),
+      thread: user.discussions.find(d => d.active === true)?.channelId ?? "undefined"
+    }));
     colors.error(userWithId(command.user) + " tried to start a discussion while having an active discussion");
     return;
   }
