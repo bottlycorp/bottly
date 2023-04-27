@@ -1,16 +1,16 @@
-import { client, colors } from "$core/client";
+import { colors } from "$core/client";
 import { translate } from "$core/utils/config/message/message.util";
 import { updateUser } from "$core/utils/data/user";
 import { CommandExecute } from "$core/utils/handler/command";
-import { ButtonStyle, ChannelType, TextChannel, ThreadChannel } from "discord.js";
+import { ChannelType, TextChannel, ThreadChannel } from "discord.js";
 import { ThreadAutoArchiveDuration } from "discord.js";
 import { chat } from "../chat.config";
 import { simpleEmbed } from "$core/utils/embed";
 import { findCommand } from "$core/utils/handler/command/command";
-import { ButtonBuilder } from "@discordjs/builders";
 import { haveActiveDiscussion, newDiscussion } from "$core/utils/data/discussion";
 import { userWithId } from "$core/utils/function";
 import { global } from "$core/utils/config/message/command";
+import { hideButton } from "$core/utils/config/buttons";
 
 export const execute: CommandExecute = async(command, user) => {
   const channel = command.channel;
@@ -28,6 +28,7 @@ export const execute: CommandExecute = async(command, user) => {
 
   command.editReply({ content: translate(command.locale, chat.config.exec.channelCreating) });
   const privateThread = command.options.getBoolean("private", false) ?? false;
+
   const thread: ThreadChannel = await channel.threads.create({
     name: translate(command.locale, chat.config.exec.channelTemporaryTitle, { user: command.user.username }),
     invitable: false,
@@ -36,7 +37,7 @@ export const execute: CommandExecute = async(command, user) => {
   });
 
   if (thread) {
-    await newDiscussion(thread.id, command.user.id, "default");
+    await newDiscussion(thread.id, command.user.id);
 
     command.editReply({
       content: translate(command.locale, chat.config.exec.channelCreated, {
@@ -47,20 +48,15 @@ export const execute: CommandExecute = async(command, user) => {
 
     thread.members.add(command.user);
 
-    const hideButton = new ButtonBuilder()
-      .setStyle(ButtonStyle.Primary)
-      .setCustomId("hide")
-      .setLabel(translate(command.locale, chat.config.exec.buttons.hidePremiumTip));
-
-    thread.send({
+    const messageSended = await thread.send({
       embeds: [
         simpleEmbed(translate(command.locale, chat.config.exec.discussionOpened, {
           chatStop: await findCommand("chat", "stop"),
-          premiumTip: user.tips?.chatPremiumSaveIt ? translate(command.locale, chat.config.exec.premiumTip) : "",
           history: await findCommand("history")
-        }))
+        })),
+        simpleEmbed(translate(command.locale, user.isPremium ? chat.config.exec.discussionOpenedPremium : chat.config.exec.premiumTip), "premium")
       ],
-      components: !user.tips?.chatPremiumSaveIt ? [] : [{ type: 1, components: [hideButton] }]
+      components: !user.tips?.chatPremiumSaveIt ? [] : [{ type: 1, components: [hideButton(command)] }]
     });
 
     if (user.tips?.chatPremiumSaveIt) {
@@ -75,7 +71,6 @@ export const execute: CommandExecute = async(command, user) => {
             embeds: [
               simpleEmbed(translate(command.locale, chat.config.exec.discussionOpened, {
                 chatStop: await findCommand("chat", "stop"),
-                premiumTip: "",
                 history: await findCommand("history")
               }))
             ],
@@ -85,13 +80,12 @@ export const execute: CommandExecute = async(command, user) => {
 
         await updateUser(command.user.id, { tips: { update: { chatPremiumSaveIt: false } } });
       }).on("end", () => {
-        thread.messages.fetch().then((messages) => {
-          const msgs = messages.filter((message) => message.author.id === client.user?.id);
-          const message = msgs.first();
-
-          if (!message) return;
-          message.edit({ components: [{ type: 1, components: [hideButton.setDisabled(true)] }] });
-        });
+        if (collector.endReason !== "Resolved") {
+          thread.messages.fetch().then((messages) => {
+            const message = messages.get(messageSended.id);
+            if (message) message.edit({ components: [{ type: 1, components: [hideButton(command).setDisabled(true)] }] });
+          });
+        }
       });
     }
 

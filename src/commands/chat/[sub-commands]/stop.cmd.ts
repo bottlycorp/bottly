@@ -15,51 +15,42 @@ export const execute: CommandExecute = async(command, user) => {
   const channel = command.channel;
   if (!(channel instanceof ThreadChannel)) {
     command.editReply(translate(command.locale, global.config.exec.notInAThread));
-
     colors.error(userWithId(command.user) + " tried to stop a discussion while not being in a thread");
     return;
   }
 
   if (!haveActiveDiscussion(user)) {
-    command.editReply(translate(command.locale, chat.config.exec.notHaveActiveDiscussion, {
-      chatTalk: await findCommand("chat", "talk")
-    }));
-
+    command.editReply(translate(command.locale, chat.config.exec.notHaveActiveDiscussion, { chatTalk: await findCommand("chat", "talk") }));
     colors.error(userWithId(command.user) + " tried to stop a discussion while not having an active discussion");
     return;
   }
 
   if (!await isTheAuthor(channel.id, command.user.id)) {
     command.editReply(translate(command.locale, chat.config.exec.notTheAuthor));
-
     colors.error(userWithId(command.user) + " tried to stop a discussion while not being the author");
     return;
   }
 
-  await updateDiscussion(channel.id, { active: false });
-
-  if (!user.privacy?.collectChat) {
-    await deleteDiscussion(channel.id);
-    channel.send({
-      embeds: [simpleEmbed(translate(command.locale, chat.config.exec.deletedData), "info", "")]
-    });
-  }
-
   command.editReply({
     embeds: [
-      simpleEmbed(translate(command.locale, chat.config.exec.stopped), "info", "", {
+      simpleEmbed(translate(command.locale, chat.config.exec.stopped, {
+        count: user.discussions.find(d => d.active === true)?.count ?? 0
+      }), "info", "", {
         text: channel.name,
         icon_url: command.user.displayAvatarURL() ?? undefined,
         timestamp: true
       })
     ],
-    components: [{
-      type: 1,
-      components: [
-        downloadButton(command, channel.id).setDisabled(user.isPremium ? false : true)
-      ]
-    }]
+    components: [{ type: 1, components: [downloadButton(command, channel.id).setDisabled(user.isPremium ? false : true)] }]
   });
+
+  await updateDiscussion(channel.id, { active: false, writing: false });
+
+  if (!user.privacy?.collectChat) {
+    await deleteDiscussion(channel.id);
+    channel.send({ embeds: [simpleEmbed(translate(command.locale, chat.config.exec.deletedData), "info", "")] });
+    colors.info(userWithId(command.user) + " stopped a discussion and deleted the data because he doesn't want to collect his data");
+  }
 
   if (user.isPremium) {
     let minutes = 2;
@@ -95,22 +86,9 @@ export const execute: CommandExecute = async(command, user) => {
         await interaction.deferUpdate();
         clearInterval(interval);
 
-        await interaction.editReply({
-          content: translate(command.locale, chat.config.exec.creatingFile),
-          embeds: [],
-          components: []
-        });
-
-        const attachment = await createTranscript(channel, {
-          saveImages: true
-        });
-
-        await interaction.editReply({
-          content: translate(command.locale, chat.config.exec.createdFile),
-          embeds: [],
-          files: [attachment]
-        });
-
+        await interaction.editReply({ content: translate(command.locale, chat.config.exec.creatingFile), embeds: [], components: [] });
+        const file = await createTranscript(channel, { saveImages: true });
+        await interaction.editReply({ content: translate(command.locale, chat.config.exec.createdFile), embeds: [], files: [file] });
         collector.stop();
       }
     });
