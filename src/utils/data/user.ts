@@ -21,6 +21,7 @@ export const newUser = async(userToCreate: DiscordUser): Promise<UserIncludeAll>
       username: userToCreate.username,
       userId: userToCreate.id,
       createdAt: DayJS().unix(),
+      locale: "en_US",
       privacy: {
         create: {
           autoDelete: false,
