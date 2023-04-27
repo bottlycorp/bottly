@@ -15,7 +15,8 @@ import { client, colors } from "$core/client";
 import { simpleEmbed } from "$core/utils/embed";
 import { translate } from "$core/utils/config/message/message.util";
 import { global } from "$core/utils/config/message/command";
-import { getUser } from "$core/utils/data/user";
+import { getUser, updateUser } from "$core/utils/data/user";
+import { toLocale, toPrismaLocale } from "$core/utils/locale";
 // import { voteButton } from "$core/utils/config/buttons";
 
 const limitedUsageCommands = ["ask", "chat"];
@@ -160,6 +161,8 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
 
     interaction.deferReply({ ephemeral: true });
     const user = await getUser(interaction.user);
+    if (user.username !== interaction.user.username) await updateUser(interaction.user.id, { username: interaction.user.username });
+    if (toLocale(user.locale) !== interaction.locale) await updateUser(interaction.user.id, { locale: toPrismaLocale(interaction.locale) });
 
     if (limitedUsageCommands.includes(interaction.commandName) && (user?.usages?.usage ?? 0) <= 0) {
       interaction.editReply({
