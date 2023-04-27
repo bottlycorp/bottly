@@ -78,9 +78,9 @@ export const chat = {
         "pt-BR": "Conversa com {user}"
       },
       channelCreating: {
-        "en-US": "<a:typing:1087703097498931290> Your discussion is being created please wait...",
-        fr: "<a:typing:1087703097498931290> Votre discussion est en cours de création, veuillez patienter...",
-        "pt-BR": "<a:typing:1087703097498931290> Sua conversa está sendo criada, por favor, aguarde..."
+        "en-US": "{emojiTyping} Your discussion is being created please wait...",
+        fr: "{emojiTyping} Votre discussion est en cours de création, veuillez patienter...",
+        "pt-BR": "{emojiTyping} Sua conversa está sendo criada, por favor, aguarde..."
       },
       alreadyActiveDiscussion: {
         "en-US": "You already have an active discussion, you can stop it with the command {chatStop}",
@@ -98,33 +98,27 @@ export const chat = {
         "pt-BR": "Você não é o autor desta conversa, portanto não pode pará-la"
       },
       stopped: {
-        "en-US": [
-          "The discussion has been stopped correctly, there was a total of `{count}` messages exchanged.",
-          ":sparkles: If you **Premium** you can click on the button below to download the discussion in PDF/HTML format."
-        ].join("\n"),
-        fr: [
-          "La discussion a correctement été arrêtée, il y a eu un total de `{count}` messages échangés.",
-          ":sparkles: Si vous êtes **Premium**, vous pouvez cliquer sur le bouton ci-dessous pour télécharger la discussion au format PDF/HTML."
-        ].join("\n"),
-        "pt-BR": [
-          "A conversa foi interrompida corretamente, houve um total de `{count}` mensagens trocadas.",
-          ":sparkles: Se você é **Premium**, você pode clicar no botão abaixo para baixar a conversa no formato PDF/HTML."
-        ].join("\n")
+        "en-US": "The discussion has been stopped correctly, there was a total of `{count}` messages exchanged.",
+        fr: "La discussion a correctement été arrêtée, il y a eu un total de `{count}` messages échangés.",
+        "pt-BR": "A conversa foi parada corretamente, houve um total de `{count}` mensagens trocadas."
       },
       creatingFile: {
-        "en-US": "<a:typing:1087703097498931290> Your discussion is being downloaded, please wait...",
-        fr: "<a:typing:1087703097498931290> Votre discussion est en cours de téléchargement, veuillez patienter...",
-        "pt-BR": "<a:typing:1087703097498931290> Sua conversa está sendo baixada, por favor, aguarde..."
+        "en-US": "{emojiTyping} Your discussion is being downloaded, please wait...",
+        fr: "{emojiTyping} Votre discussion est en cours de téléchargement, veuillez patienter...",
+        "pt-BR": "{emojiTyping} Sua conversa está sendo baixada, por favor, aguarde..."
       },
       createdFile: {
         "en-US": "Your discussion has been downloaded you can download it with the file below",
         fr: "Votre discussion a été téléchargée, vous pouvez la télécharger avec le fichier ci-dessous",
         "pt-BR": "Sua conversa foi baixada, você pode baixá-la com o arquivo abaixo"
       },
-      cantDownload: {
-        "en-US": ":sparkles: What a shame, you are not **Premium** so you can't download the discussion in HTML format.",
-        fr: ":sparkles: Quel dommage, vous n'êtes pas **Premium** donc vous ne pouvez pas télécharger la discussion au format HTML.",
-        "pt-BR": ":sparkles: Que pena, você não é **Premium** então você não pode baixar a conversa no formato HTML."
+      downloadCommand: {
+        "en-US": "If you are a **Premium {emojiPremium}** user you can use the {chatDownload} command to get the conversation in HTML format",
+        fr: [
+          "Si vous êtes un utilisateur **Premium {emojiPremium}** vous pouvez utiliser la commande {chatDownload} pour obtenir la",
+          "conversation au format HTML"
+        ].join(" "),
+        "pt-BR": "Se você é um usuário **Premium {emojiPremium}**, pode usar o comando {chatDownload} para obter a conversa no formato HTML"
       },
       private: {
         "en-US": "private",
@@ -161,38 +155,42 @@ export const chat = {
           "- If you want to stop the discussion, use the command {chatStop}",
           ["- You can speak with other people with a `.` before your message or if your message contains `@mention` (or reply",
             "to a message with ping enabled)"].join(" "),
-          "- Each message you send count for 1 usage (check your usage with the command {history})",
-          "{premiumTip}"
+          "- Each message you send count for 1 usage (check your quota with the command {history})"
         ].join("\n"),
         fr: [
           ":wave: Je suis là pour vous aider, vous pouvez commencer à parler avec moi\n",
           "- Si vous voulez arrêter la discussion, utilisez la commande {chatStop}",
           ["- Vous pouvez parler avec d'autres personnes en mettant un `.` avant votre message ou si votre message contient `@mention`",
             "(ou en répondant à un message avec le ping activé)"].join(" "),
-          "- Chaque message que vous envoyez compte pour 1 utilisation (vérifiez votre utilisation avec la commande {history})",
-          "{premiumTip}"
+          "- Chaque message que vous envoyez compte pour 1 utilisation (vérifiez votre quota avec la commande {history})"
         ].join("\n"),
         "pt-BR": [
           ":wave: Estou aqui para ajudá-lo, você pode começar a falar comigo\n",
           "- Se você quiser parar a conversa, use o comando {chatStop}",
           ["- Você pode falar com outras pessoas colocando um `.` antes da sua mensagem ou se a sua mensagem contiver `@mention` (ou responder",
             "a uma mensagem com ping ativado)"].join(" "),
-          "- Cada mensagem que você enviar conta como 1 uso (verifique seu uso com o comando {history})",
-          "{premiumTip}"
+          "- Cada mensagem que você enviar conta como 1 uso (verifique sua cota com o comando {history})"
         ].join("\n")
       },
+      discussionOpenedPremium: {
+        "en-US": "{emojiPremium} Once you have stopped the discussion, you will be able to download it in HTML format",
+        fr: "{emojiPremium} Une fois que vous aurez arrêté la discussion, vous pourrez la télécharger au format HTML",
+        "pt-BR": "{emojiPremium} Depois de parar a conversa, você pode baixá-la no formato HTML"
+      },
       premiumTip: {
-        "en-US": [
-          "\n**Premium Tip:** When the discussion is over, you can download it in HTML format",
-          "with the button at the bottom of the discussion"
-        ].join(" "),
+        "en-US": "With **Premium {emojiPremium}** you can download the discussion in HTML format as soon as you stop it",
+        fr: "Avec **Premium {emojiPremium}** vous pouvez téléchargez la discussion au format HTML dès que vous l'auriez arrêtée",
+        "pt-BR": "Com **Premium {emojiPremium}** você pode baixar a conversa no formato HTML assim que pará-la"
+      },
+      premiumTipAre: {
+        "en-US": "You are a **Premium {emojiPremium}** user, you can download the discussion in HTML format",
         fr: [
-          "\n**Conseil Premium:** Lorsque la discussion est terminée, vous pouvez la télécharger au format HTML",
-          "avec le bouton en bas de la discussion"
+          "Vous êtes un utilisateur **Premium {emojiPremium}**, vous pouvez téléchargez la discussion au format",
+          "HTML en cliquant sur le bouton ci-dessous"
         ].join(" "),
         "pt-BR": [
-          "\n**Dica Premium:** Quando a conversa terminar, você pode baixá-la no formato HTML",
-          "com o botão na parte inferior da conversa"
+          "Você é um usuário **Premium {emojiPremium}**, você pode baixar a conversa no formato",
+          "HTML clicando no botão abaixo"
         ].join(" ")
       }
     }

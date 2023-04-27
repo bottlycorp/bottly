@@ -1,20 +1,28 @@
-import { openai } from "$core/client";
+import { colors, openai } from "$core/client";
+import { chat } from "$core/commands/chat/chat.config";
 import { deleteCache, existCache, setCache } from "$core/utils/cache";
 import { global } from "$core/utils/config/message/command";
 import { translate } from "$core/utils/config/message/message.util";
-import { existDiscussion, getDiscussion, updateDiscussion } from "$core/utils/data/discussion";
-import { updateUser } from "$core/utils/data/user";
+import { deleteDiscussion, getDiscussion, updateDiscussion } from "$core/utils/data/discussion";
 import { DayJS } from "$core/utils/day-js";
 import { simpleEmbed } from "$core/utils/embed";
-import { limitString } from "$core/utils/function";
+import { limitString, userWithId } from "$core/utils/function";
 import { EnableInDev } from "$core/utils/handler";
+import { findCommand } from "$core/utils/handler/command/command";
 import { EventExecute, EventName } from "$core/utils/handler/event";
+import { toLocale } from "$core/utils/locale";
 import { getTokens } from "$core/utils/tokenizer";
-import { Locale, Message, ThreadChannel } from "discord.js";
+import { Role } from "@prisma/client";
+import { Message, ThreadChannel } from "discord.js";
 
 export const enableInDev: EnableInDev = true;
 
 export const event: EventName = "messageCreate";
+
+const systemContext = [
+  "Tu doit génerer un titre à propos du premier paragraphe suivant (ci-dessous) dans la langue de celui-ci, sans inclure autre chose que ce titre",
+  "Tu écrit seulement le titre et aucun autre texte"
+].join(" ");
 
 export const execute: EventExecute<"messageCreate"> = async(message: Message) => {
   if (!message.inGuild()) return;
@@ -26,13 +34,10 @@ export const execute: EventExecute<"messageCreate"> = async(message: Message) =>
   const thread = message.channel as ThreadChannel;
   const threadId = thread.id;
 
-  if (!await existDiscussion(threadId)) return;
-
   const discussion = await getDiscussion(threadId);
-  if (discussion == null) {
-    message.delete();
-    return;
-  }
+  if (!discussion) return;
+  const user = discussion?.user;
+  if (!user) return;
 
   if (discussion.active === false) {
     message.delete();
@@ -45,13 +50,12 @@ export const execute: EventExecute<"messageCreate"> = async(message: Message) =>
     return;
   }
 
-  await updateDiscussion(thread.id, {
+  updateDiscussion(thread.id, {
     lastMessageAt: DayJS().unix(),
     writing: true,
     messages: {
       create: {
-        message: message.content,
-        isBot: false
+        message: message.content, role: "user"
       }
     }
   });
@@ -61,8 +65,29 @@ export const execute: EventExecute<"messageCreate"> = async(message: Message) =>
     return;
   }
 
-  setCache(message.author.id, true);
+  if (user.usages?.usage == 0) {
+    message.reply({
+      embeds: [
+        simpleEmbed(translate(toLocale(user.locale), global.config.exec.noMoreUsages), "error"),
+        simpleEmbed(translate(toLocale(user.locale), chat.config.exec.downloadCommand, {
+          chatDownload: await findCommand("chat", "download")
+        }), "premium", "")
+      ]
+    });
 
+    colors.error(`${userWithId(message.author)} tried to speak in a thread but he has no more usages`);
+    await updateDiscussion(thread.id, { active: false, writing: false });
+
+    if (!user.privacy?.collectChat) {
+      await deleteDiscussion(thread.id);
+      thread.send({ embeds: [simpleEmbed(translate(toLocale(user.locale), chat.config.exec.deletedData), "info", "")] });
+    }
+
+    thread.setLocked(true);
+    return;
+  }
+
+  setCache(message.author.id, true);
   thread.sendTyping();
   const answered = false;
 
@@ -76,59 +101,57 @@ export const execute: EventExecute<"messageCreate"> = async(message: Message) =>
   }, 5000);
 
   let tokens = 0;
-  const messages: {
-    content: string;
-    role: "user" | "system" | "assistant";
-  }[] = [];
+  const messages: { content: string; role: "user" | "system" | "assistant" }[] = [];
 
   discussion.messages.forEach(msg => {
     tokens += getTokens(msg.message);
-    messages.push({
-      content: msg.message,
-      role: msg.isBot ? "assistant" : "user"
-    });
+    messages.push({ content: msg.message, role: msg.role === "bot" ? "assistant" : msg.role });
   });
 
   messages.push({
     content: message.content,
-    role: "user"
+    role: Role.user
   });
 
   await openai.createChatCompletion({
     messages: messages,
     model: "gpt-3.5-turbo",
-    max_tokens: tokens + 100,
-    stream: true
+    max_tokens: tokens + 200
   }).catch((error: Error) => {
     clearInterval(interval);
     console.error(error);
-    message.reply({ embeds: [simpleEmbed(translate(Locale.EnglishUS, global.config.exec.error, { error: error.message }), "error")] });
+    message.reply({ embeds: [simpleEmbed(translate(toLocale(user.locale), global.config.exec.error, { error: error.message }), "error")] });
     deleteCache(message.author.id);
   }).then(async(response) => {
+    clearInterval(interval);
     const answer = response?.data.choices[0].message?.content;
     if (answer == null) {
-      message.reply({ embeds: [simpleEmbed(translate(Locale.EnglishUS, global.config.exec.error, {  error: "No answer" }), "error")] });
+      message.reply({ embeds: [simpleEmbed(translate(toLocale(user.locale), global.config.exec.error, {  error: "No answer" }), "error")] });
       return;
     }
 
-    clearInterval(interval);
-    await updateDiscussion(thread.id, { lastMessageAt: DayJS().unix(), writing: false, messages: { create: { message: answer, isBot: true } } });
-    await updateUser(message.author.id, { usages: { update: { usage: { decrement: 1 } } } });
     deleteCache(message.author.id);
-    thread.send(limitString(answer, 2000)); // TODO: If the message is too long, split it in multiple messages
+    message.reply(limitString(answer, 2000)); // TODO: If the message is too long, split it in multiple messages
+
+    await updateDiscussion(thread.id, {
+      lastMessageAt: DayJS().unix(),
+      writing: false,
+      messages: {
+        create: {
+          message: answer,
+          role: Role.bot
+        }
+      },
+      count: { increment: 1 },
+      user: { update: { usages: { update: { usage: { decrement: 1 } } } } }
+    }).catch((error: Error) => {
+      console.error(error);
+    });
   });
 
   if (discussion?.title === "default") {
     await openai.createChatCompletion({
-      messages: [
-        { role: "system",
-          content: [
-            "Make me a title from the text in the language of the message without specifying it in the title.",
-            "Without writing anything other than the answer, without any text."
-          ].join(" ")
-        },
-        { content: message.content, role: "user" }
-      ],
+      messages: [{ role: "system", content: systemContext }, { content: message.content, role: "user" }],
       max_tokens: 4000,
       temperature: 0.4,
       model: "gpt-3.5-turbo"

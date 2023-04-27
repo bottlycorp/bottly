@@ -4,6 +4,7 @@ import { ButtonStyle, CommandInteraction, Interaction } from "discord.js";
 import { translate } from "./message/message.util";
 import { global } from "./message/command";
 import { emojiByUsage } from "../function";
+import { chat } from "$core/commands/chat/chat.config";
 
 export const usageButton = (command: CommandInteraction | Interaction, user: UserIncludeAll | null, reduce = true) : ButtonBuilder => {
   return new ButtonBuilder()
@@ -43,4 +44,11 @@ export const downloadButton = (command: CommandInteraction | Interaction, id: st
     .setLabel(translate(command.locale, global.config.exec.buttons.download))
     .setCustomId("download_" + id)
     .setStyle(ButtonStyle.Primary);
+};
+
+export const hideButton = (command: CommandInteraction | Interaction) : ButtonBuilder => {
+  return new ButtonBuilder()
+    .setStyle(ButtonStyle.Primary)
+    .setCustomId("hide")
+    .setLabel(translate(command.locale, chat.config.exec.buttons.hidePremiumTip));
 };
