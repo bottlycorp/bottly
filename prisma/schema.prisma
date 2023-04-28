@@ -53,6 +53,7 @@ model User {
   tips        Tips?
   isPremium   Boolean      @default(false)
   locale      Locale       @default(en_US)
+  Message     Message[]
 }
 
 model Question {
@@ -131,6 +132,9 @@ model Message {
   role         Role       @default(user)
   discussion   Discussion @relation(fields: [discussionId], references: [id], onDelete: Cascade)
   discussionId String
+  tokens       Int        @default(0)
+  userId       String
+  user         User       @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
 
 model Tips {
