@@ -2,7 +2,9 @@ import { Locale, LocalizationMap } from "discord.js";
 
 const preParams: Record<string, string | number | undefined> = {
   emojiPremium: "<:premium1:1101141131963670630>",
-  emojiTyping: "<a:typing:1087703097498931290>"
+  emojiTyping: "<a:typing:1087703097498931290>",
+  emojiDO: "<:thAlways:1101648091372859444>",
+  emojiDC: "<:thClosed:1101648093960749066>"
 };
 
 export const translate = (Locale: Locale, message: LocalizationMap, params: Record<string, string | number> = {}): string => {

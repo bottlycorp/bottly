@@ -8,6 +8,8 @@ import { usageButton } from "$core/utils/config/buttons";
 import { DayJS } from "$core/utils/day-js";
 import { TextChannel } from "discord.js";
 import { global } from "$core/utils/config/message/command";
+import { QuestionIncludeAll } from "$core/utils/data/question";
+import { DiscussionIncludeAll } from "$core/utils/data/discussion";
 
 export const execute: CommandExecute = async(command, user) => {
   const channel = command.channel;
@@ -22,19 +24,42 @@ export const execute: CommandExecute = async(command, user) => {
   const valuePage: number = command.options.getInteger(history.config.options.page.name["en-US"], false) ?? 1;
   const perPage: number = command.options.getInteger(history.config.options.per.name["en-US"], false) ?? 10;
 
-  if (questions == null) {
-    command.editReply({ content: "You have no questions" });
-    colors.info("User has no questions");
+  if (questions == null && user.discussions == null) {
+    command.editReply({ content: "You have no questions/discussions, so you can't see your history" });
+    colors.info("User has no questions/discussions, so he can't see his history");
     return;
   }
 
+  const final = [...(questions ?? []), ...(user.discussions ?? [])].sort((a, b) => b.createdAt - a.createdAt);
+
   let lines = "";
-  for (let i = (valuePage - 1) * perPage; i < valuePage * perPage && i < questions.length; i++) {
-    lines += translate(command.locale, history.config.exec.success.line, {
-      index: i + 1,
-      question: limitString(questions[i].question, 40),
-      timestamp: questions[i].createdAt
-    });
+  for (let i = (valuePage - 1) * perPage; i < valuePage * perPage && i < final.length; i++) {
+    // check if in user.discussions include final[i].id
+    const isDiscussion = user.discussions?.findIndex(d => d.id === final[i].id) !== -1;
+    let type: QuestionIncludeAll | DiscussionIncludeAll;
+    if (isDiscussion) {
+      type = user.discussions?.find(d => d.id === final[i].id) as DiscussionIncludeAll;
+      lines += translate(
+        command.locale,
+        type.title == "default" ? history.config.exec.success.lineDiscussionNoTitle : history.config.exec.success.lineDiscussion,
+        {
+          index: i + 1,
+          id: final[i].id,
+          link: type.link,
+          title: limitString(type.title, 50),
+          createdAt: type.createdAt,
+          count: type.count
+        }
+      );
+    } else {
+      type = user.questions?.find(q => q.id === final[i].id) as QuestionIncludeAll;
+      lines += translate(command.locale, history.config.exec.success.lineQuestion, {
+        index: i + 1,
+        id: final[i].id,
+        question: limitString(type.question, 50),
+        createdAt: type.createdAt
+      });
+    }
   }
 
   if (user.usages?.max !== "PREMIUM") {

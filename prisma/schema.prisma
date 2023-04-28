@@ -107,6 +107,7 @@ model Discussion {
   createdAt      Int        @default(0)
   firstMessageAt Int        @default(0)
   lastMessageAt  Int        @default(0)
+  link           String     @default("")
   messages       Message[]
   count          Int        @default(0)
   writing        Boolean    @default(false)
@@ -130,9 +131,9 @@ model Message {
   createdAt    Int        @default(0)
   message      String     @default("Lorem imspu mipsu")
   role         Role       @default(user)
+  tokens       Int        @default(0)
   discussion   Discussion @relation(fields: [discussionId], references: [id], onDelete: Cascade)
   discussionId String
-  tokens       Int        @default(0)
   userId       String
   user         User       @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }

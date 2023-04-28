@@ -2,7 +2,7 @@ import { colors } from "$core/client";
 import { translate } from "$core/utils/config/message/message.util";
 import { updateUser } from "$core/utils/data/user";
 import { CommandExecute } from "$core/utils/handler/command";
-import { ChannelType, TextChannel, ThreadChannel } from "discord.js";
+import { ChannelType, TextChannel, ThreadChannel, messageLink } from "discord.js";
 import { ThreadAutoArchiveDuration } from "discord.js";
 import { chat } from "../chat.config";
 import { simpleEmbed } from "$core/utils/embed";
@@ -40,8 +40,6 @@ export const execute: CommandExecute = async(command, user) => {
   });
 
   if (thread) {
-    await newDiscussion(thread.id, command.user.id);
-
     command.editReply({
       content: translate(command.locale, chat.config.exec.channelCreated, {
         type: privateThread ? translate(command.locale, chat.config.exec.private) : translate(command.locale, chat.config.exec.public),
@@ -61,6 +59,8 @@ export const execute: CommandExecute = async(command, user) => {
       ],
       components: !user.tips?.chatPremiumSaveIt ? [] : [{ type: 1, components: [hideButton(command)] }]
     });
+
+    await newDiscussion(thread.id, command.user.id, messageLink(messageSended.channel.id, messageSended.id));
 
     if (user.tips?.chatPremiumSaveIt) {
       const collector = thread.createMessageComponentCollector({

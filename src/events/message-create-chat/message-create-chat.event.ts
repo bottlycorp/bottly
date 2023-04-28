@@ -80,7 +80,8 @@ export const execute: EventExecute<"messageCreate"> = async(message: Message) =>
         tokens: getTokens(message.content),
         userId: user.userId
       }
-    }
+    },
+    count: { increment: 1 }
   });
 
   setCache(message.author.id, true);
@@ -108,8 +109,6 @@ export const execute: EventExecute<"messageCreate"> = async(message: Message) =>
     content: message.content,
     role: Role.user
   });
-
-  console.log(messages);
 
   await openai.createChatCompletion({
     messages: messages,

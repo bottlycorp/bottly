@@ -46,8 +46,21 @@ export const history = {
           fr: "{page}/{total} pages (x{per} par page)",
           "pt-BR": "{page}/{total} páginas (x{per} por página)"
         },
-        line: {
-          "en-US": "**{index}.** {question} - <t:{timestamp}:R>\n"
+        lineQuestion: {
+          "en-US": ":grey_question: **{index}.** {question} - <t:{createdAt}:f>\n"
+        },
+        lineDiscussion: {
+          "en-US": ":thought_balloon: **[{index}.]({link})** {title} - <t:{createdAt}:f> `{count} messages`\n"
+        },
+        lineDiscussionNoTitle: {
+          "en-US": ":thought_balloon: **[{index}.]({link})** No messages sended for now - <t:{createdAt}:f>\n",
+          fr: ":thought_balloon: **[{index}.]({link})** Aucun message envoyé pour le moment - <t:{createdAt}:f>\n",
+          "pt-BR": ":thought_balloon: **[{index}.]({link})** Nenhuma mensagem enviada por enquanto - <t:{createdAt}:f>\n"
+        },
+        notClosed: {
+          "en-US": "Always open",
+          fr: "Toujours ouvert",
+          "pt-BR": "Sempre aberto"
         },
         notPremiumLine: {
           "en-US": ":sparkles: You still have `{left}` free questions this month, upgrade to the Premium plan to ask an unlimited number",

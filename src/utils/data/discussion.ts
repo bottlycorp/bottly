@@ -25,13 +25,14 @@ export const getDiscussion = async(channelId: string): Promise<DiscussionInclude
   return discussion;
 };
 
-export const newDiscussion = async(channelId: string, userId: string): Promise<boolean> => {
+export const newDiscussion = async(channelId: string, userId: string, link: string): Promise<boolean> => {
   const created = await prisma.discussion.create({
     data: {
       channelId: channelId,
       userId: userId,
       active: true,
       messages: {},
+      link: link,
       title: "default",
       createdAt: DayJS().unix()
     }
