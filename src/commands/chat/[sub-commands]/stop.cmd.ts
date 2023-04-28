@@ -96,5 +96,7 @@ export const execute: CommandExecute = async(command, user) => {
     collector.on("end", () => {
       channel.setLocked(true);
     });
+  } else {
+    channel.setLocked(true);
   }
 };

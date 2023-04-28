@@ -20,3 +20,26 @@ export const translate = (Locale: Locale, message: LocalizationMap, params: Reco
 
   return msg;
 };
+
+export type SeparateType = {
+  success: boolean;
+  texts: string[];
+}
+
+export const separate = (text: string): SeparateType => {
+  if (text.length <= 2000) return { success: false, texts: [text] };
+
+  const texts: string[] = [];
+  let textTemp = "";
+  for (const word of text.split(" ")) {
+    if (textTemp.length + word.length + 1 > 1990) {
+      texts.push(textTemp);
+      textTemp = "";
+    }
+
+    textTemp += `${word} `;
+  }
+
+  texts.push(textTemp);
+  return { success: true, texts };
+};
