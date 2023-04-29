@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y libuuid1 libgl1-mesa-dev
 COPY package*.json ./
 
 ARG NPM_REGISTRY=https://npm.pkg.github.com/
-ENV NPM_AUTH_TOKEN ${GH_TOKEN}
+ENV NPM_AUTH_TOKEN ${NPM_REGISTRY}
 
 # Configure npm to use the registry and auth token:
 RUN echo "registry=${NPM_REGISTRY}" >> .npmrc \
