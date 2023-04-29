@@ -1,21 +1,21 @@
 import { ButtonBuilder } from "@discordjs/builders";
-import { MAX_USES, UserIncludeAll } from "$core/utils/data/user";
+import { UserIncludeAll, getMaxUsage } from "$core/utils/data/user";
 import { ButtonStyle, CommandInteraction, Interaction } from "discord.js";
 import { translate } from "./message/message.util";
 import { global } from "./message/command";
 import { emojiByUsage } from "../function";
 import { chat } from "$core/commands/chat/chat.config";
 
-export const usageButton = (command: CommandInteraction | Interaction, user: UserIncludeAll | null, reduce = true) : ButtonBuilder => {
+export const usageButton = (command: CommandInteraction | Interaction, user: UserIncludeAll, reduce = true) : ButtonBuilder => {
   return new ButtonBuilder()
     .setCustomId("usage")
     .setLabel(translate(command.locale, global.config.exec.buttons.usage, {
       left: reduce ? (user?.usages?.usage ?? 1) == 0 ? 0 : (user?.usages?.usage ?? 1) - 1 : (user?.usages?.usage ?? 1),
-      max: MAX_USES["FREE"]
+      max: getMaxUsage(user)
     }))
     .setStyle(ButtonStyle.Secondary)
     .setDisabled(true)
-    .setEmoji(emojiByUsage(MAX_USES["FREE"], (user?.usages?.usage ?? 1) == 0 ? 0 : (user?.usages?.usage ?? 1) - 1));
+    .setEmoji(emojiByUsage(getMaxUsage(user), (user?.usages?.usage ?? 1) == 0 ? 0 : (user?.usages?.usage ?? 1) - 1));
 };
 
 export const revealButton = (command: CommandInteraction | Interaction) : ButtonBuilder => {

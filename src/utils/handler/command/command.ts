@@ -129,6 +129,8 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
       return;
     }
 
+    interaction.deferReply({ ephemeral: true });
+
     const member = await interaction.guild.members.fetch(client.user.id);
     const missingPermissions = member.permissions.missing([
       "SendMessages",
@@ -159,7 +161,6 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
 
     if (!commandExecute) return;
 
-    interaction.deferReply({ ephemeral: true });
     const user = await getUser(interaction.user);
     if (user.username !== interaction.user.username) await updateUser(interaction.user.id, { username: interaction.user.username });
     if (toLocale(user.locale) !== interaction.locale) await updateUser(interaction.user.id, { locale: toPrismaLocale(interaction.locale) });
