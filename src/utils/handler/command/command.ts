@@ -157,15 +157,13 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
       return;
     }
 
-    console.log("Testing 1");
-    if (!commandExecute) return;
-    console.log("Testing 2");
+    if (!commandExecute) {
+      console.log("Testing ", interaction.commandName ?? "A Command");
+      return;
+    }
 
     interaction.deferReply({ ephemeral: true });
-    console.log("Testing 3");
-
     const user = await getUser(interaction.user);
-    console.log("Testing 4");
     if (user.username !== interaction.user.username) await updateUser(interaction.user.id, { username: interaction.user.username });
     if (toLocale(user.locale) !== interaction.locale) await updateUser(interaction.user.id, { locale: toPrismaLocale(interaction.locale) });
 
