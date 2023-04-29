@@ -1,6 +1,7 @@
-import { colors } from "$core/client";
+import { client, colors } from "$core/client";
 import { APIMessageComponentEmoji, CommandInteraction, Guild, User } from "discord.js";
 import { existsSync, statSync } from "fs";
+import { prisma } from "./prisma";
 
 export const folderExist = (path: string): boolean => {
   return existsSync(path) && statSync(path).isDirectory();
@@ -45,4 +46,14 @@ export const emojiByUsage = (usageMax: number, usaged: number): APIMessageCompon
 
   colors.error("Error: usage is not in range");
   return battery;
+};
+
+export const getAvaibleUsers = (): number => {
+  const members = client.guilds.cache.reduce((a, b) => a + b.memberCount, 0);
+  return members;
+};
+
+export const getUniqueUsers = async(): Promise<number> => {
+  const us = prisma.user.findMany();
+  return (await us).length;
 };
