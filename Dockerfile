@@ -15,7 +15,7 @@ ENV NPM_AUTH_TOKEN ${AUTH_TOKEN}
 
 # Configure npm to use the registry and auth token:
 RUN echo "registry=https://npm.pkg.github.com/" >> .npmrc \
-  && echo "//https://npm.pkg.github.com/:_authToken=${NPM_AUTH_TOKEN}" >> .npmrc \
+  && echo "//npm.pkg.github.com/:_authToken=${AUTH_TOKEN}" >> .npmrc \
   && echo "@bottlycorp:registry=https://npm.pkg.github.com/" >> .npmrc
 
 RUN echo "registry=https://registry.npmjs.org/" >> .npmrc
