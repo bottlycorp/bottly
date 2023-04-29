@@ -9,6 +9,9 @@ import { BColors } from "bettercolors";
 import { Configuration, OpenAIApi } from "openai";
 import { AutoPoster } from "topgg-autoposter";
 import { isDevEnvironment } from "./utils/environment";
+import { DayJS } from "./utils/day-js";
+
+export let today = DayJS().day();
 
 export const client = new DiscordClient({
   intents: [
@@ -59,3 +62,7 @@ client.once("ready", async() => {
   colors.log(`Bottly in ready for ${client.guilds.cache.size} guilds and ${members} users!`);
   colors.success("The client has been successfully started!");
 });
+
+export const changeToday = (to: number): void => {
+  if (today !== to) today = to;
+};

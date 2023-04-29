@@ -34,7 +34,6 @@ export const execute: CommandExecute = async(command, user) => {
 
   let lines = "";
   for (let i = (valuePage - 1) * perPage; i < valuePage * perPage && i < final.length; i++) {
-    // check if in user.discussions include final[i].id
     const isDiscussion = user.discussions?.findIndex(d => d.id === final[i].id) !== -1;
     let type: QuestionIncludeAll | DiscussionIncludeAll;
     if (isDiscussion) {
