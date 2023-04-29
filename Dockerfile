@@ -16,6 +16,7 @@ ENV NPM_AUTH_TOKEN ${GH_TOKEN}
 RUN echo "registry=${NPM_REGISTRY}" >> .npmrc \
   && echo "//${NPM_REGISTRY}:_authToken=${NPM_AUTH_TOKEN}" >> .npmrc \
   && echo "@bottlycorp:registry=${NPM_REGISTRY}" >> .npmrc
+RUN echo "registry=https://registry.npmjs.org/"
   
 RUN npm install
 
