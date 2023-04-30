@@ -11,3 +11,4 @@ build
 
 # Sensitive data :
 .env
+.env.old
