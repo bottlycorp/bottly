@@ -145,12 +145,7 @@ export const execute: EventExecute<"messageCreate"> = async(message: Message) =>
     clearInterval(interval);
 
     const answer = response?.data?.choices[0]?.message?.content;
-    if (answer == null) {
-      message.reply({ embeds: [
-        simpleEmbed(translate(toLocale(user.locale), global.config.exec.error, { error: "An error has occurred" }), "error")]
-      });
-      return;
-    }
+    if (answer == null) return;
 
     deleteCache(message.author.id);
     separate(answer).texts.forEach(async(msg) => {
