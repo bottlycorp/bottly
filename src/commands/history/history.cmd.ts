@@ -74,13 +74,18 @@ export const execute: CommandExecute = async(command, user) => {
   // lines += translate(command.locale, history.config.exec.success.settings) + "\n";
 
   let askedThisDay = 0;
-  for (const question of questions) {
-    if (DayJS(question.createdAt * 1000).isSame(DayJS(), "day")) askedThisDay++;
-  }
+  let chatThisDay = 0;
+  for (const question of questions) if (DayJS(question.createdAt * 1000).isSame(DayJS(), "day")) askedThisDay++;
+  for (const chat of user.discussions) if (DayJS(chat.createdAt * 1000).isSame(DayJS(), "day")) chatThisDay++;
 
-  lines += translate(command.locale, history.config.exec.success.statsLine, {
+  lines += "\n" + translate(command.locale, history.config.exec.success.statsLineQuestions, {
     count: askedThisDay,
     total: questions.length
+  }) + "\n";
+
+  lines += translate(command.locale, history.config.exec.success.statsLineDiscussions, {
+    count: chatThisDay,
+    total: user.discussions.length
   });
 
   command.editReply({
@@ -88,7 +93,7 @@ export const execute: CommandExecute = async(command, user) => {
       simpleEmbed(lines, "info", "", {
         text: translate(command.locale, history.config.exec.success.footer, {
           page: valuePage,
-          total: Math.ceil(questions.length / perPage),
+          total: Math.ceil(final.length / perPage),
           per: perPage
         }),
         icon_url: command.user.avatarURL() || undefined,

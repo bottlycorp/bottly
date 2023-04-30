@@ -80,10 +80,15 @@ export const history = {
           "en-US": ":identification_card: You have Bottly for the last `12 hours`, which allows you to be at 30 uses instead of 20",
           "pt-BR": ":identification_card: Você tem Bottly por `12 horas`, o que permite que você esteja em 30 usos em vez de 20"
         },
-        statsLine: {
+        statsLineQuestions: {
           "en-US": ":bar_chart: You asked `{count}` questions this day, and `{total}` questions in total",
           fr: ":bar_chart: Vous avez posé `{count}` questions aujourd'hui, et `{total}` questions au total",
           "pt-BR": ":bar_chart: Você fez `{count}` perguntas hoje e `{total}` perguntas no total"
+        },
+        statsLineDiscussions: {
+          "en-US": ":bar_chart: You created `{count}` discussions this day, and `{total}` discussions in total",
+          fr: ":bar_chart: Vous avez créé `{count}` discussions aujourd'hui, et `{total}` discussions au total",
+          "pt-BR": ":bar_chart: Você criou `{count}` discussões hoje e `{total}` discussões no total"
         },
         settings: {
           "en-US": ":gear: You can disable or enable the saving of your questions in your history by clicking on the `📥` button below",
