@@ -115,6 +115,7 @@ model Discussion {
   title          String     @default("default")
   channelId      String     @unique @default("default")
   contextId      String     @default("default")
+  summarization  String     @default("default")
   type           ThreadType @default(public)
   userId         String
   user           User       @relation(fields: [userId], references: [userId], onDelete: Cascade)
@@ -133,6 +134,7 @@ model Message {
   role         Role       @default(user)
   tokens       Int        @default(0)
   discussion   Discussion @relation(fields: [discussionId], references: [id], onDelete: Cascade)
+  counted      Boolean    @default(false)
   discussionId String
   userId       String
   user         User       @relation(fields: [userId], references: [userId], onDelete: Cascade)

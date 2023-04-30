@@ -98,6 +98,11 @@ export const global = {
         fr: "Une erreur s'est produite lors de l'exécution de la commande: **{error}**",
         "pt-BR": "Ocorreu um erro ao executar o comando: **{error}**"
       },
+      errorTooLong: {
+        "en-US": "We have to stop the discussion here, sorry, it is too long. Please feel free to start a new one",
+        fr: "Nous devons arrêter la discussion ici, désolé, elle est trop longue. N'hésitez pas à en commencer une nouvelle",
+        "pt-BR": "Temos que parar a discussão aqui, desculpe, é muito longa. Sinta-se à vontade para iniciar uma nova"
+      },
       notInAGuild: {
         "en-US": "Execute the command in a guild",
         fr: "Exécutez la commande dans un serveur",

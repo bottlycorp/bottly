@@ -157,28 +157,14 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
       return;
     }
 
-    console.count("testing");
-
-    if (!commandExecute) {
-      console.log("Testing ", interaction.commandName ?? "A Command");
-      return;
-    }
-
-    console.count("testing");
-
-    interaction.deferReply({ ephemeral: true });
-
-    console.count("testing");
+    if (!commandExecute) return;
+    await interaction.deferReply({ ephemeral: true });
 
     const user = await getUser(interaction.user);
-    console.count("testing");
     if (user.username !== interaction.user.username) await updateUser(interaction.user.id, { username: interaction.user.username });
-    console.count("testing");
     if (toLocale(user.locale) !== interaction.locale) await updateUser(interaction.user.id, { locale: toPrismaLocale(interaction.locale) });
-    console.count("testing");
 
     if (limitedUsageCommands.includes(interaction.commandName) && (user?.usages?.usage ?? 0) <= 0) {
-      console.count("testing");
       interaction.editReply({
         embeds: [
           simpleEmbed(translate(interaction.locale, global.config.exec.noMoreUsages), "error")

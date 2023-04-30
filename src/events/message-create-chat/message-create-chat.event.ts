@@ -14,6 +14,7 @@ import { toLocale } from "$core/utils/locale";
 import { getTokens } from "$core/utils/tokenizer";
 import { Role } from "@prisma/client";
 import { Message, ThreadChannel } from "discord.js";
+import { CreateChatCompletionResponse } from "openai";
 
 export const enableInDev: EnableInDev = true;
 
@@ -101,7 +102,8 @@ export const execute: EventExecute<"messageCreate"> = async(message: Message) =>
   const messages: { content: string; role: "user" | "system" | "assistant" }[] = [];
 
   discussion.messages.forEach(msg => {
-    if (tokens <= 1200) tokens += getTokens(msg.message);
+    console.log(tokens);
+    tokens += getTokens(msg.message);
     messages.push({ content: msg.message, role: msg.role === "bot" ? "assistant" : msg.role });
   });
 
@@ -110,6 +112,8 @@ export const execute: EventExecute<"messageCreate"> = async(message: Message) =>
     role: Role.user
   });
 
+  colors.info(`${userWithId(message.author)} is speaking in a thread: ${limitString(message.content, 50)}`);
+
   await openai.createChatCompletion({
     messages: messages,
     model: "gpt-3.5-turbo",
@@ -117,16 +121,34 @@ export const execute: EventExecute<"messageCreate"> = async(message: Message) =>
     user: user.userId
   }).catch(async(error: Error) => {
     clearInterval(interval);
-    message.reply({ embeds: [simpleEmbed(translate(toLocale(user.locale), global.config.exec.error, { error: error.message }), "error")] });
     deleteCache(message.author.id);
     await updateDiscussion(thread.id, { writing: false });
     colors.error(error.message);
-  }).then(async(response) => {
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const errorType = error?.response?.data?.error?.type;
+    if (errorType !== "requests") {
+      clearInterval(interval);
+      deleteCache(message.author.id);
+      await updateDiscussion(thread.id, { writing: false, active: false });
+      thread.setLocked(true);
+
+      message.reply({ embeds: [
+        simpleEmbed(translate(toLocale(user.locale), global.config.exec.error, {
+          error: translate(toLocale(user.locale), global.config.exec.errorTooLong)
+        }), "error")
+      ] });
+      return;
+    }
+  }).then(async(response): Promise<CreateChatCompletionResponse | undefined> => {
     clearInterval(interval);
 
-    const answer = response?.data.choices[0].message?.content;
+    const answer = response?.data?.choices[0]?.message?.content;
     if (answer == null) {
-      message.reply({ embeds: [simpleEmbed(translate(toLocale(user.locale), global.config.exec.error, {  error: "No answer" }), "error")] });
+      message.reply({ embeds: [
+        simpleEmbed(translate(toLocale(user.locale), global.config.exec.error, { error: "An error has occurred" }), "error")]
+      });
       return;
     }
 
