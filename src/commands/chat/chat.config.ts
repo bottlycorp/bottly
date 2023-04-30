@@ -21,6 +21,16 @@ export const chat = {
           "pt-BR": "Pare a conversa atual"
         }
       },
+      download: {
+        name: {
+          "en-US": "download"
+        },
+        description: {
+          "en-US": "Download the current dialog thread (once finished)",
+          fr: "Téléchargez la discussion en cours (une fois terminée)",
+          "pt-BR": "Baixe a conversa atual (uma vez concluída)"
+        }
+      },
       talk: {
         name: {
           "en-US": "talk"
@@ -72,6 +82,11 @@ export const chat = {
           "pt-BR": "Não mostre este conselho novamente"
         }
       },
+      notPremiumDownload: {
+        "en-US": "You can't download the dialog thread because you are not a premium user.",
+        fr: "Vous ne pouvez pas télécharger la discussion car vous n'êtes pas un utilisateur premium.",
+        "pt-BR": "Você não pode baixar a conversa porque não é um usuário premium."
+      },
       channelTemporaryTitle: {
         "en-US": "Discussion with {user}",
         fr: "Discussion avec {user}",
@@ -93,9 +108,9 @@ export const chat = {
         "pt-BR": "Você não tem uma conversa ativa, você pode começar uma com o comando {chatTalk}"
       },
       notTheAuthor: {
-        "en-US": "You are not the author of this discussion so you can stop it",
-        fr: "Vous n'êtes pas l'auteur de cette discussion, vous ne pouvez donc pas l'arrêter",
-        "pt-BR": "Você não é o autor desta conversa, portanto não pode pará-la"
+        "en-US": "You are not the author of this discussion so you can stop it or download it",
+        fr: "Vous n'êtes pas l'auteur de cette discussion, vous ne pouvez donc pas l'arrêter ou la télécharger",
+        "pt-BR": "Você não é o autor desta conversa, portanto não pode pará-la ou baixá-la"
       },
       stopped: {
         "en-US": "The discussion has been stopped correctly, there was a total of `{count}` messages exchanged.",
