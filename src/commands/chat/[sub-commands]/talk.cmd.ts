@@ -20,6 +20,12 @@ export const execute: CommandExecute = async(command, user) => {
     return;
   }
 
+  if (user.usages?.usage == 0) {
+    command.editReply({ embeds: [simpleEmbed(translate(command.locale, global.config.exec.noMoreUsages), "error")] });
+    colors.error(userWithId(command.user) + " tried to start a discussion but he has no more usages");
+    return;
+  }
+
   if (haveActiveDiscussion(user)) {
     command.editReply(translate(command.locale, chat.config.exec.alreadyActiveDiscussion, {
       chatStop: await findCommand("chat", "stop"),

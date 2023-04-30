@@ -21,8 +21,8 @@ export const enableInDev: EnableInDev = true;
 export const event: EventName = "messageCreate";
 
 const systemContext = [
-  "Tu doit génerer un titre à propos du premier paragraphe suivant (ci-dessous) dans la langue de celui-ci, sans inclure autre chose que ce titre",
-  "Tu écrit seulement le titre et aucun autre texte"
+  "Tu doit génerer un titre à propos du premier paragraphe/texte suivant (ci-dessous) dans la langue de celui-ci, sans inclure autre chose que",
+  "ce titre. Tu écrit seulement le titre et aucun autre texte"
 ].join(" ");
 
 export const execute: EventExecute<"messageCreate"> = async(message: Message) => {
