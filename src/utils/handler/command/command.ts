@@ -22,6 +22,8 @@ import { toLocale, toPrismaLocale } from "$core/utils/locale";
 const limitedUsageCommands = ["ask", "chat"];
 
 export const load = async(commandsFolder: string): Promise<LoadedCommands> => {
+  client.application?.commands.set([]);
+
   const commands: CommandsCollection = new Collection();
   const commandsBuilders: CommandsBuilderCollection = new Collection();
   const folders = readdirSync(commandsFolder);
