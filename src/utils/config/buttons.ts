@@ -5,6 +5,7 @@ import { translate } from "./message/message.util";
 import { global } from "./message/command";
 import { emojiByUsage } from "../function";
 import { chat } from "$core/commands/chat/chat.config";
+import { privacy } from "prisma/privacy.config";
 
 export const usageButton = (command: CommandInteraction | Interaction, user: UserIncludeAll, reduce = true) : ButtonBuilder => {
   return new ButtonBuilder()
@@ -51,4 +52,18 @@ export const hideButton = (command: CommandInteraction | Interaction) : ButtonBu
     .setStyle(ButtonStyle.Primary)
     .setCustomId("hide")
     .setLabel(translate(command.locale, chat.config.exec.buttons.hidePremiumTip));
+};
+
+export const acceptPrivacy = (command: CommandInteraction | Interaction) : ButtonBuilder => {
+  return new ButtonBuilder()
+    .setStyle(ButtonStyle.Primary)
+    .setCustomId("acceptPrivacy")
+    .setLabel(translate(command.locale, privacy.config.exec.buttons.accept));
+};
+
+export const iReadFast = (command: CommandInteraction | Interaction) : ButtonBuilder => {
+  return new ButtonBuilder()
+    .setStyle(ButtonStyle.Primary)
+    .setCustomId("iReadFast")
+    .setLabel(translate(command.locale, privacy.config.exec.buttons.readFast));
 };

@@ -17,6 +17,9 @@ import { translate } from "$core/utils/config/message/message.util";
 import { global } from "$core/utils/config/message/command";
 import { getUser, updateUser } from "$core/utils/data/user";
 import { toLocale, toPrismaLocale } from "$core/utils/locale";
+import { privacy } from "prisma/privacy.config";
+import { acceptPrivacy, iReadFast } from "$core/utils/config/buttons";
+import { DayJS } from "$core/utils/day-js";
 // import { voteButton } from "$core/utils/config/buttons";
 
 const limitedUsageCommands = ["ask", "chat"];
@@ -164,6 +167,67 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
     if (user.username !== interaction.user.username) await updateUser(interaction.user.id, { username: interaction.user.username });
     if (toLocale(user.locale) !== interaction.locale) await updateUser(interaction.user.id, { locale: toPrismaLocale(interaction.locale) });
 
+    const channel = interaction.channel;
+    if (!channel) {
+      interaction.editReply({ embeds: [simpleEmbed(translate(interaction.locale, global.config.exec.error), "error")] });
+      colors.error(`${userWithId(interaction.user)} tried to use the command ${interactionWithId(interaction)} in a non-text channel`);
+      return;
+    }
+
+    if (!user.privacy?.accepted) {
+      const sendedAt = DayJS().unix();
+      interaction.editReply({
+        embeds: [
+          simpleEmbed(translate(interaction.locale, privacy.config.exec.privacyPolicy, {
+            cmdHistory: await findCommand("history"),
+            cmdRoadmap: await findCommand("roadmap")
+          }), "error"),
+          simpleEmbed(translate(interaction.locale, privacy.config.exec.doYouAccept), "info")
+        ],
+        components: [{
+          type: 1,
+          components: [acceptPrivacy(interaction)]
+        }]
+      });
+
+      const collector = channel.createMessageComponentCollector({
+        filter: (collectorInteraction) => collectorInteraction.user.id === interaction.user.id,
+        time: 60000
+      });
+
+      collector.on("collect", async(buttonInteraction) => {
+        await buttonInteraction.deferUpdate();
+
+        const diff = DayJS().diff(sendedAt * 1000, "second");
+        if (diff <= 5 && buttonInteraction.customId == "acceptPrivacy") {
+          buttonInteraction.editReply({
+            embeds: [simpleEmbed(translate(interaction.locale, privacy.config.exec.youCannotReadThatFast, { seconds: diff }), "error")],
+            components: [{ type: 1, components: [iReadFast(interaction)] }]
+          });
+
+          await updateUser(interaction.user.id, { privacy: { update: { accepted: true, collectChat: true, failed: true } } });
+          colors.error(`${userWithId(interaction.user)} tried to accept the privacy policy too fast (in ${diff} seconds 😂)`);
+          return;
+        }
+
+        if (buttonInteraction.customId === "iReadFast") {
+          buttonInteraction.editReply({ embeds: [simpleEmbed(translate(interaction.locale, privacy.config.exec.ohOkay), "info")], components: [] });
+          colors.info(`${userWithId(interaction.user)} accepted the privacy policy but he read it too fast (in ${diff} seconds 😂)`);
+          return;
+        }
+
+        if (buttonInteraction.customId === "acceptPrivacy") {
+          buttonInteraction.editReply({ embeds: [simpleEmbed(translate(interaction.locale, privacy.config.exec.accepted), "info")], components: [] });
+          colors.info(`${userWithId(interaction.user)} accepted the privacy policy`);
+          collector.stop();
+          return;
+        }
+      });
+
+      colors.error(`${userWithId(interaction.user)} tried to use the command ${interactionWithId(interaction)} but he didn't accept the privacy`);
+      return;
+    }
+
     if (limitedUsageCommands.includes(interaction.commandName) && (user?.usages?.usage ?? 0) <= 0) {
       interaction.editReply({
         embeds: [
@@ -190,7 +254,10 @@ export const register = async(client: Client, commandsBuilder: CommandsBuilderCo
   }
 };
 
-export const findCommand = async(cmd: string, subCommand?: string): Promise<string> => {
+export type Commands = "ask" | "chat" | "history" | "roadmap" | "request";
+export type SubCommands = "stop" | "talk" | "download";
+
+export const findCommand = async(cmd: Commands, subCommand?: SubCommands): Promise<string> => {
   const commands = await client.application?.commands.fetch();
   const command = commands?.find((command) => command.name === cmd);
   if (!command) return "cmdNotFound";

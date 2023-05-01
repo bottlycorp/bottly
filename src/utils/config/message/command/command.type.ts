@@ -16,6 +16,6 @@ export type SubCommand = Base & {
 };
 
 export type Base = {
-  name: LocalizationMap;
-  description: LocalizationMap;
+  name?: LocalizationMap;
+  description?: LocalizationMap;
 };
