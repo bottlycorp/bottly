@@ -7,7 +7,7 @@ import {
 import { CommandExecute, CommandsBuilderCollection, CommandsCollection, LoadedCommands } from "./command.type";
 import { existsSync, readdirSync, statSync } from "fs";
 import { sep } from "path";
-import { isDevEnvironment } from "$core/utils/environment";
+import { isDevEnvironment, isKillerEnvironment } from "$core/utils/environment";
 import { haveSubcommands, serializeCommandName } from "./command.util";
 import { folderExist, interactionWithId, userWithId } from "$core/utils/function";
 import { subCommandDirName, subCommandGroupDirNamePrefix } from "./command.const";
@@ -28,6 +28,17 @@ export const load = async(commandsFolder: string): Promise<LoadedCommands> => {
   const commands: CommandsCollection = new Collection();
   const commandsBuilders: CommandsBuilderCollection = new Collection();
   const folders = readdirSync(commandsFolder);
+
+  if (isKillerEnvironment) {
+    client.application?.commands.set([]);
+    colors.info("Deleted all global commands");
+
+    for (const guild of client.guilds.cache.values()) {
+      const guildCommands = await guild.commands.fetch();
+      guildCommands.forEach((command) => command.delete());
+      colors.info(`Deleted all commands in ${guild.name}`);
+    }
+  }
 
   for (const folder of folders) {
     const path = `${commandsFolder}${sep}${folder}${sep}`;
