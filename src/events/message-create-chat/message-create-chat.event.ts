@@ -21,7 +21,7 @@ export const enableInDev: EnableInDev = true;
 export const event: EventName = "messageCreate";
 
 const systemContext = [
-  "Tu doit génerer un titre à propos du premier paragraphe/texte suivant (ci-dessous) dans la langue de celui-ci, sans inclure autre chose que",
+  "Tu doit génerer un titre à propos du premier paragraphe/texte suivant (ci-dessous) dans la langue {LANG}, sans inclure autre chose que",
   "ce titre. Tu écrit seulement le titre et aucun autre texte"
 ].join(" ");
 
@@ -174,7 +174,7 @@ export const execute: EventExecute<"messageCreate"> = async(message: Message) =>
 
   if (discussion?.title === "default") {
     await openai.createChatCompletion({
-      messages: [{ role: "system", content: systemContext }, { content: message.content, role: "user" }],
+      messages: [{ role: "system", content: systemContext.replace("{LANG}", user.locale) }, { content: message.content, role: "user" }],
       max_tokens: getTokens(systemContext) + getTokens(message.content),
       temperature: 0.4,
       model: "gpt-3.5-turbo"
