@@ -63,14 +63,14 @@ export const history = {
           "pt-BR": "Sempre aberto"
         },
         notPremiumLine: {
-          "en-US": ":sparkles: You still have `{left}` free questions this month, upgrade to the Premium plan to ask an unlimited number",
+          "en-US": ":sparkles: You still have `{left}` free requests this month, upgrade to the Premium plan to ask a larger usage of requests",
           fr: [
             ":sparkles: Vous avez encore `{left}` questions gratuites ce mois-ci,",
-            "passez au plan Premium pour poser un nombre illimité de questions"
+            "passez au plan Premium pour poser un usage plus important de requêtes"
           ].join(" "),
           "pt-BR": [
-            ":sparkles: Você ainda tem `{left}` perguntas gratuitas este mês,",
-            "atualize para o plano Premium para fazer um número ilimitado de perguntas"
+            ":sparkles: Você ainda tem `{left}` perguntas gratuitas neste mês,",
+            "atualize para o plano Premium para fazer um uso maior de solicitações"
           ].join(" ")
         },
         voterLine: {
