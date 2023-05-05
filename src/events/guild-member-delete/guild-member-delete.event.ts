@@ -12,6 +12,12 @@ export const event: EventName = "guildDelete";
 export const execute: EventExecute<"guildDelete"> = async(guild) => {
   colors.info(`Joined guild ${guild.name} (${guild.id})`);
   const supportGuild = await guild.client.guilds.fetch("1076863331517874240");
+
+  if (!supportGuild) {
+    colors.error("Could not find support guild");
+    return;
+  }
+
   const channel = await supportGuild.channels.fetch("1078050239694520340");
 
   if (!(channel instanceof TextChannel)) {

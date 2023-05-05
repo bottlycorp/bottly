@@ -12,6 +12,6 @@ export const execute: EventExecute<"interactionCreate"> = async(interaction: Int
   if (interaction.commandName !== "chat") return;
 
   interaction.respond([
-    { name: "Discussions contexts are not implemented yet", value: "default" }
+    { name: "Coming soon in June 2023", value: "none" }
   ]);
 };
