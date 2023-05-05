@@ -143,6 +143,8 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
       return;
     }
 
+    await interaction.deferReply({ ephemeral: true });
+
     const member = await interaction.guild.members.fetch(client.user.id);
     const missingPermissions = member.permissions.missing([
       "SendMessages",
@@ -158,10 +160,12 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
     ]);
 
     if (missingPermissions && missingPermissions.length > 0) {
-      interaction.reply({
-        embeds: [simpleEmbed(translate(interaction.locale, global.config.exec.botPermissionsNotFound, {
-          permissions: missingPermissions.map((permission) => `\`${permission}\``).join(", ")
-        }), "error")], ephemeral: true
+      interaction.editReply({
+        embeds: [
+          simpleEmbed(translate(interaction.locale, global.config.exec.botPermissionsNotFound, {
+            permissions: missingPermissions.map((permission) => `\`${permission}\``).join(", ")
+          }), "error")
+        ]
       });
 
       colors.error([
@@ -172,7 +176,6 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
     }
 
     if (!commandExecute) return;
-    await interaction.deferReply({ ephemeral: true });
 
     const user = await getUser(interaction.user);
     if (user.username !== interaction.user.username) await updateUser(interaction.user.id, { username: interaction.user.username });
