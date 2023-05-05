@@ -20,14 +20,21 @@ export const execute: EventExecute<"guildCreate"> = async(guild) => {
   }
 
   const totalUsersEachGuild = guild.client.guilds.cache.reduce((a, b) => a + b.memberCount, 0);
+  const bots = guild.members.cache.filter(member => member.user.bot).size;
 
   await channel.send({
     embeds: [
-      simpleEmbed(`\`✅\` ${guild.name} (\`${guild.id}\`) - ${numberFormat(guild.memberCount)} members`, "info", "", {
-        timestamp: true,
-        text: "Now " + guild.client.guilds.cache.size + " guilds for " + numberFormat(totalUsersEachGuild) + " users",
-        icon_url: guild.iconURL() ?? guild.client.user?.displayAvatarURL()
-      })
+      simpleEmbed(
+        [
+          `\`✅\` ${guild.name} (\`${guild.id}\`)`,
+          `\`🔧\` Owner: ${(await guild.fetchOwner()).user.username} (\`${guild.ownerId}\`)`,
+          `\`👥\` ${numberFormat(guild.memberCount)} member(s) - ${numberFormat(bots)} bot(s)`
+        ].join("\n"), "info", "", {
+          timestamp: true,
+          text: "Now " + guild.client.guilds.cache.size + " guilds for " + numberFormat(totalUsersEachGuild) + " users",
+          icon_url: guild.iconURL() ?? guild.client.user?.displayAvatarURL()
+        }
+      )
     ]
   });
 };
