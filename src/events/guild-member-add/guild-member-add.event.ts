@@ -1,5 +1,6 @@
 import { colors } from "$core/client";
 import { simpleEmbed } from "$core/utils/embed";
+import { numberFormat } from "$core/utils/function";
 import { EnableInDev } from "$core/utils/handler";
 import { EventExecute, EventName } from "$core/utils/handler/event";
 import { TextChannel } from "discord.js";
@@ -18,11 +19,13 @@ export const execute: EventExecute<"guildCreate"> = async(guild) => {
     return;
   }
 
+  const totalUsersEachGuild = guild.client.guilds.cache.reduce((a, b) => a + b.memberCount, 0);
+
   await channel.send({
     embeds: [
-      simpleEmbed(`\`✅\` ${guild.name} (\`${guild.id}\`)`, "info", "", {
+      simpleEmbed(`\`✅\` ${guild.name} (\`${guild.id}\`) - ${numberFormat(guild.memberCount)} members`, "info", "", {
         timestamp: true,
-        text: "Now in " + guild.client.guilds.cache.size + " guilds!",
+        text: "Now " + guild.client.guilds.cache.size + " guilds for " + numberFormat(totalUsersEachGuild) + " users",
         icon_url: guild.iconURL() ?? guild.client.user?.displayAvatarURL()
       })
     ]

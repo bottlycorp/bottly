@@ -57,3 +57,12 @@ export const getUniqueUsers = async(): Promise<number> => {
   const us = prisma.user.findMany();
   return (await us).length;
 };
+
+export const numberFormat = (number: number): string => {
+  let numberString = number.toString();
+  for (let i = 0; i < 10; i++) {
+    numberString = numberString.replace(/(\d)(\d{3}($|\.))/g, "$1.$2");
+  }
+
+  return numberString;
+};
