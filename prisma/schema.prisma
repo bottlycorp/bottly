@@ -7,49 +7,143 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Locale {
+  id // Indonesian
+  en_US // English
+  en_GB // English
+  bg // Bulgarian
+  zh_CN // Chinese
+  zh_TW // Chinese
+  hr // Croatian
+  cs // Czech
+  da // Danish
+  nl // Dutch
+  fi // Finnish
+  fr // French
+  de // German
+  el // Greek
+  hi // Hindi
+  hu // Hungarian
+  it // Italian
+  ja // Japanese
+  ko // Korean
+  lt // Lithuanian
+  no // Norwegian 
+  pl // Polish
+  pt_BR // Portuguese
+  ro // Romanian
+  ru // Russian
+  es_ES // Spanish 
+  sv_SE // Swedish
+  th // Thai 
+  tr // Turkish
+  uk // Ukrainian
+  vi // Vietnamese
+}
+
 model User {
-  id           String  @id @unique
-  createdAt    String  @default("0")
-  lastAsked    String  @default("0")
-  askUsage     Int     @default(50)
-  chatUsage    Int     @default(50)
-  imageUsage   Int     @default(20)
-  premium      Boolean @default(false)
-  inTrial      Boolean @default(false)
-  trialEnd     String  @default("0")
-  alreadyTried Boolean @default(false)
-  email        String  @default("none")
+  username    String
+  createdAt   Int
+  userId      String       @id @unique
+  privacy     Privacy?
+  questions   Question[]
+  discussions Discussion[]
+  usages      Usage?
+  votes       Vote?
+  tips        Tips?
+  isPremium   Boolean      @default(false)
+  locale      Locale       @default(en_US)
+  Message     Message[]
 }
 
-model Thread {
-  threadId    String   @id
-  createdAt   DateTime @default(now())
-  lastMessage DateTime @default(now())
-  guildId     String
-  userId      String
-  messages    Json     @default("[]")
-  active      Boolean  @default(false)
-  modalId     String   @default("none")
-  context     String   @default("default")
-}
-
-model Requests {
-  id          String   @id @default(cuid())
-  userId      String
-  askedAt     DateTime @default(now())
-  question    String
-  answeredAt  DateTime @default(now())
-  answer      String
-  guildName   String
-  channelName String
-  options     Json     @default("{}")
-  timestamp   String   @default("0")
-}
-
-model Stats {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  guildId   String
+model Question {
+  id        String @id @unique @default(cuid())
+  question  String @default("")
+  answer    String @default("")
+  createdAt Int    @default(0)
+  repliedAt Int    @default(0)
+  user      User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
   userId    String
-  type      String
+}
+
+model Usage {
+  id     String   @id @default(cuid())
+  usage  Int      @default(20)
+  max    UsageMax @default(FREE)
+  user   User     @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  userId String   @unique
+}
+
+model Privacy {
+  collectChat Boolean @default(false)
+  autoDelete  Boolean @default(false)
+  accepted    Boolean @default(false)
+  failed      Boolean @default(false) // Prank for no-readers
+  user        User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  userId      String  @id @unique
+}
+
+enum UsageMax {
+  FREE
+  PREMIUM
+}
+
+model Vote {
+  id        String  @id @default(cuid())
+  count     Int     @default(0)
+  lastVote  String  @default("none")
+  firstVote String  @default("none")
+  allVotes  Json    @default("[]")
+  active    Boolean @default(true)
+  user      User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  userId    String  @unique
+}
+
+enum ThreadType {
+  public
+  private
+}
+
+model Discussion {
+  id             String     @id @default(cuid())
+  createdAt      Int        @default(0)
+  firstMessageAt Int        @default(0)
+  lastMessageAt  Int        @default(0)
+  link           String     @default("")
+  messages       Message[]
+  count          Int        @default(0)
+  writing        Boolean    @default(false)
+  active         Boolean    @default(true)
+  title          String     @default("default")
+  channelId      String     @unique @default("default")
+  contextId      String     @default("default")
+  type           ThreadType @default(public)
+  userId         String
+  user           User       @relation(fields: [userId], references: [userId], onDelete: Cascade)
+}
+
+enum Role {
+  user
+  bot // assistant
+  system
+}
+
+model Message {
+  id           String     @id @default(cuid())
+  createdAt    Int        @default(0)
+  message      String     @default("Lorem imspu mipsu")
+  role         Role       @default(user)
+  tokens       Int        @default(0)
+  discussion   Discussion @relation(fields: [discussionId], references: [id], onDelete: Cascade)
+  counted      Boolean    @default(false)
+  discussionId String
+  userId       String
+  user         User       @relation(fields: [userId], references: [userId], onDelete: Cascade)
+}
+
+model Tips {
+  id                String  @id @default(cuid())
+  chatPremiumSaveIt Boolean @default(true)
+  userId            String  @unique
+  user              User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }

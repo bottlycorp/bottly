@@ -1,9 +1,0 @@
-{
-  "extends": "@bluzzi",
-
-  "rules": {
-    "camelcase": "off",
-    "no-case-declarations": "off",
-    "@typescript-eslint/ban-ts-comment": "off"
-  }
-}
