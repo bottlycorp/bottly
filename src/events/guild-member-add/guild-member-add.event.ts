@@ -23,7 +23,7 @@ export const execute: EventExecute<"guildCreate"> = async(guild) => {
       simpleEmbed(`\`✅\` ${guild.name} (\`${guild.id}\`)`, "info", "", {
         timestamp: true,
         text: "Now in " + guild.client.guilds.cache.size + " guilds!",
-        icon_url: guild.client.user?.displayAvatarURL() ?? undefined
+        icon_url: guild.iconURL() ?? guild.client.user?.displayAvatarURL()
       })
     ]
   });
