@@ -68,15 +68,15 @@ export const global = {
       noMoreUsages: {
         fr: [
           "Il semblerait que vous ayez atteint le nombre maximum d'utilisation de mes fonctionnalitées pour aujourd'hui,",
-          "revenez demain pour les utiliser à nouveau"
+          "revenez demain (<t:{unix}:R>) pour les utiliser à nouveau"
         ].join(" "),
         "en-US": [
           "It seems that you have reached the maximum number of uses of my features for today,",
-          "come back tomorrow to use them again"
+          "come back tomorrow (<t:{unix}:R>) to use them again"
         ].join(" "),
         "pt-BR": [
           "Parece que você atingiu o número máximo de usos de minhas funcionalidades para hoje,",
-          "volte amanhã para usá-los novamente"
+          "volte amanhã para usá-los novamente (<t:{unix}:R>)"
         ].join(" ")
       },
       orGetPremium: {
