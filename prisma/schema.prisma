@@ -60,6 +60,8 @@ model Question {
   id        String @id @unique @default(cuid())
   question  String @default("")
   answer    String @default("")
+  channelName String @default("")
+  guildName String @default("")
   createdAt Int    @default(0)
   repliedAt Int    @default(0)
   user      User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
