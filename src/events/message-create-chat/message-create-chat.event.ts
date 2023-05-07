@@ -22,7 +22,7 @@ export const event: EventName = "messageCreate";
 
 const systemContext = [
   "Tu doit génerer un titre à propos du premier paragraphe/texte suivant (ci-dessous) dans la langue {LANG}, sans inclure autre chose que",
-  "ce titre. Tu écrit seulement le titre et aucun autre texte"
+  "ce titre. Tu écrit seulement le titre et aucun autre texte, et ne pas mettre ta réponse entre guillemets"
 ].join(" ");
 
 export const execute: EventExecute<"messageCreate"> = async(message: Message) => {
@@ -102,7 +102,6 @@ export const execute: EventExecute<"messageCreate"> = async(message: Message) =>
   const messages: { content: string; role: "user" | "system" | "assistant" }[] = [];
 
   discussion.messages.forEach(msg => {
-    console.log(tokens);
     tokens += getTokens(msg.message);
     messages.push({ content: msg.message, role: msg.role === "bot" ? "assistant" : msg.role });
   });
