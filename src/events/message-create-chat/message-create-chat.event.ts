@@ -37,6 +37,7 @@ export const execute: EventExecute<"messageCreate"> = async(message: Message) =>
 
   const discussion = await getDiscussion(threadId);
   if (!discussion) return;
+  let firstMessage = discussion.firstMessageAt == 0;
   const user = discussion?.user;
   if (!user) return;
 
@@ -73,6 +74,7 @@ export const execute: EventExecute<"messageCreate"> = async(message: Message) =>
 
   updateDiscussion(thread.id, {
     lastMessageAt: DayJS().unix(),
+    firstMessageAt: firstMessage ? DayJS().unix() : discussion.firstMessageAt,
     writing: true,
     messages: {
       create: {

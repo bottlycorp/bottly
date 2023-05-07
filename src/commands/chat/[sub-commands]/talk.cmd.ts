@@ -66,7 +66,7 @@ export const execute: CommandExecute = async(command, user) => {
       components: !user.tips?.chatPremiumSaveIt ? [] : [{ type: 1, components: [hideButton(command)] }]
     });
 
-    await newDiscussion(thread.id, command.user.id, messageLink(messageSended.channel.id, messageSended.id));
+    await newDiscussion(thread.id, command.user.id, messageLink(messageSended.channel.id, messageSended.id), thread.guild.id);
 
     if (user.tips?.chatPremiumSaveIt) {
       const collector = thread.createMessageComponentCollector({
