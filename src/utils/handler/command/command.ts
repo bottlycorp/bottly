@@ -246,7 +246,7 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
       interaction.editReply({
         embeds: [
           simpleEmbed(translate(interaction.locale, global.config.exec.noMoreUsages, {
-            unix: DayJS().endOf("day").unix(),
+            unix: DayJS().endOf("day").unix()
           }), "error")
           // simpleEmbed(translate(interaction.locale, global.config.exec.orGetPremium), "premium"),
           // simpleEmbed(translate(interaction.locale, global.config.exec.voteNow), "vote")
