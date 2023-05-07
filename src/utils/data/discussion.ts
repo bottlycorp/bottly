@@ -57,11 +57,15 @@ export const isADiscussion = async(channelId: string): Promise<boolean> => {
 };
 
 export const closeAllDiscussions = async(guildId: string): Promise<boolean> => {
-  const deleted = await prisma.discussion.deleteMany({
+  const deleted = await prisma.discussion.updateMany({
     where: {
       guildId: guildId
+    },
+    data: {
+      active: false,
+      writing: false
     }
-  })
+  });
 
   return !!deleted;
 };

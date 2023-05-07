@@ -37,7 +37,7 @@ export const execute: EventExecute<"messageCreate"> = async(message: Message) =>
 
   const discussion = await getDiscussion(threadId);
   if (!discussion) return;
-  let firstMessage = discussion.firstMessageAt == 0;
+  const firstMessage: boolean = discussion.firstMessageAt == 0;
   const user = discussion?.user;
   if (!user) return;
 

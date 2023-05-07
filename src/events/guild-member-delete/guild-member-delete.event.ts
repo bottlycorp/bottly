@@ -1,4 +1,5 @@
 import { colors } from "$core/client";
+import { closeAllDiscussions } from "$core/utils/data/discussion";
 import { simpleEmbed } from "$core/utils/embed";
 import { numberFormat } from "$core/utils/function";
 import { EnableInDev } from "$core/utils/handler";
@@ -10,7 +11,8 @@ export const enableInDev: EnableInDev = true;
 export const event: EventName = "guildDelete";
 
 export const execute: EventExecute<"guildDelete"> = async(guild) => {
-  colors.info(`Joined guild ${guild.name} (${guild.id})`);
+  colors.info(`Removed from guild ${guild.name} (${guild.id})`);
+  await closeAllDiscussions(guild.id);
   const supportGuild = await guild.client.guilds.fetch("1076863331517874240");
 
   if (!supportGuild) {
