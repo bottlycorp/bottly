@@ -86,7 +86,7 @@ export const execute: CommandExecute = async(command, user) => {
         }
       });
 
-      await updateUser(command.user.id, { usages: { update: { usage: { decrement: 1 } } } });
+      updateUser(command.user.id, { usages: { update: { usage: { decrement: 1 } } } });
 
       let seconds = 15;
       const interval = setInterval(() => {
@@ -134,6 +134,9 @@ export const execute: CommandExecute = async(command, user) => {
                 timestamp: true
               })
             ]
+          }).catch((error: Error) => {
+            colors.error(error.message);
+            interaction.update({ embeds: [simpleEmbed(translate(command.locale, global.config.exec.error, { error: error.message }), "error")] });
           });
 
           collector.stop("Revealed");
