@@ -45,7 +45,10 @@ export const execute: CommandExecute = async(command, user) => {
     type: privateThread ? ChannelType.PrivateThread : ChannelType.PublicThread
   }).catch(error => {
     command.editReply({
-      embeds: [simpleEmbed(translate(command.locale, global.config.exec.error, { error: error.message }), "error")]
+      content: "",
+      embeds: [
+        simpleEmbed(translate(command.locale, global.config.exec.error, { error: error.message }), "error")
+      ]
     });
     return;
   }).then(async(thread) => {
