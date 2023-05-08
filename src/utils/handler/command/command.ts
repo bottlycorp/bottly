@@ -18,7 +18,7 @@ import { global } from "$core/utils/config/message/command";
 import { getUser, updateUser } from "$core/utils/data/user";
 import { toLocale, toPrismaLocale } from "$core/utils/locale";
 import { privacy } from "prisma/privacy.config";
-import { acceptPrivacy, iReadFast } from "$core/utils/config/buttons";
+import { acceptPrivacy } from "$core/utils/config/buttons";
 import { DayJS } from "$core/utils/day-js";
 // import { voteButton } from "$core/utils/config/buttons";
 
@@ -189,7 +189,7 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
     }
 
     if (!user.privacy?.accepted) {
-      const sendedAt = DayJS().unix();
+      // const sendedAt = DayJS().unix();
       interaction.editReply({
         embeds: [
           simpleEmbed(translate(interaction.locale, privacy.config.exec.privacyPolicy, {
@@ -212,25 +212,26 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
       collector.on("collect", async(buttonInteraction) => {
         await buttonInteraction.deferUpdate();
 
-        const diff = DayJS().diff(sendedAt * 1000, "second");
-        if (diff <= 5 && buttonInteraction.customId == "acceptPrivacy") {
-          buttonInteraction.editReply({
-            embeds: [simpleEmbed(translate(interaction.locale, privacy.config.exec.youCannotReadThatFast, { seconds: diff }), "error")],
-            components: [{ type: 1, components: [iReadFast(interaction)] }]
-          });
+        // const diff = DayJS().diff(sendedAt * 1000, "second");
+        // if (diff <= 5 && buttonInteraction.customId == "acceptPrivacy") {
+        //   buttonInteraction.editReply({
+        //     embeds: [simpleEmbed(translate(interaction.locale, privacy.config.exec.youCannotReadThatFast, { seconds: diff }), "error")],
+        //     components: [{ type: 1, components: [iReadFast(interaction)] }]
+        //   });
 
-          await updateUser(interaction.user.id, { privacy: { update: { accepted: true, collectChat: true, failed: true } } });
-          colors.error(`${userWithId(interaction.user)} tried to accept the privacy policy too fast (in ${diff} seconds 😂)`);
-          return;
-        }
+        //   await updateUser(interaction.user.id, { privacy: { update: { accepted: true, collectChat: true, failed: true } } });
+        //   colors.error(`${userWithId(interaction.user)} tried to accept the privacy policy too fast (in ${diff} seconds 😂)`);
+        //   return;
+        // }
 
-        if (buttonInteraction.customId === "iReadFast") {
-          buttonInteraction.editReply({ embeds: [simpleEmbed(translate(interaction.locale, privacy.config.exec.ohOkay), "info")], components: [] });
-          colors.info(`${userWithId(interaction.user)} accepted the privacy policy but he read it too fast (in ${diff} seconds 😂)`);
-          return;
-        }
+        // if (buttonInteraction.customId === "iReadFast") {
+        //buttonInteraction.editReply({ embeds: [simpleEmbed(translate(interaction.locale, privacy.config.exec.ohOkay), "info")], components: [] });
+        //   colors.info(`${userWithId(interaction.user)} accepted the privacy policy but he read it too fast (in ${diff} seconds 😂)`);
+        //   return;
+        // }
 
         if (buttonInteraction.customId === "acceptPrivacy") {
+          await updateUser(interaction.user.id, { privacy: { update: { accepted: true, collectChat: true, failed: false } } });
           buttonInteraction.editReply({ embeds: [simpleEmbed(translate(interaction.locale, privacy.config.exec.accepted), "info")], components: [] });
           colors.info(`${userWithId(interaction.user)} accepted the privacy policy`);
           collector.stop();
