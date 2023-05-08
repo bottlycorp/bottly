@@ -42,18 +42,27 @@ export const execute: EventExecute<"messageCreate"> = async(message: Message) =>
   if (!user) return;
 
   if (discussion.active === false) {
-    message.delete();
+    message.delete().catch((err: Error) => {
+      colors.error(err.message);
+      message.reply({ embeds: [simpleEmbed(translate(toLocale(user.locale), global.config.exec.error, { error: err.message }), "error")] });
+    });
     thread.setLocked(true);
     return;
   }
 
   if (discussion.writing == true || discussion?.userId !== message.author.id) {
-    message.delete();
+    message.delete().catch((err: Error) => {
+      colors.error(err.message);
+      message.reply({ embeds: [simpleEmbed(translate(toLocale(user.locale), global.config.exec.error, { error: err.message }), "error")] });
+    });
     return;
   }
 
   if (existCache(message.author.id)) {
-    message.delete();
+    message.delete().catch((err: Error) => {
+      colors.error(err.message);
+      message.reply({ embeds: [simpleEmbed(translate(toLocale(user.locale), global.config.exec.error, { error: err.message }), "error")] });
+    });
     return;
   }
 
