@@ -76,6 +76,8 @@ export const execute: CommandExecute = async(command, user) => {
           answer: response?.data.choices[0].message?.content ?? "No response",
           createdAt: askedAt,
           repliedAt: repliedAt,
+          channelName: channel.name,
+          guildName: channel.guild.name,
           user: {
             connect: {
               userId: command.user.id

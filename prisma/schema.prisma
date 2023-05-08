@@ -60,6 +60,8 @@ model Question {
   id        String @id @unique @default(cuid())
   question  String @default("")
   answer    String @default("")
+  channelName String @default("Not defined")
+  guildName String @default("Not defined")
   createdAt Int    @default(0)
   repliedAt Int    @default(0)
   user      User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
@@ -116,6 +118,7 @@ model Discussion {
   active         Boolean    @default(true)
   title          String     @default("default")
   channelId      String     @unique @default("default")
+  guildId        String     @default("default")
   contextId      String     @default("default")
   type           ThreadType @default(public)
   userId         String

@@ -19,7 +19,9 @@ export const newQuestion = async(user: User, question: Prisma.QuestionCreateArgs
           question: question.data.question,
           answer: question.data.answer,
           createdAt: question.data.createdAt,
-          repliedAt: question.data.repliedAt
+          repliedAt: question.data.repliedAt,
+          channelName: question.data.channelName,
+          guildName: question.data.guildName
         }
       }
     }

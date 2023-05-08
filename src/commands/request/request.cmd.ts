@@ -69,8 +69,8 @@ export const execute: CommandExecute = async(command, user) => {
         date: data.createdAt,
         date2: data.repliedAt,
         time: timestamp,
-        channel: "Not defined",
-        guild: "Not defined",
+        channel: data.channelName || "Not defined",
+        guild: data.guildName || "Not defined",
         question: data.question,
         answer: data.answer
       }), "info", "", {
