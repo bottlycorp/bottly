@@ -14,7 +14,7 @@ export const roadmap = {
     exec: {
       embedTitle: {
         "en-US": "Roadmap of the bot",
-        fr: "Feuille de route du bot",
+        fr: "Calendrier des sorties",
         "pt-BR": "Roadmap do bot"
       },
       "may": {
