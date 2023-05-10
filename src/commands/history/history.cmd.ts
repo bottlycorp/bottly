@@ -8,6 +8,7 @@ import { usageButton } from "$core/utils/config/buttons";
 import { DayJS } from "$core/utils/day-js";
 import { QuestionIncludeAll } from "$core/utils/data/question";
 import { DiscussionIncludeAll } from "$core/utils/data/discussion";
+import { UsageMax } from "@prisma/client";
 
 export const execute: CommandExecute = async(command, user) => {
   const questions = user.questions;
@@ -51,7 +52,7 @@ export const execute: CommandExecute = async(command, user) => {
     }
   }
 
-  if (user.usages?.max !== "PREMIUM") {
+  if (user.usages?.max !== UsageMax.PREMIUM) {
     lines += "\n" + translate(command.locale, history.config.exec.success.notPremiumLine, {
       left: user?.usages?.usage ?? 0
     }) + "\n";
@@ -60,8 +61,6 @@ export const execute: CommandExecute = async(command, user) => {
   if (user.votes?.active) {
     lines += "\n" + translate(command.locale, history.config.exec.success.voterLine) + "\n";
   }
-
-  // lines += translate(command.locale, history.config.exec.success.settings) + "\n";
 
   let askedThisDay = 0;
   let chatThisDay = 0;

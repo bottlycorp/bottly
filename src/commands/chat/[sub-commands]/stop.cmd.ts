@@ -89,7 +89,7 @@ export const execute: CommandExecute = async(command, user) => {
         await interaction.editReply({ content: translate(command.locale, chat.config.exec.creatingFile), embeds: [], components: [] });
         const file = await createTranscript(channel, { saveImages: true, poweredBy: false /** sorry bro 🙏 */ });
         await interaction.editReply({ content: translate(command.locale, chat.config.exec.createdFile), embeds: [], files: [file] });
-        collector.stop();
+        collector.stop("Downloaded");
       }
     });
 
