@@ -150,6 +150,11 @@ export const chat = {
         fr: "Votre discussion `{type}` est créée, vous pouvez commencer à parler avec moi dans le salon <#{id}>",
         "pt-BR": "Sua conversa `{type}` foi criada, você pode começar a falar comigo no canal <#{id}>"
       },
+      channelNotCreated: {
+        "en-US": "Your `{type}` discussion is failed to create, please try again later or check permissions",
+        fr: "Votre discussion `{type}` n'a pas pu être créée, veuillez réessayer plus tard ou vérifier les permissions",
+        "pt-BR": "Seu thread `{type}` não pôde ser criado, tente novamente mais tarde ou verifique as permissões"
+      },
       deletedData: {
         "en-US": [
           "The data of this discussion has been deleted because you have set that you don't want your data to be saved in your",
