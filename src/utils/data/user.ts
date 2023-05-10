@@ -121,20 +121,16 @@ export const deleteUser = async(userId: string): Promise<boolean> => {
 };
 
 export const getMaxUsage = (user: UserIncludeAll): number => {
-  // if (user.isPremium && user.votes?.active) {
-  //   return MAX_USES[UsageMax.PREMIUM] + 10;
-  // }
+  if (user.isPremium && user.votes?.active) {
+    return MAX_USES[UsageMax.PREMIUM] + 10;
+  }
 
-  // if (user.isPremium && !user.votes?.active) {
-  //   return MAX_USES[UsageMax.PREMIUM];
-  // }
-
-  // if (user.votes?.active && !user.isPremium) {
-  //   return MAX_USES[UsageMax.FREE] + 10;
-  // }
-
-  if (user.isPremium) {
+  if (user.isPremium && !user.votes?.active) {
     return MAX_USES[UsageMax.PREMIUM];
+  }
+
+  if (user.votes?.active && !user.isPremium) {
+    return MAX_USES[UsageMax.FREE] + 10;
   }
 
   return MAX_USES[UsageMax.FREE];
