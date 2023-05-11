@@ -3,24 +3,23 @@ import { EnableInDev } from "$core/utils/handler";
 import { TaskExecute, TaskInterval } from "$core/utils/handler/task";
 import { ActivityType } from "discord.js";
 import { Activity } from "./presence-update.type";
-import { getAvaibleUsers, getUniqueUsers } from "$core/utils/function";
+import { getAvaibleUsers } from "$core/utils/function";
+import { numberFormat } from "$core/utils/function";
 
 const activitites: Activity[] = [
-  { type: ActivityType.Watching, message: `${client.guilds.cache.size} servers` },
-  { type: ActivityType.Watching, message: `${getAvaibleUsers()} avaible users` },
-  { type: ActivityType.Watching, message: "{UNIQUE_USERS} unique users" },
+  { type: ActivityType.Watching, message: `${numberFormat(getAvaibleUsers())} users` },
   { type: ActivityType.Listening, message: "the questions" },
-  { type: ActivityType.Watching, message: "the world" }
+  { type: ActivityType.Watching, message: "IA domine the world" }
 ];
 
 let index = 0;
 
-export const interval: TaskInterval = "*/10 * * * * *";
+export const interval: TaskInterval = "1 * * * * *";
 
 export const enableInDev: EnableInDev = true;
 
 export const execute: TaskExecute = async() => {
   const activity = activitites[index++ % activitites.length];
   if (!activity) return console.error("Activity is undefined");
-  else client.user?.setActivity(activity.message.replace("{UNIQUE_USERS}", (await getUniqueUsers()).toString()), { type: activity.type });
+  else client.user?.setActivity(activity.message, { type: activity.type });
 };
