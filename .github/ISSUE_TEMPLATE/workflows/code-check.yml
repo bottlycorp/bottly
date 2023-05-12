@@ -2,7 +2,7 @@ name: Code check
 
 on:
   push:
-    branches: ["main", "env/prod", "env/dev"]
+    branches: ["env/prod", "env/dev"]
   pull_request:
     types: [opened, synchronize]
 
