@@ -2,24 +2,32 @@ name: Code check
 
 on:
   push:
-    branches: ["env/prod", "env/dev"]
+    branches: ["main", "env/prod", "env/dev"]
   pull_request:
     types: [opened, synchronize]
 
 jobs:
   lint:
-    permissions:
-      contents: read
-      packages: read
-
     name: ESLint
     runs-on: ubuntu-latest
     steps:
-      - name: Set up
-        uses: actions/setup-node@v3
-        with:
-          cache: "npm"
-          node-version: "18"
-          registry-url: https://npm.pkg.github.com
+      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v3
+      - name: "Create .npmrc file from GitHub secrets"
+        run: echo "${{ secrets.NPM_RC }}" > .npmrc
       - name: Install dependencies
         run: npm install
+      - name: Run ESLint
+        run: npm run lint
+  typecheck:
+    name: TS Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v3
+      - name: "Create .npmrc file from GitHub secrets"
+        run: echo "${{ secrets.NPM_RC }}" > .npmrc
+      - name: Install dependencies
+        run: npm install
+      - name: Run typecheck
+        run: npx tsc --noEmit
