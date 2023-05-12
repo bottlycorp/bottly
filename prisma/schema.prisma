@@ -73,6 +73,7 @@ model Discussion {
   active         Boolean    @default(true)
   title          String     @default("default")
   channelId      String     @unique @default("default")
+  guildId        String     @default("default")
   contextId      String     @default("default")
   type           ThreadType @default(public)
   userId         String

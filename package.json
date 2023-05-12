@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "npm run db:gen && npx nodemon --exec node -r @swc-node/register -r tsconfig-paths/register ./src/client.ts dev",
     "start": "npm run db:gen && node -r @swc-node/register -r tsconfig-paths/register ./src/client.ts",
+    "killer": "npm run db:gen && node -r @swc-node/register -r tsconfig-paths/register ./src/client.ts killer",
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
     "db:push": "prisma db push",

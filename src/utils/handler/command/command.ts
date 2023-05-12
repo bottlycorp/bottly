@@ -9,7 +9,7 @@ import {
 import { CommandExecute, CommandsBuilderCollection, CommandsCollection, LoadedCommands } from "./command.type";
 import { existsSync, readdirSync, statSync } from "fs";
 import { sep } from "path";
-import { isDevEnvironment } from "$core/utils/environment";
+import { isDevEnvironment, isKillerEnvironment } from "$core/utils/environment";
 import { haveSubcommands, serializeCommandName } from "./command.util";
 import { folderExist, interactionWithId, userWithId } from "$core/utils/function";
 import { subCommandDirName, subCommandGroupDirNamePrefix } from "./command.const";
@@ -20,7 +20,7 @@ import { global } from "$core/utils/config/message/command";
 import { getUser, updateUser } from "$core/utils/data/user";
 import { toLocale, toPrismaLocale } from "$core/utils/locale";
 import { privacy } from "prisma/privacy.config";
-import { acceptPrivacy, iReadFast } from "$core/utils/config/buttons";
+import { acceptPrivacy } from "$core/utils/config/buttons";
 import { DayJS } from "$core/utils/day-js";
 // import { voteButton } from "$core/utils/config/buttons";
 
@@ -30,6 +30,17 @@ export const load = async(commandsFolder: string): Promise<LoadedCommands> => {
   const commands: CommandsCollection = new Collection();
   const commandsBuilders: CommandsBuilderCollection = new Collection();
   const folders = readdirSync(commandsFolder);
+
+  if (isKillerEnvironment) {
+    client.application?.commands.set([]);
+    colors.info("Deleted all global commands");
+
+    for (const guild of client.guilds.cache.values()) {
+      const guildCommands = await guild.commands.fetch();
+      guildCommands.forEach((command) => command.delete());
+      colors.info(`Deleted all commands in ${guild.name}`);
+    }
+  }
 
   for (const folder of folders) {
     const path = `${commandsFolder}${sep}${folder}${sep}`;
@@ -134,6 +145,8 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
       return;
     }
 
+    await interaction.deferReply({ ephemeral: true });
+
     const member = await interaction.guild.members.fetch(client.user.id);
     const missingPermissions = member.permissions.missing([
       "SendMessages",
@@ -149,10 +162,12 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
     ]);
 
     if (missingPermissions && missingPermissions.length > 0) {
-      interaction.reply({
-        embeds: [simpleEmbed(translate(interaction.locale, global.config.exec.botPermissionsNotFound, {
-          permissions: missingPermissions.map((permission) => `\`${permission}\``).join(", ")
-        }), "error")], ephemeral: true
+      interaction.editReply({
+        embeds: [
+          simpleEmbed(translate(interaction.locale, global.config.exec.botPermissionsNotFound, {
+            permissions: missingPermissions.map((permission) => `\`${permission}\``).join(", ")
+          }), "error")
+        ]
       });
 
       colors.error([
@@ -163,7 +178,6 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
     }
 
     if (!commandExecute) return;
-    await interaction.deferReply({ ephemeral: true });
 
     const channel = await interaction.guild.channels.fetch(interaction.channelId).catch((error: Error) => {
       interaction.editReply({ embeds: [simpleEmbed(translate(interaction.locale, global.config.exec.error, { error: error.message }), "error")] });
@@ -190,7 +204,7 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
     if (toLocale(user.locale) !== interaction.locale) await updateUser(interaction.user.id, { locale: toPrismaLocale(interaction.locale) });
 
     if (!user.privacy?.accepted) {
-      const sendedAt = DayJS().unix();
+      // const sendedAt = DayJS().unix();
       interaction.editReply({
         embeds: [
           simpleEmbed(translate(interaction.locale, privacy.config.exec.privacyPolicy, {
@@ -213,25 +227,26 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
       collector.on("collect", async(buttonInteraction) => {
         await buttonInteraction.deferUpdate();
 
-        const diff = DayJS().diff(sendedAt * 1000, "second");
-        if (diff <= 5 && buttonInteraction.customId == "acceptPrivacy") {
-          buttonInteraction.editReply({
-            embeds: [simpleEmbed(translate(interaction.locale, privacy.config.exec.youCannotReadThatFast, { seconds: diff }), "error")],
-            components: [{ type: 1, components: [iReadFast(interaction)] }]
-          });
+        // const diff = DayJS().diff(sendedAt * 1000, "second");
+        // if (diff <= 5 && buttonInteraction.customId == "acceptPrivacy") {
+        //   buttonInteraction.editReply({
+        //     embeds: [simpleEmbed(translate(interaction.locale, privacy.config.exec.youCannotReadThatFast, { seconds: diff }), "error")],
+        //     components: [{ type: 1, components: [iReadFast(interaction)] }]
+        //   });
 
-          await updateUser(interaction.user.id, { privacy: { update: { accepted: true, collectChat: true, failed: true } } });
-          colors.error(`${userWithId(interaction.user)} tried to accept the privacy policy too fast (in ${diff} seconds 😂)`);
-          return;
-        }
+        //   await updateUser(interaction.user.id, { privacy: { update: { accepted: true, collectChat: true, failed: true } } });
+        //   colors.error(`${userWithId(interaction.user)} tried to accept the privacy policy too fast (in ${diff} seconds 😂)`);
+        //   return;
+        // }
 
-        if (buttonInteraction.customId === "iReadFast") {
-          buttonInteraction.editReply({ embeds: [simpleEmbed(translate(interaction.locale, privacy.config.exec.ohOkay), "info")], components: [] });
-          colors.info(`${userWithId(interaction.user)} accepted the privacy policy but he read it too fast (in ${diff} seconds 😂)`);
-          return;
-        }
+        // if (buttonInteraction.customId === "iReadFast") {
+        //buttonInteraction.editReply({ embeds: [simpleEmbed(translate(interaction.locale, privacy.config.exec.ohOkay), "info")], components: [] });
+        //   colors.info(`${userWithId(interaction.user)} accepted the privacy policy but he read it too fast (in ${diff} seconds 😂)`);
+        //   return;
+        // }
 
         if (buttonInteraction.customId === "acceptPrivacy") {
+          await updateUser(interaction.user.id, { privacy: { update: { accepted: true, collectChat: true, failed: false } } });
           buttonInteraction.editReply({ embeds: [simpleEmbed(translate(interaction.locale, privacy.config.exec.accepted), "info")], components: [] });
           colors.info(`${userWithId(interaction.user)} accepted the privacy policy`);
           collector.stop();
@@ -246,7 +261,9 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
     if (limitedUsageCommands.includes(interaction.commandName) && (user?.usages?.usage ?? 0) <= 0) {
       interaction.editReply({
         embeds: [
-          simpleEmbed(translate(interaction.locale, global.config.exec.noMoreUsages), "error")
+          simpleEmbed(translate(interaction.locale, global.config.exec.noMoreUsages, {
+            unix: DayJS().endOf("day").unix()
+          }), "error")
           // simpleEmbed(translate(interaction.locale, global.config.exec.orGetPremium), "premium"),
           // simpleEmbed(translate(interaction.locale, global.config.exec.voteNow), "vote")
         ]

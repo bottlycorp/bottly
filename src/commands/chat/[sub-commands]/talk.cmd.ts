@@ -2,7 +2,7 @@ import { colors } from "$core/client";
 import { translate } from "$core/utils/config/message/message.util";
 import { updateUser } from "$core/utils/data/user";
 import { CommandExecute } from "$core/utils/handler/command";
-import { ChannelType, TextChannel, ThreadChannel, messageLink } from "discord.js";
+import { ChannelType, TextChannel, messageLink } from "discord.js";
 import { ThreadAutoArchiveDuration } from "discord.js";
 import { chat } from "../chat.config";
 import { simpleEmbed } from "$core/utils/embed";
@@ -38,14 +38,25 @@ export const execute: CommandExecute = async(command, user) => {
   command.editReply({ content: translate(command.locale, chat.config.exec.channelCreating) });
   const privateThread = command.options.getBoolean("private", false) ?? false;
 
-  const thread: ThreadChannel = await channel.threads.create({
+  await channel.threads.create({
     name: translate(command.locale, chat.config.exec.channelTemporaryTitle, { user: command.user.username }),
     invitable: false,
     autoArchiveDuration: ThreadAutoArchiveDuration.OneHour,
     type: privateThread ? ChannelType.PrivateThread : ChannelType.PublicThread
-  });
+  }).catch(error => {
+    command.editReply({
+      content: "",
+      embeds: [
+        simpleEmbed(translate(command.locale, global.config.exec.error, { error: error.message }), "error")
+      ]
+    });
+    return;
+  }).then(async(thread) => {
+    if (!thread) {
+      colors.error(userWithId(command.user) + " tried to start a discussion but the thread was not created");
+      return;
+    }
 
-  if (thread) {
     command.editReply({
       content: translate(command.locale, chat.config.exec.channelCreated, {
         type: privateThread ? translate(command.locale, chat.config.exec.private) : translate(command.locale, chat.config.exec.public),
@@ -66,7 +77,7 @@ export const execute: CommandExecute = async(command, user) => {
       components: !user.tips?.chatPremiumSaveIt ? [] : [{ type: 1, components: [hideButton(command)] }]
     });
 
-    await newDiscussion(thread.id, command.user.id, messageLink(messageSended.channel.id, messageSended.id));
+    await newDiscussion(thread.id, command.user.id, messageLink(messageSended.channel.id, messageSended.id), thread.guild.id);
 
     if (user.tips?.chatPremiumSaveIt) {
       const collector = thread.createMessageComponentCollector({

@@ -25,10 +25,11 @@ export const getDiscussion = async(channelId: string): Promise<DiscussionInclude
   return discussion;
 };
 
-export const newDiscussion = async(channelId: string, userId: string, link: string): Promise<boolean> => {
+export const newDiscussion = async(channelId: string, userId: string, link: string, guildId: string): Promise<boolean> => {
   const created = await prisma.discussion.create({
     data: {
       channelId: channelId,
+      guildId: guildId,
       userId: userId,
       active: true,
       messages: {},
@@ -54,6 +55,21 @@ export const isADiscussion = async(channelId: string): Promise<boolean> => {
 
   return !!discussion;
 };
+
+export const closeAllDiscussions = async(guildId: string): Promise<boolean> => {
+  const deleted = await prisma.discussion.updateMany({
+    where: {
+      guildId: guildId
+    },
+    data: {
+      active: false,
+      writing: false
+    }
+  });
+
+  return !!deleted;
+};
+
 
 export const isTheAuthor = async(channelId: string, userId: string): Promise<boolean> => {
   const discussion = await prisma.discussion.findUnique({

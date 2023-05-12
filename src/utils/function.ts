@@ -44,7 +44,7 @@ export const emojiByUsage = (usageMax: number, usaged: number): APIMessageCompon
   if (usaged >= 5 && usaged <= 14) return mediumBattery;
   if (usaged >= 15 && usaged <= usageMax) return battery;
 
-  colors.error("Error: usage is not in range");
+  colors.error("Alert: usage (" + usaged + "/" + usageMax + ") is not in range");
   return battery;
 };
 

@@ -21,8 +21,8 @@ export const enableInDev: EnableInDev = true;
 export const event: EventName = "messageCreate";
 
 const systemContext = [
-  "Tu doit génerer un titre à propos du premier paragraphe/texte suivant (ci-dessous) dans la langue de celui-ci, sans inclure autre chose que",
-  "ce titre. Tu écrit seulement le titre et aucun autre texte"
+  "Tu doit génerer un titre à propos du premier paragraphe/texte suivant (ci-dessous) dans la langue {LANG}, sans inclure autre chose que",
+  "ce titre. Tu écrit seulement le titre et aucun autre texte, et ne pas mettre ta réponse entre guillemets"
 ].join(" ");
 
 export const execute: EventExecute<"messageCreate"> = async(message: Message) => {
@@ -37,22 +37,32 @@ export const execute: EventExecute<"messageCreate"> = async(message: Message) =>
 
   const discussion = await getDiscussion(threadId);
   if (!discussion) return;
+  const firstMessage: boolean = discussion.firstMessageAt == 0;
   const user = discussion?.user;
   if (!user) return;
 
   if (discussion.active === false) {
-    message.delete();
+    message.delete().catch((err: Error) => {
+      colors.error(err.message);
+      message.reply({ embeds: [simpleEmbed(translate(toLocale(user.locale), global.config.exec.error, { error: err.message }), "error")] });
+    });
     thread.setLocked(true);
     return;
   }
 
   if (discussion.writing == true || discussion?.userId !== message.author.id) {
-    message.delete();
+    message.delete().catch((err: Error) => {
+      colors.error(err.message);
+      message.reply({ embeds: [simpleEmbed(translate(toLocale(user.locale), global.config.exec.error, { error: err.message }), "error")] });
+    });
     return;
   }
 
   if (existCache(message.author.id)) {
-    message.delete();
+    message.delete().catch((err: Error) => {
+      colors.error(err.message);
+      message.reply({ embeds: [simpleEmbed(translate(toLocale(user.locale), global.config.exec.error, { error: err.message }), "error")] });
+    });
     return;
   }
 
@@ -73,6 +83,7 @@ export const execute: EventExecute<"messageCreate"> = async(message: Message) =>
 
   updateDiscussion(thread.id, {
     lastMessageAt: DayJS().unix(),
+    firstMessageAt: firstMessage ? DayJS().unix() : discussion.firstMessageAt,
     writing: true,
     messages: {
       create: {
@@ -102,7 +113,6 @@ export const execute: EventExecute<"messageCreate"> = async(message: Message) =>
   const messages: { content: string; role: "user" | "system" | "assistant" }[] = [];
 
   discussion.messages.forEach(msg => {
-    console.log(tokens);
     tokens += getTokens(msg.message);
     messages.push({ content: msg.message, role: msg.role === "bot" ? "assistant" : msg.role });
   });
@@ -174,7 +184,7 @@ export const execute: EventExecute<"messageCreate"> = async(message: Message) =>
 
   if (discussion?.title === "default") {
     await openai.createChatCompletion({
-      messages: [{ role: "system", content: systemContext }, { content: message.content, role: "user" }],
+      messages: [{ role: "system", content: systemContext.replace("{LANG}", user.locale) }, { content: message.content, role: "user" }],
       max_tokens: getTokens(systemContext) + getTokens(message.content),
       temperature: 0.4,
       model: "gpt-3.5-turbo"
