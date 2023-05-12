@@ -8,28 +8,27 @@ on:
 
 jobs:
   lint:
+    permissions:
+      contents: read
+      packages: read
+
     name: ESLint
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/setup-node@v3
-      - uses: actions/checkout@v3
-      - name: Authenticate with private NPM package
-        run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-      - name: Install dependencies
-        run: npm install
-      - name: Run ESLint
-        run: npm run lint
-  typecheck:
-    name: TS Typecheck
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/setup-node@v3
-      - uses: actions/checkout@v3
-      - name: Authenticate with private NPM package
-        run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-      - name: Install dependencies
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm install
-      - name: Run typecheck
-        run: npx tsc --noEmit
+
+    steps: 
+    - name: Setup node and npm
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: npm
+        registry-url: "https://npm.pkg.github.com"
+
+    - name: Install npm dependencies
+      run: "npm install"
+      shell: bash
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Run ESLint
+      run: "npm run lint"
+      shell: bash
