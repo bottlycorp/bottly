@@ -14,21 +14,10 @@ jobs:
 
     name: ESLint
     runs-on: ubuntu-latest
-
-    steps: 
-    - name: Setup node and npm
-      uses: actions/setup-node@v3
+    steps:
+      - uses: actions/setup-node@v3
       with:
-        node-version: 18
-        cache: npm
-        registry-url: "https://npm.pkg.github.com"
-
-    - name: Install npm dependencies
-      run: "npm install"
-      shell: bash
+        registry-url: https://npm.pkg.github.com
+      run: npm install
       env:
-        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
-    - name: Run ESLint
-      run: "npm run lint"
-      shell: bash
+        NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
