@@ -44,12 +44,7 @@ export const execute: CommandExecute = async(command, user) => {
     autoArchiveDuration: ThreadAutoArchiveDuration.OneHour,
     type: privateThread ? ChannelType.PrivateThread : ChannelType.PublicThread
   }).catch(error => {
-    command.editReply({
-      content: "",
-      embeds: [
-        simpleEmbed(translate(command.locale, global.config.exec.error, { error: error.message }), "error")
-      ]
-    });
+    command.editReply({ content: "", embeds: [simpleEmbed(translate(command.locale, global.config.exec.error, { error: error.message }), "error")] });
     return;
   }).then(async(thread) => {
     if (!thread) {
@@ -99,8 +94,9 @@ export const execute: CommandExecute = async(command, user) => {
         }
 
         await updateUser(command.user.id, { tips: { update: { chatPremiumSaveIt: false } } });
+        collector.stop("Resolved");
       }).on("end", () => {
-        if (collector.endReason !== "Resolved") {
+        if (collector.endReason == "Resolved") {
           thread.messages.fetch().then((messages) => {
             const message = messages.get(messageSended.id);
             if (message) message.edit({ components: [{ type: 1, components: [hideButton(command).setDisabled(true)] }] });

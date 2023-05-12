@@ -3,23 +3,14 @@ import { translate } from "$core/utils/config/message/message.util";
 import { CommandExecute } from "$core/utils/handler/command";
 import { history } from "./history.config";
 import { simpleEmbed } from "$core/utils/embed";
-import { limitString, userWithId } from "$core/utils/function";
+import { limitString } from "$core/utils/function";
 import { usageButton } from "$core/utils/config/buttons";
 import { DayJS } from "$core/utils/day-js";
-import { TextChannel } from "discord.js";
-import { global } from "$core/utils/config/message/command";
 import { QuestionIncludeAll } from "$core/utils/data/question";
 import { DiscussionIncludeAll } from "$core/utils/data/discussion";
+import { UsageMax } from "@prisma/client";
 
 export const execute: CommandExecute = async(command, user) => {
-  const channel = command.channel;
-  if (!(channel instanceof TextChannel)) {
-    command.editReply(translate(command.locale, global.config.exec.notInATextChannel));
-
-    colors.error(userWithId(command.user) + " tried to see his history while not being in a text channel");
-    return;
-  }
-
   const questions = user.questions;
   const valuePage: number = command.options.getInteger(history.config.options.page.name["en-US"], false) ?? 1;
   const perPage: number = command.options.getInteger(history.config.options.per.name["en-US"], false) ?? 10;
@@ -61,7 +52,7 @@ export const execute: CommandExecute = async(command, user) => {
     }
   }
 
-  if (user.usages?.max !== "PREMIUM") {
+  if (user.usages?.max !== UsageMax.PREMIUM) {
     lines += "\n" + translate(command.locale, history.config.exec.success.notPremiumLine, {
       left: user?.usages?.usage ?? 0
     }) + "\n";
@@ -70,8 +61,6 @@ export const execute: CommandExecute = async(command, user) => {
   if (user.votes?.active) {
     lines += "\n" + translate(command.locale, history.config.exec.success.voterLine) + "\n";
   }
-
-  // lines += translate(command.locale, history.config.exec.success.settings) + "\n";
 
   let askedThisDay = 0;
   let chatThisDay = 0;

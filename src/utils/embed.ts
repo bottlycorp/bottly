@@ -19,7 +19,7 @@ type Footer = {
 }
 
 export const simpleEmbed = (
-  content: string,
+  content?: string,
   type: EmbedType = "info",
   title?: string,
   footer?: Footer,
@@ -31,8 +31,9 @@ export const simpleEmbed = (
   if (!isHexColor(color)) throw new Error("Invalid config: \"colors\" field in information.json need to be a valid hex color code");
 
   const embed = new EmbedBuilder()
-    .setColor(color)
-    .setDescription(content);
+    .setColor(color);
+
+  if (content) embed.setDescription(content);
 
   if (footer) {
     if (footer.timestamp) embed.setTimestamp();

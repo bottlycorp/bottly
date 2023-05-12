@@ -2,7 +2,9 @@ import {
   Client,
   Collection,
   SlashCommandSubcommandBuilder,
-  SlashCommandSubcommandGroupBuilder
+  SlashCommandSubcommandGroupBuilder,
+  TextChannel,
+  ThreadChannel
 } from "discord.js";
 import { CommandExecute, CommandsBuilderCollection, CommandsCollection, LoadedCommands } from "./command.type";
 import { existsSync, readdirSync, statSync } from "fs";
@@ -20,7 +22,6 @@ import { toLocale, toPrismaLocale } from "$core/utils/locale";
 import { privacy } from "prisma/privacy.config";
 import { acceptPrivacy } from "$core/utils/config/buttons";
 import { DayJS } from "$core/utils/day-js";
-// import { voteButton } from "$core/utils/config/buttons";
 
 const limitedUsageCommands = ["ask", "chat"];
 
@@ -177,16 +178,29 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
 
     if (!commandExecute) return;
 
-    const user = await getUser(interaction.user);
-    if (user.username !== interaction.user.username) await updateUser(interaction.user.id, { username: interaction.user.username });
-    if (toLocale(user.locale) !== interaction.locale) await updateUser(interaction.user.id, { locale: toPrismaLocale(interaction.locale) });
+    const channel = await interaction.guild.channels.fetch(interaction.channelId).catch((error: Error) => {
+      interaction.editReply({ embeds: [simpleEmbed(translate(interaction.locale, global.config.exec.error, { error: error.message }), "error")] });
 
-    const channel = interaction.channel;
-    if (!channel) {
-      interaction.editReply({ embeds: [simpleEmbed(translate(interaction.locale, global.config.exec.error), "error")] });
+      colors.error(`${userWithId(interaction.user)} tried to use the command ${interactionWithId(interaction)} in a non-existent/not access`);
+      return;
+    });
+
+    if (!(channel instanceof TextChannel) && !(channel instanceof ThreadChannel)) {
+      interaction.editReply({
+        embeds: [
+          simpleEmbed(translate(interaction.locale, global.config.exec.error, {
+            error: translate(interaction.locale, global.config.exec.notInATextChannel)
+          }), "error")
+        ]
+      });
+
       colors.error(`${userWithId(interaction.user)} tried to use the command ${interactionWithId(interaction)} in a non-text channel`);
       return;
     }
+
+    const user = await getUser(interaction.user);
+    if (user.username !== interaction.user.username) await updateUser(interaction.user.id, { username: interaction.user.username });
+    if (toLocale(user.locale) !== interaction.locale) await updateUser(interaction.user.id, { locale: toPrismaLocale(interaction.locale) });
 
     if (!user.privacy?.accepted) {
       // const sendedAt = DayJS().unix();
@@ -212,24 +226,6 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
       collector.on("collect", async(buttonInteraction) => {
         await buttonInteraction.deferUpdate();
 
-        // const diff = DayJS().diff(sendedAt * 1000, "second");
-        // if (diff <= 5 && buttonInteraction.customId == "acceptPrivacy") {
-        //   buttonInteraction.editReply({
-        //     embeds: [simpleEmbed(translate(interaction.locale, privacy.config.exec.youCannotReadThatFast, { seconds: diff }), "error")],
-        //     components: [{ type: 1, components: [iReadFast(interaction)] }]
-        //   });
-
-        //   await updateUser(interaction.user.id, { privacy: { update: { accepted: true, collectChat: true, failed: true } } });
-        //   colors.error(`${userWithId(interaction.user)} tried to accept the privacy policy too fast (in ${diff} seconds 😂)`);
-        //   return;
-        // }
-
-        // if (buttonInteraction.customId === "iReadFast") {
-        //buttonInteraction.editReply({ embeds: [simpleEmbed(translate(interaction.locale, privacy.config.exec.ohOkay), "info")], components: [] });
-        //   colors.info(`${userWithId(interaction.user)} accepted the privacy policy but he read it too fast (in ${diff} seconds 😂)`);
-        //   return;
-        // }
-
         if (buttonInteraction.customId === "acceptPrivacy") {
           await updateUser(interaction.user.id, { privacy: { update: { accepted: true, collectChat: true, failed: false } } });
           buttonInteraction.editReply({ embeds: [simpleEmbed(translate(interaction.locale, privacy.config.exec.accepted), "info")], components: [] });
@@ -249,11 +245,7 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
           simpleEmbed(translate(interaction.locale, global.config.exec.noMoreUsages, {
             unix: DayJS().endOf("day").unix()
           }), "error")
-          // simpleEmbed(translate(interaction.locale, global.config.exec.orGetPremium), "premium"),
-          // simpleEmbed(translate(interaction.locale, global.config.exec.voteNow), "vote")
         ]
-        // ],
-        // components: [{ type: 1, components: [voteButton(interaction)] }]
       });
 
       colors.error(`${userWithId(interaction.user)} tried to use the command ${interactionWithId(interaction)} but he has no more usages`);

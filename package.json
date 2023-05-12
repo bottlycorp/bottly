@@ -1,6 +1,6 @@
 {
   "name": "discord-bot",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Bottly discord bot",
   "main": "./build/src/client.js",
   "scripts": {
@@ -38,7 +38,7 @@
     "dotenv": "^16.0.3",
     "eslint": "^8.38.0",
     "nodemon": "^2.0.22",
-    "prisma": "^4.13.0",
+    "prisma": "^4.14.0",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.0.4"
   },

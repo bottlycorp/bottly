@@ -3,7 +3,7 @@ import { translate } from "$core/utils/config/message/message.util";
 import { newQuestion } from "$core/utils/data/question";
 import { simpleEmbed } from "$core/utils/embed";
 import { CommandExecute } from "$core/utils/handler/command";
-import { CacheType, CommandInteractionOption, TextChannel } from "discord.js";
+import { CacheType, CommandInteractionOption, TextChannel, ThreadChannel } from "discord.js";
 import { ask } from "./ask.config";
 import { DayJS } from "$core/utils/day-js";
 import { getPrompt } from "@bottlycorp/prompts";
@@ -16,9 +16,9 @@ import { userWithId } from "$core/utils/function";
 
 export const execute: CommandExecute = async(command, user) => {
   const channel = command.channel;
-  if (!(channel instanceof TextChannel)) {
+  if (!(channel instanceof ThreadChannel) && !(channel instanceof TextChannel)) {
     command.editReply(translate(command.locale, global.config.exec.notInATextChannel));
-    colors.error(userWithId(command.user) + " tried to ask a question while not being in a text channel");
+    colors.error(userWithId(command.user) + " tried to ask a question while not being in a text channel (thread or text channel)");
     return;
   }
 
