@@ -17,7 +17,11 @@ export const support = {
         fr: "Serveur discord de support",
         "pt-BR": "Servidor de suporte do discord"
       },
-      link: "{discordLink}"
+      link: {
+        "en-US": "You can join the support server by clicking the button below",
+        fr: "Vous pouvez rejoindre le serveur de support en cliquant sur le bouton ci-dessous",
+        "pt-BR": "Você pode entrar no servidor de suporte clicando no botão abaixo"
+      }
     }
   }
 } satisfies Record<string, Command>;
