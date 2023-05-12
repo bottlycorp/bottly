@@ -44,12 +44,7 @@ export const execute: CommandExecute = async(command, user) => {
     autoArchiveDuration: ThreadAutoArchiveDuration.OneHour,
     type: privateThread ? ChannelType.PrivateThread : ChannelType.PublicThread
   }).catch(error => {
-    command.editReply({
-      content: "",
-      embeds: [
-        simpleEmbed(translate(command.locale, global.config.exec.error, { error: error.message }), "error")
-      ]
-    });
+    command.editReply({ content: "", embeds: [simpleEmbed(translate(command.locale, global.config.exec.error, { error: error.message }), "error")] });
     return;
   }).then(async(thread) => {
     if (!thread) {
@@ -111,9 +106,5 @@ export const execute: CommandExecute = async(command, user) => {
     }
 
     colors.success(`Created a ${privateThread ? "private" : "public"} discussion for ${command.user.username}`);
-  } else {
-    command.editReply({ embeds: [simpleEmbed(translate(command.locale, chat.config.exec.channelNotCreated, {
-      type: privateThread ? translate(command.locale, chat.config.exec.private) : translate(command.locale, chat.config.exec.public)
-    }), "error")] });
-  }
+  });
 };

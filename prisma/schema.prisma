@@ -77,7 +77,6 @@ model Discussion {
   contextId      String     @default("default")
   type           ThreadType @default(public)
   userId         String
-  guildId        String     @default("default")
   user           User       @relation(fields: [userId], references: [userId], onDelete: Cascade)
   messages       Message[]
 }
