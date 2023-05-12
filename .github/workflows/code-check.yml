@@ -2,7 +2,7 @@ name: Code check
 
 on:
   push:
-    branches: ["main", "env/prod", "env/dev"]
+    branches: ["env/prod", "env/dev"]
   pull_request:
     types: [opened, synchronize]
 
@@ -12,10 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-node@v3
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/checkout@v3
       - name: Install dependencies
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm install
       - name: Run ESLint
         run: npm run lint
@@ -24,10 +24,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-node@v3
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/checkout@v3
       - name: Install dependencies
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm install
       - name: Run typecheck
         run: npx tsc --noEmit
