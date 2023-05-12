@@ -13,8 +13,6 @@ jobs:
     steps:
       - uses: actions/setup-node@v3
       - uses: actions/checkout@v3
-      - name: Change the registry
-        run: npm install
       - name: Install dependencies
         run: npm install
       - name: Run ESLint
