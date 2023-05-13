@@ -53,7 +53,7 @@ export const voteButton = (command: CommandInteraction | Interaction) : ButtonBu
   );
 };
 
-export const downloadButton2 = (command: CommandInteraction | Interaction, id: string) : ButtonBuilder => {
+export const downloadButton = (command: CommandInteraction | Interaction, id: string) : ButtonBuilder => {
   return simpleButton(
     translate(command.locale, global.config.exec.buttons.download),
     ButtonStyle.Primary,

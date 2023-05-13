@@ -146,8 +146,7 @@ export const execute: CommandExecute = async(command, user) => {
             colors.error(error.message);
             interaction.update({ embeds: [simpleEmbed(translate(command.locale, global.config.exec.error, { error: error.message }), "error")] });
           });
-
-          collector.stop("Revealed");
+          collector.stop();
         }
       }).on("end", () => {
         clearInterval(interval);

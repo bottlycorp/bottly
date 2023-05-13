@@ -127,7 +127,7 @@ export const execute: EventExecute<"messageCreate"> = async(message: Message) =>
   await openai.createChatCompletion({
     messages: messages,
     model: "gpt-3.5-turbo",
-    max_tokens: tokens <= 200 ? tokens + 200 : tokens,
+    max_tokens: tokens <= 200 ? tokens + 500 : tokens,
     user: user.userId
   }).catch(async(error: Error) => {
     clearInterval(interval);
