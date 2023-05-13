@@ -56,6 +56,28 @@ export const ask = {
         "en-US": "An error occurred while executing the command: **{error}**",
         fr: "Une erreur est survenue lors de l'exécution de la commande: **{error}**",
         "pt-BR": "Ocorreu um erro ao executar o comando: **{error}**"
+      },
+      qrCodeDesc: {
+        "en-US": "{emojiQRC} Here is a QRCode for your question: `{question}`",
+        fr: "{emojiQRC} Voici un QRCode pour votre question: `{question}`",
+        "pt-BR": "{emojiQRC} Aqui está um QRCode para sua pergunta: `{question}`"
+      },
+      qrCode: {
+        "en-US": [
+          "QR Code of the question: {question}",
+          "Language: {lang}",
+          "Response: {response}"
+        ].join("\n"),
+        fr: [
+          "QR Code de la question: {question}",
+          "Langue: {lang}",
+          "Réponse: {response}"
+        ].join("\n"),
+        "pt-BR": [
+          "QR Code da pergunta: {question}",
+          "Língua: {lang}",
+          "Resposta: {response}"
+        ].join("\n")
       }
     }
   }

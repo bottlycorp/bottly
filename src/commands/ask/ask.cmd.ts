@@ -13,6 +13,9 @@ import { qrCodeButton, revealButton, usageButton } from "$core/utils/config/butt
 import { global } from "$core/utils/config/message/command";
 import { getLocale, localeExists, localeToString } from "$core/utils/locale";
 import { userWithId } from "$core/utils/function";
+import QRCode from "qrcode";
+import { supabase } from "$core/utils/supabase";
+import { decode } from "base64-arraybuffer";
 
 export const execute: CommandExecute = async(command, user) => {
   const channel = command.channel;
@@ -147,13 +150,58 @@ export const execute: CommandExecute = async(command, user) => {
             interaction.update({ embeds: [simpleEmbed(translate(command.locale, global.config.exec.error, { error: error.message }), "error")] });
           });
           collector.stop();
+        } else if (interaction.customId === "qrcode") {
+          const { data, error } = await supabase.storage
+            .from("qrcodes")
+            .upload(`${interaction.message.id}.png`, decode((await QRCode.toBuffer(
+              translate(command.locale, ask.config.exec.qrCode, {
+                question: value,
+                lang: getLocale(lang),
+                response: response?.data.choices[0].message?.content ?? "No response"
+              })
+            )).toString("base64")), {
+              contentType: "image/png"
+            });
+
+          const publicUrl = await supabase.storage.from("qrcodes").getPublicUrl(data?.path ?? "").data.publicUrl;
+
+          if (!publicUrl) {
+            colors.error("Could not get public URL");
+            interaction.update({ embeds: [simpleEmbed(translate(command.locale, global.config.exec.error, {
+              error: "Could not get public URL"
+            }), "error")] });
+            return;
+          }
+
+          if (error) {
+            colors.error(error.message);
+            interaction.update({ embeds: [simpleEmbed(translate(command.locale, global.config.exec.error, { error: error.message }), "error")] });
+            return;
+          }
+
+          command.editReply({
+            embeds: [
+              simpleEmbed(translate(command.locale, ask.config.exec.qrCodeDesc, { question: value }), "info", "QR Code", {
+                text: command.user.username,
+                icon_url: command.user.avatarURL() ?? undefined,
+                timestamp: true
+              }, "", publicUrl)
+            ],
+            components: []
+          }).catch((error: Error) => {
+            colors.error(error.message);
+            interaction.update({ embeds: [simpleEmbed(translate(command.locale, global.config.exec.error, { error: error.message }), "error")] });
+          });
+
+          collector.stop();
+          clearInterval(interval);
         }
       }).on("end", () => {
         clearInterval(interval);
         command.editReply({ components: [{ type: 1, components: [
           revealButton(command).setDisabled(true),
           usageButton(command, user),
-          qrCodeButton()
+          qrCodeButton().setDisabled(true)
         ] }] });
       });
     }
