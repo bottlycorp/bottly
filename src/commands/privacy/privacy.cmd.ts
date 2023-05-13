@@ -1,4 +1,5 @@
 import { translate } from "$core/utils/config/message/message.util";
+import { updateUser } from "$core/utils/data/user";
 import { simpleButton, simpleEmbed } from "$core/utils/embed";
 import { CommandExecute } from "$core/utils/handler/command";
 import { privacy } from "./privacy.config";
@@ -6,8 +7,8 @@ import { ButtonBuilder } from "@discordjs/builders";
 import { ButtonStyle } from "discord.js";
 
 export const execute: CommandExecute = async(command, user) => {
-  const autoDelete = user.privacy?.autoDelete;
-  const collectChat = user.privacy?.collectChat;
+  let autoDelete = user.privacy?.autoDelete;
+  let collectChat = user.privacy?.collectChat;
 
   const embed = simpleEmbed(
     translate(command.locale, privacy.config.exec.embed.description),
@@ -26,6 +27,34 @@ export const execute: CommandExecute = async(command, user) => {
 
   const deleteButton: ButtonBuilder = simpleButton(undefined, ButtonStyle.Danger, "delete", false, { animated: false, name: "🗑️" });
 
-  const buttons: ButtonBuilder[] = [autoDeleteButton, collectChatButton, deleteButton];
-  command.editReply({ embeds: [embed], components: [{ type: 1, components: buttons }] });
+  const message = command.editReply({ embeds: [embed], components: [{ type: 1, components: [autoDeleteButton, collectChatButton, deleteButton] }] });
+
+  const collector = (await message).createMessageComponentCollector({ time: 60000 });
+
+  collector.on("collect", async(interaction) => {
+    switch (interaction.customId) {
+      case "auto-delete":
+        autoDelete = !autoDelete;
+        break;
+      case "collect-chat":
+        collectChat = !collectChat;
+        break;
+    }
+
+    await updateUser(user.userId, { privacy: { update: {
+      autoDelete,
+      collectChat
+    } } });
+
+    await updateUser(user.userId, {
+      privacy: {
+        update: {
+          autoDelete,
+          collectChat
+        }
+      }
+    });
+
+    await interaction.update({ embeds: [embed] });
+  });
 };

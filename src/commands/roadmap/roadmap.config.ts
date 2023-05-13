@@ -24,7 +24,8 @@ export const roadmap = {
           [
             "• `/privacy` command, for give possibility to read the privacy policy of the bot, edit how the bot use your",
             "data and delete your data (🎗️)"
-          ].join(" ")
+          ].join(" "),
+          "• ~~`/support` command, for give possibility to join the support server of the bot~~"
         ].join("\n"),
         "fr": [
           "__Mai__ :",
@@ -32,7 +33,8 @@ export const roadmap = {
           [
             "• Commande `/privacy`, pour donner la possibilité de lire la politique de confidentialité du bot,",
             "modifier la façon dont le bot utilise vos données et supprimer vos données (🎗️)"
-          ].join(" ")
+          ].join(" "),
+          "• ~~Commande `/support`, pour donner la possibilité de rejoindre le serveur de support du bot~~"
         ].join("\n"),
         "pt-BR": [
           "__Maio__:",
@@ -40,7 +42,8 @@ export const roadmap = {
           [
             "• Comando `/privacy`, para dar a possibilidade de ler a política de privacidade do bot,",
             "editar como o bot usa seus dados e excluir seus dados (🎗️)"
-          ].join(" ")
+          ].join(" "),
+          "• ~~Comando `/support`, para dar a possibilidade de entrar no servidor de suporte do bot~~"
         ].join("\n")
       },
       "june": {
