@@ -71,9 +71,9 @@ model Discussion {
   count          Int        @default(0)
   writing        Boolean    @default(false)
   active         Boolean    @default(true)
-  title          String     @default("default")
-  channelId      String     @unique @default("default")
-  guildId        String     @default("default")
+  title          String     @default("Lorem imspu mipsu")
+  channelId      String     @unique @default("1078410876014563489")
+  guildId        String     @default("1076863331517874240")
   contextId      String     @default("default")
   type           ThreadType @default(public)
   userId         String
