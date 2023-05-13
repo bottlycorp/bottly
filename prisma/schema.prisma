@@ -110,6 +110,7 @@ model Subscription {
   firstPayment   Int
   lastPayment    Int
   userId         String @unique
+  email          String @unique
   user           User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
 
