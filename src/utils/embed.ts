@@ -1,6 +1,7 @@
-import { EmbedBuilder, EmbedData } from "discord.js";
+import { APIMessageComponentEmoji, ButtonStyle, EmbedBuilder, EmbedData } from "discord.js";
 import { global } from "./config";
 import { isHexColor } from "./validator";
+import { ButtonBuilder } from "@discordjs/builders";
 
 type EmbedType = "info" | "success" | "error" | "premium" | "vote";
 
@@ -49,6 +50,20 @@ export const simpleEmbed = (
   if (title) embed.setTitle(title);
 
   return embed;
+};
+
+export const simpleButton = (
+  label?: string, style: ButtonStyle = ButtonStyle.Primary, customId?: string, disabled?: boolean, emoji?: APIMessageComponentEmoji
+): ButtonBuilder => {
+  const button = new ButtonBuilder()
+    .setStyle(style);
+
+  if (label) button.setLabel(label);
+  if (emoji) button.setEmoji(emoji);
+  if (customId) button.setCustomId(customId);
+  if (disabled) button.setDisabled(disabled);
+
+  return button;
 };
 
 export const getBaseEmbed = (type: EmbedType = "info"): EmbedBuilder => {
