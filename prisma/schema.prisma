@@ -8,18 +8,19 @@ datasource db {
 }
 
 model User {
-  username    String
-  createdAt   Int
-  userId      String       @id @unique
-  isPremium   Boolean      @default(false)
-  locale      Locale       @default(en_US)
-  discussions Discussion[]
-  Message     Message[]
-  privacy     Privacy?
-  questions   Question[]
-  tips        Tips?
-  usages      Usage?
-  votes       Vote?
+  username     String
+  createdAt    Int
+  userId       String        @id @unique
+  isPremium    Boolean       @default(false)
+  locale       Locale        @default(en_US)
+  discussions  Discussion[]
+  messages     Message[]
+  privacy      Privacy?
+  questions    Question[]
+  tips         Tips?
+  usages       Usage?
+  votes        Vote?
+  subscription Subscription?
 }
 
 model Question {
@@ -99,6 +100,17 @@ model Tips {
   chatPremiumSaveIt Boolean @default(true)
   userId            String  @unique
   user              User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
+}
+
+model Subscription {
+  id             String @id @default(cuid())
+  subscriptionId String @unique
+  nextDueDate    Int
+  paymentMethod  String
+  firstPayment   Int
+  lastPayment    Int
+  userId         String @unique
+  user           User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
 
 enum Locale {

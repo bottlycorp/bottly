@@ -22,6 +22,7 @@ export const newUser = async(userToCreate: DiscordUser): Promise<UserIncludeAll>
       userId: userToCreate.id,
       createdAt: DayJS().unix(),
       locale: "en_US",
+      messages: {},
       privacy: {
         create: {
           autoDelete: false,
@@ -45,6 +46,7 @@ export const newUser = async(userToCreate: DiscordUser): Promise<UserIncludeAll>
           lastVote: ""
         }
       },
+      subscription: {},
       tips: {
         create: {
           chatPremiumSaveIt: true
