@@ -60,7 +60,8 @@ export const simpleButton = (
 
   if (label) button.setLabel(label);
   if (emoji) button.setEmoji(emoji);
-  if (customId) button.setCustomId(customId);
+  if (style == ButtonStyle.Link && customId) button.setURL(customId);
+  else if (customId) button.setCustomId(customId);
   if (disabled) button.setDisabled(disabled);
 
   return button;

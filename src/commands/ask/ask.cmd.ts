@@ -9,7 +9,7 @@ import { DayJS } from "$core/utils/day-js";
 import { getPrompt } from "@bottlycorp/prompts";
 import { updateUser } from "$core/utils/data/user";
 import { Prompts } from "@bottlycorp/prompts/build/prompt.type";
-import { revealButton, usageButton } from "$core/utils/config/buttons";
+import { qrCodeButton, revealButton, usageButton } from "$core/utils/config/buttons";
 import { global } from "$core/utils/config/message/command";
 import { getLocale, localeExists, localeToString } from "$core/utils/locale";
 import { userWithId } from "$core/utils/function";
@@ -46,6 +46,7 @@ export const execute: CommandExecute = async(command, user) => {
   }
 
   const askedAt = DayJS().unix();
+
   await openai.createChatCompletion({
     messages: [
       { role: "system", content: translate(command.locale, getPrompt(context?.value as Prompts), {
@@ -67,7 +68,11 @@ export const execute: CommandExecute = async(command, user) => {
         embeds: [simpleEmbed(translate(command.locale, ask.config.exec.success, {
           response: response?.data.choices[0].message?.content ?? "No response"
         }), "info")],
-        components: [{ type: 1, components: [revealButton(command), usageButton(command, user)] }]
+        components: [{ type: 1, components: [
+          revealButton(command),
+          usageButton(command, user),
+          qrCodeButton()
+        ] }]
       });
 
       await newQuestion(command.user, {
@@ -94,7 +99,8 @@ export const execute: CommandExecute = async(command, user) => {
         command.editReply({
           components: [{ type: 1, components: [
             revealButton(command).setLabel(translate(command.locale, global.config.exec.buttons.reveal) + ` (${seconds}s)`),
-            usageButton(command, user)
+            usageButton(command, user),
+            qrCodeButton()
           ] }]
         });
 
@@ -104,7 +110,8 @@ export const execute: CommandExecute = async(command, user) => {
               type: 1,
               components: [
                 revealButton(command).setDisabled(true).setLabel(translate(command.locale, global.config.exec.buttons.reveal)),
-                usageButton(command, user)
+                usageButton(command, user),
+                qrCodeButton()
               ]
             }]
           });
@@ -119,7 +126,8 @@ export const execute: CommandExecute = async(command, user) => {
         if (interaction.customId === "reveal") {
           interaction.update({ components: [{ type: 1, components: [
             revealButton(command).setDisabled(true),
-            usageButton(command, user)
+            usageButton(command, user),
+            qrCodeButton()
           ] }] });
 
           channel.send({
@@ -142,13 +150,12 @@ export const execute: CommandExecute = async(command, user) => {
           collector.stop("Revealed");
         }
       }).on("end", () => {
-        if (collector.endReason !== "Revealed") {
-          command.editReply({ components: [{ type: 1, components: [revealButton(command).setDisabled(true), usageButton(command, user)] }] });
-          clearInterval(interval);
-        } else {
-          clearInterval(interval);
-          command.editReply({ components: [{ type: 1, components: [revealButton(command).setDisabled(true), usageButton(command, user)] }] });
-        }
+        clearInterval(interval);
+        command.editReply({ components: [{ type: 1, components: [
+          revealButton(command).setDisabled(true),
+          usageButton(command, user),
+          qrCodeButton()
+        ] }] });
       });
     }
   }).catch((error: Error) => {
