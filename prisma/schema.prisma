@@ -17,10 +17,10 @@ model User {
   messages     Message[]
   privacy      Privacy?
   questions    Question[]
+  subscription Subscription?
   tips         Tips?
   usages       Usage?
   votes        Vote?
-  subscription Subscription?
 }
 
 model Question {
@@ -74,10 +74,10 @@ model Discussion {
   active         Boolean    @default(true)
   title          String     @default("Lorem imspu mipsu")
   channelId      String     @unique @default("1078410876014563489")
-  guildId        String     @default("1076863331517874240")
   contextId      String     @default("default")
   type           ThreadType @default(public)
   userId         String
+  guildId        String     @default("1076863331517874240")
   user           User       @relation(fields: [userId], references: [userId], onDelete: Cascade)
   messages       Message[]
 }
