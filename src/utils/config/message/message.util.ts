@@ -4,6 +4,7 @@ const preParams: Record<string, string | number | undefined> = {
   emojiPremium: "<:premium1:1101141131963670630>",
   emojiTyping: "<a:typing:1087703097498931290>",
   emojiDO: "<:thAlways:1101648091372859444>",
+  emojiQRC: "<:qrcode:1106941333471494287>",
   emojiDC: "<:thClosed:1101648093960749066>",
   discordLink: "https://discord.gg/tFUJHr2htA",
   postLinkedin: "https://linkfy.fr/00w9"

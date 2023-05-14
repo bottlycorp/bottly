@@ -8,18 +8,19 @@ datasource db {
 }
 
 model User {
-  username    String
-  createdAt   Int
-  userId      String       @id @unique
-  isPremium   Boolean      @default(false)
-  locale      Locale       @default(en_US)
-  discussions Discussion[]
-  Message     Message[]
-  privacy     Privacy?
-  questions   Question[]
-  tips        Tips?
-  usages      Usage?
-  votes       Vote?
+  username     String
+  createdAt    Int
+  userId       String        @id @unique
+  isPremium    Boolean       @default(false)
+  locale       Locale        @default(en_US)
+  discussions  Discussion[]
+  messages     Message[]
+  privacy      Privacy?
+  questions    Question[]
+  subscription Subscription?
+  tips         Tips?
+  usages       Usage?
+  votes        Vote?
 }
 
 model Question {
@@ -71,12 +72,12 @@ model Discussion {
   count          Int        @default(0)
   writing        Boolean    @default(false)
   active         Boolean    @default(true)
-  title          String     @default("default")
-  channelId      String     @unique @default("default")
-  guildId        String     @default("default")
+  title          String     @default("Lorem imspu mipsu")
+  channelId      String     @unique @default("1078410876014563489")
   contextId      String     @default("default")
   type           ThreadType @default(public)
   userId         String
+  guildId        String     @default("1076863331517874240")
   user           User       @relation(fields: [userId], references: [userId], onDelete: Cascade)
   messages       Message[]
 }
@@ -99,6 +100,18 @@ model Tips {
   chatPremiumSaveIt Boolean @default(true)
   userId            String  @unique
   user              User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
+}
+
+model Subscription {
+  id             String @id @default(cuid())
+  subscriptionId String @unique
+  paymentMethod  String
+  firstPayment   Int
+  lastPayment    Int
+  nextPayment    Int
+  email          String @unique
+  userId         String @unique
+  user           User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
 
 enum Locale {

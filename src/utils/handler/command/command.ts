@@ -263,7 +263,7 @@ export const register = async(client: Client, commandsBuilder: CommandsBuilderCo
   }
 };
 
-export type Commands = "ask" | "chat" | "history" | "roadmap" | "request";
+export type Commands = "ask" | "chat" | "history" | "roadmap" | "request" | "privacy" | "support";
 export type SubCommands = "stop" | "talk" | "download";
 
 export const findCommand = async(cmd: Commands, subCommand?: SubCommands): Promise<string> => {

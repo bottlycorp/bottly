@@ -9,10 +9,13 @@ import { DayJS } from "$core/utils/day-js";
 import { getPrompt } from "@bottlycorp/prompts";
 import { updateUser } from "$core/utils/data/user";
 import { Prompts } from "@bottlycorp/prompts/build/prompt.type";
-import { revealButton, usageButton } from "$core/utils/config/buttons";
+import { qrCodeButton, revealButton, usageButton } from "$core/utils/config/buttons";
 import { global } from "$core/utils/config/message/command";
 import { getLocale, localeExists, localeToString } from "$core/utils/locale";
 import { userWithId } from "$core/utils/function";
+import QRCode from "qrcode";
+import { supabase } from "$core/utils/supabase";
+import { decode } from "base64-arraybuffer";
 
 export const execute: CommandExecute = async(command, user) => {
   const channel = command.channel;
@@ -46,6 +49,7 @@ export const execute: CommandExecute = async(command, user) => {
   }
 
   const askedAt = DayJS().unix();
+
   await openai.createChatCompletion({
     messages: [
       { role: "system", content: translate(command.locale, getPrompt(context?.value as Prompts), {
@@ -67,7 +71,11 @@ export const execute: CommandExecute = async(command, user) => {
         embeds: [simpleEmbed(translate(command.locale, ask.config.exec.success, {
           response: response?.data.choices[0].message?.content ?? "No response"
         }), "info")],
-        components: [{ type: 1, components: [revealButton(command), usageButton(command, user)] }]
+        components: [{ type: 1, components: [
+          revealButton(command),
+          usageButton(command, user),
+          qrCodeButton()
+        ] }]
       });
 
       await newQuestion(command.user, {
@@ -94,7 +102,8 @@ export const execute: CommandExecute = async(command, user) => {
         command.editReply({
           components: [{ type: 1, components: [
             revealButton(command).setLabel(translate(command.locale, global.config.exec.buttons.reveal) + ` (${seconds}s)`),
-            usageButton(command, user)
+            usageButton(command, user),
+            qrCodeButton()
           ] }]
         });
 
@@ -104,7 +113,8 @@ export const execute: CommandExecute = async(command, user) => {
               type: 1,
               components: [
                 revealButton(command).setDisabled(true).setLabel(translate(command.locale, global.config.exec.buttons.reveal)),
-                usageButton(command, user)
+                usageButton(command, user),
+                qrCodeButton()
               ]
             }]
           });
@@ -119,7 +129,8 @@ export const execute: CommandExecute = async(command, user) => {
         if (interaction.customId === "reveal") {
           interaction.update({ components: [{ type: 1, components: [
             revealButton(command).setDisabled(true),
-            usageButton(command, user)
+            usageButton(command, user),
+            qrCodeButton()
           ] }] });
 
           channel.send({
@@ -138,17 +149,60 @@ export const execute: CommandExecute = async(command, user) => {
             colors.error(error.message);
             interaction.update({ embeds: [simpleEmbed(translate(command.locale, global.config.exec.error, { error: error.message }), "error")] });
           });
+          collector.stop();
+        } else if (interaction.customId === "qrcode") {
+          const { data, error } = await supabase.storage
+            .from("qrcodes")
+            .upload(`${command.user.id}/${interaction.message.id}.png`, decode((await QRCode.toBuffer(
+              translate(command.locale, ask.config.exec.qrCode, {
+                question: value,
+                lang: getLocale(lang),
+                response: response?.data.choices[0].message?.content ?? "No response"
+              })
+            )).toString("base64")), {
+              contentType: "image/png"
+            });
 
-          collector.stop("Revealed");
+          const publicUrl = await supabase.storage.from("qrcodes").getPublicUrl(data?.path ?? "").data.publicUrl;
+
+          if (!publicUrl) {
+            colors.error("Could not get public URL");
+            interaction.update({ embeds: [simpleEmbed(translate(command.locale, global.config.exec.error, {
+              error: "Could not get public URL"
+            }), "error")] });
+            return;
+          }
+
+          if (error) {
+            colors.error(error.message);
+            interaction.update({ embeds: [simpleEmbed(translate(command.locale, global.config.exec.error, { error: error.message }), "error")] });
+            return;
+          }
+
+          command.editReply({
+            embeds: [
+              simpleEmbed(translate(command.locale, ask.config.exec.qrCodeDesc, { question: value }), "info", "QR Code", {
+                text: command.user.username,
+                icon_url: command.user.avatarURL() ?? undefined,
+                timestamp: true
+              }, "", publicUrl)
+            ],
+            components: []
+          }).catch((error: Error) => {
+            colors.error(error.message);
+            interaction.update({ embeds: [simpleEmbed(translate(command.locale, global.config.exec.error, { error: error.message }), "error")] });
+          });
+
+          collector.stop();
+          clearInterval(interval);
         }
       }).on("end", () => {
-        if (collector.endReason !== "Revealed") {
-          command.editReply({ components: [{ type: 1, components: [revealButton(command).setDisabled(true), usageButton(command, user)] }] });
-          clearInterval(interval);
-        } else {
-          clearInterval(interval);
-          command.editReply({ components: [{ type: 1, components: [revealButton(command).setDisabled(true), usageButton(command, user)] }] });
-        }
+        clearInterval(interval);
+        command.editReply({ components: [{ type: 1, components: [
+          revealButton(command).setDisabled(true),
+          usageButton(command, user),
+          qrCodeButton().setDisabled(true)
+        ] }] });
       });
     }
   }).catch((error: Error) => {
