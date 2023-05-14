@@ -1,6 +1,6 @@
 {
   "name": "discord-bot",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "Bottly discord bot",
   "main": "./build/src/client.js",
   "scripts": {
