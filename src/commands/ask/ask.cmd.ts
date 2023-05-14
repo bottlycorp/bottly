@@ -153,7 +153,7 @@ export const execute: CommandExecute = async(command, user) => {
         } else if (interaction.customId === "qrcode") {
           const { data, error } = await supabase.storage
             .from("qrcodes")
-            .upload(`${interaction.message.id}.png`, decode((await QRCode.toBuffer(
+            .upload(`${command.user.id}/${interaction.message.id}.png`, decode((await QRCode.toBuffer(
               translate(command.locale, ask.config.exec.qrCode, {
                 question: value,
                 lang: getLocale(lang),
