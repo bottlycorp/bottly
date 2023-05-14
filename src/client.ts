@@ -12,6 +12,7 @@ import { isDevEnvironment } from "./utils/environment";
 import { DayJS } from "./utils/day-js";
 
 export let today = DayJS().day();
+export let month = DayJS().month();
 
 export const client = new DiscordClient({
   intents: [
@@ -65,4 +66,8 @@ client.once("ready", async() => {
 
 export const changeToday = (to: number): void => {
   if (today !== to) today = to;
+};
+
+export const changeMonth = (to: number): void => {
+  if (month !== to) month = to;
 };

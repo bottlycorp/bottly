@@ -48,7 +48,9 @@ export const execute: CommandExecute = async(command, user) => {
 
   if (!user.privacy?.collectChat) {
     await deleteDiscussion(channel.id);
-    channel.send({ embeds: [simpleEmbed(translate(command.locale, chat.config.exec.deletedData), "info", "")] });
+    channel.send({ embeds: [simpleEmbed(translate(command.locale, chat.config.exec.deletedData, {
+      id: command.user.id
+    }), "error", "")] });
     colors.info(userWithId(command.user) + " stopped a discussion and deleted the data because he doesn't want to collect his data");
   }
 

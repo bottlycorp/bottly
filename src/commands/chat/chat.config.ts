@@ -157,15 +157,15 @@ export const chat = {
       },
       deletedData: {
         "en-US": [
-          "The data of this discussion has been deleted because you have set that you don't want your data to be saved in your",
+          ":wave: <@{id}> The data of this discussion has been deleted because you have set that you don't want your data to be saved in your",
           "privacy settings."
         ].join(" "),
         fr: [
-          "Les données de cette conversation viennent d'être supprimées parce que vous avez défini que vous ne voulez pas que vos",
+          ":wave: <@{id}> Les données de cette conversation viennent d'être supprimées parce que vous avez défini que vous ne voulez pas que vos",
           "données soient enregistrées dans vos paramètres de vie privée."
         ].join(" "),
         "pt-BR": [
-          "Os dados desta conversa foram excluídos porque você definiu que não deseja que seus dados sejam salvos em seu",
+          ":wave: <@{id}> Os dados desta conversa foram excluídos porque você definiu que não deseja que seus dados sejam salvos em seu",
           "configurações de privacidade."
         ].join(" ")
       },
