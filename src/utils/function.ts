@@ -66,3 +66,7 @@ export const numberFormat = (number: number): string => {
 
   return numberString;
 };
+
+export const delay = (ms: number): Promise<any> => {
+  return new Promise(resolve => setTimeout(resolve, ms));
+};

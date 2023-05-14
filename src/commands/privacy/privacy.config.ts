@@ -11,6 +11,72 @@ export const privacy = {
       "pt-BR": "Gerencie suas configurações de privacidade."
     },
     exec: {
+      deleted: {
+        title: {
+          "en-US": "Data deleted",
+          fr: "Données supprimées",
+          "pt-BR": "Dados excluídos"
+        },
+        description: {
+          "en-US": [
+            "Nice to meet you {username}, your questions, chat messages have been successfully deleted",
+            "\nHere are the data that remains about you:",
+            "- Your username",
+            "- Your Discord ID",
+            "- The language of your Discord client",
+            "- Your subscription status (Premium)",
+            "- Your bot first use date",
+            "- **For you**: The number of remaining uses for today ({usage}/{maxUsage})",
+            "\nHere are the data that have been deleted:",
+            "- Your chat messages",
+            "- Your questions",
+            "- Your discussions",
+            "- The number of uses and messages sent in the discussions"
+          ].join("\n"),
+          fr: [
+            "Heureux de vous avoir connu {username}, vos questions, messages de discussions ont été supprimées avec succès",
+            "\nVoici les données qu'il reste sur vous :",
+            "- Votre nom d'utilisateur",
+            "- Votre identifiant Discord",
+            "- La langue de votre client Discord",
+            "- Votre status d'abonnement (Premium)",
+            "- Votre date de première utilisation du bot",
+            "- **Pour vous**: Le nombre d'usage restant pour aujourd'hui ({usage}/{maxUsage})",
+            "\nVoici les données qui ont été supprimées :",
+            "- Vos messages de discussions",
+            "- Vos questions",
+            "- Vos discussions",
+            "- Le nombre d'utilisations et de messages envoyés dans les discussions"
+          ].join("\n"),
+          "pt-BR": [
+            "Foi um prazer conhecê-lo {username}, suas perguntas, mensagens de bate-papo foram excluídas com sucesso",
+            "\nAqui estão os dados que restam sobre você:",
+            "- Seu nome de usuário",
+            "- Seu ID do Discord",
+            "- O idioma do seu cliente Discord",
+            "- Seu status de assinatura (Premium)",
+            "- Sua data de primeira utilização do bot",
+            "- **Para você**: O número de usos restantes para hoje ({usage}/{maxUsage})",
+            "\nAqui estão os dados que foram excluídos:",
+            "- Suas mensagens de bate-papo",
+            "- Suas perguntas",
+            "- Suas discussões",
+            "- O número de usos e mensagens enviadas nas discussões"
+          ].join("\n")
+        }
+      },
+      deleteEmbed: {
+        title: {
+          "en-US": "Are you sure?",
+          fr: "Êtes-vous sûr ?",
+          "pt-BR": "Você tem certeza?"
+        },
+        description: {
+          "en-US": "Are you sure you want to delete all your data? This action is irreversible.",
+          fr: "Êtes-vous sûr de vouloir supprimer toutes vos données ? Cette action est irréversible.",
+          "pt-BR": "Você tem certeza que deseja excluir todos os seus dados? Esta ação é irreversível."
+        }
+      },
       embed: {
         title: {
           "en-US": "Privacy settings",
