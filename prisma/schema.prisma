@@ -105,12 +105,12 @@ model Tips {
 model Subscription {
   id             String @id @default(cuid())
   subscriptionId String @unique
-  nextDueDate    Int
   paymentMethod  String
   firstPayment   Int
   lastPayment    Int
-  userId         String @unique
+  nextPayment    Int
   email          String @unique
+  userId         String @unique
   user           User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
 
