@@ -22,10 +22,13 @@ export const global = {
           fr: "Révéler au public",
           "pt-BR": "Revelar ao público"
         },
+        revealTime: {
+          "en-US": "Reveal to public ({seconds}s)",
+          fr: "Révéler au public ({seconds}s)",
+          "pt-BR": "Revelar ao público ({seconds}s)"
+        },
         usage: {
-          "en-US": "{left}/{max} uses left",
-          fr: "{left}/{max} utilisations restantes",
-          "pt-BR": "{left}/{max} usos restantes"
+          "en-US": "{left}/{max}"
         },
         reveal_text: {
           "en-US": ":grey_question: {question}\n\n{response}",
