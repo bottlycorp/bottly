@@ -24,15 +24,16 @@ model User {
 }
 
 model Question {
-  id          String @id @unique @default(cuid())
-  question    String @default("")
-  answer      String @default("")
-  createdAt   Int    @default(0)
-  repliedAt   Int    @default(0)
+  id          String  @id @unique @default(cuid())
+  question    String  @default("")
+  answer      String  @default("")
+  createdAt   Int     @default(0)
+  repliedAt   Int     @default(0)
   userId      String
-  channelName String @default("Not defined")
-  guildName   String @default("Not defined")
-  user        User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  channelName String  @default("Not defined")
+  guildName   String  @default("Not defined")
+  isFavorite  Boolean @default(false)
+  user        User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
 
 model Usage {

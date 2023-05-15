@@ -19,7 +19,7 @@ export const execute: CommandExecute = async(command, user) => {
     return;
   }
 
-  const message = command.editReply(translate(command.locale, ask.config.exec.waiting));
+  const message = await command.editReply(translate(command.locale, ask.config.exec.waiting));
 
   let answer: string;
   const messages: { content: string; role: "user" | "system" | "assistant" }[] = [];
@@ -109,6 +109,16 @@ export const execute: CommandExecute = async(command, user) => {
       command.editReply({
         embeds: [simpleEmbed(translate(command.locale, global.config.exec.buttons.revealed), "info", "")],
         components: []
+      });
+    } else if (i.customId === "favorite") {
+      i.deferUpdate();
+
+      // const components = message.components;
+      // find the button with "favorite" custom id and setStyle to "Primary"
+      // components[0].components.find((c) => c.customId === "favorite")?.setStyle("PRIMARY");
+
+      command.editReply({
+        embeds: [...message.embeds, simpleEmbed(translate(command.locale, global.config.exec.favorited), "info", "")]
       });
     }
   });

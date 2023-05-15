@@ -57,6 +57,11 @@ export const global = {
           "pt-BR": "🖨️ Baixar"
         }
       },
+      favorited: {
+        "en-US": ":star: The question has been added to your favorites, you can find all your favorites by doing {cmdFavorites}",
+        fr: ":star: La question a été ajoutée à vos favoris, vous pouvez retrouver tous vos favoris en faisant {cmdFavorites}",
+        "pt-BR": ":star: A pergunta foi adicionada aos seus favoritos, você pode encontrar todos os seus favoritos fazendo {cmdFavorites}"
+      },
       voteNow: {
         fr: [
           "Votez pour Bottly toutes les 12 heures et obtenez 10 utilisations supplémentaires à chacun de vos votes"
