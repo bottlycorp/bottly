@@ -27,9 +27,9 @@ export const ask = {
           "en-US": "context"
         },
         description: {
-          "en-US": "The context of the question",
-          fr: "Le contexte de la question",
-          "pt-BR": "O contexto da pergunta"
+          "en-US": "Include an old question and answer in the request",
+          fr: "Inclure une ancienne question et réponse dans la demande",
+          "pt-BR": "Incluir uma pergunta e resposta antiga na solicitação"
         }
       },
       lang: {
@@ -78,6 +78,11 @@ export const ask = {
           "Língua: {lang}",
           "Resposta: {response}"
         ].join("\n")
+      },
+      waiting: {
+        "en-US": "{emojiTypingWumpus} Je suis entrain de réfléchir à votre question...",
+        fr: "{emojiTypingWumpus} I'm thinking about your question...",
+        "pt-BR": "{emojiTypingWumpus} Estou pensando na sua pergunta..."
       }
     }
   }
