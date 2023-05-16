@@ -80,8 +80,8 @@ export const ask = {
         ].join("\n")
       },
       waiting: {
-        "en-US": "{emojiTypingWumpus} Je suis entrain de réfléchir à votre question...",
-        fr: "{emojiTypingWumpus} I'm thinking about your question...",
+        "en-US": "{emojiTypingWumpus} I'm thinking about your question...",
+        fr: "{emojiTypingWumpus} Je suis entrain de réfléchir à votre question...",
         "pt-BR": "{emojiTypingWumpus} Estou pensando na sua pergunta..."
       }
     }
