@@ -1,13 +1,13 @@
 import { colors, openai } from "$core/client";
 import { translate } from "$core/utils/config/message/message.util";
 import { CommandExecute } from "$core/utils/handler/command";
-import { ButtonStyle, TextChannel, ThreadChannel } from "discord.js";
+import { ButtonStyle, CommandInteraction, TextChannel, ThreadChannel } from "discord.js";
 import { ask } from "./ask.config";
 import { global } from "$core/utils/config/message/command";
 import { limitString, userWithId } from "$core/utils/function";
 import { getQuestion, newQuestion } from "$core/utils/data/question";
 import { getPrompt } from "@bottlycorp/prompts";
-import { simpleEmbed } from "$core/utils/embed";
+import { simpleButton, simpleEmbed } from "$core/utils/embed";
 import { favoriteButton, qrCodeButton, revealButton, usageButton } from "$core/utils/config/buttons";
 import { updateUser } from "$core/utils/data/user";
 import { DayJS } from "$core/utils/day-js";
@@ -15,6 +15,7 @@ import QRCode from "qrcode";
 import { supabase } from "$core/utils/supabase";
 import { getLocale } from "$core/utils/locale";
 import { decode } from "base64-arraybuffer";
+import { EmbedBuilder } from "@discordjs/builders";
 
 export const execute: CommandExecute = async(command, user) => {
   const channel = command.channel;
@@ -68,14 +69,7 @@ export const execute: CommandExecute = async(command, user) => {
 
   command.editReply({
     content: "",
-    embeds: [
-      simpleEmbed(
-        translate(command.locale, ask.config.exec.success, { response: answer }),
-        "info",
-        "",
-        { text: command.user.username, icon_url: command.user.displayAvatarURL(), timestamp: true }
-      )
-    ],
+    embeds: [answerEmbed(command, answer)],
     components: [{
       type: 1,
       components: [revealButton(command), usageButton(command, user), favoriteButton(), qrCodeButton()]
@@ -114,30 +108,15 @@ export const execute: CommandExecute = async(command, user) => {
     return;
   }
 
+  let publicUrl = "ThisIsABlankUrlBecauseItIsNotYetGenerated";
+
   (await message).createMessageComponentCollector({ filter: (i) => i.user.id === command.user.id }).on("collect", async(i) => {
     i.deferUpdate();
     if (i.customId === "reveal") {
-
-      channel.send({
-        embeds: [
-          simpleEmbed(
-            translate(command.locale, global.config.exec.buttons.reveal_text, {
-              response: answer,
-              question: limitString(command.options.getString("prompt", true), 256)
-            }),
-            "info",
-            "",
-            { text: command.user.username, icon_url: command.user.displayAvatarURL(), timestamp: true }
-          )
-        ]
-      });
-
-      command.editReply({
-        embeds: [simpleEmbed(translate(command.locale, global.config.exec.buttons.revealed), "info", "")],
-        components: []
-      });
+      channel.send({ embeds: [answerPublicEmbed(command, answer, command.options.getString("prompt", true))] });
+      command.editReply({ embeds: [simpleEmbed(translate(command.locale, global.config.exec.buttons.revealed), "info", "")], components: [] });
     } else if (i.customId === "favorite") {
-      updateUser(user.userId, { questions: { update: { data: { isFavorite: favorited }, where: { id: question.id } } } });
+      updateUser(user.userId, { questions: { update: { data: { isFavorite: favorited, favoriteAt: DayJS().unix() }, where: { id: question.id } } } });
 
       favorited = !favorited;
       command.editReply({ components: [{ type: 1, components: [
@@ -147,24 +126,29 @@ export const execute: CommandExecute = async(command, user) => {
         qrCodeButton()
       ] }] });
     } else if (i.customId === "qrcode") {
-      const { data, error } = await supabase.storage
-        .from("qrcodes")
-        .upload(`${command.user.id}/${i.message.id}.png`, decode((await QRCode.toBuffer(
-          translate(command.locale, ask.config.exec.qrCode, {
-            question: limitString(command.options.getString("prompt", true), 256),
-            lang: getLocale(command.locale),
-            response: answer
-          })
-        )).toString("base64")), {
-          contentType: "image/png"
-        });
+      if (publicUrl == "ThisIsABlankUrlBecauseItIsNotYetGenerated") {
+        const { error } = await supabase.storage
+          .from("qrcodes")
+          .upload(`${command.user.id}/${i.message.id}.png`, decode((await QRCode.toBuffer(
+            translate(command.locale, ask.config.exec.qrCode, {
+              question: limitString(command.options.getString("prompt", true), 256),
+              lang: getLocale(command.locale),
+              response: answer
+            })
+          )).toString("base64")), {
+            contentType: "image/png"
+          });
 
-      if (error) {
-        command.editReply(translate(command.locale, ask.config.exec.error, { error: error.message }));
-        return;
+        if (error) {
+          command.editReply(translate(command.locale, ask.config.exec.error, { error: error.message }));
+          return;
+        }
+
+        publicUrl = await supabase.storage.from("qrcodes").getPublicUrl(`${command.user.id}/${i.message.id}.png`).data.publicUrl;
+        updateUser(user.userId, { questions: { update: { data: { qrCodeUrl: publicUrl }, where: { id: question.id } } } });
+        console.log("cc", publicUrl);
       }
 
-      const publicUrl = await supabase.storage.from("qrcodes").getPublicUrl(data?.path ?? "").data.publicUrl;
       if (!publicUrl) {
         command.editReply(translate(command.locale, ask.config.exec.error, { error: "No public URL" }));
         colors.error(userWithId(command.user) + " tried to get a QR code but no public URL was returned");
@@ -176,13 +160,42 @@ export const execute: CommandExecute = async(command, user) => {
           simpleEmbed(
             translate(command.locale, ask.config.exec.qrCodeDesc),
             "info",
-            "",
+            undefined,
             { text: command.user.username, icon_url: command.user.displayAvatarURL(), timestamp: true },
             "",
             publicUrl
           )
-        ]
+        ],
+        components: [{ type: 1, components: [simpleButton(undefined, ButtonStyle.Primary, "return", false, { name: "🔙" })] }]
+      });
+    } else if (i.customId === "return") {
+      command.editReply({
+        embeds: [answerEmbed(command, answer)],
+        components: [{ type: 1, components: [
+          revealButton(command),
+          usageButton(command, user),
+          favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
+          qrCodeButton()
+        ] }]
       });
     }
   });
+};
+
+export const answerEmbed = (command: CommandInteraction, answer: string): EmbedBuilder => {
+  return simpleEmbed(
+    translate(command.locale, ask.config.exec.success, { response: answer }),
+    "info",
+    "",
+    { text: command.user.username, icon_url: command.user.displayAvatarURL(), timestamp: true }
+  );
+};
+
+export const answerPublicEmbed = (command: CommandInteraction, answer: string, prompt: string): EmbedBuilder => {
+  return simpleEmbed(
+    translate(command.locale, global.config.exec.buttons.reveal_text, { response: answer, question: limitString(prompt, 100) }),
+    "info",
+    undefined,
+    { text: command.user.username, icon_url: command.user.displayAvatarURL(), timestamp: true }
+  );
 };

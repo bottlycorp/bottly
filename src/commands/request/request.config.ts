@@ -38,18 +38,26 @@ export const request = {
         "en-US": [
           "This question was asked the <t:{date}:F> (<t:{date2}:R>) and has been answered in `{time}s`, ",
           "has been sent in `{channel}` from `{guild}`.",
+          "{favoriteLine}",
           "\n\n**Question:** {question}\n**Answer:** {answer}"
         ].join(""),
         fr: [
           "Cette question a été posée le <t:{date}:F> (<t:{date2}:R>) et a été répondue en `{time}s`, ",
           "a été envoyée dans `{channel}` depuis `{guild}`.",
+          "{favoriteLine}",
           "\n\n**Question:** {question}\n**Réponse:** {answer}"
         ].join(""),
         "pt-BR": [
           "Esta pergunta foi feita em <t:{date}:F> (<t:{date2}:R>) e foi respondida em `{time}s`, ",
           "foi enviada em `{channel}` de `{guild}`.",
+          "{favoriteLine}",
           "\n\n**Pergunta:** {question}\n**Resposta:** {answer}"
         ].join("")
+      },
+      favoriteLine: {
+        "en-US": "\n\n`⭐` This question has been marked as favorite the <t:{date}:F>",
+        fr: "\n\n`⭐` Cette question a été marquée comme favorite le <t:{date}:F>",
+        "pt-BR": "\n\n`⭐` Esta pergunta foi marcada como favorita em <t:{date}:F>"
       }
     }
   }

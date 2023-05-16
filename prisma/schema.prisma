@@ -33,6 +33,8 @@ model Question {
   channelName String  @default("Not defined")
   guildName   String  @default("Not defined")
   isFavorite  Boolean @default(false)
+  favoriteAt  Int     @default(0)
+  qrCodeUrl   String  @default("")
   user        User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
 
