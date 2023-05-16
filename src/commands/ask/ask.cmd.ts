@@ -1,7 +1,7 @@
 import { colors, openai } from "$core/client";
 import { translate } from "$core/utils/config/message/message.util";
 import { CommandExecute } from "$core/utils/handler/command";
-import { ChatInputCommandInteraction, TextChannel, ThreadChannel } from "discord.js";
+import { ButtonStyle, TextChannel, ThreadChannel } from "discord.js";
 import { ask } from "./ask.config";
 import { global } from "$core/utils/config/message/command";
 import { limitString, userWithId } from "$core/utils/function";
@@ -9,8 +9,12 @@ import { getQuestion, newQuestion } from "$core/utils/data/question";
 import { getPrompt } from "@bottlycorp/prompts";
 import { simpleEmbed } from "$core/utils/embed";
 import { favoriteButton, qrCodeButton, revealButton, usageButton } from "$core/utils/config/buttons";
-import { UserIncludeAll, updateUser } from "$core/utils/data/user";
+import { updateUser } from "$core/utils/data/user";
 import { DayJS } from "$core/utils/day-js";
+import QRCode from "qrcode";
+import { supabase } from "$core/utils/supabase";
+import { getLocale } from "$core/utils/locale";
+import { decode } from "base64-arraybuffer";
 
 export const execute: CommandExecute = async(command, user) => {
   const channel = command.channel;
@@ -86,30 +90,33 @@ export const execute: CommandExecute = async(command, user) => {
       question: command.options.getString("prompt", true),
       createdAt: askedAt,
       repliedAt: repliedAt,
-      user: { connect: { userId: user.userId }}
-    } 
+      user: { connect: { userId: user.userId } }
+    }
   }).catch((error) => {
     command.editReply(translate(command.locale, ask.config.exec.error, { error: error.message }));
     colors.error(userWithId(command.user) + " tried to ask a question but an error occured: " + error.message);
     return;
   });
 
-  let seconds = 15;
-  const interval = setInterval(() => {
-    if (seconds <= 0) {
-      clearInterval(interval);
-      revealUpdateTime(command, user, seconds, true);
-      return;
-    }
+  setTimeout(() => {
+    command.editReply({ components: [{ type: 1, components: [
+      revealButton(command).setDisabled(true),
+      usageButton(command, user),
+      favoriteButton().setDisabled(true),
+      qrCodeButton().setDisabled(true)
+    ] }] });
+  }, 60000);
 
-    revealUpdateTime(command, user, seconds, false);
+  let favorited = false;
 
-    seconds--;
-  }, 1000);
+  if (!question) {
+    command.editReply(translate(command.locale, global.config.exec.error, { error: "Question does not exist" }));
+    return;
+  }
 
-  (await message).createMessageComponentCollector({ filter: (i) => i.user.id === command.user.id }).on("collect", (i) => {
+  (await message).createMessageComponentCollector({ filter: (i) => i.user.id === command.user.id }).on("collect", async(i) => {
+    i.deferUpdate();
     if (i.customId === "reveal") {
-      i.deferUpdate();
 
       channel.send({
         embeds: [
@@ -125,45 +132,57 @@ export const execute: CommandExecute = async(command, user) => {
         ]
       });
 
-      clearInterval(interval);
       command.editReply({
         embeds: [simpleEmbed(translate(command.locale, global.config.exec.buttons.revealed), "info", "")],
         components: []
       });
     } else if (i.customId === "favorite") {
-      i.deferUpdate();
+      updateUser(user.userId, { questions: { update: { data: { isFavorite: favorited }, where: { id: question.id } } } });
 
-      if (!question) {
-        command.editReply(translate(command.locale, global.config.exec.error, { error: "Question does not exist" }));
+      favorited = !favorited;
+      command.editReply({ components: [{ type: 1, components: [
+        revealButton(command),
+        usageButton(command, user),
+        favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
+        qrCodeButton()
+      ] }] });
+    } else if (i.customId === "qrcode") {
+      const { data, error } = await supabase.storage
+        .from("qrcodes")
+        .upload(`${command.user.id}/${i.message.id}.png`, decode((await QRCode.toBuffer(
+          translate(command.locale, ask.config.exec.qrCode, {
+            question: limitString(command.options.getString("prompt", true), 256),
+            lang: getLocale(command.locale),
+            response: answer
+          })
+        )).toString("base64")), {
+          contentType: "image/png"
+        });
+
+      if (error) {
+        command.editReply(translate(command.locale, ask.config.exec.error, { error: error.message }));
         return;
       }
 
-      updateUser(user.userId, { questions: { update: { data: { isFavorite: true }, where: { id: question.id } } } });
-
-      // const components = message.components;
-      // find the button with "favorite" custom id and setStyle to "Primary"
-      // components[0].components.find((c) => c.customId === "favorite")?.setStyle("PRIMARY");
+      const publicUrl = await supabase.storage.from("qrcodes").getPublicUrl(data?.path ?? "").data.publicUrl;
+      if (!publicUrl) {
+        command.editReply(translate(command.locale, ask.config.exec.error, { error: "No public URL" }));
+        colors.error(userWithId(command.user) + " tried to get a QR code but no public URL was returned");
+        return;
+      }
 
       command.editReply({
-        embeds: [...message.embeds, simpleEmbed(translate(command.locale, global.config.exec.favorited), "info", "")]
+        embeds: [
+          simpleEmbed(
+            translate(command.locale, ask.config.exec.qrCodeDesc),
+            "info",
+            "",
+            { text: command.user.username, icon_url: command.user.displayAvatarURL(), timestamp: true },
+            "",
+            publicUrl
+          )
+        ]
       });
     }
-  });
-};
-
-export const revealUpdateTime = (interaction: ChatInputCommandInteraction, user: UserIncludeAll, seconds: number, dis: boolean): void => {
-  const textTime = translate(interaction.locale, global.config.exec.buttons.revealTime, { seconds });
-  const text = translate(interaction.locale, global.config.exec.buttons.reveal);
-
-  interaction.editReply({
-    components: [{
-      type: 1,
-      components: [
-        revealButton(interaction).setLabel(dis ? text : textTime).setDisabled(dis),
-        usageButton(interaction, user),
-        favoriteButton(),
-        qrCodeButton()
-      ]
-    }]
   });
 };
