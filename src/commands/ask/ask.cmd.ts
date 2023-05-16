@@ -5,14 +5,16 @@ import { ChatInputCommandInteraction, TextChannel, ThreadChannel } from "discord
 import { ask } from "./ask.config";
 import { global } from "$core/utils/config/message/command";
 import { limitString, userWithId } from "$core/utils/function";
-import { getQuestion } from "$core/utils/data/question";
+import { getQuestion, newQuestion } from "$core/utils/data/question";
 import { getPrompt } from "@bottlycorp/prompts";
 import { simpleEmbed } from "$core/utils/embed";
 import { favoriteButton, qrCodeButton, revealButton, usageButton } from "$core/utils/config/buttons";
-import { UserIncludeAll } from "$core/utils/data/user";
+import { UserIncludeAll, updateUser } from "$core/utils/data/user";
+import { DayJS } from "$core/utils/day-js";
 
 export const execute: CommandExecute = async(command, user) => {
   const channel = command.channel;
+  const askedAt = DayJS().unix();
   if (!(channel instanceof ThreadChannel) && !(channel instanceof TextChannel)) {
     command.editReply(translate(command.locale, global.config.exec.notInATextChannel));
     colors.error(userWithId(command.user) + " tried to ask a question while not being in a text channel (thread or text channel)");
@@ -39,6 +41,7 @@ export const execute: CommandExecute = async(command, user) => {
 
   messages.push({ content: command.options.getString("prompt", true), role: "user" });
 
+  let repliedAt: number = DayJS().unix();
   try {
     const response = await openai.createChatCompletion({
       messages,
@@ -53,6 +56,7 @@ export const execute: CommandExecute = async(command, user) => {
     }
 
     answer = response.data.choices[0].message?.content;
+    repliedAt = DayJS().unix();
   } catch (error: any) {
     command.editReply(translate(command.locale, ask.config.exec.error, { error: error.message }));
     return;
@@ -72,6 +76,22 @@ export const execute: CommandExecute = async(command, user) => {
       type: 1,
       components: [revealButton(command), usageButton(command, user), favoriteButton(), qrCodeButton()]
     }]
+  });
+
+  const question = await newQuestion(command.user, {
+    data: {
+      answer: answer,
+      channelName: channel.name,
+      guildName: channel.guild.name,
+      question: command.options.getString("prompt", true),
+      createdAt: askedAt,
+      repliedAt: repliedAt,
+      user: { connect: { userId: user.userId }}
+    } 
+  }).catch((error) => {
+    command.editReply(translate(command.locale, ask.config.exec.error, { error: error.message }));
+    colors.error(userWithId(command.user) + " tried to ask a question but an error occured: " + error.message);
+    return;
   });
 
   let seconds = 15;
@@ -112,6 +132,13 @@ export const execute: CommandExecute = async(command, user) => {
       });
     } else if (i.customId === "favorite") {
       i.deferUpdate();
+
+      if (!question) {
+        command.editReply(translate(command.locale, global.config.exec.error, { error: "Question does not exist" }));
+        return;
+      }
+
+      updateUser(user.userId, { questions: { update: { data: { isFavorite: true }, where: { id: question.id } } } });
 
       // const components = message.components;
       // find the button with "favorite" custom id and setStyle to "Primary"
