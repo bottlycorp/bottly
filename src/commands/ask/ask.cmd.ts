@@ -113,8 +113,13 @@ export const execute: CommandExecute = async(command, user) => {
   (await message).createMessageComponentCollector({ filter: (i) => i.user.id === command.user.id }).on("collect", async(i) => {
     i.deferUpdate();
     if (i.customId === "reveal") {
-      channel.send({ embeds: [answerPublicEmbed(command, answer, command.options.getString("prompt", true))] });
-      command.editReply({ embeds: [simpleEmbed(translate(command.locale, global.config.exec.buttons.revealed), "info", "")], components: [] });
+      try {
+        channel.send({ embeds: [answerPublicEmbed(command, answer, command.options.getString("prompt", true))] });
+        command.editReply({ embeds: [simpleEmbed(translate(command.locale, global.config.exec.buttons.revealed), "info", "")], components: [] });
+      } catch (error) {
+        colors.error(userWithId(command.user) + " tried to reveal the answer but an error occured: " + error);
+        command.editReply(translate(command.locale, global.config.exec.error, { error: error.message }));
+      }
     } else if (i.customId === "favorite") {
       command.editReply({ components: [{ type: 1, components: [
         revealButton(command),
