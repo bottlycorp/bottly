@@ -24,11 +24,13 @@ export const execute: TaskExecute = async() => {
       }
     });
 
+    let alreadyMax = 0;
+    let reset = 0;
     for (const user of users) {
       if (!user) continue;
       const old = user.usages?.usage;
       if (old == getMaxUsage(user)) {
-        colors.warning(`[Usage Reset] ${user.username} (${user.userId}) - ${old} -> ${getMaxUsage(user)} (already max)`);
+        alreadyMax++;
         continue;
       }
 
@@ -43,7 +45,9 @@ export const execute: TaskExecute = async() => {
         }
       });
 
-      colors.warning(`[Usage Reset] ${user.username} (${user.userId}) - ${old} -> ${getMaxUsage(user)}`);
+      reset++;
     }
+
+    colors.log(`[Usage Reset] Reset ${reset} users, but ${alreadyMax} users already have max usage.`);
   }
 };
