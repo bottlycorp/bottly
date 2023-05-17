@@ -162,7 +162,6 @@ export const execute: CommandExecute = async(command, user) => {
 
         publicUrl = await supabase.storage.from("qrcodes").getPublicUrl(`${command.user.id}/${i.message.id}.png`).data.publicUrl;
         updateUser(user.userId, { questions: { update: { data: { qrCodeUrl: publicUrl }, where: { id: question.id } } } });
-        console.log("cc", publicUrl);
       }
 
       if (!publicUrl) {
