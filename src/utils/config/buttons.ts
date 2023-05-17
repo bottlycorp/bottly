@@ -29,6 +29,13 @@ export const revealButton = (command: CommandInteraction | Interaction) : Button
   );
 };
 
+export const favoriteButton = () : ButtonBuilder => {
+  return simpleButton(undefined, ButtonStyle.Secondary, "favorite", false, {
+    animated: false,
+    name: "⭐"
+  });
+};
+
 export const qrCodeButton = () : ButtonBuilder => {
   return simpleButton(undefined, ButtonStyle.Secondary, "qrcode", false, {
     animated: false,

@@ -22,10 +22,13 @@ export const global = {
           fr: "Révéler au public",
           "pt-BR": "Revelar ao público"
         },
+        revealTime: {
+          "en-US": "Reveal to public ({seconds}s)",
+          fr: "Révéler au public ({seconds}s)",
+          "pt-BR": "Revelar ao público ({seconds}s)"
+        },
         usage: {
-          "en-US": "{left}/{max} uses left",
-          fr: "{left}/{max} utilisations restantes",
-          "pt-BR": "{left}/{max} usos restantes"
+          "en-US": "{left}/{max}"
         },
         reveal_text: {
           "en-US": ":grey_question: {question}\n\n{response}",
@@ -53,6 +56,11 @@ export const global = {
           fr: "🖨️ Télécharger",
           "pt-BR": "🖨️ Baixar"
         }
+      },
+      favorited: {
+        "en-US": ":star: The question has been added to your favorites, you can find all your favorites by doing {cmdFavorites}",
+        fr: ":star: La question a été ajoutée à vos favoris, vous pouvez retrouver tous vos favoris en faisant {cmdFavorites}",
+        "pt-BR": ":star: A pergunta foi adicionada aos seus favoritos, você pode encontrar todos os seus favoritos fazendo {cmdFavorites}"
       },
       voteNow: {
         fr: [

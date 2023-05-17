@@ -1,212 +1,210 @@
 import { colors, openai } from "$core/client";
 import { translate } from "$core/utils/config/message/message.util";
-import { newQuestion } from "$core/utils/data/question";
-import { simpleEmbed } from "$core/utils/embed";
 import { CommandExecute } from "$core/utils/handler/command";
-import { CacheType, CommandInteractionOption, TextChannel, ThreadChannel } from "discord.js";
+import { ButtonStyle, CommandInteraction, TextChannel, ThreadChannel } from "discord.js";
 import { ask } from "./ask.config";
-import { DayJS } from "$core/utils/day-js";
-import { getPrompt } from "@bottlycorp/prompts";
-import { updateUser } from "$core/utils/data/user";
-import { Prompts } from "@bottlycorp/prompts/build/prompt.type";
-import { qrCodeButton, revealButton, usageButton } from "$core/utils/config/buttons";
 import { global } from "$core/utils/config/message/command";
-import { getLocale, localeExists, localeToString } from "$core/utils/locale";
-import { userWithId } from "$core/utils/function";
+import { limitString, userWithId } from "$core/utils/function";
+import { getQuestion, newQuestion } from "$core/utils/data/question";
+import { getPrompt } from "@bottlycorp/prompts";
+import { simpleButton, simpleEmbed } from "$core/utils/embed";
+import { favoriteButton, qrCodeButton, revealButton, usageButton } from "$core/utils/config/buttons";
+import { updateUser } from "$core/utils/data/user";
+import { DayJS } from "$core/utils/day-js";
 import QRCode from "qrcode";
 import { supabase } from "$core/utils/supabase";
+import { getLocale } from "$core/utils/locale";
 import { decode } from "base64-arraybuffer";
+import { EmbedBuilder } from "@discordjs/builders";
 
 export const execute: CommandExecute = async(command, user) => {
   const channel = command.channel;
+  const askedAt = DayJS().unix();
   if (!(channel instanceof ThreadChannel) && !(channel instanceof TextChannel)) {
     command.editReply(translate(command.locale, global.config.exec.notInATextChannel));
     colors.error(userWithId(command.user) + " tried to ask a question while not being in a text channel (thread or text channel)");
     return;
   }
 
-  const question: CommandInteractionOption<CacheType> = command.options.get(ask.config.options.prompt.name["en-US"], true);
-  const context: CommandInteractionOption<CacheType> | null = command.options.get(ask.config.options.context.name["en-US"], false);
-  const lang: string = command.options.getString(ask.config.options.lang.name["en-US"], false) ?? localeToString(command.locale);
-  const value: string | number | boolean | undefined = question.value;
+  const message = await command.editReply(translate(command.locale, ask.config.exec.waiting));
 
-  if (typeof value !== "string") {
-    command.editReply({
-      embeds: [simpleEmbed(translate(command.locale, ask.config.exec.error, { error: "Value is not a string" }), "error")]
+  let answer: string;
+  const messages: { content: string; role: "user" | "system" | "assistant" }[] = [];
+  messages.push({ role: "system", content: translate(command.locale, getPrompt("default")) });
+
+  const context = command.options.getString("context", false);
+  if (context) {
+    const question = await getQuestion(context, command.user.id);
+    if (!question) {
+      command.editReply(translate(command.locale, ask.config.exec.error, { error: "Question provided in context does not exist" }));
+      return;
+    }
+
+    messages.push({ content: question.question, role: "user" });
+    messages.push({ content: question.answer, role: "assistant" });
+  }
+
+  messages.push({ content: command.options.getString("prompt", true), role: "user" });
+
+  let repliedAt: number = DayJS().unix();
+  try {
+    const response = await openai.createChatCompletion({
+      messages,
+      max_tokens: 2500,
+      model: "gpt-3.5-turbo",
+      user: user.userId
     });
 
-    colors.error("Value is not a string");
+    if (!response.data.choices[0].message) {
+      command.editReply(translate(command.locale, ask.config.exec.error, { error: "No message in response" }));
+      return;
+    }
+
+    answer = response.data.choices[0].message?.content;
+    repliedAt = DayJS().unix();
+  } catch (error: any) {
+    command.editReply(translate(command.locale, ask.config.exec.error, { error: error.message }));
     return;
   }
 
-  if (!localeExists(lang)) {
-    command.editReply({
-      embeds: [simpleEmbed(translate(command.locale, ask.config.exec.error, { error: "Locale does not exist" }), "error")]
-    });
+  command.editReply({
+    content: "",
+    embeds: [answerEmbed(command, answer)],
+    components: [{
+      type: 1,
+      components: [revealButton(command), usageButton(command, user), favoriteButton(), qrCodeButton()]
+    }]
+  });
 
-    colors.error("Locale does not exist");
+  const question = await newQuestion(command.user, {
+    data: {
+      answer: answer,
+      channelName: channel.name,
+      guildName: channel.guild.name,
+      question: command.options.getString("prompt", true),
+      createdAt: askedAt,
+      repliedAt: repliedAt,
+      user: { connect: { userId: user.userId } }
+    }
+  }).catch((error) => {
+    command.editReply(translate(command.locale, ask.config.exec.error, { error: error.message }));
+    colors.error(userWithId(command.user) + " tried to ask a question but an error occured: " + error.message);
+    return;
+  });
+
+  setTimeout(() => {
+    command.editReply({ components: [{ type: 1, components: [
+      revealButton(command).setDisabled(true),
+      usageButton(command, user),
+      favoriteButton().setDisabled(true),
+      qrCodeButton().setDisabled(true)
+    ] }] });
+  }, 60000);
+
+  let favorited = false;
+
+  if (!question) {
+    command.editReply(translate(command.locale, global.config.exec.error, { error: "Question does not exist" }));
     return;
   }
 
-  const askedAt = DayJS().unix();
+  let publicUrl = "ThisIsABlankUrlBecauseItIsNotYetGenerated";
 
-  await openai.createChatCompletion({
-    messages: [
-      { role: "system", content: translate(command.locale, getPrompt(context?.value as Prompts), {
-        user: command.user.username,
-        lang: getLocale(lang)
-      }) },
-      { role: "user", content: value }
-    ],
-    max_tokens: 2500,
-    top_p: 0.5,
-    model: "gpt-3.5-turbo"
-  }).catch((error: Error) => {
-    command.reply({ embeds: [simpleEmbed(translate(command.locale, global.config.exec.error, { error: error.message }), "error")] });
-  }).then(async(response) => {
-    if (response) {
-      const repliedAt = DayJS().unix();
+  (await message).createMessageComponentCollector({ filter: (i) => i.user.id === command.user.id }).on("collect", async(i) => {
+    i.deferUpdate();
+    if (i.customId === "reveal") {
+      channel.send({ embeds: [answerPublicEmbed(command, answer, command.options.getString("prompt", true))] });
+      command.editReply({ embeds: [simpleEmbed(translate(command.locale, global.config.exec.buttons.revealed), "info", "")], components: [] });
+    } else if (i.customId === "favorite") {
+      command.editReply({ components: [{ type: 1, components: [
+        revealButton(command),
+        usageButton(command, user),
+        favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary).setDisabled(true),
+        qrCodeButton()
+      ] }] });
+
+      await updateUser(user.userId, {
+        questions: { update: { data: { isFavorite: favorited, favoriteAt: DayJS().unix() }, where: { id: question.id } } }
+      });
+
+      favorited = !favorited;
+      command.editReply({ components: [{ type: 1, components: [
+        revealButton(command),
+        usageButton(command, user),
+        favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary).setDisabled(false),
+        qrCodeButton()
+      ] }] });
+    } else if (i.customId === "qrcode") {
+      if (publicUrl == "ThisIsABlankUrlBecauseItIsNotYetGenerated") {
+        const { error } = await supabase.storage
+          .from("qrcodes")
+          .upload(`${command.user.id}/${i.message.id}.png`, decode((await QRCode.toBuffer(
+            translate(command.locale, ask.config.exec.qrCode, {
+              question: limitString(command.options.getString("prompt", true), 256),
+              lang: getLocale(command.locale),
+              response: answer
+            })
+          )).toString("base64")), {
+            contentType: "image/png"
+          });
+
+        if (error) {
+          command.editReply(translate(command.locale, ask.config.exec.error, { error: error.message }));
+          return;
+        }
+
+        publicUrl = await supabase.storage.from("qrcodes").getPublicUrl(`${command.user.id}/${i.message.id}.png`).data.publicUrl;
+        updateUser(user.userId, { questions: { update: { data: { qrCodeUrl: publicUrl }, where: { id: question.id } } } });
+        console.log("cc", publicUrl);
+      }
+
+      if (!publicUrl) {
+        command.editReply(translate(command.locale, ask.config.exec.error, { error: "No public URL" }));
+        colors.error(userWithId(command.user) + " tried to get a QR code but no public URL was returned");
+        return;
+      }
 
       command.editReply({
-        embeds: [simpleEmbed(translate(command.locale, ask.config.exec.success, {
-          response: response?.data.choices[0].message?.content ?? "No response"
-        }), "info")],
+        embeds: [
+          simpleEmbed(
+            translate(command.locale, ask.config.exec.qrCodeDesc),
+            "info",
+            undefined,
+            { text: command.user.username, icon_url: command.user.displayAvatarURL(), timestamp: true },
+            "",
+            publicUrl
+          )
+        ],
+        components: [{ type: 1, components: [simpleButton(undefined, ButtonStyle.Primary, "return", false, { name: "🔙" })] }]
+      });
+    } else if (i.customId === "return") {
+      command.editReply({
+        embeds: [answerEmbed(command, answer)],
         components: [{ type: 1, components: [
           revealButton(command),
           usageButton(command, user),
+          favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
           qrCodeButton()
         ] }]
       });
-
-      await newQuestion(command.user, {
-        data: {
-          question: value,
-          answer: response?.data.choices[0].message?.content ?? "No response",
-          createdAt: askedAt,
-          repliedAt: repliedAt,
-          channelName: channel.name,
-          guildName: channel.guild.name,
-          user: {
-            connect: {
-              userId: command.user.id
-            }
-          }
-        }
-      });
-
-      updateUser(command.user.id, { usages: { update: { usage: { decrement: 1 } } } });
-
-      let seconds = 15;
-      const interval = setInterval(() => {
-        seconds--;
-        command.editReply({
-          components: [{ type: 1, components: [
-            revealButton(command).setLabel(translate(command.locale, global.config.exec.buttons.reveal) + ` (${seconds}s)`),
-            usageButton(command, user),
-            qrCodeButton()
-          ] }]
-        });
-
-        if (seconds == 0) {
-          command.editReply({
-            components: [{
-              type: 1,
-              components: [
-                revealButton(command).setDisabled(true).setLabel(translate(command.locale, global.config.exec.buttons.reveal)),
-                usageButton(command, user),
-                qrCodeButton()
-              ]
-            }]
-          });
-          clearInterval(interval);
-        }
-      }, 1000);
-
-      const collector = channel.createMessageComponentCollector({
-        filter: (interaction) => interaction.user.id === command.user.id,
-        time: 17000
-      }).on("collect", async(interaction) => {
-        if (interaction.customId === "reveal") {
-          interaction.update({ components: [{ type: 1, components: [
-            revealButton(command).setDisabled(true),
-            usageButton(command, user),
-            qrCodeButton()
-          ] }] });
-
-          channel.send({
-            embeds: [
-              simpleEmbed(translate(command.locale, global.config.exec.buttons.reveal_text, {
-                question: value,
-                locale: command.locale,
-                response: response?.data.choices[0].message?.content ?? "No response"
-              }), "info", "", {
-                text: command.user.username,
-                icon_url: command.user.avatarURL() ?? undefined,
-                timestamp: true
-              })
-            ]
-          }).catch((error: Error) => {
-            colors.error(error.message);
-            interaction.update({ embeds: [simpleEmbed(translate(command.locale, global.config.exec.error, { error: error.message }), "error")] });
-          });
-          collector.stop();
-        } else if (interaction.customId === "qrcode") {
-          const { data, error } = await supabase.storage
-            .from("qrcodes")
-            .upload(`${command.user.id}/${interaction.message.id}.png`, decode((await QRCode.toBuffer(
-              translate(command.locale, ask.config.exec.qrCode, {
-                question: value,
-                lang: getLocale(lang),
-                response: response?.data.choices[0].message?.content ?? "No response"
-              })
-            )).toString("base64")), {
-              contentType: "image/png"
-            });
-
-          const publicUrl = await supabase.storage.from("qrcodes").getPublicUrl(data?.path ?? "").data.publicUrl;
-
-          if (!publicUrl) {
-            colors.error("Could not get public URL");
-            interaction.update({ embeds: [simpleEmbed(translate(command.locale, global.config.exec.error, {
-              error: "Could not get public URL"
-            }), "error")] });
-            return;
-          }
-
-          if (error) {
-            colors.error(error.message);
-            interaction.update({ embeds: [simpleEmbed(translate(command.locale, global.config.exec.error, { error: error.message }), "error")] });
-            return;
-          }
-
-          command.editReply({
-            embeds: [
-              simpleEmbed(translate(command.locale, ask.config.exec.qrCodeDesc, { question: value }), "info", "QR Code", {
-                text: command.user.username,
-                icon_url: command.user.avatarURL() ?? undefined,
-                timestamp: true
-              }, "", publicUrl)
-            ],
-            components: []
-          }).catch((error: Error) => {
-            colors.error(error.message);
-            interaction.update({ embeds: [simpleEmbed(translate(command.locale, global.config.exec.error, { error: error.message }), "error")] });
-          });
-
-          collector.stop();
-          clearInterval(interval);
-        }
-      }).on("end", () => {
-        clearInterval(interval);
-        command.editReply({ components: [{ type: 1, components: [
-          revealButton(command).setDisabled(true),
-          usageButton(command, user),
-          qrCodeButton().setDisabled(true)
-        ] }] });
-      });
     }
-  }).catch((error: Error) => {
-    colors.error(error.message);
-    command.editReply({ embeds: [simpleEmbed(translate(command.locale, ask.config.exec.error, { error: error.message }), "error")] });
   });
+};
+
+export const answerEmbed = (command: CommandInteraction, answer: string): EmbedBuilder => {
+  return simpleEmbed(
+    translate(command.locale, ask.config.exec.success, { response: answer }),
+    "info",
+    "",
+    { text: command.user.username, icon_url: command.user.displayAvatarURL(), timestamp: true }
+  );
+};
+
+export const answerPublicEmbed = (command: CommandInteraction, answer: string, prompt: string): EmbedBuilder => {
+  return simpleEmbed(
+    translate(command.locale, global.config.exec.buttons.reveal_text, { response: answer, question: limitString(prompt, 100) }),
+    "info",
+    undefined,
+    { text: command.user.username, icon_url: command.user.displayAvatarURL(), timestamp: true }
+  );
 };

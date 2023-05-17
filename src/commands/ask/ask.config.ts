@@ -27,9 +27,9 @@ export const ask = {
           "en-US": "context"
         },
         description: {
-          "en-US": "The context of the question",
-          fr: "Le contexte de la question",
-          "pt-BR": "O contexto da pergunta"
+          "en-US": "Include an old question and answer in the request",
+          fr: "Inclure une ancienne question et réponse dans la demande",
+          "pt-BR": "Incluir uma pergunta e resposta antiga na solicitação"
         }
       },
       lang: {
@@ -58,9 +58,9 @@ export const ask = {
         "pt-BR": "Ocorreu um erro ao executar o comando: **{error}**"
       },
       qrCodeDesc: {
-        "en-US": "{emojiQRC} Here is a QRCode for your question: `{question}`",
-        fr: "{emojiQRC} Voici un QRCode pour votre question: `{question}`",
-        "pt-BR": "{emojiQRC} Aqui está um QRCode para sua pergunta: `{question}`"
+        "en-US": "{emojiQRC} Here is the QR code related to the answer to your question",
+        fr: "{emojiQRC} Voici le  QR code en lien avec la réponse à votre question",
+        "pt-BR": "{emojiQRC} Aqui está o QR code relacionado à resposta da sua pergunta"
       },
       qrCode: {
         "en-US": [
@@ -78,6 +78,11 @@ export const ask = {
           "Língua: {lang}",
           "Resposta: {response}"
         ].join("\n")
+      },
+      waiting: {
+        "en-US": "{emojiTypingWumpus} I'm thinking about your question...",
+        fr: "{emojiTypingWumpus} Je suis entrain de réfléchir à votre question...",
+        "pt-BR": "{emojiTypingWumpus} Estou pensando na sua pergunta..."
       }
     }
   }

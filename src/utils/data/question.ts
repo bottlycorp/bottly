@@ -8,27 +8,12 @@ export type QuestionIncludeAll = Prisma.QuestionGetPayload<{
   include: { user: false };
 }>
 
-export const newQuestion = async(user: User, question: Prisma.QuestionCreateArgs): Promise<boolean> => {
-  await prisma.user.update({
-    where: {
-      userId: user.id
-    },
-    data: {
-      questions: {
-        create: {
-          question: question.data.question,
-          answer: question.data.answer,
-          createdAt: question.data.createdAt,
-          repliedAt: question.data.repliedAt,
-          channelName: question.data.channelName,
-          guildName: question.data.guildName
-        }
-      }
-    }
-  });
+export const newQuestion = async(user: User, question: Prisma.QuestionCreateArgs): Promise<false | QuestionIncludeAll> => {
+  const data = await prisma.question.create(question);
+  if (data == null) return false;
 
   colors.info(`New question created for user ${userWithId(user)}, question: ${question.data.question}`);
-  return true;
+  return data;
 };
 
 export const getQuestions = async(userId: string, contains?: string): Promise<QuestionIncludeAll[] | null> => {
