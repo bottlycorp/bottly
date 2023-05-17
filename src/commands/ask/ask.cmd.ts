@@ -118,7 +118,9 @@ export const execute: CommandExecute = async(command, user) => {
         command.editReply({ embeds: [simpleEmbed(translate(command.locale, global.config.exec.buttons.revealed), "info", "")], components: [] });
       } catch (error) {
         colors.error(userWithId(command.user) + " tried to reveal the answer but an error occured: " + error);
-        command.editReply(translate(command.locale, global.config.exec.error, { error: error.message }));
+        command.editReply(translate(command.locale, global.config.exec.error, {
+          error: "An error occured while revealing the answer, possibility is a permission error check permissions"
+        }));
       }
     } else if (i.customId === "favorite") {
       command.editReply({ components: [{ type: 1, components: [
