@@ -1,0 +1,42 @@
+import { translate } from "$core/utils/config/message/message.util";
+import { simpleButton, simpleEmbed } from "$core/utils/embed";
+import { CommandExecute } from "$core/utils/handler/command";
+import { ButtonBuilder } from "@discordjs/builders";
+import { premium } from "./premium.config";
+import { ButtonStyle } from "discord.js";
+
+export const execute: CommandExecute = async(command, user) => {
+  const embed = simpleEmbed("", "premium", translate(command.locale, premium.config.exec.embed.title), {
+    text: command.user.username,
+    icon_url: command.user.displayAvatarURL() ?? undefined,
+    timestamp: true
+  });
+
+  const buttons: ButtonBuilder[] = [];
+
+  if (user.isPremium && user.subscription) {
+    embed.setDescription(translate(command.locale, premium.config.exec.embed.descriptionPremium, {
+      date: user.subscription?.firstPayment
+    }));
+
+    buttons.push(
+      simpleButton(
+        translate(command.locale, premium.config.exec.buttons.manageSubscription),
+        ButtonStyle.Link,
+        "https://google.com"
+      )
+    );
+  } else {
+    embed.setDescription(translate(command.locale, premium.config.exec.embed.descriptionNotPremium));
+
+    buttons.push(
+      simpleButton(
+        translate(command.locale, premium.config.exec.buttons.becomePremium),
+        ButtonStyle.Link,
+        "https://google.com"
+      )
+    );
+  }
+
+  command.editReply({ embeds: [embed], components: [{ type: 1, components: buttons }] });
+};
