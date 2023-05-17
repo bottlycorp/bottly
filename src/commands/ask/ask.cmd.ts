@@ -116,13 +116,22 @@ export const execute: CommandExecute = async(command, user) => {
       channel.send({ embeds: [answerPublicEmbed(command, answer, command.options.getString("prompt", true))] });
       command.editReply({ embeds: [simpleEmbed(translate(command.locale, global.config.exec.buttons.revealed), "info", "")], components: [] });
     } else if (i.customId === "favorite") {
-      updateUser(user.userId, { questions: { update: { data: { isFavorite: favorited, favoriteAt: DayJS().unix() }, where: { id: question.id } } } });
+      command.editReply({ components: [{ type: 1, components: [
+        revealButton(command),
+        usageButton(command, user),
+        favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary).setDisabled(true),
+        qrCodeButton()
+      ] }] });
+
+      await updateUser(user.userId, {
+        questions: { update: { data: { isFavorite: favorited, favoriteAt: DayJS().unix() }, where: { id: question.id } } }
+      });
 
       favorited = !favorited;
       command.editReply({ components: [{ type: 1, components: [
         revealButton(command),
         usageButton(command, user),
-        favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
+        favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary).setDisabled(false),
         qrCodeButton()
       ] }] });
     } else if (i.customId === "qrcode") {
