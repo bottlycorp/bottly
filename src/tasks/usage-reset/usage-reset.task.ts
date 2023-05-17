@@ -48,6 +48,6 @@ export const execute: TaskExecute = async() => {
       reset++;
     }
 
-    colors.log(`[Usage Reset] Reset ${reset} users, but ${alreadyMax} users already have max usage.`);
+    colors.warning(`[Usage Reset] Reset ${reset} users, but ${alreadyMax} users already have max usage.`);
   }
 };
