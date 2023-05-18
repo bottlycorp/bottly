@@ -31,9 +31,21 @@ export const premium = {
           "pt-BR": "Assinatura Premium"
         },
         descriptionPremium: {
-          "en-US": "You are a premium user since <t:{date}:R>.",
-          fr: "Vous êtes un utilisateur premium depuis le <t:{date}:R>.",
-          "pt-BR": "Você é um usuário premium desde <t:{date}:R>."
+          "en-US": [
+            "{emojiPremium} You are a premium user, thank you for your support !",
+            "\nSubscription active since <t:{first}:R>.",
+            "Next payment on <t:{next}:R>."
+          ].join("\n"),
+          fr: [
+            "{emojiPremium} Vous êtes un utilisateur premium, merci pour votre soutien !",
+            "\nAbonnement actif depuis le <t:{first}:R>.",
+            "Prochain paiement le <t:{next}:R>."
+          ].join("\n"),
+          "pt-BR": [
+            "{emojiPremium} Você é um usuário premium, obrigado pelo seu apoio !",
+            "\nAssinatura ativa desde <t:{first}:R>.",
+            "Próximo pagamento em <t:{next}:R>."
+          ].join("\n")
         },
         descriptionNotPremium: {
           "en-US": [

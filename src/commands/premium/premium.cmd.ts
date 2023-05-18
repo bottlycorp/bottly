@@ -17,8 +17,10 @@ export const execute: CommandExecute = async(command, user) => {
 
   if (user.isPremium && user.subscription) {
     embed.setDescription(translate(command.locale, premium.config.exec.embed.descriptionPremium, {
-      date: user.subscription?.firstPayment
+      first: user.subscription?.firstPayment,
+      next: user.subscription?.nextPayment
     }));
+    embed.setTitle(null);
 
     buttons.push(
       simpleButton(
