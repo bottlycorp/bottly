@@ -19,9 +19,9 @@ export const premium = {
           "pt-BR": "Gerenciar assinatura"
         },
         becomePremium: {
-          "en-US": "Become premium for $4.99/month",
-          fr: "Devenir premium pour 4.99€/mois",
-          "pt-BR": "Se tornar premium por R$ 4,99/mês"
+          "en-US": "Become premium for $5.00/month",
+          fr: "Devenir premium pour 5.00$/mois",
+          "pt-BR": "Se tornar premium por R$ 5,00/mês"
         }
       },
       embed: {
