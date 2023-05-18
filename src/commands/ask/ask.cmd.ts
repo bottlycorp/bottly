@@ -92,6 +92,16 @@ export const execute: CommandExecute = async(command, user) => {
     return;
   });
 
+  updateUser(user.userId, {
+    usages: {
+      update: {
+        usage: {
+          decrement: 1
+        }
+      }
+    }
+  });
+
   setTimeout(() => {
     command.editReply({ components: [{ type: 1, components: [
       revealButton(command).setDisabled(true),
