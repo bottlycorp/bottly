@@ -130,11 +130,11 @@ export const execute: CommandExecute = async(command, user) => {
         qrCodeButton()
       ] }] });
 
+      favorited = !favorited;
       await updateUser(user.userId, {
         questions: { update: { data: { isFavorite: favorited, favoriteAt: DayJS().unix() }, where: { id: question.id } } }
       });
 
-      favorited = !favorited;
       command.editReply({ components: [{ type: 1, components: [
         revealButton(command),
         usageButton(command, user),
