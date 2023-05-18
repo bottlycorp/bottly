@@ -20,7 +20,8 @@ export const execute: TaskExecute = async() => {
         discussions: true,
         questions: true,
         votes: true,
-        tips: true
+        tips: true,
+        subscription: true
       }
     });
 
