@@ -59,7 +59,8 @@ export const isADiscussion = async(channelId: string): Promise<boolean> => {
 export const closeAllDiscussions = async(guildId: string): Promise<boolean> => {
   const deleted = await prisma.discussion.updateMany({
     where: {
-      guildId: guildId
+      guildId: guildId,
+      active: true
     },
     data: {
       active: false,
@@ -70,6 +71,20 @@ export const closeAllDiscussions = async(guildId: string): Promise<boolean> => {
   return !!deleted;
 };
 
+export const closeAllDiscussionsForUser = async(userId: string): Promise<boolean> => {
+  const deleted = await prisma.discussion.updateMany({
+    where: {
+      userId: userId,
+      active: true
+    },
+    data: {
+      active: false,
+      writing: false
+    }
+  });
+
+  return !!deleted;
+};
 
 export const isTheAuthor = async(channelId: string, userId: string): Promise<boolean> => {
   const discussion = await prisma.discussion.findUnique({
