@@ -67,12 +67,9 @@ export const premium = {
             "• Download discussions when finished",
             "\n**How do I become premium and how much does it cost ?**",
             "• You can become premium by clicking on the button below, for a total of $4.99 per month.",
-            "\n**Can I cancel my subscription ?**",
-            "• Yes, you can cancel your subscription at any time from Stripe.",
-            "\n**Can I get a refund ?**",
-            "• Yes, you can get a refund within 14 days of purchase.",
-            "\n**Is there a free trial ?**",
-            "• Try for free for 7 days with the {cmdPremiumTrial} command."
+            "\n**Can I cancel my subscription, or refund it ?**",
+            "• Yes, you can cancel your subscription at any time from Stripe and you will not be charged again. ",
+            "• We do not refund the subscription, but you can cancel it at any time."
           ].join("\n"),
           fr: [
             "{emojiPremium} Vous n'êtes pas un utilisateur premium.",
@@ -83,12 +80,9 @@ export const premium = {
             "• Téléchargez les discussions une fois terminées",
             "\n**Comment devenir premium et combien ça coûte ?**",
             "• Vous pouvez devenir premium en cliquant sur le bouton ci-dessous, pour un total de 4.99$ par mois.",
-            "\n**Est-ce que je peux annuler mon abonnement ?**",
-            "• Oui, vous pouvez annuler votre abonnement à tout moment depuis Stripe.",
-            "\n**Est-ce que je peux me faire rembourser ?**",
-            "• Oui, vous pouvez vous faire rembourser dans les 14 jours suivant votre achat.",
-            "\n**Y a t'il un essai gratuit ?**",
-            "• Essayer gratuitement pendant 7 jours avec la commande {cmdPremiumTrial}."
+            "\n**Est-ce que je peux annuler mon abonnement, ou me faire rembourser ?**",
+            "• Oui, vous pouvez annuler votre abonnement à tout moment depuis Stripe et vous ne serez plus facturé.",
+            "• Nous ne remboursons pas l'abonnement, mais vous pouvez l'annuler à tout moment."
           ].join("\n"),
           "pt-BR": [
             "{emojiPremium} Você não é um usuário premium.",
@@ -99,12 +93,9 @@ export const premium = {
             "• Baixe as discussões quando terminar",
             "\n**Como me tornar premium e quanto custa ?**",
             "• Você pode se tornar premium clicando no botão abaixo, por um total de R$ 4,99 por mês.",
-            "\n**Posso cancelar minha assinatura ?**",
-            "• Sim, você pode cancelar sua assinatura a qualquer momento no Stripe.",
-            "\n**Posso ser reembolsado ?**",
-            "• Sim, você pode ser reembolsado dentro de 14 dias após a compra.",
-            "\n**Há um teste gratuito ?**",
-            "• Experimentar gratuitamente por 7 dias com o comando {cmdPremiumTrial}."
+            "\n**Posso cancelar minha assinatura ou reembolsá-la ?**",
+            "• Sim, você pode cancelar sua assinatura a qualquer momento no Stripe e não será cobrado novamente.",
+            "• Não reembolsamos a assinatura, mas você pode cancelá-la a qualquer momento."
           ].join("\n")
         }
       }
