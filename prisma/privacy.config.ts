@@ -46,6 +46,11 @@ export const privacy = {
         fr: "Vous avez accepté la politique de confidentialité, vos données seront enregistrées et vous pourrez les récupérer la prochaine fois.",
         "pt-BR": "Você aceitou a política de privacidade, seus dados serão salvos e você poderá recuperá-los na próxima vez."
       },
+      acceptedNotifyExecuted: {
+        "en-US": "The command will be executed in a few seconds.",
+        fr: "La commande sera exécutée dans quelques secondes.",
+        "pt-BR": "O comando será executado em alguns segundos."
+      },
       youCannotReadThatFast: {
         "en-US": "😡 It's literally impossible to read this text in `{seconds}s`, be serious! [📎]({postLinkedin})",
         fr: "😡 C'est littéralement impossible de lire ce texte en `{seconds}s`, soyez sérieux ! [📎]({postLinkedin})",
