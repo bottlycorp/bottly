@@ -92,6 +92,16 @@ export const execute: CommandExecute = async(command, user) => {
     return;
   });
 
+  updateUser(user.userId, {
+    usages: {
+      update: {
+        usage: {
+          decrement: 1
+        }
+      }
+    }
+  });
+
   setTimeout(() => {
     command.editReply({ components: [{ type: 1, components: [
       revealButton(command).setDisabled(true),
@@ -113,8 +123,15 @@ export const execute: CommandExecute = async(command, user) => {
   (await message).createMessageComponentCollector({ filter: (i) => i.user.id === command.user.id }).on("collect", async(i) => {
     i.deferUpdate();
     if (i.customId === "reveal") {
-      channel.send({ embeds: [answerPublicEmbed(command, answer, command.options.getString("prompt", true))] });
-      command.editReply({ embeds: [simpleEmbed(translate(command.locale, global.config.exec.buttons.revealed), "info", "")], components: [] });
+      try {
+        channel.send({ embeds: [answerPublicEmbed(command, answer, command.options.getString("prompt", true))] });
+        command.editReply({ embeds: [simpleEmbed(translate(command.locale, global.config.exec.buttons.revealed), "info", "")], components: [] });
+      } catch (error) {
+        colors.error(userWithId(command.user) + " tried to reveal the answer but an error occured: " + error);
+        command.editReply(translate(command.locale, global.config.exec.error, {
+          error: "An error occured while revealing the answer, possibility is a permission error check permissions"
+        }));
+      }
     } else if (i.customId === "favorite") {
       command.editReply({ components: [{ type: 1, components: [
         revealButton(command),
@@ -123,11 +140,11 @@ export const execute: CommandExecute = async(command, user) => {
         qrCodeButton()
       ] }] });
 
+      favorited = !favorited;
       await updateUser(user.userId, {
         questions: { update: { data: { isFavorite: favorited, favoriteAt: DayJS().unix() }, where: { id: question.id } } }
       });
 
-      favorited = !favorited;
       command.editReply({ components: [{ type: 1, components: [
         revealButton(command),
         usageButton(command, user),
