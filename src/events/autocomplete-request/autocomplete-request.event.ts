@@ -1,11 +1,8 @@
 import { colors } from "$core/client";
-import { request } from "$core/commands/request/request.config";
-import { translate } from "$core/utils/config/message/message.util";
 import { getQuestions } from "$core/utils/data/question";
 import { limitString } from "$core/utils/function";
 import { EnableInDev } from "$core/utils/handler";
 import { EventExecute, EventName } from "$core/utils/handler/event";
-import dayjs from "dayjs";
 import { Interaction } from "discord.js";
 
 export const enableInDev: EnableInDev = true;
@@ -25,12 +22,14 @@ export const execute: EventExecute<"interactionCreate"> = async(interaction: Int
     return;
   }
 
-  interaction.respond(
-    requests.map((question) => ({
-      name: limitString(question.question, 70) + " - " + translate(interaction.locale, request.config.exec.auto, {
-        date: dayjs((question.createdAt * 1000)).format("DD/MM/YYYY HH:mm:ss")
-      }),
-      value: question.id
-    })).slice(0, 25)
-  );
+  const favorites = requests.filter((question) => question.isFavorite);
+  const otherQuestions = requests.filter((question) => !question.isFavorite);
+
+  const options = [...favorites, ...otherQuestions].slice(0, 25).map((question) => {
+    const name = (question.isFavorite ? "(⭐) " : "") + limitString(question.question, 65);
+    const value = question.id;
+    return { name, value };
+  });
+
+  interaction.respond(options);
 };
