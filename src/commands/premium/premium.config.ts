@@ -33,19 +33,29 @@ export const premium = {
         descriptionPremium: {
           "en-US": [
             "{emojiPremium} You are a premium user, thank you for your support !",
-            "\nSubscription active since <t:{first}:R>.",
-            "Next payment on <t:{next}:R>."
+            "\nYour subscription is active since <t:{firstF}:f> (<t:{firstR}:R>).",
+            "{activeSubscription}"
           ].join("\n"),
           fr: [
             "{emojiPremium} Vous êtes un utilisateur premium, merci pour votre soutien !",
-            "\nAbonnement actif depuis le <t:{first}:R>.",
-            "Prochain paiement le <t:{next}:R>."
+            "\nAbonnement actif depuis le <t:{firstF}:f> (<t:{firstR}:R>).",
+            "{activeSubscription}"
           ].join("\n"),
           "pt-BR": [
             "{emojiPremium} Você é um usuário premium, obrigado pelo seu apoio !",
-            "\nAssinatura ativa desde <t:{first}:R>.",
-            "Próximo pagamento em <t:{next}:R>."
+            "\nAssinatura ativa desde <t:{firstF}:f> (<t:{firstR}:R>).",
+            "{activeSubscription}"
           ].join("\n")
+        },
+        activeSubscription: {
+          "en-US": "The next billing will take place on <t:{next}:F>.",
+          fr: "La prochaine facuration aura lieu le <t:{next}:F>.",
+          "pt-BR": "A próxima cobrança ocorrerá em <t:{next}:F>."
+        },
+        canceledSubscription: {
+          "en-US": "Your subscription has been canceled, you will no longer be charged and will lose your premium status on <t:{next}:F>.",
+          fr: "Votre abonnement a été annulé, vous ne serez plus facturé et vous perdrez votre statut premium le <t:{next}:F>.",
+          "pt-BR": "Sua assinatura foi cancelada, você não será mais cobrado e perderá seu status premium em <t:{next}:F>."
         },
         descriptionNotPremium: {
           "en-US": [
