@@ -7,6 +7,7 @@ import { emojiByUsage } from "../function";
 import { chat } from "$core/commands/chat/chat.config";
 import { privacy } from "prisma/privacy.config";
 import { simpleButton } from "../embed";
+import { getStringEnv } from "../env-variable";
 
 export const usageButton = (command: CommandInteraction | Interaction, user: UserIncludeAll, reduce = true) : ButtonBuilder => {
   return simpleButton(
@@ -47,8 +48,8 @@ export const qrCodeButton = () : ButtonBuilder => {
 export const premiumButton = (command: CommandInteraction | Interaction) : ButtonBuilder => {
   return simpleButton(
     translate(command.locale, global.config.exec.buttons.premium),
-    ButtonStyle.Primary,
-    "premium"
+    ButtonStyle.Link,
+    getStringEnv("STRIPE_PREMIUM_LINK")
   );
 };
 

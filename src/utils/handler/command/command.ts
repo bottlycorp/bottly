@@ -21,7 +21,7 @@ import { global } from "$core/utils/config/message/command";
 import { UserIncludeAll, getUser, updateUser } from "$core/utils/data/user";
 import { toLocale, toPrismaLocale } from "$core/utils/locale";
 import { privacy } from "prisma/privacy.config";
-import { acceptPrivacy } from "$core/utils/config/buttons";
+import { acceptPrivacy, premiumButton } from "$core/utils/config/buttons";
 import { DayJS } from "$core/utils/day-js";
 
 const limitedUsageCommands = ["ask", "chat"];
@@ -269,8 +269,15 @@ export const decrement = async(interaction: CommandInteraction, user: UserInclud
       embeds: [
         simpleEmbed(translate(interaction.locale, global.config.exec.noMoreUsages, {
           unix: DayJS().endOf("day").unix()
-        }), "error")
-      ]
+        }), "error"),
+        simpleEmbed(translate(interaction.locale, global.config.exec.orGetPremium, {
+          cmdPremium: await findCommand("premium")
+        }), "premium")
+      ],
+      components: [{
+        type: 1,
+        components: [premiumButton(interaction)]
+      }]
     });
 
     colors.error(`${userWithId(interaction.user)} tried to use the command ${interactionWithId(interaction)} but he has no more usages`);
@@ -284,7 +291,7 @@ export const register = async(client: Client, commandsBuilder: CommandsBuilderCo
   }
 };
 
-export type Commands = "ask" | "chat" | "history" | "roadmap" | "request" | "privacy" | "support";
+export type Commands = "ask" | "chat" | "history" | "roadmap" | "request" | "privacy" | "support" | "premium";
 export type SubCommands = "stop" | "talk" | "download";
 
 export const findCommand = async(cmd: Commands, subCommand?: SubCommands): Promise<string> => {

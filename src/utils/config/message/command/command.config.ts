@@ -89,17 +89,17 @@ export const global = {
       },
       orGetPremium: {
         fr: [
-          ":sparkles: Vous pouvez obtenir un nombre illimité d'utilisation quotidien en devenant Premium et débloquez d'autres avantages !",
-          ":ticket: Pour le moment l'abonnement n'est pas encore disponible mais ca ne saurait tarder !"
-        ].join("\n\n"),
+          ":sparkles: Vous pouvez aussi devenir premium pour 5.00$/mois et augmenter votre nombre d'utilisation à 50/jour",
+          "et avoir accès à des fonctionnalités exclusives dont vous pouvez retrouver la liste en faisant {cmdPremium} et d'autres à venir 👀"
+        ].join(" "),
         "en-US": [
-          ":sparkles: You can get an unlimited number of daily uses by becoming Premium and unlock other benefits!",
-          ":ticket: For now the subscription is not yet available but it won't be long!"
-        ].join("\n\n"),
+          ":sparkles: You can also become premium for $5.00/month and increase your number of uses to 50/day",
+          "and have access to exclusive features which you can find the list by doing {cmdPremium} and others to come 👀"
+        ].join(" "),
         "pt-BR": [
-          ":sparkles: Você pode obter um número ilimitado de usos diários ao se tornar Premium e desbloquear outros benefícios!",
-          ":ticket: Por enquanto, a assinatura ainda não está disponível, mas não demorará muito!"
-        ].join("\n\n")
+          ":sparkles: Você também pode se tornar premium por $5.00/mês e aumentar seu número de usos para 50/dia",
+          "e tenha acesso a recursos exclusivos que você pode encontrar a lista fazendo {cmdPremium} e outros por vir 👀"
+        ].join(" ")
       },
       error: {
         "en-US": "An error occurred while executing the command: **{error}**",
