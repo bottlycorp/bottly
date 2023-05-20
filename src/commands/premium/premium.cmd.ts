@@ -28,8 +28,6 @@ export const execute: CommandExecute = async(command, user) => {
         })
     }));
 
-    embed.setTitle(null);
-
     buttons.push(
       simpleButton(
         translate(command.locale, premium.config.exec.buttons.manageSubscription),
