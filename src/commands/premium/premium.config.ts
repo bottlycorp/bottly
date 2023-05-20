@@ -92,7 +92,7 @@ export const premium = {
             "• Você tem 50% a mais de poder de escrita em suas perguntas e discussões",
             "• Baixe as discussões quando terminar",
             "\n**Como me tornar premium e quanto custa ?**",
-            "• Você pode se tornar premium clicando no botão abaixo, por um total de R$ 5,00 por mês.",
+            "• Você pode se tornar premium clicando no botão abaixo, por um total de 5,00$ por mês.",
             "\n**Posso cancelar minha assinatura ou reembolsá-la ?**",
             "• Sim, você pode cancelar sua assinatura a qualquer momento no Stripe e não será cobrado novamente.",
             "• Não reembolsamos a assinatura, mas você pode cancelá-la a qualquer momento."
