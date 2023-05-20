@@ -30,7 +30,10 @@ export const execute: CommandExecute = async(command, user) => {
 
   let answer: string;
   const messages: { content: string; role: "user" | "system" | "assistant" }[] = [];
-  messages.push({ role: "system", content: translate(command.locale, getPrompt("default")) });
+
+  messages.push({ role: "system", content: translate(command.locale, getPrompt("default"), {
+    lang: getLocale(command.locale)
+  }) });
 
   const context = command.options.getString("context", false);
   if (context) {
