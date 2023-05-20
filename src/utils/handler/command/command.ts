@@ -23,6 +23,7 @@ import { toLocale, toPrismaLocale } from "$core/utils/locale";
 import { privacy } from "prisma/privacy.config";
 import { acceptPrivacy, premiumButton } from "$core/utils/config/buttons";
 import { DayJS } from "$core/utils/day-js";
+import { EmbedBuilder } from "@discordjs/builders";
 
 const limitedUsageCommands = ["ask", "chat"];
 
@@ -246,14 +247,14 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
     }
 
     if (accepted) {
-      decrement(interaction, user);
+      if (!await decrement(interaction, user)) return;
       colors.info(`${userWithId(interaction.user)} used the command ${interactionWithId(interaction)}`);
       commandExecute(interaction, user);
       return;
     } else {
       const interval = setInterval(async() => {
         if (accepted) {
-          decrement(interaction, user);
+          if (!await decrement(interaction, user)) return;
           colors.info(`${userWithId(interaction.user)} used the command ${interactionWithId(interaction)}`);
           commandExecute(interaction, user);
           clearInterval(interval);
@@ -263,26 +264,25 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
   });
 };
 
-export const decrement = async(interaction: CommandInteraction, user: UserIncludeAll): Promise<void> => {
+export const decrement = async(interaction: CommandInteraction, user: UserIncludeAll): Promise<boolean> => {
   if (limitedUsageCommands.includes(interaction.commandName) && (user?.usages?.usage ?? 0) <= 0) {
-    interaction.editReply({
-      embeds: [
-        simpleEmbed(translate(interaction.locale, global.config.exec.noMoreUsages, {
-          unix: DayJS().endOf("day").unix()
-        }), "error"),
-        simpleEmbed(translate(interaction.locale, global.config.exec.orGetPremium, {
-          cmdPremium: await findCommand("premium")
-        }), "premium")
-      ],
-      components: [{
-        type: 1,
-        components: [premiumButton(interaction)]
-      }]
-    });
+    const embed = simpleEmbed(translate(interaction.locale, global.config.exec.noMoreUsages, { unix: DayJS().endOf("day").unix() }), "error");
+    const premiumEmbed = simpleEmbed(translate(interaction.locale, global.config.exec.orGetPremium, {
+      cmdPremium: await findCommand("premium")
+    }), "premium");
+
+    const embeds: EmbedBuilder[] = [embed];
+    const components = [{ type: 1, components: [premiumButton(interaction)] }];
+    if (!user.isPremium) embeds.push(premiumEmbed);
+
+    interaction.editReply({ embeds });
+    if (!user.isPremium) interaction.editReply({ components });
 
     colors.error(`${userWithId(interaction.user)} tried to use the command ${interactionWithId(interaction)} but he has no more usages`);
-    return;
+    return false;
   }
+
+  return true;
 };
 
 export const register = async(client: Client, commandsBuilder: CommandsBuilderCollection): Promise<void> => {
