@@ -19,8 +19,8 @@ export const premium = {
           "pt-BR": "Gerenciar assinatura"
         },
         becomePremium: {
-          "en-US": "Become premium for $5.00/month",
-          fr: "Devenir premium pour 5.00$/mois",
+          "en-US": "Become premium for $5,00/month",
+          fr: "Devenir premium pour 5,00$/mois",
           "pt-BR": "Se tornar premium por R$ 5,00/mês"
         }
       },
@@ -66,7 +66,7 @@ export const premium = {
             "• You have 50% more writing power on your questions and discussions",
             "• Download discussions when finished",
             "\n**How do I become premium and how much does it cost ?**",
-            "• You can become premium by clicking on the button below, for a total of $5.00 per month.",
+            "• You can become premium by clicking on the button below, for a total of $5,00 per month.",
             "\n**Can I cancel my subscription, or refund it ?**",
             "• Yes, you can cancel your subscription at any time from Stripe and you will not be charged again. ",
             "• We do not refund the subscription, but you can cancel it at any time."
@@ -79,7 +79,7 @@ export const premium = {
             "• Vous avez 50% de puissance d'écriture en plus sur vos questions et discussions",
             "• Téléchargez les discussions une fois terminées",
             "\n**Comment devenir premium et combien ça coûte ?**",
-            "• Vous pouvez devenir premium en cliquant sur le bouton ci-dessous, pour un total de 5.00$ par mois.",
+            "• Vous pouvez devenir premium en cliquant sur le bouton ci-dessous, pour un total de 5,00$ par mois.",
             "\n**Est-ce que je peux annuler mon abonnement, ou me faire rembourser ?**",
             "• Oui, vous pouvez annuler votre abonnement à tout moment depuis Stripe et vous ne serez plus facturé.",
             "• Nous ne remboursons pas l'abonnement, mais vous pouvez l'annuler à tout moment."
@@ -92,7 +92,7 @@ export const premium = {
             "• Você tem 50% a mais de poder de escrita em suas perguntas e discussões",
             "• Baixe as discussões quando terminar",
             "\n**Como me tornar premium e quanto custa ?**",
-            "• Você pode se tornar premium clicando no botão abaixo, por um total de R$ 4,99 por mês.",
+            "• Você pode se tornar premium clicando no botão abaixo, por um total de R$ 5,00 por mês.",
             "\n**Posso cancelar minha assinatura ou reembolsá-la ?**",
             "• Sim, você pode cancelar sua assinatura a qualquer momento no Stripe e não será cobrado novamente.",
             "• Não reembolsamos a assinatura, mas você pode cancelá-la a qualquer momento."
