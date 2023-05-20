@@ -21,7 +21,7 @@ export const premium = {
         becomePremium: {
           "en-US": "Become premium for $5,00/month",
           fr: "Devenir premium pour 5,00$/mois",
-          "pt-BR": "Se tornar premium por R$ 5,00/mês"
+          "pt-BR": "Se tornar premium por 5,00$/mês"
         }
       },
       embed: {
