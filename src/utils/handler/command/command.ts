@@ -247,14 +247,14 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
     }
 
     if (accepted) {
-      if (!await decrement(interaction, user)) return;
+      if (!decrement(interaction, user)) return;
       colors.info(`${userWithId(interaction.user)} used the command ${interactionWithId(interaction)}`);
       commandExecute(interaction, user);
       return;
     } else {
       const interval = setInterval(async() => {
         if (accepted) {
-          if (!await decrement(interaction, user)) return;
+          if (!decrement(interaction, user)) return;
           colors.info(`${userWithId(interaction.user)} used the command ${interactionWithId(interaction)}`);
           commandExecute(interaction, user);
           clearInterval(interval);
@@ -264,12 +264,10 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
   });
 };
 
-export const decrement = async(interaction: CommandInteraction, user: UserIncludeAll): Promise<boolean> => {
+export const decrement = (interaction: CommandInteraction, user: UserIncludeAll): boolean => {
   if (limitedUsageCommands.includes(interaction.commandName) && (user?.usages?.usage ?? 0) <= 0) {
     const embed = simpleEmbed(translate(interaction.locale, global.config.exec.noMoreUsages, { unix: DayJS().endOf("day").unix() }), "error");
-    const premiumEmbed = simpleEmbed(translate(interaction.locale, global.config.exec.orGetPremium, {
-      cmdPremium: await findCommand("premium")
-    }), "premium");
+    const premiumEmbed = simpleEmbed(translate(interaction.locale, global.config.exec.orGetPremium), "premium");
 
     const embeds: EmbedBuilder[] = [embed];
     const components = [{ type: 1, components: [premiumButton(interaction)] }];

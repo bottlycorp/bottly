@@ -89,16 +89,13 @@ export const global = {
       },
       orGetPremium: {
         fr: [
-          ":sparkles: Vous pouvez aussi devenir premium pour 5.00$/mois et augmenter votre nombre d'utilisation à 50/jour",
-          "et avoir accès à des fonctionnalités exclusives dont vous pouvez retrouver la liste en faisant {cmdPremium} et d'autres à venir 👀"
+          ":sparkles: Vous pouvez aussi devenir premium pour 5.00$/mois et augmenter votre nombre d'utilisation à 50/jour"
         ].join(" "),
         "en-US": [
-          ":sparkles: You can also become premium for $5.00/month and increase your number of uses to 50/day",
-          "and have access to exclusive features which you can find the list by doing {cmdPremium} and others to come 👀"
+          ":sparkles: You can also become premium for $5.00/month and increase your number of uses to 50/day"
         ].join(" "),
         "pt-BR": [
-          ":sparkles: Você também pode se tornar premium por $5.00/mês e aumentar seu número de usos para 50/dia",
-          "e tenha acesso a recursos exclusivos que você pode encontrar a lista fazendo {cmdPremium} e outros por vir 👀"
+          ":sparkles: Você também pode se tornar premium por $5.00/mês e aumentar seu número de usos para 50/dia"
         ].join(" ")
       },
       error: {
