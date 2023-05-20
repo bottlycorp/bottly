@@ -12,10 +12,7 @@ export const execute: CommandExecute = async(command) => {
   });
 
   let description = "";
-  description += translate(command.locale, roadmap.config.exec.may, {
-    cmdPrivacy: await findCommand("privacy"),
-    cmdSupport: await findCommand("support")
-  });
+  description += translate(command.locale, roadmap.config.exec.may);
   description += "\n\n";
   description += translate(command.locale, roadmap.config.exec.june, {
     cmdAsk: await findCommand("ask"),
@@ -24,6 +21,5 @@ export const execute: CommandExecute = async(command) => {
   description += "\n\n" + translate(command.locale, roadmap.config.exec.priorityText);
 
   embed.setDescription(description);
-
   command.editReply({ embeds: [embed] });
 };
