@@ -53,9 +53,12 @@ export const premium = {
           "pt-BR": "A próxima cobrança ocorrerá em <t:{next}:F>."
         },
         canceledSubscription: {
-          "en-US": "Your subscription has been canceled, you will no longer be charged and will lose your premium status on <t:{next}:F>.",
-          fr: "Votre abonnement a été annulé, vous ne serez plus facturé et vous perdrez votre statut premium le <t:{next}:F>.",
-          "pt-BR": "Sua assinatura foi cancelada, você não será mais cobrado e perderá seu status premium em <t:{next}:F>."
+          "en-US": [
+            "You canceled your subscription on <t:{cancel}:F>, you will no longer be charged and you will lose your premium ",
+            "status on <t:{next}:F>."
+          ].join(" "),
+          fr: "Vous avez annulé votre abonnement le <t:{cancel}:F>, vous ne serez plus facturé et vous perdrez votre statut premium le <t:{next}:F>.",
+          "pt-BR": "Você cancelou sua assinatura em <t:{cancel}:F>, você não será mais cobrado e perderá seu status premium em <t:{next}:F>."
         },
         descriptionNotPremium: {
           "en-US": [
