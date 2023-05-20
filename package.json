@@ -1,8 +1,13 @@
 {
-  "name": "discord-bot",
-  "version": "2.2.3",
-  "description": "Bottly discord bot",
+  "name": "bottly",
+  "version": "2.2.4",
+  "description": "A Discord bot that does a lot of things.",
   "main": "./build/src/client.js",
+  "author": {
+    "name": "Gaëtan",
+    "email": "steellgold0@gmail.com",
+    "url": "https://github.com/Steellgold"
+  },
   "scripts": {
     "dev": "npm run db:gen && npx nodemon --exec node -r @swc-node/register -r tsconfig-paths/register ./src/client.ts dev",
     "start": "npm run db:gen && node -r @swc-node/register -r tsconfig-paths/register ./src/client.ts",

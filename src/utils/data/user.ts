@@ -7,7 +7,7 @@ import { UsageMax } from "@prisma/client";
 import { userWithId } from "$core/utils/function";
 
 export type UserIncludeAll = Prisma.UserGetPayload<{
-  include: { questions: true; privacy: true; usages: true; votes: true; discussions: true; tips: true };
+  include: { questions: true; privacy: true; usages: true; votes: true; discussions: true; tips: true; subscription: true };
 }>
 
 export const MAX_USES: Record<UsageMax, number> = {
@@ -60,7 +60,8 @@ export const newUser = async(userToCreate: DiscordUser): Promise<UserIncludeAll>
       usages: true,
       votes: true,
       discussions: true,
-      tips: true
+      tips: true,
+      subscription: true
     }
   });
 
@@ -78,7 +79,8 @@ export const getUser = async(userId: DiscordUser): Promise<UserIncludeAll> => {
       usages: true,
       votes: true,
       discussions: true,
-      tips: true
+      tips: true,
+      subscription: true
     }
   });
 

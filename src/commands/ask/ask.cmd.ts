@@ -53,7 +53,7 @@ export const execute: CommandExecute = async(command, user) => {
   try {
     const response = await openai.createChatCompletion({
       messages,
-      max_tokens: 2500,
+      max_tokens: user.isPremium ? 3750 : 2500,
       model: "gpt-3.5-turbo",
       user: user.userId
     });

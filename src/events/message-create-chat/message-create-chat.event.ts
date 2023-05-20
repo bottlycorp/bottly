@@ -113,7 +113,8 @@ export const execute: EventExecute<"messageCreate"> = async(message: Message) =>
   const messages: { content: string; role: "user" | "system" | "assistant" }[] = [];
 
   discussion.messages.forEach(msg => {
-    tokens += getTokens(msg.message);
+    if (user.isPremium) tokens += Math.round(msg.tokens * 1.5);
+    else tokens += msg.tokens;
     messages.push({ content: msg.message, role: msg.role === "bot" ? "assistant" : msg.role });
   });
 
@@ -127,7 +128,7 @@ export const execute: EventExecute<"messageCreate"> = async(message: Message) =>
   await openai.createChatCompletion({
     messages: messages,
     model: "gpt-3.5-turbo",
-    max_tokens: tokens <= 200 ? tokens + 500 : tokens,
+    max_tokens: tokens,
     user: user.userId
   }).catch(async(error: Error) => {
     clearInterval(interval);

@@ -1,6 +1,7 @@
 import {
   Client,
   Collection,
+  CommandInteraction,
   SlashCommandSubcommandBuilder,
   SlashCommandSubcommandGroupBuilder,
   TextChannel,
@@ -17,7 +18,7 @@ import { client, colors } from "$core/client";
 import { simpleEmbed } from "$core/utils/embed";
 import { translate } from "$core/utils/config/message/message.util";
 import { global } from "$core/utils/config/message/command";
-import { getUser, updateUser } from "$core/utils/data/user";
+import { UserIncludeAll, getUser, updateUser } from "$core/utils/data/user";
 import { toLocale, toPrismaLocale } from "$core/utils/locale";
 import { privacy } from "prisma/privacy.config";
 import { acceptPrivacy } from "$core/utils/config/buttons";
@@ -180,7 +181,6 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
 
     const channel = await interaction.guild.channels.fetch(interaction.channelId).catch((error: Error) => {
       interaction.editReply({ embeds: [simpleEmbed(translate(interaction.locale, global.config.exec.error, { error: error.message }), "error")] });
-
       colors.error(`${userWithId(interaction.user)} tried to use the command ${interactionWithId(interaction)} in a non-existent/not access`);
       return;
     });
@@ -202,13 +202,16 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
     if (user.username !== interaction.user.username) await updateUser(interaction.user.id, { username: interaction.user.username });
     if (toLocale(user.locale) !== interaction.locale) await updateUser(interaction.user.id, { locale: toPrismaLocale(interaction.locale) });
 
+    let accepted = user.privacy?.accepted ?? false;
+
     if (!user.privacy?.accepted) {
-      // const sendedAt = DayJS().unix();
-      interaction.editReply({
+      const message = await interaction.editReply({
         embeds: [
           simpleEmbed(translate(interaction.locale, privacy.config.exec.privacyPolicy, {
             cmdHistory: await findCommand("history"),
-            cmdRoadmap: await findCommand("roadmap")
+            cmdRoadmap: await findCommand("roadmap"),
+            cmdPrivacy: await findCommand("privacy"),
+            cmdPrivacyDeletion: await findCommand("privacy")
           }), "error"),
           simpleEmbed(translate(interaction.locale, privacy.config.exec.doYouAccept), "info")
         ],
@@ -218,7 +221,7 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
         }]
       });
 
-      const collector = channel.createMessageComponentCollector({
+      const collector = message.createMessageComponentCollector({
         filter: (collectorInteraction) => collectorInteraction.user.id === interaction.user.id,
         time: 60000
       });
@@ -228,7 +231,11 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
 
         if (buttonInteraction.customId === "acceptPrivacy") {
           await updateUser(interaction.user.id, { privacy: { update: { accepted: true, collectChat: true, failed: false } } });
-          buttonInteraction.editReply({ embeds: [simpleEmbed(translate(interaction.locale, privacy.config.exec.accepted), "info")], components: [] });
+          buttonInteraction.editReply({ embeds: [
+            simpleEmbed(translate(interaction.locale, privacy.config.exec.accepted), "info"),
+            simpleEmbed(translate(interaction.locale, privacy.config.exec.acceptedNotifyExecuted), "success")
+          ], components: [] });
+          accepted = true;
           colors.info(`${userWithId(interaction.user)} accepted the privacy policy`);
           collector.stop();
           return;
@@ -236,25 +243,39 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
       });
 
       colors.error(`${userWithId(interaction.user)} tried to use the command ${interactionWithId(interaction)} but he didn't accept the privacy`);
-      return;
     }
 
-    if (limitedUsageCommands.includes(interaction.commandName) && (user?.usages?.usage ?? 0) <= 0) {
-      interaction.editReply({
-        embeds: [
-          simpleEmbed(translate(interaction.locale, global.config.exec.noMoreUsages, {
-            unix: DayJS().endOf("day").unix()
-          }), "error")
-        ]
-      });
-
-      colors.error(`${userWithId(interaction.user)} tried to use the command ${interactionWithId(interaction)} but he has no more usages`);
+    if (accepted) {
+      decrement(interaction, user);
+      colors.info(`${userWithId(interaction.user)} used the command ${interactionWithId(interaction)}`);
+      commandExecute(interaction, user);
       return;
+    } else {
+      const interval = setInterval(async() => {
+        if (accepted) {
+          decrement(interaction, user);
+          colors.info(`${userWithId(interaction.user)} used the command ${interactionWithId(interaction)}`);
+          commandExecute(interaction, user);
+          clearInterval(interval);
+        }
+      }, 2000);
     }
-
-    colors.log(`${userWithId(interaction.user)} used the command ${interactionWithId(interaction)}`);
-    commandExecute(interaction, user);
   });
+};
+
+export const decrement = async(interaction: CommandInteraction, user: UserIncludeAll): Promise<void> => {
+  if (limitedUsageCommands.includes(interaction.commandName) && (user?.usages?.usage ?? 0) <= 0) {
+    interaction.editReply({
+      embeds: [
+        simpleEmbed(translate(interaction.locale, global.config.exec.noMoreUsages, {
+          unix: DayJS().endOf("day").unix()
+        }), "error")
+      ]
+    });
+
+    colors.error(`${userWithId(interaction.user)} tried to use the command ${interactionWithId(interaction)} but he has no more usages`);
+    return;
+  }
 };
 
 export const register = async(client: Client, commandsBuilder: CommandsBuilderCollection): Promise<void> => {
