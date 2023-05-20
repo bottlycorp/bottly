@@ -66,7 +66,7 @@ export const premium = {
             "• You have 50% more writing power on your questions and discussions",
             "• Download discussions when finished",
             "\n**How do I become premium and how much does it cost ?**",
-            "• You can become premium by clicking on the button below, for a total of $4.99 per month.",
+            "• You can become premium by clicking on the button below, for a total of $5.00 per month.",
             "\n**Can I cancel my subscription, or refund it ?**",
             "• Yes, you can cancel your subscription at any time from Stripe and you will not be charged again. ",
             "• We do not refund the subscription, but you can cancel it at any time."
@@ -79,7 +79,7 @@ export const premium = {
             "• Vous avez 50% de puissance d'écriture en plus sur vos questions et discussions",
             "• Téléchargez les discussions une fois terminées",
             "\n**Comment devenir premium et combien ça coûte ?**",
-            "• Vous pouvez devenir premium en cliquant sur le bouton ci-dessous, pour un total de 4.99$ par mois.",
+            "• Vous pouvez devenir premium en cliquant sur le bouton ci-dessous, pour un total de 5.00$ par mois.",
             "\n**Est-ce que je peux annuler mon abonnement, ou me faire rembourser ?**",
             "• Oui, vous pouvez annuler votre abonnement à tout moment depuis Stripe et vous ne serez plus facturé.",
             "• Nous ne remboursons pas l'abonnement, mais vous pouvez l'annuler à tout moment."
