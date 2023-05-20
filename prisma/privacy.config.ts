@@ -73,8 +73,7 @@ export const privacy = {
             "- We may change this privacy notice from time to time. If we make such a change, we will notify you by the bot or by posting a notice",
             "on the Discord servers or on our [support server]({discordLink}).\n"
           ].join(" "), [
-            "- You can delete your entire data by contacting support, in the future a command will be made to do this manually, for now you can",
-            "contact support to do this.\n"
+            "- You can delete your entire data by contacting support or with the {cmdPrivacy} command"
           ].join(" "), [
             "- The user's messages are stored from the moment you speak in a conversation or ask a question to be retrieved in the request",
             "history (accessible via {cmdHistory}) so that the AI keeps track of your old messages.\n"
@@ -82,7 +81,7 @@ export const privacy = {
             "- Please take the time to read this policy carefully and feel free to contact us with any questions you may have regarding the",
             "privacy practices of this bot.\n"
           ].join(" "),
-          "You will be able to activate the automatic deletion or others (after 30 days) in the command that will arrive soon (see {cmdRoadmap})",
+          "You will be able to activate the automatic deletion or others (after 30 days) in the {cmdPrivacyDeletion} command",
           "By accepting this privacy policy, you agree that your data will be stored and used as described above."
         ].join("\n"),
         fr: [
@@ -98,8 +97,7 @@ export const privacy = {
             "- Nous pouvons modifier cet avis de confidentialité de temps à autre. Si nous apportons une telle modification, nous vous en",
             "aviserons par le bot ou en publiant un avis sur les serveurs Discord ou sur notre [serveur de support]({discordLink}).\n"
           ].join(" "), [
-            "- Vous pouvez supprimer l'intégralité de vos données en contactant le support, à l'avenir une commande sera faite pour faire cela",
-            "manuellement, pour l'instant vous pouvez contacter le support pour faire cela.\n"
+            "- Vous pouvez supprimer l'intégralité de vos données en contactant le support ou avec la commande {cmdPrivacy}"
           ].join(" "), [
             "- Les messages de l'utilisateur sont stockés à partir du moment où vous parlez dans une conversation ou posez une question pour",
             "être récupérés dans l'historique des demandes (accessible via {cmdHistory}) afin que l'IA garde une trace de vos anciens messages.\n"
@@ -107,7 +105,7 @@ export const privacy = {
             "- Veuillez prendre le temps de lire attentivement cette politique et n'hésitez pas à nous contacter pour toute question que vous",
             "pourriez avoir concernant les pratiques de confidentialité de ce bot.\n"
           ].join(" "),
-          "Vous pourrez activer la suppression automatique ou autres (après 30 jours) dans la commande qui arrivera bientôt (voir {cmdRoadmap})",
+          "Vous pourrez activer la suppression automatique ou autres (après 30 jours) dans la commande {cmdPrivacyDeletion}",
           "En acceptant cette politique de confidentialité, vous acceptez que vos données soient stockées et utilisées comme décrit ci-dessus."
         ].join("\n"),
         "pt-BR": [
@@ -123,8 +121,7 @@ export const privacy = {
             "- Podemos alterar este aviso de privacidade de tempos em tempos. Se fizermos tal alteração, notificaremos você pelo bot ou",
             "publicando um aviso nos servidores do Discord ou em nosso [servidor de suporte]({discordLink}).\n"
           ].join(" "), [
-            "- Você pode excluir todos os seus dados entrando em contato com o suporte, no futuro um comando será feito para fazer isso",
-            "manualmente, por enquanto você pode entrar em contato com o suporte para fazer isso.\n"
+            "- Você pode excluir todos os seus dados entrando em contato com o suporte ou com o comando {cmdPrivacy}"
           ].join(" "), [
             "- As mensagens do usuário são armazenadas a partir do momento em que você fala em uma conversa ou faz uma pergunta para",
             "ser recuperado no histórico de solicitações (acessível via {cmdHistory}) para que a IA acompanhe suas mensagens antigas.\n"
@@ -132,7 +129,7 @@ export const privacy = {
             "- Por favor, reserve um tempo para ler atentamente esta política e sinta-se à vontade para entrar em contato conosco com qualquer",
             "dúvida que possa ter sobre as práticas de privacidade deste bot.\n"
           ].join(" "),
-          "Você poderá ativar a exclusão automática ou outras (após 30 dias) no comando que chegará em breve (veja {cmdRoadmap})",
+          "Você poderá ativar a exclusão automática ou outras (após 30 dias) no comando {cmdPrivacyDeletion}",
           "Ao aceitar esta política de privacidade, você concorda que seus dados serão armazenados e usados ​​conforme descrito acima."
         ].join("\n")
       }

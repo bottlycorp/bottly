@@ -209,7 +209,9 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
         embeds: [
           simpleEmbed(translate(interaction.locale, privacy.config.exec.privacyPolicy, {
             cmdHistory: await findCommand("history"),
-            cmdRoadmap: await findCommand("roadmap")
+            cmdRoadmap: await findCommand("roadmap"),
+            cmdPrivacy: await findCommand("privacy"),
+            cmdPrivacyDeletion: await findCommand("privacy")
           }), "error"),
           simpleEmbed(translate(interaction.locale, privacy.config.exec.doYouAccept), "info")
         ],
