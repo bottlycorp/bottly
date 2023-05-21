@@ -2,70 +2,59 @@ import { Command } from "$core/utils/config/message/command/command.type";
 
 export const global = {
   config: {
-    name: {},
-    description: {},
-    options: {},
-    exec: {
-      buttons: {
-        premium: {
-          "en-US": "Be Premium",
-          fr: "Devenir Premium",
-          "pt-BR": "Seja Premium",
-          ru: "Стать премиумом",
-          uk: "Стати преміумом",
-          "es-ES": "Ser Premium"
-        },
-        vote: {
-          "en-US": "Vote for me",
-          fr: "Votez pour moi",
-          "pt-BR": "Vote por mim",
-          ru: "Проголосуйте за меня",
-          uk: "Проголосуйте за мене",
-          "es-ES": "Vota por mí"
-        },
-        reveal: {
-          "en-US": "Reveal to public",
-          fr: "Révéler au public",
-          "pt-BR": "Revelar ao público",
-          ru: "Раскрыть для общественности",
-          uk: "Розкрити для громадськості",
-          "es-ES": "Revelar al público"
-        },
-        usage: {
-          "en-US": "{left}/{max}"
-        },
-        reveal_text: {
-          "en-US": ":grey_question: {question}\n\n{response}",
-          fr: ":grey_question: {question}\n\n{response}",
-          "pt-BR": ":grey_question: {question}\n\n{response}",
-          ru: ":grey_question: {question}\n\n{response}",
-          uk: ":grey_question: {question}\n\n{response}",
-          "es-ES": ":grey_question: {question}\n\n{response}"
-        },
-        revealed: {
-          "en-US": ":smile: The question has been revealed to the public",
-          fr: ":smile: La question a été révélée au public",
-          "pt-BR": ":smile: A pergunta foi revelada ao público",
-          ru: ":smile: Вопрос был раскрыт общественности",
-          uk: ":smile: Питання було розкрито громадськості",
-          "es-ES": ":smile: La pregunta ha sido revelada al público"
-        },
-        download: {
-          "en-US": "🖨️ Download",
-          fr: "🖨️ Télécharger",
-          "pt-BR": "🖨️ Baixar",
-          ru: "🖨️ Скачать",
-          uk: "🖨️ Завантажити",
-          "es-ES": "🖨️ Descargar"
-        }
+    buttons: {
+      premium: {
+        "en-US": "Be Premium",
+        fr: "Devenir Premium",
+        "pt-BR": "Seja Premium",
+        ru: "Стать премиумом",
+        uk: "Стати преміумом",
+        "es-ES": "Ser Premium",
+        de: "Sei Premium"
       },
+      vote: {
+        "en-US": "Vote for me",
+        fr: "Votez pour moi",
+        "pt-BR": "Vote por mim",
+        ru: "Проголосуйте за меня",
+        uk: "Проголосуйте за мене",
+        "es-ES": "Vota por mí",
+        de: "Stimmen Sie für mich"
+      },
+      reveal: {
+        "en-US": "Reveal to public",
+        fr: "Révéler au public",
+        "pt-BR": "Revelar ao público",
+        ru: "Раскрыть для общественности",
+        uk: "Розкрити для громадськості",
+        "es-ES": "Revelar al público",
+        de: "Öffentlichkeit offenbaren"
+      },
+      usage: {
+        "en-US": "{left}/{max}"
+      },
+      reveal_text: {
+        "en-US": ":grey_question: {question}\n\n{response}"
+      },
+      revealed: {
+        "en-US": ":smile: The question has been revealed to the public",
+        fr: ":smile: La question a été révélée au public",
+        "pt-BR": ":smile: A pergunta foi revelada ao público",
+        ru: ":smile: Вопрос был раскрыт общественности",
+        uk: ":smile: Питання було розкрито громадськості",
+        "es-ES": ":smile: La pregunta ha sido revelada al público",
+        de: ":smile: Die Frage wurde der Öffentlichkeit offenbart"
+      }
+    },
+    exec: {
       favorited: {
         "en-US": ":star: The question has been added to your favorites, you can find all your favorites by doing {cmdFavorites}",
         fr: ":star: La question a été ajoutée à vos favoris, vous pouvez retrouver tous vos favoris en faisant {cmdFavorites}",
         "pt-BR": ":star: A pergunta foi adicionada aos seus favoritos, você pode encontrar todos os seus favoritos fazendo {cmdFavorites}",
         ru: ":star: Вопрос был добавлен в избранное, вы можете найти все свои избранные, сделав {cmdFavorites}",
         uk: ":star: Питання було додано до вибраного, ви можете знайти всі свої вибрані, зробивши {cmdFavorites}",
-        "es-ES": ":star: La pregunta ha sido añadida a tus favoritos, puedes encontrar todos tus favoritos haciendo {cmdFavorites}"
+        "es-ES": ":star: La pregunta ha sido añadida a tus favoritos, puedes encontrar todos tus favoritos haciendo {cmdFavorites}",
+        de: ":star: Die Frage wurde zu Ihren Favoriten hinzugefügt. Sie können alle Ihre Favoriten finden, indem Sie {cmdFavorites} machen"
       },
       noMoreUsages: {
         fr: [
@@ -91,6 +80,10 @@ export const global = {
         "es-ES": [
           "Parece que has alcanzado el número máximo de usos de mis funciones para hoy,",
           "vuelve mañana (<t:{unix}:R>) para usarlos de nuevo"
+        ].join(" "),
+        de: [
+          "Es scheint, dass Sie die maximale Anzahl der Verwendungen meiner Funktionen für heute erreicht haben,",
+          "kommen Sie morgen wieder (<t:{unix}:R>), um sie erneut zu verwenden"
         ].join(" ")
       },
       orGetPremium: {
@@ -99,7 +92,8 @@ export const global = {
         "pt-BR": ":sparkles: Você também pode se tornar premium por $5.00/mês e aumentar seu número de usos para 50/dia",
         ru: ":sparkles: Вы также можете стать премиумом за 5,00$/месяц и увеличить количество использований до 50/день",
         uk: ":sparkles: Ви також можете стати преміумом за 5,00$/місяць і збільшити кількість використань до 50/день",
-        "es-ES": ":sparkles: También puedes convertirte en premium por $5.00/mes y aumentar tu número de usos a 50/día"
+        "es-ES": ":sparkles: También puedes convertirte en premium por $5.00/mes y aumentar tu número de usos a 50/día",
+        de: ":sparkles: Sie können auch für 5,00 $ / Monat Premium werden und Ihre Anzahl der Verwendungen auf 50 / Tag erhöhen"
       },
       error: {
         "en-US": "An error occurred while executing the command: **{error}**",
@@ -107,7 +101,8 @@ export const global = {
         "pt-BR": "Ocorreu um erro ao executar o comando: **{error}**",
         ru: "Произошла ошибка при выполнении команды: **{error}**",
         uk: "Виникла помилка при виконанні команди: **{error}**",
-        "es-ES": "Se produjo un error al ejecutar el comando: **{error}**"
+        "es-ES": "Se produjo un error al ejecutar el comando: **{error}**",
+        de: "Beim Ausführen des Befehls ist ein Fehler aufgetreten: **{error}**"
       },
       errorTooLong: {
         "en-US": "We have to stop the discussion here, sorry, it is too long. Please feel free to start a new one",
@@ -115,7 +110,8 @@ export const global = {
         "pt-BR": "Temos que parar a discussão aqui, desculpe, é muito longa. Sinta-se à vontade para iniciar uma nova",
         ru: "Мы должны остановить обсуждение здесь, извините, оно слишком длинное. Не стесняйтесь начать новый",
         uk: "Ми повинні зупинити обговорення тут, вибачте, воно занадто довге. Не соромтеся почати новий",
-        "es-ES": "Tenemos que detener la discusión aquí, lo siento, es demasiado larga. No dude en comenzar uno nuevo"
+        "es-ES": "Tenemos que detener la discusión aquí, lo siento, es demasiado larga. No dude en comenzar uno nuevo",
+        de: "Wir müssen die Diskussion hier beenden, tut mir leid, sie ist zu lang. Bitte zögern Sie nicht, eine neue zu starten"
       },
       notInAGuild: {
         "en-US": "Execute the command in a guild",
@@ -123,7 +119,8 @@ export const global = {
         "pt-BR": "Execute o comando em um servidor",
         ru: "Выполните команду на сервере",
         uk: "Виконайте команду на сервері",
-        "es-ES": "Ejecute el comando en un servidor"
+        "es-ES": "Ejecute el comando en un servidor",
+        de: "Führen Sie den Befehl in einer Gilde aus"
       },
       notInATextChannel: {
         "en-US": "Execute the command in a text channel",
@@ -131,7 +128,8 @@ export const global = {
         "pt-BR": "Execute o comando em um canal de texto",
         ru: "Выполните команду в текстовом канале",
         uk: "Виконайте команду в текстовому каналі",
-        "es-ES": "Ejecute el comando en un canal de texto"
+        "es-ES": "Ejecute el comando en un canal de texto",
+        de: "Führen Sie den Befehl in einem Textkanal aus"
       },
       channelNotFound: {
         "en-US": "The channel was not found",
@@ -139,7 +137,8 @@ export const global = {
         "pt-BR": "O canal não foi encontrado",
         ru: "Канал не найден",
         uk: "Канал не знайдено",
-        "es-ES": "El canal no fue encontrado"
+        "es-ES": "El canal no fue encontrado",
+        de: "Der Kanal wurde nicht gefunden"
       },
       botPermissionsNotFound: {
         "en-US": "The permissions I have on this server do not allow me to execute this command, I need: {permissions}",
@@ -147,7 +146,8 @@ export const global = {
         "pt-BR": "As permissões que me foram concedidas neste servidor não me permitem executar este comando, eu preciso de: {permissions}",
         ru: "Разрешения, которые я получил на этом сервере, не позволяют мне выполнять эту команду, мне нужно: {permissions}",
         uk: "Дозволи, які я отримав на цьому сервері, не дозволяють мені виконувати цю команду, мені потрібно: {permissions}",
-        "es-ES": "Los permisos que tengo en este servidor no me permiten ejecutar este comando, necesito: {permissions}"
+        "es-ES": "Los permisos que tengo en este servidor no me permiten ejecutar este comando, necesito: {permissions}",
+        de: "Die Berechtigungen, die ich auf diesem Server habe, erlauben es mir nicht, diesen Befehl auszuführen, ich brauche: {permissions}"
       },
       notInAThread: {
         "en-US": "Execute the command in a thread",
@@ -155,7 +155,8 @@ export const global = {
         "pt-BR": "Execute o comando em um thread",
         ru: "Выполните команду в треде",
         uk: "Виконайте команду в треді",
-        "es-ES": "Ejecute el comando en un hilo"
+        "es-ES": "Ejecute el comando en un hilo",
+        de: "Führen Sie den Befehl in einem Thread aus"
       },
       parentNotFound: {
         "en-US": "The parent channel was not found",
@@ -163,7 +164,8 @@ export const global = {
         "pt-BR": "O canal pai não foi encontrado",
         ru: "Родительский канал не найден",
         uk: "Батьківський канал не знайдено",
-        "es-ES": "El canal principal no fue encontrado"
+        "es-ES": "El canal principal no fue encontrado",
+        de: "Der übergeordnete Kanal wurde nicht gefunden"
       }
     }
   }
