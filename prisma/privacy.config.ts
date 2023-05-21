@@ -10,7 +10,8 @@ export const privacy = {
           "pt-BR": "Eu aceito",
           "ru": "Я принимаю",
           "uk": "Я приймаю",
-          "es-ES": "Acepto"
+          "es-ES": "Acepto",
+          de: "Ich akzeptiere"
         },
         readFast: {
           "en-US": "I read fast",
@@ -18,7 +19,8 @@ export const privacy = {
           "pt-BR": "Eu leio rápido",
           "ru": "Я читаю быстро",
           "uk": "Я читаю швидко",
-          "es-ES": "Leo rápido"
+          "es-ES": "Leo rápido",
+          de: "Ich lese schnell"
         }
       },
       loading: {
@@ -27,7 +29,8 @@ export const privacy = {
         "pt-BR": "Carregando...",
         "ru": "Загрузка...",
         "uk": "Завантаження...",
-        "es-ES": "Cargando..."
+        "es-ES": "Cargando...",
+        de: "Wird geladen..."
       },
       embedTitle: {
         "en-US": "Privacy management",
@@ -35,7 +38,8 @@ export const privacy = {
         "pt-BR": "Gerenciamento de privacidade",
         "ru": "Управление конфиденциальностью",
         "uk": "Управління конфіденційністю",
-        "es-ES": "Gestión de la privacidad"
+        "es-ES": "Gestión de la privacidad",
+        de: "Datenschutzverwaltung"
       },
       doYouAccept: {
         "en-US": "Do you agree to the privacy policy?",
@@ -43,7 +47,8 @@ export const privacy = {
         "pt-BR": "Você aceita a política de privacidade?",
         "ru": "Вы согласны с политикой конфиденциальности?",
         "uk": "Ви згодні з політикою конфіденційності?",
-        "es-ES": "¿Acepta la política de privacidad?"
+        "es-ES": "¿Acepta la política de privacidad?",
+        de: "Stimmen Sie der Datenschutzrichtlinie zu?"
       },
       declined: {
         "en-US": "You have declined the privacy policy, your data will be deleted automatically after using any command that save your data.",
@@ -66,6 +71,10 @@ export const privacy = {
         "es-ES": [
           "Ha rechazado la política de privacidad, sus datos se eliminarán automáticamente después de usar cualquier comando que",
           "guarde sus datos."
+        ].join(" "),
+        de: [
+          "Sie haben die Datenschutzrichtlinie abgelehnt, Ihre Daten werden automatisch gelöscht, nachdem Sie einen Befehl verwendet haben,",
+          "der Ihre Daten speichert."
         ].join(" ")
       },
       accepted: {
@@ -74,7 +83,8 @@ export const privacy = {
         "pt-BR": "Você aceitou a política de privacidade, seus dados serão salvos e você poderá recuperá-los na próxima vez.",
         "ru": "Вы приняли политику конфиденциальности, ваши данные будут сохранены, и вы сможете получить их в следующий раз.",
         "uk": "Ви прийняли політику конфіденційності, ваші дані будуть збережені, і ви зможете отримати їх наступного разу.",
-        "es-ES": "Ha aceptado la política de privacidad, sus datos se guardarán y podrá recuperarlos la próxima vez."
+        "es-ES": "Ha aceptado la política de privacidad, sus datos se guardarán y podrá recuperarlos la próxima vez.",
+        de: "Sie haben die Datenschutzrichtlinie akzeptiert, Ihre Daten werden gespeichert und Sie können sie beim nächsten Mal abrufen."
       },
       acceptedNotifyExecuted: {
         "en-US": "The command will be executed in a few seconds.",
@@ -82,7 +92,8 @@ export const privacy = {
         "pt-BR": "O comando será executado em alguns segundos.",
         "ru": "Команда будет выполнена через несколько секунд.",
         "uk": "Команда буде виконана через кілька секунд.",
-        "es-ES": "El comando se ejecutará en unos segundos."
+        "es-ES": "El comando se ejecutará en unos segundos.",
+        de: "Der Befehl wird in wenigen Sekunden ausgeführt."
       },
       privacyPolicy: {
         "en-US": [
@@ -227,6 +238,33 @@ export const privacy = {
           ].join(" "),
           "Podrá activar la eliminación automática u otras (después de 30 días) en el comando {cmdPrivacyDeletion}",
           "Al aceptar esta política de privacidad, acepta que sus datos se almacenarán y utilizarán como se describe anteriormente."
+        ].join("\n"),
+        de: [
+          "**Datenschutzrichtlinie**:\n", [
+            "- Wir verwenden die von Ihnen bereitgestellten Informationen nur, um auf Ihre Anfragen zu antworten und unsere Dienstleistungen",
+            "zu verbessern. Wir werden Ihre Informationen nicht weitergeben, verkaufen oder für andere Zwecke verwenden, als in dieser",
+            "Datenschutzrichtlinie beschrieben.\n"
+          ].join(" "), [
+            "- Wir ergreifen Maßnahmen, um sicherzustellen, dass die von Ihnen bereitgestellten Informationen sicher sind. Über das Internet",
+            "übertragene Daten können nicht zu 100% sicher garantiert werden. Wir ergreifen jedoch Maßnahmen, um sicherzustellen, dass Ihre",
+            "Informationen sicher und in Übereinstimmung mit den geltenden Gesetzen behandelt werden.\n"
+          ].join(" "), [
+            "- Wir können diese Datenschutzerklärung von Zeit zu Zeit ändern. Wenn wir eine solche Änderung vornehmen, werden wir Sie über",
+            "den Bot oder durch Veröffentlichung eines Hinweises in den Discord-Servern oder auf unserem [Support-Server]({discordLink})",
+            "benachrichtigen.\n"
+          ].join(" "), [
+            "- Sie können Ihre gesamten Daten löschen, indem Sie sich an den Support wenden oder den Befehl {cmdPrivacy} verwenden"
+          ].join(" "), [
+            "- Die Nachrichten des Benutzers werden ab dem Zeitpunkt gespeichert, an dem Sie in einem Gespräch sprechen oder eine Frage stellen,",
+            "um im Anforderungsverlauf (über {cmdHistory} zugänglich) abgerufen zu werden, damit die KI Ihre alten Nachrichten verfolgen kann.\n"
+          ].join(" "), [
+            "- Bitte nehmen Sie sich die Zeit, diese Richtlinie sorgfältig zu lesen, und zögern Sie nicht, uns bei Fragen zu den",
+            "Datenschutzpraktiken dieses Bots zu kontaktieren.\n"
+          ].join(" "),
+          "Sie können die automatische Löschung oder andere (nach 30 Tagen) im Befehl {cmdPrivacyDeletion} aktivieren", [
+            "Durch die Annahme dieser Datenschutzrichtlinie erklären Sie sich damit einverstanden, dass Ihre Daten wie oben beschrieben",
+            "gespeichert und verwendet werden."
+          ].join(" ")
         ].join("\n")
       }
     }
