@@ -7,28 +7,43 @@ export const privacy = {
         accept: {
           "en-US": "I accept",
           fr: "J'accepte",
-          "pt-BR": "Eu aceito"
+          "pt-BR": "Eu aceito",
+          "ru": "Я принимаю",
+          "uk": "Я приймаю",
+          "es-ES": "Acepto"
         },
         readFast: {
           "en-US": "I read fast",
           fr: "Je lis vite",
-          "pt-BR": "Eu leio rápido"
+          "pt-BR": "Eu leio rápido",
+          "ru": "Я читаю быстро",
+          "uk": "Я читаю швидко",
+          "es-ES": "Leo rápido"
         }
       },
       loading: {
         "en-US": "Loading...",
         fr: "Chargement...",
-        "pt-BR": "Carregando..."
+        "pt-BR": "Carregando...",
+        "ru": "Загрузка...",
+        "uk": "Завантаження...",
+        "es-ES": "Cargando..."
       },
       embedTitle: {
         "en-US": "Privacy management",
         fr: "Gestion de la confidentialité",
-        "pt-BR": "Gerenciamento de privacidade"
+        "pt-BR": "Gerenciamento de privacidade",
+        "ru": "Управление конфиденциальностью",
+        "uk": "Управління конфіденційністю",
+        "es-ES": "Gestión de la privacidad"
       },
       doYouAccept: {
         "en-US": "Do you agree to the privacy policy?",
         fr: "Acceptez-vous la politique de confidentialité ?",
-        "pt-BR": "Você aceita a política de privacidade?"
+        "pt-BR": "Você aceita a política de privacidade?",
+        "ru": "Вы согласны с политикой конфиденциальности?",
+        "uk": "Ви згодні з політикою конфіденційності?",
+        "es-ES": "¿Acepta la política de privacidad?"
       },
       declined: {
         "en-US": "You have declined the privacy policy, your data will be deleted automatically after using any command that save your data.",
@@ -39,27 +54,35 @@ export const privacy = {
         "pt-BR": [
           "Você recusou a política de privacidade, os dados salvos serão excluídos automaticamente após o uso de qualquer comando que",
           "salve seus dados."
+        ].join(" "),
+        "ru": [
+          "Вы отказались от политики конфиденциальности, ваши данные будут удалены автоматически после использования любой команды,",
+          "которая сохраняет ваши данные."
+        ].join(" "),
+        "uk": [
+          "Ви відмовилися від політики конфіденційності, ваші дані будуть видалені автоматично після використання будь-якої команди,",
+          "яка зберігає ваші дані."
+        ].join(" "),
+        "es-ES": [
+          "Ha rechazado la política de privacidad, sus datos se eliminarán automáticamente después de usar cualquier comando que",
+          "guarde sus datos."
         ].join(" ")
       },
       accepted: {
         "en-US": "You have accepted the privacy policy, your data will be saved and you will be able to retrieve it next time.",
         fr: "Vous avez accepté la politique de confidentialité, vos données seront enregistrées et vous pourrez les récupérer la prochaine fois.",
-        "pt-BR": "Você aceitou a política de privacidade, seus dados serão salvos e você poderá recuperá-los na próxima vez."
+        "pt-BR": "Você aceitou a política de privacidade, seus dados serão salvos e você poderá recuperá-los na próxima vez.",
+        "ru": "Вы приняли политику конфиденциальности, ваши данные будут сохранены, и вы сможете получить их в следующий раз.",
+        "uk": "Ви прийняли політику конфіденційності, ваші дані будуть збережені, і ви зможете отримати їх наступного разу.",
+        "es-ES": "Ha aceptado la política de privacidad, sus datos se guardarán y podrá recuperarlos la próxima vez."
       },
       acceptedNotifyExecuted: {
         "en-US": "The command will be executed in a few seconds.",
         fr: "La commande sera exécutée dans quelques secondes.",
-        "pt-BR": "O comando será executado em alguns segundos."
-      },
-      youCannotReadThatFast: {
-        "en-US": "😡 It's literally impossible to read this text in `{seconds}s`, be serious! [📎]({postLinkedin})",
-        fr: "😡 C'est littéralement impossible de lire ce texte en `{seconds}s`, soyez sérieux ! [📎]({postLinkedin})",
-        "pt-BR": "😡 É literalmente impossível ler esse texto em `{seconds}s`, seja sério! [📎]({postLinkedin})"
-      },
-      ohOkay: {
-        "en-US": "Ah sorry man, you know it happens so often, good use of the bot!",
-        fr: "Ah désolé mec, tu sais que ça arrive souvent, bonne utilisation du bot !",
-        "pt-BR": "Ah, desculpe, cara, você sabe que isso acontece muito, bom uso do bot!"
+        "pt-BR": "O comando será executado em alguns segundos.",
+        "ru": "Команда будет выполнена через несколько секунд.",
+        "uk": "Команда буде виконана через кілька секунд.",
+        "es-ES": "El comando se ejecutará en unos segundos."
       },
       privacyPolicy: {
         "en-US": [
@@ -131,6 +154,79 @@ export const privacy = {
           ].join(" "),
           "Você poderá ativar a exclusão automática ou outras (após 30 dias) no comando {cmdPrivacyDeletion}",
           "Ao aceitar esta política de privacidade, você concorda que seus dados serão armazenados e usados ​​conforme descrito acima."
+        ].join("\n"),
+        "ru": [
+          "**Политика конфиденциальности**:\n", [
+            "- Мы используем предоставленную вами информацию только для ответа на ваши запросы и для улучшения наших услуг.",
+            "Мы не будем передавать, продавать или использовать ваши данные для каких-либо целей, кроме указанных в настоящей Политике",
+            "конфиденциальности.\n"
+          ].join(" "), [
+            "- Мы предпринимаем меры для обеспечения безопасности предоставляемой вами информации. Данные, передаваемые через Интернет, не",
+            "могут быть гарантированы как 100% безопасные; однако мы предпринимаем меры для обеспечения безопасной обработки ваших данных",
+            "в соответствии с применимыми законами.\n"
+          ].join(" "), [
+            "- Мы можем время от времени изменять это уведомление о конфиденциальности. Если мы внесем такое изменение, мы уведомим вас",
+            "через бота или разместим уведомление на серверах Discord или на нашем [сервере поддержки]({discordLink}).\n"
+          ].join(" "), [
+            "- Вы можете удалить все свои данные, связавшись со службой поддержки или с помощью команды {cmdPrivacy}"
+          ].join(" "), [
+            "- Сообщения пользователя хранятся с момента, когда вы говорите в разговоре или задаете вопрос, чтобы получить доступ к",
+            "истории запросов (доступной через {cmdHistory}), чтобы ИИ отслеживал ваши старые сообщения.\n"
+          ].join(" "), [
+            "- Пожалуйста, посвятите время внимательному прочтению этой политики и не стесняйтесь обращаться к нам с любыми вопросами,",
+            "которые у вас могут возникнуть относительно практик конфиденциальности этого бота.\n"
+          ].join(" "),
+          "Вы сможете активировать автоматическое удаление или другие (через 30 дней) в команде {cmdPrivacyDeletion}",
+          "Принимая эту политику конфиденциальности, вы соглашаетесь с тем, что ваши данные будут храниться и использоваться, как описано выше."
+        ].join("\n"),
+        "uk": [
+          "**Політика конфіденційності**:\n", [
+            "- Ми використовуємо надану вами інформацію лише для відповіді на ваші запити та для поліпшення наших послуг.",
+            "Ми не будемо передавати, продавати або використовувати ваші дані для будь-яких цілей, крім вказаних у цій Політиці",
+            "конфіденційності.\n"
+          ].join(" "), [
+            "- Ми вживаємо заходів для забезпечення безпеки наданої вами інформації. Дані, передані через Інтернет, не можуть бути",
+            "гарантовані як 100% безпечні; однак ми вживаємо заходів для забезпечення безпечної обробки ваших даних відповідно до",
+            "застосовних законів.\n"
+          ].join(" "), [
+            "- Ми можемо час від часу змінювати це повідомлення про конфіденційність. Якщо ми внесемо таку зміну, ми повідомимо вас",
+            "через бота або розмістимо повідомлення на серверах Discord або на нашому [сервері підтримки]({discordLink}).\n"
+          ].join(" "), [
+            "- Ви можете видалити всі свої дані, зв'язавшись зі службою підтримки або за допомогою команди {cmdPrivacy}"
+          ].join(" "), [
+            "- Повідомлення користувача зберігаються з моменту, коли ви говорите в розмові або задаєте питання, щоб отримати доступ до",
+            "історії запитів (доступно через {cmdHistory}), щоб ШІ відстежував ваші старі повідомлення.\n"
+          ].join(" "), [
+            "- Будь ласка, приділіть час уважному прочитанню цієї політики і не соромтеся звертатися до нас з будь-якими питаннями,",
+            "які у вас можуть виникнути щодо практик конфіденційності цього бота.\n"
+          ].join(" "),
+          "Ви зможете активувати автоматичне видалення або інші (через 30 днів) в команді {cmdPrivacyDeletion}",
+          "Приймаючи цю політику конфіденційності, ви погоджуєтеся з тим, що ваші дані будуть збережені та використовуватися, як описано вище."
+        ].join("\n"),
+        "es-ES": [
+          "**Política de privacidad**:\n", [
+            "- Utilizamos la información que nos proporciona solo para responder a sus solicitudes y mejorar nuestros servicios.",
+            "No compartiremos, venderemos ni utilizaremos su información para ningún otro propósito que no sea el establecido en esta Política",
+            "de privacidad.\n"
+          ].join(" "), [
+            "- Tomamos medidas para garantizar que la información que nos proporciona sea segura. Los datos transmitidos a través de Internet",
+            "no pueden garantizarse como 100% seguros; sin embargo, tomamos medidas para garantizar que su información se maneje de manera",
+            "segura y de acuerdo con las leyes aplicables.\n"
+          ].join(" "), [
+            "- Podemos cambiar este aviso de privacidad de vez en cuando. Si hacemos dicho cambio, le notificaremos por el bot o publicando",
+            "un aviso en los servidores de Discord o en nuestro [servidor de soporte]({discordLink}).\n"
+          ].join(" "), [
+            "- Puede eliminar todos sus datos poniéndose en contacto con el soporte o con el comando {cmdPrivacy}"
+          ].join(" "), [
+            "- Los mensajes del usuario se almacenan desde el momento en que habla en una conversación o hace una pregunta para que se",
+            "recupere en el historial de solicitudes (accesible a través de {cmdHistory}) para que la IA realice un seguimiento de sus",
+            "mensajes antiguos.\n"
+          ].join(" "), [
+            "- Tómese el tiempo para leer atentamente esta política y no dude en contactarnos si tiene alguna pregunta sobre las prácticas",
+            "de privacidad de este bot.\n"
+          ].join(" "),
+          "Podrá activar la eliminación automática u otras (después de 30 días) en el comando {cmdPrivacyDeletion}",
+          "Al aceptar esta política de privacidad, acepta que sus datos se almacenarán y utilizarán como se describe anteriormente."
         ].join("\n")
       }
     }
