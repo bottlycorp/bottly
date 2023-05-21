@@ -14,6 +14,7 @@
     "killer": "npm run db:gen && node -r @swc-node/register -r tsconfig-paths/register ./src/client.ts killer",
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
+    "typecheck": "tsc --noEmit",
     "db:push": "prisma db push",
     "db:pull": "prisma db pull",
     "db:gen": "prisma generate",

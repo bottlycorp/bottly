@@ -21,32 +21,14 @@ export const global = {
         "es-ES": "Vota por mí",
         de: "Stimmen Sie für mich"
       },
-      reveal: {
-        "en-US": "Reveal to public",
-        fr: "Révéler au public",
-        "pt-BR": "Revelar ao público",
-        ru: "Раскрыть для общественности",
-        uk: "Розкрити для громадськості",
-        "es-ES": "Revelar al público",
-        de: "Öffentlichkeit offenbaren"
-      },
       usage: {
         "en-US": "{left}/{max}"
-      },
-      reveal_text: {
-        "en-US": ":grey_question: {question}\n\n{response}"
-      },
-      revealed: {
-        "en-US": ":smile: The question has been revealed to the public",
-        fr: ":smile: La question a été révélée au public",
-        "pt-BR": ":smile: A pergunta foi revelada ao público",
-        ru: ":smile: Вопрос был раскрыт общественности",
-        uk: ":smile: Питання було розкрито громадськості",
-        "es-ES": ":smile: La pregunta ha sido revelada al público",
-        de: ":smile: Die Frage wurde der Öffentlichkeit offenbart"
       }
     },
     exec: {
+      revealed_text: {
+        "en-US": ":grey_question: {question}\n\n{response}"
+      },
       favorited: {
         "en-US": ":star: The question has been added to your favorites, you can find all your favorites by doing {cmdFavorites}",
         fr: ":star: La question a été ajoutée à vos favoris, vous pouvez retrouver tous vos favoris en faisant {cmdFavorites}",

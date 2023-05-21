@@ -128,7 +128,7 @@ export const execute: CommandExecute = async(command, user) => {
     if (i.customId === "reveal") {
       try {
         channel.send({ embeds: [answerPublicEmbed(command, answer, command.options.getString("prompt", true))] });
-        command.editReply({ embeds: [simpleEmbed(translate(command.locale, global.config.exec.buttons.revealed), "info", "")], components: [] });
+        command.editReply({ embeds: [simpleEmbed(translate(command.locale, ask.config.buttons.revealed), "info", "")], components: [] });
       } catch (error) {
         colors.error(userWithId(command.user) + " tried to reveal the answer but an error occured: " + error);
         command.editReply(translate(command.locale, global.config.exec.error, {
@@ -221,7 +221,7 @@ export const answerEmbed = (command: CommandInteraction, answer: string): EmbedB
 
 export const answerPublicEmbed = (command: CommandInteraction, answer: string, prompt: string): EmbedBuilder => {
   return simpleEmbed(
-    translate(command.locale, global.config.exec.buttons.reveal_text, { response: answer, question: limitString(prompt, 100) }),
+    translate(command.locale, global.config.exec.revealed_text, { response: answer, question: limitString(prompt, 100) }),
     "info",
     undefined,
     { text: command.user.username, icon_url: command.user.displayAvatarURL(), timestamp: true }

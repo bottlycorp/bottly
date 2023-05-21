@@ -8,10 +8,11 @@ import { chat } from "$core/commands/chat/chat.config";
 import { privacy } from "prisma/privacy.config";
 import { simpleButton } from "../embed";
 import { getStringEnv } from "../env-variable";
+import { ask } from "$core/commands/ask/ask.config";
 
 export const usageButton = (command: CommandInteraction | Interaction, user: UserIncludeAll, reduce = true) : ButtonBuilder => {
   return simpleButton(
-    translate(command.locale, global.config.exec.buttons.usage, {
+    translate(command.locale, global.config.buttons.usage, {
       left: reduce ? (user?.usages?.usage ?? 1) == 0 ? 0 : (user?.usages?.usage ?? 1) - 1 : (user?.usages?.usage ?? 1),
       max: getMaxUsage(user)
     }),
@@ -24,7 +25,7 @@ export const usageButton = (command: CommandInteraction | Interaction, user: Use
 
 export const revealButton = (command: CommandInteraction | Interaction) : ButtonBuilder => {
   return simpleButton(
-    translate(command.locale, global.config.exec.buttons.reveal),
+    translate(command.locale, ask.config.buttons.reveal),
     ButtonStyle.Primary,
     "reveal"
   );
@@ -47,7 +48,7 @@ export const qrCodeButton = () : ButtonBuilder => {
 
 export const premiumButton = (command: CommandInteraction | Interaction) : ButtonBuilder => {
   return simpleButton(
-    translate(command.locale, global.config.exec.buttons.premium),
+    translate(command.locale, global.config.buttons.premium),
     ButtonStyle.Link,
     getStringEnv("STRIPE_PREMIUM_LINK")
   );
@@ -55,7 +56,7 @@ export const premiumButton = (command: CommandInteraction | Interaction) : Butto
 
 export const voteButton = (command: CommandInteraction | Interaction) : ButtonBuilder => {
   return simpleButton(
-    translate(command.locale, global.config.exec.buttons.vote),
+    translate(command.locale, global.config.buttons.vote),
     ButtonStyle.Link,
     "https://top.gg/bot/1076862546658738236/vote"
   );
@@ -63,7 +64,7 @@ export const voteButton = (command: CommandInteraction | Interaction) : ButtonBu
 
 export const downloadButton = (command: CommandInteraction | Interaction, id: string) : ButtonBuilder => {
   return simpleButton(
-    translate(command.locale, global.config.exec.buttons.download),
+    translate(command.locale, chat.config.buttons.download),
     ButtonStyle.Primary,
     "download_" + id
   );
@@ -71,7 +72,7 @@ export const downloadButton = (command: CommandInteraction | Interaction, id: st
 
 export const hideButton = (command: CommandInteraction | Interaction) : ButtonBuilder => {
   return simpleButton(
-    translate(command.locale, chat.config.exec.buttons.hidePremiumTip),
+    translate(command.locale, chat.config.buttons.hidePremiumTip),
     ButtonStyle.Primary,
     "hide"
   );

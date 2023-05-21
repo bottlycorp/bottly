@@ -68,6 +68,26 @@ export const ask = {
       "es-ES": "Haz una pregunta a la Inteligencia Artificial",
       de: "Stellen Sie eine Frage an die künstliche Intelligenz"
     },
+    buttons: {
+      reveal: {
+        "en-US": "Reveal to public",
+        fr: "Révéler au public",
+        "pt-BR": "Revelar ao público",
+        ru: "Раскрыть для общественности",
+        uk: "Розкрити для громадськості",
+        "es-ES": "Revelar al público",
+        de: "Öffentlichkeit offenbaren"
+      },
+      revealed: {
+        "en-US": ":smile: The question has been revealed to the public",
+        fr: ":smile: La question a été révélée au public",
+        "pt-BR": ":smile: A pergunta foi revelada ao público",
+        ru: ":smile: Вопрос был раскрыт общественности",
+        uk: ":smile: Питання було розкрито громадськості",
+        "es-ES": ":smile: La pregunta ha sido revelada al público",
+        de: ":smile: Die Frage wurde der Öffentlichkeit offenbart"
+      }
+    },
     exec: {
       success: {
         "en-US": "{response}"
