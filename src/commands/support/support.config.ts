@@ -12,7 +12,8 @@ export const support = {
       "pt-BR": "Obter o servidor de suporte do discord",
       ru: "Получить сервер поддержки discord",
       uk: "Отримати сервер підтримки discord",
-      "es-ES": "Obtener el servidor de soporte de discord"
+      "es-ES": "Obtener el servidor de soporte de discord",
+      de: "Holen Sie sich den Support-Discord-Server"
     },
     exec: {
       embedTitle: {
@@ -21,7 +22,8 @@ export const support = {
         "pt-BR": "Servidor de suporte do discord",
         ru: "Сервер поддержки discord",
         uk: "Сервер підтримки discord",
-        "es-ES": "Servidor de soporte de discord"
+        "es-ES": "Servidor de soporte de discord",
+        de: "Support-Discord-Server"
       },
       link: {
         "en-US": "You can join the support server by clicking the button below",
@@ -29,7 +31,8 @@ export const support = {
         "pt-BR": "Você pode entrar no servidor de suporte clicando no botão abaixo",
         ru: "Вы можете присоединиться к серверу поддержки, нажав на кнопку ниже",
         uk: "Ви можете приєднатися до сервера підтримки, натиснувши кнопку нижче",
-        "es-ES": "Puede unirse al servidor de soporte haciendo clic en el botón de abajo"
+        "es-ES": "Puede unirse al servidor de soporte haciendo clic en el botón de abajo",
+        de: "Sie können dem Support-Server beitreten, indem Sie auf die Schaltfläche unten klicken"
       }
     },
     imgs: {
@@ -38,7 +41,8 @@ export const support = {
       "pt-BR": "https://cdn.discordapp.com/attachments/927843710669062204/1109814983547682816/pt-BR.png",
       ru: "https://cdn.discordapp.com/attachments/927843710669062204/1109814292435452005/ru.png",
       uk: "https://cdn.discordapp.com/attachments/927843710669062204/1109814292150227035/uk.png",
-      "es-ES": "https://media.discordapp.net/attachments/927843710669062204/1109814291823087666/es-ES.png"
+      "es-ES": "https://media.discordapp.net/attachments/927843710669062204/1109814291823087666/es-ES.png",
+      de: "https://cdn.discordapp.com/attachments/927843710669062204/1109894996104065094/de.png"
     }
   }
 } satisfies Record<string, Command>;
