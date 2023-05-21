@@ -26,37 +26,37 @@ export const roadmap = {
       "june": {
         "en-US": [
           "__June__:",
-          "• Add new natives languages for the bot: Ukrainian, Russian and Spanish",
+          "• ~~Add new natives languages for the bot: Ukrainian, Russian and Spanish~~",
           "• Restore the context menu",
           "• Add models to commands {cmdAsk} and {cmdChat} (🎗️)"
         ].join("\n"),
         "fr": [
           "__Juin__ :",
-          "• Ajout de nouvelles langues natives pour le bot : Ukrainien, Russe et Espagnol",
+          "• (✅) ~~Ajout de nouvelles langues natives pour le bot : Ukrainien, Russe et Espagnol~~",
           "• Restauration des options menu contextuel",
           "• Ajout de modèles aux commandes {cmdAsk} et {cmdChat} (🎗️)"
         ].join("\n"),
         "pt-BR": [
           "__Junho__:",
-          "• Adicionar novos idiomas nativos para o bot: Ucraniano, Russo e Espanhol",
+          "• (✅) ~~Adicionar novos idiomas nativos para o bot: Ucraniano, Russo e Espanhol~~",
           "• Restaurar o menu de contexto",
           "• Adicionar modelos aos comandos {cmdAsk} e {cmdChat} (🎗️)"
         ].join("\n"),
         "ru": [
           "__Июнь__:",
-          "• Добавление новых родных языков для бота: украинский, русский и испанский",
+          "• (✅) ~~Добавление новых родных языков для бота: украинский, русский и испанский~~",
           "• Восстановление контекстного меню",
           "• Добавление моделей к командам {cmdAsk} и {cmdChat} (🎗️)"
         ].join("\n"),
         "uk": [
           "__Червень__:",
-          "• Додавання нових рідних мов для бота: українська, російська та іспанська",
+          "• (✅) ~~Додавання нових рідних мов для бота: українська, російська та іспанська~~",
           "• Відновлення контекстного меню",
           "• Додавання моделей до команд {cmdAsk} та {cmdChat} (🎗️)"
         ].join("\n"),
         "es-ES": [
           "__Junio__:",
-          "• Agregar nuevos idiomas nativos para el bot: ucraniano, ruso y español",
+          "• (✅) ~~Agregar nuevos idiomas nativos para el bot: ucraniano, ruso y español~~",
           "• Restaurar el menú contextual",
           "• Agregar modelos a los comandos {cmdAsk} y {cmdChat} (🎗️)"
         ].join("\n")
