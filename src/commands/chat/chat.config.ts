@@ -102,18 +102,27 @@ export const chat = {
         }
       }
     },
-    exec: {
-      buttons: {
-        hidePremiumTip: {
-          "en-US": "Don't show this tip again",
-          fr: "Ne plus afficher ce conseil",
-          "pt-BR": "Não mostre este conselho novamente",
-          ru: "Больше не показывать эту подсказку",
-          uk: "Більше не показувати цей підказку",
-          "es-ES": "No vuelva a mostrar este consejo",
-          de: "Diesen Tipp nicht mehr anzeigen"
-        }
+    buttons: {
+      hidePremiumTip: {
+        "en-US": "Don't show this tip again",
+        fr: "Ne plus afficher ce conseil",
+        "pt-BR": "Não mostre este conselho novamente",
+        ru: "Больше не показывать эту подсказку",
+        uk: "Більше не показувати цей підказку",
+        "es-ES": "No vuelva a mostrar este consejo",
+        de: "Diesen Tipp nicht mehr anzeigen"
       },
+      download: {
+        "en-US": "🖨️ Download",
+        fr: "🖨️ Télécharger",
+        "pt-BR": "🖨️ Baixar",
+        ru: "🖨️ Скачать",
+        uk: "🖨️ Завантажити",
+        "es-ES": "🖨️ Descargar",
+        de: "🖨️ Herunterladen"
+      }
+    },
+    exec: {
       notPremiumDownload: {
         "en-US": "You can't download the dialog thread because you are not a premium user.",
         fr: "Vous ne pouvez pas télécharger la discussion car vous n'êtes pas un utilisateur premium.",
