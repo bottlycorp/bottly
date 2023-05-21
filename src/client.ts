@@ -32,9 +32,9 @@ if (!isDevEnvironment) {
 
 export const colors = new BColors({
   date: {
-    enabled: true,
-    format: "HH:mm:ss",
-    surrounded: "[]"
+    format: "DD/MM/YYYY HH:mm:ss",
+    surrounded: "[]",
+    timezone: "Europe/Paris"
   }
 });
 
