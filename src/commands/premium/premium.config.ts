@@ -21,7 +21,7 @@ export const premium = {
         becomePremium: {
           "en-US": "Become premium for $5,00/month",
           fr: "Devenir premium pour 5,00$/mois",
-          "pt-BR": "Se tornar premium por R$ 5,00/mês"
+          "pt-BR": "Se tornar premium por 5,00$/mês"
         }
       },
       embed: {
@@ -33,29 +33,32 @@ export const premium = {
         descriptionPremium: {
           "en-US": [
             "{emojiPremium} You are a premium user, thank you for your support !",
-            "\nYour subscription is active since <t:{firstF}:f> (<t:{firstR}:R>).",
+            "\nYour subscription is active since <t:{firstF}:f>",
             "{activeSubscription}"
           ].join("\n"),
           fr: [
             "{emojiPremium} Vous êtes un utilisateur premium, merci pour votre soutien !",
-            "\nAbonnement actif depuis le <t:{firstF}:f> (<t:{firstR}:R>).",
+            "\nAbonnement actif depuis le <t:{firstF}:F>",
             "{activeSubscription}"
           ].join("\n"),
           "pt-BR": [
             "{emojiPremium} Você é um usuário premium, obrigado pelo seu apoio !",
-            "\nAssinatura ativa desde <t:{firstF}:f> (<t:{firstR}:R>).",
+            "\nAssinatura ativa desde <t:{firstF}:F>",
             "{activeSubscription}"
           ].join("\n")
         },
         activeSubscription: {
-          "en-US": "The next billing will take place on <t:{next}:F>.",
-          fr: "La prochaine facuration aura lieu le <t:{next}:F>.",
-          "pt-BR": "A próxima cobrança ocorrerá em <t:{next}:F>."
+          "en-US": "The next billing will take place on <t:{next}:D>.",
+          fr: "La prochaine facuration aura lieu le <t:{next}:D>.",
+          "pt-BR": "A próxima cobrança ocorrerá em <t:{next}:D>."
         },
         canceledSubscription: {
-          "en-US": "Your subscription has been canceled, you will no longer be charged and will lose your premium status on <t:{next}:F>.",
-          fr: "Votre abonnement a été annulé, vous ne serez plus facturé et vous perdrez votre statut premium le <t:{next}:F>.",
-          "pt-BR": "Sua assinatura foi cancelada, você não será mais cobrado e perderá seu status premium em <t:{next}:F>."
+          "en-US": [
+            "You canceled your subscription on <t:{cancel}:D>, you will no longer be charged and you will lose your premium ",
+            "status on <t:{next}:F>."
+          ].join(" "),
+          fr: "Vous avez annulé votre abonnement le <t:{cancel}:D>, vous ne serez plus facturé et vous perdrez votre statut premium le <t:{next}:F>.",
+          "pt-BR": "Você cancelou sua assinatura em <t:{cancel}:D>, você não será mais cobrado e perderá seu status premium em <t:{next}:F>."
         },
         descriptionNotPremium: {
           "en-US": [
@@ -92,7 +95,7 @@ export const premium = {
             "• Você tem 50% a mais de poder de escrita em suas perguntas e discussões",
             "• Baixe as discussões quando terminar",
             "\n**Como me tornar premium e quanto custa ?**",
-            "• Você pode se tornar premium clicando no botão abaixo, por um total de R$ 5,00 por mês.",
+            "• Você pode se tornar premium clicando no botão abaixo, por um total de 5,00$ por mês.",
             "\n**Posso cancelar minha assinatura ou reembolsá-la ?**",
             "• Sim, você pode cancelar sua assinatura a qualquer momento no Stripe e não será cobrado novamente.",
             "• Não reembolsamos a assinatura, mas você pode cancelá-la a qualquer momento."

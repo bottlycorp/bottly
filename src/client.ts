@@ -5,11 +5,11 @@ import { listener, load as loadCommands, register } from "$core/utils/handler/co
 import { version } from "../package.json";
 import { getStringEnv } from "./utils/env-variable";
 import { sep } from "path";
-import { BColors } from "bettercolors";
 import { Configuration, OpenAIApi } from "openai";
 import { AutoPoster } from "topgg-autoposter";
 import { isDevEnvironment } from "./utils/environment";
 import { DayJS } from "./utils/day-js";
+import { BColors } from "bettercolors";
 
 export let today = DayJS().day();
 export let month = DayJS().month();
@@ -20,6 +20,14 @@ export const client = new DiscordClient({
     GatewayIntentBits.GuildIntegrations
   ],
   partials: [Partials.Message, Partials.Channel, Partials.Reaction]
+});
+
+export const colors = new BColors({
+  date: {
+    format: "DD/MM/YYYY HH:mm:ss",
+    surrounded: "[]",
+    timezone: "Europe/Paris"
+  }
 });
 
 if (!isDevEnvironment) {

@@ -22,10 +22,11 @@ export const execute: CommandExecute = async(command, user) => {
       next: user.subscription?.nextPayment,
       activeSubscription: user.subscription?.canceledAt == 0
         ? translate(command.locale, premium.config.exec.embed.activeSubscription, { next: user.subscription?.nextPayment })
-        : translate(command.locale, premium.config.exec.embed.canceledSubscription, { next: user.subscription?.canceledAt })
+        : translate(command.locale, premium.config.exec.embed.canceledSubscription, {
+          cancel: user.subscription?.canceledAt,
+          next: user.subscription?.nextPayment
+        })
     }));
-
-    embed.setTitle(null);
 
     buttons.push(
       simpleButton(
