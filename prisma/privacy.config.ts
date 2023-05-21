@@ -8,8 +8,8 @@ export const privacy = {
           "en-US": "I accept",
           fr: "J'accepte",
           "pt-BR": "Eu aceito",
-          "ru": "Я принимаю",
-          "uk": "Я приймаю",
+          ru: "Я принимаю",
+          uk: "Я приймаю",
           "es-ES": "Acepto",
           de: "Ich akzeptiere"
         },
@@ -17,8 +17,8 @@ export const privacy = {
           "en-US": "I read fast",
           fr: "Je lis vite",
           "pt-BR": "Eu leio rápido",
-          "ru": "Я читаю быстро",
-          "uk": "Я читаю швидко",
+          ru: "Я читаю быстро",
+          uk: "Я читаю швидко",
           "es-ES": "Leo rápido",
           de: "Ich lese schnell"
         }
@@ -27,8 +27,8 @@ export const privacy = {
         "en-US": "Loading...",
         fr: "Chargement...",
         "pt-BR": "Carregando...",
-        "ru": "Загрузка...",
-        "uk": "Завантаження...",
+        ru: "Загрузка...",
+        uk: "Завантаження...",
         "es-ES": "Cargando...",
         de: "Wird geladen..."
       },
@@ -36,8 +36,8 @@ export const privacy = {
         "en-US": "Privacy management",
         fr: "Gestion de la confidentialité",
         "pt-BR": "Gerenciamento de privacidade",
-        "ru": "Управление конфиденциальностью",
-        "uk": "Управління конфіденційністю",
+        ru: "Управление конфиденциальностью",
+        uk: "Управління конфіденційністю",
         "es-ES": "Gestión de la privacidad",
         de: "Datenschutzverwaltung"
       },
@@ -45,8 +45,8 @@ export const privacy = {
         "en-US": "Do you agree to the privacy policy?",
         fr: "Acceptez-vous la politique de confidentialité ?",
         "pt-BR": "Você aceita a política de privacidade?",
-        "ru": "Вы согласны с политикой конфиденциальности?",
-        "uk": "Ви згодні з політикою конфіденційності?",
+        ru: "Вы согласны с политикой конфиденциальности?",
+        uk: "Ви згодні з політикою конфіденційності?",
         "es-ES": "¿Acepta la política de privacidad?",
         de: "Stimmen Sie der Datenschutzrichtlinie zu?"
       },
@@ -60,11 +60,11 @@ export const privacy = {
           "Você recusou a política de privacidade, os dados salvos serão excluídos automaticamente após o uso de qualquer comando que",
           "salve seus dados."
         ].join(" "),
-        "ru": [
+        ru: [
           "Вы отказались от политики конфиденциальности, ваши данные будут удалены автоматически после использования любой команды,",
           "которая сохраняет ваши данные."
         ].join(" "),
-        "uk": [
+        uk: [
           "Ви відмовилися від політики конфіденційності, ваші дані будуть видалені автоматично після використання будь-якої команди,",
           "яка зберігає ваші дані."
         ].join(" "),
@@ -81,8 +81,8 @@ export const privacy = {
         "en-US": "You have accepted the privacy policy, your data will be saved and you will be able to retrieve it next time.",
         fr: "Vous avez accepté la politique de confidentialité, vos données seront enregistrées et vous pourrez les récupérer la prochaine fois.",
         "pt-BR": "Você aceitou a política de privacidade, seus dados serão salvos e você poderá recuperá-los na próxima vez.",
-        "ru": "Вы приняли политику конфиденциальности, ваши данные будут сохранены, и вы сможете получить их в следующий раз.",
-        "uk": "Ви прийняли політику конфіденційності, ваші дані будуть збережені, і ви зможете отримати їх наступного разу.",
+        ru: "Вы приняли политику конфиденциальности, ваши данные будут сохранены, и вы сможете получить их в следующий раз.",
+        uk: "Ви прийняли політику конфіденційності, ваші дані будуть збережені, і ви зможете отримати їх наступного разу.",
         "es-ES": "Ha aceptado la política de privacidad, sus datos se guardarán y podrá recuperarlos la próxima vez.",
         de: "Sie haben die Datenschutzrichtlinie akzeptiert, Ihre Daten werden gespeichert und Sie können sie beim nächsten Mal abrufen."
       },
@@ -90,8 +90,8 @@ export const privacy = {
         "en-US": "The command will be executed in a few seconds.",
         fr: "La commande sera exécutée dans quelques secondes.",
         "pt-BR": "O comando será executado em alguns segundos.",
-        "ru": "Команда будет выполнена через несколько секунд.",
-        "uk": "Команда буде виконана через кілька секунд.",
+        ru: "Команда будет выполнена через несколько секунд.",
+        uk: "Команда буде виконана через кілька секунд.",
         "es-ES": "El comando se ejecutará en unos segundos.",
         de: "Der Befehl wird in wenigen Sekunden ausgeführt."
       },
@@ -166,7 +166,7 @@ export const privacy = {
           "Você poderá ativar a exclusão automática ou outras (após 30 dias) no comando {cmdPrivacyDeletion}",
           "Ao aceitar esta política de privacidade, você concorda que seus dados serão armazenados e usados ​​conforme descrito acima."
         ].join("\n"),
-        "ru": [
+        ru: [
           "**Политика конфиденциальности**:\n", [
             "- Мы используем предоставленную вами информацию только для ответа на ваши запросы и для улучшения наших услуг.",
             "Мы не будем передавать, продавать или использовать ваши данные для каких-либо целей, кроме указанных в настоящей Политике",
@@ -190,7 +190,7 @@ export const privacy = {
           "Вы сможете активировать автоматическое удаление или другие (через 30 дней) в команде {cmdPrivacyDeletion}",
           "Принимая эту политику конфиденциальности, вы соглашаетесь с тем, что ваши данные будут храниться и использоваться, как описано выше."
         ].join("\n"),
-        "uk": [
+        uk: [
           "**Політика конфіденційності**:\n", [
             "- Ми використовуємо надану вами інформацію лише для відповіді на ваші запити та для поліпшення наших послуг.",
             "Ми не будемо передавати, продавати або використовувати ваші дані для будь-яких цілей, крім вказаних у цій Політиці",

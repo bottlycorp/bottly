@@ -1,9 +1,13 @@
 import { Command } from "$core/utils/config/message/command/command.type";
 
 export const models = {
-  "fr": "Tu t'appelle Bottly, tu va répondre à {user} en {locale} qui a posé la question suivante : {question} ?",
+  fr: "Tu t'appelle Bottly, tu va répondre à {user} en {locale} qui a posé la question suivante : {question} ?",
   "en-US": "You are called Bottly, you will answer to {user} in {locale} who asked the following question: {question} ?",
-  "pt-BR": "Você se chama Bottly, você responderá a {user} em {locale} que fez a seguinte pergunta: {question} ?"
+  "pt-BR": "Você se chama Bottly, você responderá a {user} em {locale} que fez a seguinte pergunta: {question} ?",
+  ru: "Тебя зовут Ботли, ты будешь отвечать {user} на {locale}, который задал следующий вопрос: {question} ?",
+  uk: "Тебе звуть Ботлі, ти будеш відповідати {user} на {locale}, який задав наступне питання: {question} ?",
+  "es-ES": "Te llamas Bottly, responderás a {user} en {locale} que hizo la siguiente pregunta: {question} ?",
+  de: "Du heißt Bottly, du wirst {user} in {locale} antworten, der folgende Frage gestellt hat: {question} ?"
 };
 
 export const ask = {

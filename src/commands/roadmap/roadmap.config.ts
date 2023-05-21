@@ -30,7 +30,7 @@ export const roadmap = {
           "• Restore the context menu",
           "• Add models to commands {cmdAsk} and {cmdChat} (🎗️)"
         ].join("\n"),
-        "fr": [
+        fr: [
           "__Juin__ :",
           "• (✅) ~~Ajout de nouvelles langues natives pour le bot : Ukrainien, Russe et Espagnol~~",
           "• Restauration des options menu contextuel",
@@ -42,13 +42,13 @@ export const roadmap = {
           "• Restaurar o menu de contexto",
           "• Adicionar modelos aos comandos {cmdAsk} e {cmdChat} (🎗️)"
         ].join("\n"),
-        "ru": [
+        ru: [
           "__Июнь__:",
           "• (✅) ~~Добавление новых родных языков для бота: украинский, русский и испанский~~",
           "• Восстановление контекстного меню",
           "• Добавление моделей к командам {cmdAsk} и {cmdChat} (🎗️)"
         ].join("\n"),
-        "uk": [
+        uk: [
           "__Червень__:",
           "• (✅) ~~Додавання нових рідних мов для бота: українська, російська та іспанська~~",
           "• Відновлення контекстного меню",
