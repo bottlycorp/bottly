@@ -13,26 +13,38 @@ export const request = {
         description: {
           "en-US": "The question you want get",
           fr: "La question que vous voulez obtenir",
-          "pt-BR": "A pergunta que você deseja obter"
+          "pt-BR": "A pergunta que você deseja obter",
+          ru: "Вопрос, который вы хотите получить",
+          uk: "Питання, яке ви хочете отримати",
+          "es-ES": "La pregunta que desea obtener"
         }
       }
     },
     description: {
       "en-US": "Get an previously asked question",
       fr: "Obtenir une question posée précédemment",
-      "pt-BR": "Obtenha uma pergunta anteriormente feita"
+      "pt-BR": "Obtenha uma pergunta anteriormente feita",
+      ru: "Получить ранее заданный вопрос",
+      uk: "Отримати попередньо задане питання",
+      "es-ES": "Obtener una pregunta hecha anteriormente"
     },
     exec: {
       buttons: {},
       auto: {
         "en-US": "At {date}",
         fr: "Le {date}",
-        "pt-BR": "Em {date}"
+        "pt-BR": "Em {date}",
+        ru: "В {date}",
+        uk: "В {date}",
+        "es-ES": "En {date}"
       },
       thisQuestionDoesNotExist: {
         "en-US": "The question you want to recover does not exist, or it is not yours!",
         fr: "La question que vous voulez récupérer n'existe pas, ou elle ne vous appartient pas !",
-        "pt-BR": "A pergunta que você deseja recuperar não existe ou não é sua!"
+        "pt-BR": "A pergunta que você deseja recuperar não existe ou não é sua!",
+        ru: "Вопрос, который вы хотите восстановить, не существует или не принадлежит вам!",
+        uk: "Питання, яке ви хочете відновити, не існує або не належить вам!",
+        "es-ES": "¡La pregunta que desea recuperar no existe o no es suya!"
       },
       question: {
         "en-US": [
@@ -52,12 +64,33 @@ export const request = {
           "foi enviada em `{channel}` de `{guild}`.",
           "{favoriteLine}",
           "\n\n**Pergunta:** {question}\n**Resposta:** {answer}"
+        ].join(""),
+        ru: [
+          "Этот вопрос был задан <t:{date}:F> (<t:{date2}:R>) и был ответ в `{time}s`, ",
+          "был отправлен в `{channel}` из `{guild}`.",
+          "{favoriteLine}",
+          "\n\n**Вопрос:** {question}\n**Ответ:** {answer}"
+        ].join(""),
+        uk: [
+          "Це питання було задано <t:{date}:F> (<t:{date2}:R>) і було відповідь в `{time}s`, ",
+          "був відправлений в `{channel}` з `{guild}`.",
+          "{favoriteLine}",
+          "\n\n**Питання:** {question}\n**Відповідь:** {answer}"
+        ].join(""),
+        "es-ES": [
+          "Esta pregunta fue hecha el <t:{date}:F> (<t:{date2}:R>) y fue respondida en `{time}s`, ",
+          "fue enviada en `{channel}` de `{guild}`.",
+          "{favoriteLine}",
+          "\n\n**Pregunta:** {question}\n**Respuesta:** {answer}"
         ].join("")
       },
       favoriteLine: {
         "en-US": "\n\n`⭐` This question has been marked as favorite the <t:{date}:F>",
         fr: "\n\n`⭐` Cette question a été marquée comme favorite le <t:{date}:F>",
-        "pt-BR": "\n\n`⭐` Esta pergunta foi marcada como favorita em <t:{date}:F>"
+        "pt-BR": "\n\n`⭐` Esta pergunta foi marcada como favorita em <t:{date}:F>",
+        ru: "\n\n`⭐` Этот вопрос был отмечен как избранный <t:{date}:F>",
+        uk: "\n\n`⭐` Це питання було позначено як вибране <t:{date}:F>",
+        "es-ES": "\n\n`⭐` Esta pregunta ha sido marcada como favorita el <t:{date}:F>"
       }
     }
   }
