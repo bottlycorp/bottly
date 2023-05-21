@@ -6,6 +6,17 @@ export const support = {
       "en-US": "support"
     },
     options: {},
+    buttons: {
+      join: {
+        "en-US": "Join the support server",
+        fr: "Rejoindre le serveur de support",
+        "pt-BR": "Entrar no servidor de suporte",
+        ru: "Присоединиться к серверу поддержки",
+        uk: "Приєднатися до сервера підтримки",
+        "es-ES": "Unirse al servidor de soporte",
+        de: "Dem Support-Server beitreten"
+      }
+    },
     description: {
       "en-US": "Get the support discord server",
       fr: "Obtenir le serveur discord de support",
@@ -16,23 +27,25 @@ export const support = {
       de: "Holen Sie sich den Support-Discord-Server"
     },
     exec: {
-      embedTitle: {
-        "en-US": "Support discord server",
-        fr: "Serveur discord de support",
-        "pt-BR": "Servidor de suporte do discord",
-        ru: "Сервер поддержки discord",
-        uk: "Сервер підтримки discord",
-        "es-ES": "Servidor de soporte de discord",
-        de: "Support-Discord-Server"
-      },
-      link: {
-        "en-US": "You can join the support server by clicking the button below",
-        fr: "Vous pouvez rejoindre le serveur de support en cliquant sur le bouton ci-dessous",
-        "pt-BR": "Você pode entrar no servidor de suporte clicando no botão abaixo",
-        ru: "Вы можете присоединиться к серверу поддержки, нажав на кнопку ниже",
-        uk: "Ви можете приєднатися до сервера підтримки, натиснувши кнопку нижче",
-        "es-ES": "Puede unirse al servidor de soporte haciendo clic en el botón de abajo",
-        de: "Sie können dem Support-Server beitreten, indem Sie auf die Schaltfläche unten klicken"
+      embed: {
+        title: {
+          "en-US": "Support discord server",
+          fr: "Serveur discord de support",
+          "pt-BR": "Servidor de suporte do discord",
+          ru: "Сервер поддержки discord",
+          uk: "Сервер підтримки discord",
+          "es-ES": "Servidor de soporte de discord",
+          de: "Support-Discord-Server"
+        },
+        description: {
+          "en-US": "You can join the support server by clicking the button below",
+          fr: "Vous pouvez rejoindre le serveur de support en cliquant sur le bouton ci-dessous",
+          "pt-BR": "Você pode entrar no servidor de suporte clicando no botão abaixo",
+          ru: "Вы можете присоединиться к серверу поддержки, нажав на кнопку ниже",
+          uk: "Ви можете приєднатися до сервера підтримки, натиснувши кнопку нижче",
+          "es-ES": "Puede unirse al servidor de soporte haciendo clic en el botón de abajo",
+          de: "Sie können dem Support-Server beitreten, indem Sie auf die Schaltfläche unten klicken"
+        }
       }
     },
     imgs: {

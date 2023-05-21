@@ -9,16 +9,15 @@ export const execute: CommandExecute = async(command) => {
   const embedImage = simpleEmbed("", "info");
   embedImage.setImage(translate(command.locale, support.config.imgs));
   const embedText = simpleEmbed(
-    translate(command.locale, support.config.exec.link),
+    translate(command.locale, support.config.exec.embed.description),
     "info",
-    translate(command.locale, support.config.exec.embedTitle)
+    translate(command.locale, support.config.exec.embed.title)
   );
 
   const button = new ButtonBuilder()
     .setStyle(ButtonStyle.Link)
-    .setLabel("Join")
-    .setURL("https://discord.gg/tFUJHr2htA")
-    .setEmoji({ name: "🔗" });
+    .setLabel(translate(command.locale, support.config.buttons.join))
+    .setURL("https://discord.gg/tFUJHr2htA");
 
   command.editReply({
     embeds: [embedImage, embedText],
