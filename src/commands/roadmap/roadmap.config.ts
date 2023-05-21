@@ -12,7 +12,8 @@ export const roadmap = {
       "pt-BR": "Mostra a roadmap do bot",
       ru: "Показать планы бота",
       uk: "Показати плани бота",
-      "es-ES": "Muestra la hoja de ruta del bot"
+      "es-ES": "Muestra la hoja de ruta del bot",
+      de: "Zeigen Sie die Roadmap des Bots an"
     },
     exec: {
       embedTitle: {
@@ -21,7 +22,8 @@ export const roadmap = {
         "pt-BR": "Roadmap do bot",
         ru: "Планы бота",
         uk: "Плани бота",
-        "es-ES": "Hoja de ruta del bot"
+        "es-ES": "Hoja de ruta del bot",
+        de: "Roadmap des Bots"
       },
       "june": {
         "en-US": [
@@ -59,6 +61,12 @@ export const roadmap = {
           "• (✅) ~~Agregar nuevos idiomas nativos para el bot: ucraniano, ruso y español~~",
           "• Restaurar el menú contextual",
           "• Agregar modelos a los comandos {cmdAsk} y {cmdChat} (🎗️)"
+        ].join("\n"),
+        de: [
+          "__Juni__:",
+          "• (✅) ~~Hinzufügen neuer Muttersprachen für den Bot: Ukrainisch, Russisch und Spanisch~~",
+          "• Wiederherstellen des Kontextmenüs",
+          "• Hinzufügen von Modellen zu den Befehlen {cmdAsk} und {cmdChat} (🎗️)"
         ].join("\n")
       },
       priorityText: {
@@ -67,7 +75,8 @@ export const roadmap = {
         "pt-BR": "🎗️: Prioridade do mês",
         ru: "🎗️: Приоритет месяца",
         uk: "🎗️: Пріоритет місяця",
-        "es-ES": "🎗️: Prioridad del mes"
+        "es-ES": "🎗️: Prioridad del mes",
+        de: "🎗️: Priorität des Monats"
       }
     }
   }
