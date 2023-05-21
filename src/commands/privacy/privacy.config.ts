@@ -11,7 +11,8 @@ export const privacy = {
       "pt-BR": "Gerencie suas configurações de privacidade.",
       ru: "Управляйте настройками конфиденциальности.",
       uk: "Керуйте налаштуваннями конфіденційності.",
-      "es-ES": "Administrar la configuración de privacidad."
+      "es-ES": "Administrar la configuración de privacidad.",
+      de: "Verwalten Sie Ihre Datenschutzeinstellungen."
     },
     exec: {
       deleted: {
@@ -21,7 +22,8 @@ export const privacy = {
           "pt-BR": "Dados excluídos",
           ru: "Данные удалены",
           uk: "Дані видалені",
-          "es-ES": "Datos eliminados"
+          "es-ES": "Datos eliminados",
+          de: "Daten gelöscht"
         },
         description: {
           "en-US": [
@@ -113,6 +115,21 @@ export const privacy = {
             "- Tus preguntas",
             "- Tus discusiones",
             "- El número de usos y mensajes enviados en las discusiones"
+          ].join("\n"),
+          de: [
+            "Schön dich kennenzulernen {username}, deine Fragen, Chat-Nachrichten wurden erfolgreich gelöscht",
+            "\nHier sind die Daten, die über dich übrig sind:",
+            "- Dein Benutzername",
+            "- Deine Discord-ID",
+            "- Die Sprache deines Discord-Clients",
+            "- Dein Abonnementstatus (Premium)",
+            "- Dein Bot-Erstanwendungsdatum",
+            "- **Für dich**: Die Anzahl der verbleibenden Verwendungen für heute ({usage}/{maxUsage})",
+            "\nHier sind die Daten, die gelöscht wurden:",
+            "- Deine Chat-Nachrichten",
+            "- Deine Fragen",
+            "- Deine Diskussionen",
+            "- Die Anzahl der Verwendungen und Nachrichten, die in den Diskussionen gesendet wurden"
           ].join("\n")
         }
       },
@@ -123,7 +140,8 @@ export const privacy = {
           "pt-BR": "Você tem certeza?",
           ru: "Вы уверены?",
           uk: "Ви впевнені?",
-          "es-ES": "¿Estás seguro?"
+          "es-ES": "¿Estás seguro?",
+          de: "Bist du sicher?"
         },
         description: {
           "en-US": "Are you sure you want to delete all your data? This action is irreversible.",
@@ -131,7 +149,8 @@ export const privacy = {
           "pt-BR": "Você tem certeza que deseja excluir todos os seus dados? Esta ação é irreversível.",
           ru: "Вы уверены, что хотите удалить все свои данные? Это действие необратимо.",
           uk: "Ви впевнені, що хочете видалити всі свої дані? Ця дія є незворотньою.",
-          "es-ES": "¿Estás seguro de que quieres eliminar todos tus datos? Esta acción es irreversible."
+          "es-ES": "¿Estás seguro de que quieres eliminar todos tus datos? Esta acción es irreversible.",
+          de: "Bist du sicher, dass du alle deine Daten löschen möchtest? Diese Aktion ist nicht rückgängig zu machen."
         }
       },
       embed: {
@@ -141,7 +160,8 @@ export const privacy = {
           "pt-BR": "Configurações de privacidade",
           ru: "Настройки конфиденциальности",
           uk: "Налаштування конфіденційності",
-          "es-ES": "Configuración de privacidad"
+          "es-ES": "Configuración de privacidad",
+          de: "Datenschutzeinstellungen"
         },
         description: {
           "en-US": [
@@ -223,6 +243,20 @@ export const privacy = {
               "si la configuración está desactivada, sus datos se mantendrán hasta que elija eliminarlos."
             ].join(" "),
             "\n**NOTA:** Si desea eliminar sus datos, puede usar el botón `🗑️` a continuación."
+          ].join("\n"),
+          de: [
+            "Sie können Ihre Datenschutzeinstellungen verwalten, indem Sie auf die Schaltflächen unten klicken.",
+            "**HINWEIS:** Graue Schaltflächen sind für deaktivierte Einstellungen und farbige Schaltflächen für aktivierte Einstellungen.",
+            [
+              "\nChat-Sammlung `💾`: Wenn Sie ein Gespräch öffnen, speichert der Bot automatisch jede Nachricht, die Sie senden. Wenn die Einstellung",
+              "ist deaktiviert, nachdem Sie das Gespräch geschlossen haben, löscht der Bot alle Nachrichten, die Sie gesendet haben, und Daten über",
+              "**dieses** Gespräch."
+            ].join(" "),
+            [
+              "\nAuto-Löschen `🔥`: Alle 30 Tage werden alle Ihre Daten (außer Ihren Datenschutzeinstellungen) gelöscht,",
+              "wenn die Einstellung deaktiviert ist, werden Ihre Daten gespeichert, bis Sie sich entscheiden, sie zu löschen."
+            ].join(" "),
+            "\n**HINWEIS:** Wenn Sie Ihre Daten löschen möchten, können Sie die Schaltfläche `🗑️` unten verwenden."
           ].join("\n")
         }
       }
