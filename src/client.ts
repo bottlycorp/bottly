@@ -22,14 +22,6 @@ export const client = new DiscordClient({
   partials: [Partials.Message, Partials.Channel, Partials.Reaction]
 });
 
-export const colors = new BColors({
-  date: {
-    format: "DD/MM/YYYY HH:mm:ss",
-    surrounded: "[]",
-    timezone: "Europe/Paris"
-  }
-});
-
 if (!isDevEnvironment) {
   const poster = AutoPoster(getStringEnv("TOPGG_TOKEN"), client);
 
@@ -37,6 +29,14 @@ if (!isDevEnvironment) {
     colors.success("Posted stats to Top.gg!");
   });
 }
+
+export const colors = new BColors({
+  date: {
+    format: "DD/MM/YYYY HH:mm:ss",
+    surrounded: "[]",
+    timezone: "Europe/Paris"
+  }
+});
 
 export const openai = new OpenAIApi(new Configuration({
   apiKey: getStringEnv("OPENAI_API_KEY")

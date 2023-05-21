@@ -8,14 +8,20 @@ export const privacy = {
     description: {
       "en-US": "Manage your privacy settings.",
       fr: "Gérez vos paramètres de confidentialité.",
-      "pt-BR": "Gerencie suas configurações de privacidade."
+      "pt-BR": "Gerencie suas configurações de privacidade.",
+      ru: "Управляйте настройками конфиденциальности.",
+      uk: "Керуйте налаштуваннями конфіденційності.",
+      "es-ES": "Administrar la configuración de privacidad."
     },
     exec: {
       deleted: {
         title: {
           "en-US": "Data deleted",
           fr: "Données supprimées",
-          "pt-BR": "Dados excluídos"
+          "pt-BR": "Dados excluídos",
+          ru: "Данные удалены",
+          uk: "Дані видалені",
+          "es-ES": "Datos eliminados"
         },
         description: {
           "en-US": [
@@ -62,6 +68,51 @@ export const privacy = {
             "- Suas perguntas",
             "- Suas discussões",
             "- O número de usos e mensagens enviadas nas discussões"
+          ].join("\n"),
+          ru: [
+            "Рад встрече {username}, ваши вопросы, сообщения чата были успешно удалены",
+            "\nВот данные, которые остаются о вас:",
+            "- Ваше имя пользователя",
+            "- Ваш Discord ID",
+            "- Язык вашего клиента Discord",
+            "- Ваш статус подписки (Premium)",
+            "- Дата первого использования бота",
+            "- **Для вас**: Количество оставшихся использований на сегодня ({usage}/{maxUsage})",
+            "\nВот данные, которые были удалены:",
+            "- Ваши сообщения чата",
+            "- Ваши вопросы",
+            "- Ваши обсуждения",
+            "- Количество использований и отправленных сообщений в обсуждениях"
+          ].join("\n"),
+          uk: [
+            "Радий зустрічі {username}, ваші запитання, повідомлення чату були успішно видалені",
+            "\nОсь дані, які залишаються про вас:",
+            "- Ваше ім'я користувача",
+            "- Ваш Discord ID",
+            "- Мова вашого клієнта Discord",
+            "- Ваш статус підписки (Premium)",
+            "- Дата першого використання бота",
+            "- **Для вас**: Кількість залишилися використання на сьогодні ({usage}/{maxUsage})",
+            "\nОсь дані, які були видалені:",
+            "- Ваші повідомлення чату",
+            "- Ваші запитання",
+            "- Ваші обговорення",
+            "- Кількість використань та відправлених повідомлень в обговореннях"
+          ].join("\n"),
+          "es-ES": [
+            "Encantado de conocerte {username}, tus preguntas, mensajes de chat han sido eliminados con éxito",
+            "\nAquí están los datos que quedan sobre ti:",
+            "- Tu nombre de usuario",
+            "- Tu ID de Discord",
+            "- El idioma de tu cliente de Discord",
+            "- Tu estado de suscripción (Premium)",
+            "- La fecha de primera utilización del bot",
+            "- **Para ti**: El número de usos restantes para hoy ({usage}/{maxUsage})",
+            "\nAquí están los datos que se han eliminado:",
+            "- Tus mensajes de chat",
+            "- Tus preguntas",
+            "- Tus discusiones",
+            "- El número de usos y mensajes enviados en las discusiones"
           ].join("\n")
         }
       },
@@ -69,19 +120,28 @@ export const privacy = {
         title: {
           "en-US": "Are you sure?",
           fr: "Êtes-vous sûr ?",
-          "pt-BR": "Você tem certeza?"
+          "pt-BR": "Você tem certeza?",
+          ru: "Вы уверены?",
+          uk: "Ви впевнені?",
+          "es-ES": "¿Estás seguro?"
         },
         description: {
           "en-US": "Are you sure you want to delete all your data? This action is irreversible.",
           fr: "Êtes-vous sûr de vouloir supprimer toutes vos données ? Cette action est irréversible.",
-          "pt-BR": "Você tem certeza que deseja excluir todos os seus dados? Esta ação é irreversível."
+          "pt-BR": "Você tem certeza que deseja excluir todos os seus dados? Esta ação é irreversível.",
+          ru: "Вы уверены, что хотите удалить все свои данные? Это действие необратимо.",
+          uk: "Ви впевнені, що хочете видалити всі свої дані? Ця дія є незворотньою.",
+          "es-ES": "¿Estás seguro de que quieres eliminar todos tus datos? Esta acción es irreversible."
         }
       },
       embed: {
         title: {
           "en-US": "Privacy settings",
           fr: "Paramètres de confidentialité",
-          "pt-BR": "Configurações de privacidade"
+          "pt-BR": "Configurações de privacidade",
+          ru: "Настройки конфиденциальности",
+          uk: "Налаштування конфіденційності",
+          "es-ES": "Configuración de privacidad"
         },
         description: {
           "en-US": [
@@ -123,6 +183,46 @@ export const privacy = {
               "se a configuração estiver desativada, seus dados serão mantidos até que você escolha excluí-los."
             ].join(" "),
             "\n**NOTA:** Se você quiser excluir seus dados, pode usar o botão `🗑️` abaixo."
+          ].join("\n"),
+          ru: [
+            "Вы можете управлять настройками конфиденциальности, нажав на кнопки ниже.",
+            "**ПРИМЕЧАНИЕ:** Серые кнопки предназначены для отключенных настроек, а цветные кнопки - для включенных настроек.",
+            [
+              "\nСбор чата `💾`: Когда вы открываете разговор, бот автоматически сохраняет каждое сообщение, которое вы отправляете. Если настройка",
+              "отключена, после закрытия разговора бот удалит все отправленные вами сообщения и данные об **этом** разговоре."
+            ].join(" "),
+            [
+              "\nАвтоудаление `🔥`: Каждые 30 дней все ваши данные (кроме настроек конфиденциальности) будут удалены,",
+              "если настройка отключена, ваши данные будут сохранены, пока вы не решите их удалить."
+            ].join(" "),
+            "\n**ПРИМЕЧАНИЕ:** Если вы хотите удалить свои данные, вы можете использовать кнопку `🗑️` ниже."
+          ].join("\n"),
+          uk: [
+            "Ви можете керувати налаштуваннями конфіденційності, натиснувши на кнопки нижче.",
+            "**ПРИМІТКА:** Сірі кнопки призначені для вимкнених налаштувань, а кольорові кнопки - для увімкнених налаштувань.",
+            [
+              "\nЗбір чату `💾`: Коли ви відкриваєте розмову, бот автоматично зберігає кожне повідомлення, яке ви надсилаєте. Якщо налаштування",
+              "вимкнено, після закриття розмови бот видалить всі повідомлення, які ви надіслали, та дані про **цю** розмову."
+            ].join(" "),
+            [
+              "\nАвтоудаление `🔥`: Кожні 30 днів всі ваші дані (крім налаштувань конфіденційності) будуть видалені,",
+              "якщо налаштування вимкнено, ваші дані будуть збережені, доки ви не вирішите їх видалити."
+            ].join(" "),
+            "\n**ПРИМІТКА:** Якщо ви хочете видалити свої дані, ви можете використовувати кнопку `🗑️` нижче."
+          ].join("\n"),
+          "es-ES": [
+            "Puede administrar su configuración de privacidad haciendo clic en los botones a continuación.",
+            "**NOTA:** Los botones en gris son para configuraciones desactivadas y los botones en color son para configuraciones activadas.",
+            [
+              "\nRecopilación de chat `💾`: Cuando abre una conversación, el bot guarda automáticamente cada mensaje que envía. Si la configuración",
+              "está desactivado, después de cerrar la conversación, el bot eliminará todos los mensajes que envió y los datos sobre",
+              "**esta** conversación."
+            ].join(" "),
+            [
+              "\nAuto-eliminación `🔥`: Cada 30 días, todos sus datos (excepto su configuración de privacidad) se eliminarán,",
+              "si la configuración está desactivada, sus datos se mantendrán hasta que elija eliminarlos."
+            ].join(" "),
+            "\n**NOTA:** Si desea eliminar sus datos, puede usar el botón `🗑️` a continuación."
           ].join("\n")
         }
       }

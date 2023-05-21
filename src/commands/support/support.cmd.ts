@@ -7,7 +7,7 @@ import { ButtonStyle } from "discord.js";
 
 export const execute: CommandExecute = async(command) => {
   const embedImage = simpleEmbed("", "info");
-  embedImage.setImage("https://cdn.discordapp.com/attachments/927843710669062204/1106514543829590097/Group_18.png");
+  embedImage.setImage(translate(command.locale, support.config.imgs));
   const embedText = simpleEmbed(
     translate(command.locale, support.config.exec.link),
     "info",
