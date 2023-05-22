@@ -68,7 +68,7 @@ export const execute: CommandExecute = async(command, user) => {
 
       command.editReply({
         components: [{ type: 1, components: [
-          downloadButton(command, channel.id).setLabel(translate(command.locale, global.config.exec.buttons.download) + ` (${minutes}m${seconds}s)`)
+          downloadButton(command, channel.id).setLabel(translate(command.locale, chat.config.buttons.download) + ` (${minutes}m${seconds}s)`)
         ] }]
       });
 

@@ -12,7 +12,8 @@ export const premium = {
       "pt-BR": "Veja seu status premium ou o que é premium.",
       ru: "Посмотреть ваш премиум-статус или то, что премиум.",
       uk: "Переглянути ваш преміум-статус або те, що преміум.",
-      "es-ES": "Ver su estado premium o lo que es premium."
+      "es-ES": "Ver su estado premium o lo que es premium.",
+      de: "Sehen Sie Ihren Premium-Status oder was Premium ist."
     },
     exec: {
       buttons: {
@@ -22,7 +23,8 @@ export const premium = {
           "pt-BR": "Gerenciar assinatura",
           ru: "Управление подпиской",
           uk: "Управління підпискою",
-          "es-ES": "Gestionar suscripción"
+          "es-ES": "Gestionar suscripción",
+          de: "Abonnement verwalten"
         },
         becomePremium: {
           "en-US": "Become premium for $5,00/month",
@@ -30,7 +32,8 @@ export const premium = {
           "pt-BR": "Se tornar premium por 5,00$/mês",
           ru: "Стать премиумом за 5,00$/месяц",
           uk: "Стати преміумом за 5,00$/місяць",
-          "es-ES": "Convertirse en premium por 5,00$/mes"
+          "es-ES": "Convertirse en premium por 5,00$/mes",
+          de: "Werden Sie für 5,00$/Monat Premium"
         }
       },
       embed: {
@@ -40,7 +43,8 @@ export const premium = {
           "pt-BR": "Assinatura Premium",
           ru: "Премиум-подписка",
           uk: "Преміум-підписка",
-          "es-ES": "Suscripción Premium"
+          "es-ES": "Suscripción Premium",
+          de: "Premium-Abonnement"
         },
         descriptionPremium: {
           "en-US": [
@@ -72,6 +76,11 @@ export const premium = {
             "{emojiPremium} Eres un usuario premium, gracias por tu apoyo !",
             "\nSu suscripción está activa desde <t:{firstF}:F>",
             "{activeSubscription}"
+          ].join("\n"),
+          de: [
+            "{emojiPremium} Sie sind ein Premium-Benutzer, danke für Ihre Unterstützung !",
+            "\nIhr Abonnement ist seit <t:{firstF}:F> aktiv",
+            "{activeSubscription}"
           ].join("\n")
         },
         activeSubscription: {
@@ -80,7 +89,8 @@ export const premium = {
           "pt-BR": "A próxima cobrança ocorrerá em <t:{next}:D>.",
           ru: "Следующая выставление счета состоится <t:{next}:D>.",
           uk: "Наступне виставлення рахунку відбудеться <t:{next}:D>.",
-          "es-ES": "La próxima facturación tendrá lugar el <t:{next}:D>."
+          "es-ES": "La próxima facturación tendrá lugar el <t:{next}:D>.",
+          de: "Die nächste Abrechnung findet am <t:{next}:D> statt."
         },
         canceledSubscription: {
           "en-US": [
@@ -91,7 +101,11 @@ export const premium = {
           "pt-BR": "Você cancelou sua assinatura em <t:{cancel}:D>, você não será mais cobrado e perderá seu status premium em <t:{next}:F>.",
           ru: "Вы отменили подписку <t:{cancel}:D>, вам больше не будут начисляться средства, и вы потеряете свой премиум-статус <t:{next}:F>.",
           uk: "Ви скасували підписку <t:{cancel}:D>, вам більше не будуть нараховуватися кошти, і ви втратите свій преміум-статус <t:{next}:F>.",
-          "es-ES": "Ha cancelado su suscripción el <t:{cancel}:D>, ya no se le cobrará y perderá su estado premium el <t:{next}:F>."
+          "es-ES": "Ha cancelado su suscripción el <t:{cancel}:D>, ya no se le cobrará y perderá su estado premium el <t:{next}:F>.",
+          de: [
+            "Sie haben Ihr Abonnement am <t:{cancel}:D> gekündigt, Sie werden nicht mehr belastet und verlieren Ihren Premium-Status am",
+            "<t:{next}:F>."
+          ].join(" ")
         },
         descriptionNotPremium: {
           "en-US": [
@@ -177,6 +191,19 @@ export const premium = {
             "\n**¿Puedo cancelar mi suscripción o reembolsarla ?**",
             "• Sí, puede cancelar su suscripción en cualquier momento en Stripe y no se le cobrará nuevamente.",
             "• No reembolsamos la suscripción, pero puede cancelarla en cualquier momento."
+          ].join("\n"),
+          de: [
+            "{emojiPremium} Sie sind kein Premium-Benutzer.",
+            "\n**Was sind die Vorteile ?**",
+            "• Sie haben 50 Anwendungen pro Tag",
+            "• Sie haben Prioritätszugang zum Support",
+            "• Sie haben 50% mehr Schreibkraft bei Ihren Fragen und Diskussionen",
+            "• Laden Sie Diskussionen herunter, wenn sie beendet sind",
+            "\n**Wie werde ich Premium und wie viel kostet es ?**",
+            "• Sie können Premium werden, indem Sie unten auf die Schaltfläche klicken, insgesamt 5,00$ pro Monat.",
+            "\n**Kann ich mein Abonnement kündigen oder erstatten ?**",
+            "• Ja, Sie können Ihr Abonnement jederzeit bei Stripe kündigen und es wird Ihnen nicht erneut in Rechnung gestellt.",
+            "• Wir erstatten das Abonnement nicht, aber Sie können es jederzeit kündigen."
           ].join("\n")
         }
       }

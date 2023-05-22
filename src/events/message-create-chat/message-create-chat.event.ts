@@ -123,6 +123,10 @@ export const execute: EventExecute<"messageCreate"> = async(message: Message) =>
     role: Role.user
   });
 
+  if (firstMessage) {
+    tokens += Math.round((getTokens(message.content) + 200) * (user.isPremium ? 1.5 : 1));
+  }
+
   colors.info(`${userWithId(message.author)} is speaking in a thread: ${limitString(message.content, 50)}`);
 
   await openai.createChatCompletion({

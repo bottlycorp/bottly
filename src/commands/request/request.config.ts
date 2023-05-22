@@ -16,7 +16,8 @@ export const request = {
           "pt-BR": "A pergunta que você deseja obter",
           ru: "Вопрос, который вы хотите получить",
           uk: "Питання, яке ви хочете отримати",
-          "es-ES": "La pregunta que desea obtener"
+          "es-ES": "La pregunta que desea obtener",
+          de: "Die Frage, die Sie erhalten möchten"
         }
       }
     },
@@ -26,7 +27,8 @@ export const request = {
       "pt-BR": "Obtenha uma pergunta anteriormente feita",
       ru: "Получить ранее заданный вопрос",
       uk: "Отримати попередньо задане питання",
-      "es-ES": "Obtener una pregunta hecha anteriormente"
+      "es-ES": "Obtener una pregunta hecha anteriormente",
+      de: "Erhalten Sie eine zuvor gestellte Frage"
     },
     exec: {
       buttons: {},
@@ -36,7 +38,8 @@ export const request = {
         "pt-BR": "Em {date}",
         ru: "В {date}",
         uk: "В {date}",
-        "es-ES": "En {date}"
+        "es-ES": "En {date}",
+        de: "Am {date}"
       },
       thisQuestionDoesNotExist: {
         "en-US": "The question you want to recover does not exist, or it is not yours!",
@@ -44,7 +47,8 @@ export const request = {
         "pt-BR": "A pergunta que você deseja recuperar não existe ou não é sua!",
         ru: "Вопрос, который вы хотите восстановить, не существует или не принадлежит вам!",
         uk: "Питання, яке ви хочете відновити, не існує або не належить вам!",
-        "es-ES": "¡La pregunta que desea recuperar no existe o no es suya!"
+        "es-ES": "¡La pregunta que desea recuperar no existe o no es suya!",
+        de: "Die Frage, die Sie wiederherstellen möchten, existiert nicht oder gehört Ihnen nicht!"
       },
       question: {
         "en-US": [
@@ -82,6 +86,12 @@ export const request = {
           "fue enviada en `{channel}` de `{guild}`.",
           "{favoriteLine}",
           "\n\n**Pregunta:** {question}\n**Respuesta:** {answer}"
+        ].join(""),
+        de: [
+          "Diese Frage wurde am <t:{date}:F> (<t:{date2}:R>) gestellt und wurde in `{time}s` beantwortet, ",
+          "wurde in `{channel}` von `{guild}` gesendet.",
+          "{favoriteLine}",
+          "\n\n**Frage:** {question}\n**Antwort:** {answer}"
         ].join("")
       },
       favoriteLine: {
@@ -90,7 +100,8 @@ export const request = {
         "pt-BR": "\n\n`⭐` Esta pergunta foi marcada como favorita em <t:{date}:F>",
         ru: "\n\n`⭐` Этот вопрос был отмечен как избранный <t:{date}:F>",
         uk: "\n\n`⭐` Це питання було позначено як вибране <t:{date}:F>",
-        "es-ES": "\n\n`⭐` Esta pregunta ha sido marcada como favorita el <t:{date}:F>"
+        "es-ES": "\n\n`⭐` Esta pregunta ha sido marcada como favorita el <t:{date}:F>",
+        de: "\n\n`⭐` Diese Frage wurde am <t:{date}:F> als Favorit markiert"
       }
     }
   }
