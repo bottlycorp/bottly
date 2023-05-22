@@ -21,6 +21,17 @@ model User {
   tips         Tips?
   usages       Usage?
   votes        Vote?
+  learns       Learn[]
+  nextLearn    Int           @default(0)
+}
+
+model Learn {
+  id        String  @id @default(cuid())
+  time      Int     @default(0)
+  subject   String  @default("random")
+  text      String  @default("Lorem imspu mipsu")
+  userId    String  @unique
+  user      User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
 
 model Question {
