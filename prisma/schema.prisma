@@ -21,17 +21,28 @@ model User {
   tips         Tips?
   usages       Usage?
   votes        Vote?
-  learns       Learn[]
-  nextLearn    Int           @default(0)
+  learn        Learn?
 }
 
 model Learn {
-  id        String  @id @default(cuid())
-  time      Int     @default(0)
-  subject   String  @default("random")
-  text      String  @default("Lorem imspu mipsu")
-  userId    String  @unique
-  user      User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  id         String      @id @default(cuid())
+  count      Int         @default(0)
+  lastLearn  Int         @default(0)
+  firstLearn Int         @default(0)
+  nextLearn  Int         @default(0)
+  interests  Interests[]
+  subjects   Subject[]
+  userId     String      @unique
+  user       User        @relation(fields: [userId], references: [userId], onDelete: Cascade)
+}
+
+model Subject {
+  id        String   @id @default(cuid())
+  createdAt Int      @default(0)
+  subject   String   @default("Lorem imspu mipsu")
+  liked     LikeType @default(NONE)
+  learnId   String
+  learn     Learn    @relation(fields: [learnId], references: [id], onDelete: Cascade)
 }
 
 model Question {
@@ -127,6 +138,40 @@ model Subscription {
   userId         String @unique
   canceledAt     Int    @default(0)
   user           User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
+}
+
+enum LikeType {
+  LIKED
+  DISLIKED
+  NONE
+}
+
+enum Interests {
+  MUSIC
+  READING
+  CRYPTO
+  SPORT
+  ESPORT
+  MATHEMATICS
+  PROGRAMMING
+  WORK
+  TRAVEL
+  MOVIES
+  PHOTOGRAPHY
+  COOKING
+  GAMES
+  ART
+  DANCE
+  FASHION
+  HEALTH
+  TECHNOLOGY
+  SCIENCE
+  ANIMALS
+  CARS
+  EVENTS
+  SHOPPING
+  SPACE
+  PARANORMAL
 }
 
 enum Locale {
