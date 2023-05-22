@@ -6,7 +6,6 @@ export type Command = Base & {
   options?: Record<string, Base>;
   buttons?: Record<string, LocalizationMap>;
   exec?: Record<string, LocalizationMap | Record<string, LocalizationMap>>;
-  buttons?: Record<string, LocalizationMap>;
   imgs?: LocalizationMap;
 };
 
