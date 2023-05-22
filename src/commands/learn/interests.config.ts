@@ -1,8 +1,10 @@
+import { Interests } from "@prisma/client";
 import { LocalizationMap } from "discord.js";
 
 type EmojiWithMap = {
   localization: LocalizationMap;
   emoji: string;
+  enum?: string;
 }
 
 export const interests: Record<string, EmojiWithMap> = {
@@ -15,7 +17,8 @@ export const interests: Record<string, EmojiWithMap> = {
       uk: "Музика",
       "es-ES": "Música"
     },
-    emoji: "🎵"
+    emoji: "🎵",
+    enum: Interests.MUSIC
   },
   reading: {
     localization: {
@@ -26,7 +29,8 @@ export const interests: Record<string, EmojiWithMap> = {
       uk: "Читання",
       "es-ES": "Lectura"
     },
-    emoji: "📖"
+    emoji: "📖",
+    enum: Interests.READING
   },
   crypto: {
     localization: {
@@ -37,7 +41,8 @@ export const interests: Record<string, EmojiWithMap> = {
       uk: "Криптовалюти",
       "es-ES": "Criptomonedas"
     },
-    emoji: "💰"
+    emoji: "💰",
+    enum: Interests.CRYPTO
   },
   sport: {
     localization: {
@@ -48,7 +53,8 @@ export const interests: Record<string, EmojiWithMap> = {
       uk: "Спорт",
       "es-ES": "Deporte"
     },
-    emoji: "⚽"
+    emoji: "⚽",
+    enum: Interests.SPORT
   },
   esports: {
     localization: {
@@ -59,7 +65,8 @@ export const interests: Record<string, EmojiWithMap> = {
       uk: "Кіберспорт",
       "es-ES": "Esports"
     },
-    emoji: "🎮"
+    emoji: "🎮",
+    enum: Interests.ESPORT
   },
   mathematics: {
     localization: {
@@ -70,7 +77,8 @@ export const interests: Record<string, EmojiWithMap> = {
       uk: "Математика",
       "es-ES": "Matemáticas"
     },
-    emoji: "🧮"
+    emoji: "🧮",
+    enum: Interests.MATHEMATICS
   },
   programming: {
     localization: {
@@ -81,7 +89,8 @@ export const interests: Record<string, EmojiWithMap> = {
       uk: "Програмування",
       "es-ES": "Programación"
     },
-    emoji: "👨‍💻"
+    emoji: "👨‍💻",
+    enum: Interests.PROGRAMMING
   },
   work: {
     localization: {
@@ -92,7 +101,8 @@ export const interests: Record<string, EmojiWithMap> = {
       uk: "Робота",
       "es-ES": "Trabajo"
     },
-    emoji: "👔"
+    emoji: "👔",
+    enum: Interests.WORK
   },
   travel: {
     localization: {
@@ -103,7 +113,8 @@ export const interests: Record<string, EmojiWithMap> = {
       uk: "Подорожі",
       "es-ES": "Viajes"
     },
-    emoji: "🌍"
+    emoji: "🌍",
+    enum: Interests.TRAVEL
   },
   movies: {
     localization: {
@@ -114,7 +125,8 @@ export const interests: Record<string, EmojiWithMap> = {
       uk: "Фільми",
       "es-ES": "Películas"
     },
-    emoji: "🎥"
+    emoji: "🎥",
+    enum: Interests.MOVIES
   },
   photography: {
     localization: {
@@ -125,7 +137,8 @@ export const interests: Record<string, EmojiWithMap> = {
       uk: "Фотографія",
       "es-ES": "Fotografía"
     },
-    emoji: "📷"
+    emoji: "📷",
+    enum: Interests.PHOTOGRAPHY
   },
   cooking: {
     localization: {
@@ -136,7 +149,8 @@ export const interests: Record<string, EmojiWithMap> = {
       uk: "Кулінарія",
       "es-ES": "Cocina"
     },
-    emoji: "🍳"
+    emoji: "🍳",
+    enum: Interests.COOKING
   },
   gaming: {
     localization: {
@@ -147,7 +161,8 @@ export const interests: Record<string, EmojiWithMap> = {
       uk: "Ігри",
       "es-ES": "Juegos"
     },
-    emoji: "🎮"
+    emoji: "🎮",
+    enum: Interests.GAMING
   },
   art: {
     localization: {
@@ -157,7 +172,8 @@ export const interests: Record<string, EmojiWithMap> = {
       uk: "Мистецтво",
       "es-ES": "Arte"
     },
-    emoji: "🎨"
+    emoji: "🎨",
+    enum: Interests.ART
   },
   dance: {
     localization: {
@@ -168,7 +184,8 @@ export const interests: Record<string, EmojiWithMap> = {
       uk: "Танці",
       "es-ES": "Danza"
     },
-    emoji: "💃"
+    emoji: "💃",
+    enum: Interests.DANCE
   },
   fashion: {
     localization: {
@@ -179,7 +196,8 @@ export const interests: Record<string, EmojiWithMap> = {
       uk: "Мода",
       "es-ES": "Moda"
     },
-    emoji: "👗"
+    emoji: "👗",
+    enum: Interests.FASHION
   },
   health: {
     localization: {
@@ -190,7 +208,8 @@ export const interests: Record<string, EmojiWithMap> = {
       uk: "Здоров'я",
       "es-ES": "Salud"
     },
-    emoji: "🏥"
+    emoji: "🏥",
+    enum: Interests.HEALTH
   },
   technology: {
     localization: {
@@ -201,7 +220,8 @@ export const interests: Record<string, EmojiWithMap> = {
       uk: "Технології",
       "es-ES": "Tecnología"
     },
-    emoji: "📱"
+    emoji: "📱",
+    enum: Interests.TECHNOLOGY
   },
   science: {
     localization: {
@@ -212,7 +232,8 @@ export const interests: Record<string, EmojiWithMap> = {
       uk: "Наука",
       "es-ES": "Ciencia"
     },
-    emoji: "🔬"
+    emoji: "🔬",
+    enum: Interests.SCIENCE
   },
   animals: {
     localization: {
@@ -223,7 +244,8 @@ export const interests: Record<string, EmojiWithMap> = {
       uk: "Тварини",
       "es-ES": "Animales"
     },
-    emoji: "🐶"
+    emoji: "🐶",
+    enum: Interests.ANIMALS
   },
   cars: {
     localization: {
@@ -234,7 +256,8 @@ export const interests: Record<string, EmojiWithMap> = {
       uk: "Автомобілі",
       "es-ES": "Coches"
     },
-    emoji: "🚗"
+    emoji: "🚗",
+    enum: Interests.CARS
   },
   events: {
     localization: {
@@ -245,7 +268,8 @@ export const interests: Record<string, EmojiWithMap> = {
       uk: "Події",
       "es-ES": "Eventos"
     },
-    emoji: "🎉"
+    emoji: "🎉",
+    enum: Interests.EVENTS
   },
   shopping: {
     localization: {
@@ -256,7 +280,8 @@ export const interests: Record<string, EmojiWithMap> = {
       uk: "Покупки",
       "es-ES": "Compras"
     },
-    emoji: "🛍️"
+    emoji: "🛍️",
+    enum: Interests.SHOPPING
   },
   space: {
     localization: {
@@ -267,7 +292,8 @@ export const interests: Record<string, EmojiWithMap> = {
       uk: "Космос",
       "es-ES": "Espacio"
     },
-    emoji: "🚀"
+    emoji: "🚀",
+    enum: Interests.SPACE
   },
   paranormal: {
     localization: {
@@ -278,6 +304,7 @@ export const interests: Record<string, EmojiWithMap> = {
       uk: "Паранормальне",
       "es-ES": "Paranormal"
     },
-    emoji: "👻"
+    emoji: "👻",
+    enum: Interests.PARANORMAL
   }
 };
