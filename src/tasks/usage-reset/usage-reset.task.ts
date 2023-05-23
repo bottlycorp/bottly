@@ -21,7 +21,8 @@ export const execute: TaskExecute = async() => {
         questions: true,
         votes: true,
         tips: true,
-        subscription: true
+        subscription: true,
+        learn: true
       }
     });
 

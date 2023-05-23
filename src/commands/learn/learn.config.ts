@@ -23,6 +23,14 @@ export const learn = {
         uk: "Увімкніть цю функцію",
         "es-ES": "Habilitar esta función"
       },
+      skip: {
+        "en-US": "Skip this step",
+        fr: "Passer cette étape",
+        "pt-BR": "Pular esta etapa",
+        ru: "Пропустить этот шаг",
+        uk: "Пропустити цей крок",
+        "es-ES": "Saltar este paso"
+      },
       disable: {
         "en-US": "Disable this feature",
         fr: "Désactiver cette fonctionnalitée",
@@ -52,19 +60,30 @@ export const learn = {
         },
         description: {
           fr: [
-            "• Activer cette fonctionnalitée pour recevoir tout les jours à `{time}` une information sur un ou plusieurs centres d'intérêts",
+            "• Activer cette fonctionnalitée pour recevoir tout les jours une information sur un ou plusieurs centres d'intérêts",
             ["• Vous pouvez choisir vos centres d'intérêts une fois la fonctionnalitée activée, vous pourrez en ajouter ou en supprimer",
               "à tout moment"].join(" "),
-            [
-              "\n:information_source: Les utilisateurs `Premium` peuvent choisir l'heure à laquelle ils souhaitent recevoir leurs informations,",
-              "et peuvent séléectionner jusqu'à 10 centres d'intérêts maximum (contre 5 pour les utilisateurs non `Premium`)"
-            ].join(" ")
+            "\n{emojiPremium} Les utilisateurs premium peuvent choisir jusqu'à 10 centres d'intérêts contre 5 pour les utilisateurs non-premium",
+            "il peuvent également recevoir des informations qui relie plusieurs centres d'intérêts entre eux"
           ].join("\n")
         },
         descriptionInterests: {
           fr: [
-            "Time to Learn est maintenant activé, vous recevrez un message tout les jours à `{time}`, sélectionnez maintenant",
+            "Time to Learn est maintenant activé, vous recevrez un message tout les jours à <t:{date}:T>, sélectionnez maintenant",
             "vos centres d'intérêts avec le select ci-dessous"
+          ].join(" ")
+        },
+        descriptionInterestsSkipped: {
+          fr: [
+            "Vous avez décidé de ne sélectionner aucun centre d'intérêts, vous pouvez le faire à tout moment avec la commande {cmdLearn}",
+            "à partir de demain à <t:{date}:T> vous recevrez un message tout les jours à la même heure avec un sujet sur un centre",
+            "d'intérêt aléatoire"
+          ].join(" ")
+        },
+        descriptionInterestsSelected: {
+          fr: [
+            "Vous avez sélectionné les centres d'intérêts suivants : {interests}",
+            "relancez la commande {cmdLearn} avant <t:{date}:T> pour changer vos centres d'intérêts !"
           ].join(" ")
         }
       },
