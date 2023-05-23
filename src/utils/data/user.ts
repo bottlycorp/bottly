@@ -7,7 +7,7 @@ import { UsageMax } from "@prisma/client";
 import { userWithId } from "$core/utils/function";
 
 export type UserIncludeAll = Prisma.UserGetPayload<{
-  include: { questions: true; privacy: true; usages: true; votes: true; discussions: true; tips: true; subscription: true };
+  include: { questions: true; privacy: true; usages: true; votes: true; discussions: true; tips: true; subscription: true; learn: true };
 }>
 
 export const MAX_USES: Record<UsageMax, number> = {
@@ -23,18 +23,8 @@ export const newUser = async(userToCreate: DiscordUser): Promise<UserIncludeAll>
       createdAt: DayJS().unix(),
       locale: "en_US",
       messages: {},
-      privacy: {
-        create: {
-          autoDelete: false,
-          collectChat: true
-        }
-      },
-      usages: {
-        create: {
-          max: UsageMax.FREE,
-          usage: MAX_USES[UsageMax.FREE]
-        }
-      },
+      privacy: { create: { autoDelete: false, collectChat: true } },
+      usages: { create: { max: UsageMax.FREE, usage: MAX_USES[UsageMax.FREE] } },
       isPremium: false,
       questions: {},
       votes: {
@@ -47,12 +37,9 @@ export const newUser = async(userToCreate: DiscordUser): Promise<UserIncludeAll>
         }
       },
       subscription: {},
-      tips: {
-        create: {
-          chatPremiumSaveIt: true
-        }
-      },
-      discussions: {}
+      tips: { create: { chatPremiumSaveIt: true } },
+      discussions: {},
+      learn: { create: { subjects: {} } }
     },
     include: {
       questions: true,
@@ -61,7 +48,8 @@ export const newUser = async(userToCreate: DiscordUser): Promise<UserIncludeAll>
       votes: true,
       discussions: true,
       tips: true,
-      subscription: true
+      subscription: true,
+      learn: true
     }
   });
 
@@ -80,7 +68,8 @@ export const getUser = async(userId: DiscordUser): Promise<UserIncludeAll> => {
       votes: true,
       discussions: true,
       tips: true,
-      subscription: true
+      subscription: true,
+      learn: true
     }
   });
 
