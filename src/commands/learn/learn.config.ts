@@ -67,6 +67,14 @@ export const learn = {
             "vos centres d'intérêts avec le select ci-dessous"
           ].join(" ")
         }
+      },
+      interestPlaceholder: {
+        "en-US": "Select your interests",
+        fr: "Sélectionnez vos centres d'intérêts",
+        "pt-BR": "Selecione seus interesses",
+        ru: "Выберите ваши интересы",
+        uk: "Виберіть ваші інтереси",
+        "es-ES": "Selecciona tus intereses"
       }
     },
     imgs: {

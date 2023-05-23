@@ -33,7 +33,7 @@ export const execute: CommandExecute = async(command) => {
       await command.editReply({
         embeds: [embedInterests],
         components: [{ type: 1, components: [simpleSelect(
-          "interests", "Select your interests", Array.from(Object.keys(interests)).map((interest) => {
+          "interests", translate(command.locale, learn.config.exec.interestPlaceholder), Array.from(Object.keys(interests)).map((interest) => {
             return {
               label: translate(command.locale, interests[interest].localization),
               value: interest,
