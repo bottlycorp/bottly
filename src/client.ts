@@ -10,6 +10,7 @@ import { AutoPoster } from "topgg-autoposter";
 import { isDevEnvironment } from "./utils/environment";
 import { DayJS } from "./utils/day-js";
 import { BColors } from "bettercolors";
+import { checker } from "prisma/checker";
 
 export let today = DayJS().day();
 export let month = DayJS().month();
@@ -46,6 +47,8 @@ colors.info(`Starting Bottly v${version}...`);
 client.login(getStringEnv("BOT_TOKEN"));
 
 client.once("ready", async() => {
+  await checker();
+
   const loadedEvents = await loadEvents(client, `${__dirname}${sep}events`);
   colors.info(`${loadedEvents} events have been loaded`);
 
