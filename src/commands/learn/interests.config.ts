@@ -8,6 +8,17 @@ type EmojiWithMap = {
 }
 
 export const interests: Record<string, EmojiWithMap> = {
+  none: {
+    localization: {
+      "en-US": "None",
+      fr: "Aucun",
+      "pt-BR": "Nenhum",
+      ru: "Нет",
+      uk: "Немає",
+      "es-ES": "Ninguno"
+    },
+    emoji: "❌"
+  },
   music: {
     localization: {
       "en-US": "Music",
@@ -189,12 +200,12 @@ export const interests: Record<string, EmojiWithMap> = {
   },
   fashion: {
     localization: {
-      "en-US": "Fashion",
-      fr: "Mode",
-      "pt-BR": "Moda",
-      ru: "Мода",
-      uk: "Мода",
-      "es-ES": "Moda"
+      "en-US": "Fashion & Shopping",
+      fr: "Mode & Shopping",
+      "pt-BR": "Moda & Compras",
+      ru: "Мода и шоппинг",
+      uk: "Мода і шопінг",
+      "es-ES": "Moda y compras"
     },
     emoji: "👗",
     enum: Interests.FASHION
@@ -270,18 +281,6 @@ export const interests: Record<string, EmojiWithMap> = {
     },
     emoji: "🎉",
     enum: Interests.EVENTS
-  },
-  shopping: {
-    localization: {
-      "en-US": "Shopping",
-      fr: "Shopping",
-      "pt-BR": "Compras",
-      ru: "Покупки",
-      uk: "Покупки",
-      "es-ES": "Compras"
-    },
-    emoji: "🛍️",
-    enum: Interests.SHOPPING
   },
   space: {
     localization: {

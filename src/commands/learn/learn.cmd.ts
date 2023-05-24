@@ -4,10 +4,11 @@ import { CommandExecute } from "$core/utils/handler/command";
 import { ButtonStyle, StringSelectMenuInteraction } from "discord.js";
 import { learn } from "./learn.config";
 import { interests } from "./interests.config";
+import { DayJS } from "$core/utils/day-js";
+import { findCommand } from "$core/utils/handler/command/command";
 
 export const execute: CommandExecute = async(command, user) => {
   if (user.learn?.nextLearn == 0) {
-    // Feature not enabled
     const message = await command.editReply({
       embeds: [
         simpleEmbed(undefined, "info", undefined, undefined, undefined, translate(command.locale, learn.config.imgs)),
@@ -22,17 +23,19 @@ export const execute: CommandExecute = async(command, user) => {
       ] }]
     });
 
+    let enabledAt = 0;
     const collector = message.createMessageComponentCollector({ time: 60000 });
     collector.on("collect", async(i) => {
       i.deferUpdate();
       if (i.customId === "enable") {
+        enabledAt = DayJS().add(24, "hour").unix();
         await command.editReply({
           embeds: [
-            simpleEmbed(
-              translate(command.locale, learn.config.exec.embed.descriptionInterests),
-              "info",
-              translate(command.locale, learn.config.exec.embed.titleInterests)
-            )
+            simpleEmbed(translate(command.locale, learn.config.exec.embed.descriptionInterests, {
+              date: enabledAt
+            }),
+            "info",
+            translate(command.locale, learn.config.exec.embed.titleInterests))
           ],
           components: [{ type: 1, components: [
             simpleSelect(
@@ -44,15 +47,36 @@ export const execute: CommandExecute = async(command, user) => {
                   value: interest,
                   emoji: { name: interests[interest].emoji }
                 };
-              })
-            ),
-            simpleButton(translate(command.locale, learn.config.buttons.skip), ButtonStyle.Secondary, "skip", false, { name: "🔓" })
+              }),
+              false,
+              1,
+              10
+            )
           ] }]
         });
       } else if (i.customId === "interests" && i instanceof StringSelectMenuInteraction) {
-        // TODO: Save interests and send final message
-      } else if (i.customId === "skip") {
-        // Is alternative to values 0 length
+        if (i.values[0] === "none") {
+          await command.editReply({
+            embeds: [
+              simpleEmbed(translate(command.locale, learn.config.exec.embed.descriptionInterestsSkipped, {
+                cmdLearn: await findCommand("learn"), date: enabledAt
+              }),
+              "info",
+              translate(command.locale, learn.config.exec.embed.titleInterests))
+            ],
+            components: []
+          });
+          return;
+        }
+
+        command.editReply({
+          embeds: [
+            simpleEmbed(translate(command.locale, learn.config.exec.embed.descriptionInterests, { date: enabledAt, interests: i.values.join(", ") }),
+              "info",
+              translate(command.locale, learn.config.exec.embed.titleInterests))
+          ],
+          components: []
+        });
       }
     });
     return;

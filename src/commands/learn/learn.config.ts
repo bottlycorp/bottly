@@ -70,7 +70,8 @@ export const learn = {
         descriptionInterests: {
           fr: [
             "Time to Learn est maintenant activé, vous recevrez un message tout les jours à <t:{date}:T>, sélectionnez maintenant",
-            "vos centres d'intérêts avec le select ci-dessous"
+            "vos centres d'intérêts avec le select ci-dessous",
+            "- {interests}"
           ].join(" ")
         },
         descriptionInterestsSkipped: {
