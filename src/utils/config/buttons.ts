@@ -46,6 +46,16 @@ export const qrCodeButton = () : ButtonBuilder => {
   });
 };
 
+export const regenerateButton = () : ButtonBuilder => {
+  return simpleButton(
+    undefined,
+    ButtonStyle.Secondary,
+    "regenerate",
+    false,
+    { name: "✨" }
+  );
+};
+
 export const premiumButton = (command: CommandInteraction | Interaction) : ButtonBuilder => {
   return simpleButton(
     translate(command.locale, global.config.buttons.premium),
