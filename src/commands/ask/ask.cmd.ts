@@ -8,7 +8,7 @@ import { limitString, userWithId } from "$core/utils/function";
 import { getQuestion, newQuestion } from "$core/utils/data/question";
 import { getPrompt } from "@bottlycorp/prompts";
 import { simpleButton, simpleEmbed } from "$core/utils/embed";
-import { favoriteButton, qrCodeButton, revealButton, usageButton } from "$core/utils/config/buttons";
+import { favoriteButton, qrCodeButton, regenerateButton, revealButton, usageButton } from "$core/utils/config/buttons";
 import { updateUser } from "$core/utils/data/user";
 import { DayJS } from "$core/utils/day-js";
 import QRCode from "qrcode";
@@ -75,7 +75,7 @@ export const execute: CommandExecute = async(command, user) => {
     embeds: [answerEmbed(command, answer)],
     components: [{
       type: 1,
-      components: [revealButton(command), usageButton(command, user), favoriteButton(), qrCodeButton()]
+      components: [revealButton(command), usageButton(command, user), favoriteButton(), qrCodeButton(), regenerateButton()]
     }]
   });
 
@@ -95,26 +95,20 @@ export const execute: CommandExecute = async(command, user) => {
     return;
   });
 
-  updateUser(user.userId, {
-    usages: {
-      update: {
-        usage: {
-          decrement: 1
-        }
-      }
-    }
-  });
+  updateUser(user.userId, { usages: { update: { usage: { decrement: 1 } } } });
+
+  let favorited = false;
+  // TODO: let regenerated = 0;
 
   setTimeout(() => {
     command.editReply({ components: [{ type: 1, components: [
       revealButton(command).setDisabled(true),
       usageButton(command, user),
-      favoriteButton().setDisabled(true),
+      favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary).setDisabled(true),
+      regenerateButton().setDisabled(true),
       qrCodeButton().setDisabled(true)
     ] }] });
   }, 60000);
-
-  let favorited = false;
 
   if (!question) {
     command.editReply(translate(command.locale, global.config.exec.error, { error: "Question does not exist" }));
@@ -140,6 +134,7 @@ export const execute: CommandExecute = async(command, user) => {
         revealButton(command),
         usageButton(command, user),
         favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary).setDisabled(true),
+        regenerateButton(),
         qrCodeButton()
       ] }] });
 
@@ -152,6 +147,7 @@ export const execute: CommandExecute = async(command, user) => {
         revealButton(command),
         usageButton(command, user),
         favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary).setDisabled(false),
+        regenerateButton(),
         qrCodeButton()
       ] }] });
     } else if (i.customId === "qrcode") {
@@ -203,9 +199,47 @@ export const execute: CommandExecute = async(command, user) => {
           revealButton(command),
           usageButton(command, user),
           favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
+          regenerateButton(),
           qrCodeButton()
         ] }]
       });
+    } else if (i.customId === "regenerate") {
+      command.editReply({ embeds: [simpleEmbed(translate(command.locale, ask.config.exec.regenerate), "info", "")], components: [
+        { type: 1, components: [
+          revealButton(command).setDisabled(true),
+          usageButton(command, user),
+          favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary).setDisabled(true),
+          regenerateButton().setDisabled(true),
+          qrCodeButton().setDisabled(true)
+        ] }
+      ] });
+
+      const regeneratedText = await openai.createChatCompletion({
+        messages: [
+          { role: "system", content: translate(command.locale, getPrompt("default"), {
+            lang: getLocale(command.locale)
+          }) },
+          { role: "user", content: command.options.getString("prompt", true) }
+        ],
+        max_tokens: user.isPremium ? 3750 : 2500,
+        model: "gpt-3.5-turbo",
+        user: user.userId
+      });
+
+      if (!regeneratedText.data.choices[0].message) {
+        command.editReply(translate(command.locale, ask.config.exec.error, { error: "No message in response" }));
+        return;
+      }
+
+      answer = regeneratedText.data.choices[0].message?.content;
+
+      command.editReply({ embeds: [answerEmbed(command, answer,)], components: [{ type: 1, components: [
+        revealButton(command),
+        usageButton(command, user),
+        favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
+        regenerateButton(),
+        qrCodeButton()
+      ] }] });
     }
   });
 };
