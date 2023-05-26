@@ -26,7 +26,7 @@ export const execute: CommandExecute = async(command, user) => {
     return;
   }
 
-  const message = await command.editReply(translate(command.locale, ask.config.exec.waiting));
+  const message = await command.editReply({ embeds: [simpleEmbed(translate(command.locale, ask.config.exec.waiting), "info", "")] });
 
   let answer: string;
   const messages: { content: string; role: "user" | "system" | "assistant" }[] = [];
@@ -75,7 +75,7 @@ export const execute: CommandExecute = async(command, user) => {
     embeds: [answerEmbed(command, answer)],
     components: [{
       type: 1,
-      components: [revealButton(command), usageButton(command, user), favoriteButton(), qrCodeButton(), regenerateButton()]
+      components: [revealButton(command), usageButton(command, user), favoriteButton(), regenerateButton(), qrCodeButton()]
     }]
   });
 
@@ -98,7 +98,8 @@ export const execute: CommandExecute = async(command, user) => {
   updateUser(user.userId, { usages: { update: { usage: { decrement: 1 } } } });
 
   let favorited = false;
-  // TODO: let regenerated = 0;
+  let regenerated = 0;
+  let publicUrl = "ThisIsABlankUrlBecauseItIsNotYetGenerated";
 
   setTimeout(() => {
     command.editReply({ components: [{ type: 1, components: [
@@ -114,8 +115,6 @@ export const execute: CommandExecute = async(command, user) => {
     command.editReply(translate(command.locale, global.config.exec.error, { error: "Question does not exist" }));
     return;
   }
-
-  let publicUrl = "ThisIsABlankUrlBecauseItIsNotYetGenerated";
 
   (await message).createMessageComponentCollector({ filter: (i) => i.user.id === command.user.id }).on("collect", async(i) => {
     i.deferUpdate();
@@ -204,6 +203,16 @@ export const execute: CommandExecute = async(command, user) => {
         ] }]
       });
     } else if (i.customId === "regenerate") {
+      if (regenerated >= 5 && !user.isPremium) {
+        command.editReply(translate(command.locale, ask.config.exec.regenerated_max, { max: 5, maxPremium: 10 }));
+        return;
+      }
+
+      if (regenerated >= 10 && user.isPremium) {
+        command.editReply(translate(command.locale, ask.config.exec.regenerated_max_premium, { max: 10 }));
+        return;
+      }
+
       command.editReply({ embeds: [simpleEmbed(translate(command.locale, ask.config.exec.regenerate), "info", "")], components: [
         { type: 1, components: [
           revealButton(command).setDisabled(true),
@@ -214,11 +223,11 @@ export const execute: CommandExecute = async(command, user) => {
         ] }
       ] });
 
+      regenerated++;
+
       const regeneratedText = await openai.createChatCompletion({
         messages: [
-          { role: "system", content: translate(command.locale, getPrompt("default"), {
-            lang: getLocale(command.locale)
-          }) },
+          ...messages,
           { role: "user", content: command.options.getString("prompt", true) }
         ],
         max_tokens: user.isPremium ? 3750 : 2500,
@@ -233,13 +242,16 @@ export const execute: CommandExecute = async(command, user) => {
 
       answer = regeneratedText.data.choices[0].message?.content;
 
-      command.editReply({ embeds: [answerEmbed(command, answer,)], components: [{ type: 1, components: [
-        revealButton(command),
-        usageButton(command, user),
-        favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
-        regenerateButton(),
-        qrCodeButton()
-      ] }] });
+      command.editReply({ embeds: [answerEmbed(command, answer)] });
+      setTimeout(() => {
+        command.editReply({ components: [{ type: 1, components: [
+          revealButton(command),
+          usageButton(command, user),
+          favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
+          regenerateButton(),
+          qrCodeButton()
+        ] }] });
+      }, 2500);
     }
   });
 };
