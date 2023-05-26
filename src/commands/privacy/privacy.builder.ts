@@ -8,4 +8,5 @@ export const enableInDev: EnableInDev = true;
 export const slashCommand: SlashCommandDefition = new SlashCommandBuilder()
   .setName(privacy.config.name["en-US"])
   .setDescription(privacy.config.description["en-US"])
-  .setDescriptionLocalizations(privacy.config.description);
+  .setDescriptionLocalizations(privacy.config.description)
+  .setDMPermission(false);

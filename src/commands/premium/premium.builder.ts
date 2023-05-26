@@ -8,4 +8,5 @@ export const enableInDev: EnableInDev = true;
 export const slashCommand: SlashCommandDefition = new SlashCommandBuilder()
   .setName(premium.config.name["en-US"])
   .setDescription(premium.config.description["en-US"])
-  .setDescriptionLocalizations(premium.config.description);
+  .setDescriptionLocalizations(premium.config.description)
+  .setDMPermission(false);
