@@ -17,7 +17,7 @@ export const MAX_USES: Record<UsageMax, number> = {
 
 const userCache = new Map<string, UserIncludeAll>();
 
-export const getUser = async(userId: DiscordUser | string): Promise<UserIncludeAll | null> => {
+export const getUser = async(userId: DiscordUser | string): Promise<UserIncludeAll> => {
   const cacheKey = typeof userId === "string" ? userId : userId.id;
 
   if (userCache.has(cacheKey)) {
