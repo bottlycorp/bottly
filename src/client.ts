@@ -48,8 +48,6 @@ colors.info(`Starting Bottly v${version}...`);
 client.login(getStringEnv("BOT_TOKEN"));
 
 client.once("ready", async() => {
-  await checker();
-
   const loadedEvents = await loadEvents(client, `${__dirname}${sep}events`);
   colors.info(`${loadedEvents} events have been loaded`);
 
@@ -66,6 +64,8 @@ client.once("ready", async() => {
   const members = client.guilds.cache.reduce((a, b) => a + b.memberCount, 0);
   colors.log(`Bottly in ready for ${client.guilds.cache.size} guilds and ${members} users!`);
   colors.success("The client has been successfully started!");
+
+  await checker();
 });
 
 export const changeToday = (to: number): void => {
