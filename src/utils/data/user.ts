@@ -15,11 +15,11 @@ export const MAX_USES: Record<UsageMax, number> = {
   [UsageMax.PREMIUM]: 50
 };
 
-export const newUser = async(userToCreate: DiscordUser): Promise<UserIncludeAll> => {
+export const newUser = async(userToCreate: DiscordUser | string): Promise<UserIncludeAll> => {
   const user = await prisma.user.create({
     data: {
-      username: userToCreate.username,
-      userId: userToCreate.id,
+      username: typeof userToCreate === "string" ? userToCreate : userToCreate.username,
+      userId: typeof userToCreate === "string" ? userToCreate : userToCreate.id,
       createdAt: DayJS().unix(),
       locale: "en_US",
       messages: {},
@@ -93,20 +93,32 @@ export const getUser = async(userId: DiscordUser): Promise<UserIncludeAll> => {
   return user;
 };
 
-export const updateUser = async(userId: string, data: Prisma.UserUpdateInput): Promise<boolean> => {
-  await prisma.user.update({
+export const updateUser = async(userId: string, data: Prisma.UserUpdateInput): Promise<UserIncludeAll> => {
+  const user = await prisma.user.update({
     where: {
       userId: userId
     },
-    data: data
-  }).then(() => {
-    colors.info(`User ${userId} updated`);
+    data: data,
+    include: {
+      questions: true,
+      privacy: true,
+      usages: true,
+      votes: true,
+      discussions: true,
+      tips: true,
+      subscription: true
+    }
   }).catch((err) => {
     console.log(err);
     colors.error(`Error updating user ${userId}`);
   });
 
-  return true;
+  if (!user) {
+    colors.error(`User ${userId} not found`);
+    return newUser(userId);
+  }
+
+  return user;
 };
 
 export const deleteUser = async(userId: string): Promise<boolean> => {

@@ -8,7 +8,7 @@ import { limitString, userWithId } from "$core/utils/function";
 import { getQuestion, newQuestion } from "$core/utils/data/question";
 import { getPrompt } from "@bottlycorp/prompts";
 import { simpleButton, simpleEmbed } from "$core/utils/embed";
-import { favoriteButton, qrCodeButton, regenerateButton, revealButton, usageButton } from "$core/utils/config/buttons";
+import { favoriteButton, premiumButton, qrCodeButton, regenerateButton, regenerationButton, revealButton, usageButton } from "$core/utils/config/buttons";
 import { updateUser } from "$core/utils/data/user";
 import { DayJS } from "$core/utils/day-js";
 import QRCode from "qrcode";
@@ -67,6 +67,7 @@ export const execute: CommandExecute = async(command, user) => {
     repliedAt = DayJS().unix();
   } catch (error: any) {
     command.editReply(translate(command.locale, ask.config.exec.error, { error: error.message }));
+    colors.error(userWithId(command.user) + " tried to ask a question but an error occured: " + error.message);
     return;
   }
 
@@ -203,6 +204,21 @@ export const execute: CommandExecute = async(command, user) => {
         ] }]
       });
     } else if (i.customId === "regenerate") {
+      if (!user.isPremium && (user.usages?.usage && user.usages?.usage <= 0)) {
+        const embed = simpleEmbed(translate(i.locale, global.config.exec.noMoreUsages, { unix: DayJS().endOf("day").unix() }), "error");
+        const premiumEmbed = simpleEmbed(translate(i.locale, global.config.exec.orGetPremium), "premium");
+
+        const embeds: EmbedBuilder[] = [embed];
+        const components = [{ type: 1, components: [premiumButton(i)] }];
+        if (!user.isPremium) embeds.push(premiumEmbed);
+
+        i.editReply({ embeds });
+        if (!user.isPremium) i.editReply({ components });
+
+        colors.error(`${userWithId(i.user)} tried to regenerate a question but has no usages left`);
+        return;
+      }
+
       if (regenerated >= 5 && !user.isPremium) {
         command.editReply(translate(command.locale, ask.config.exec.regenerated_max, { max: 5, maxPremium: 10 }));
         return;
@@ -214,13 +230,7 @@ export const execute: CommandExecute = async(command, user) => {
       }
 
       command.editReply({ embeds: [simpleEmbed(translate(command.locale, ask.config.exec.regenerate), "info", "")], components: [
-        { type: 1, components: [
-          revealButton(command).setDisabled(true),
-          usageButton(command, user),
-          favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary).setDisabled(true),
-          regenerateButton().setDisabled(true),
-          qrCodeButton().setDisabled(true)
-        ] }
+        { type: 1, components: [regenerationButton(i)] }
       ] });
 
       regenerated++;
@@ -233,7 +243,13 @@ export const execute: CommandExecute = async(command, user) => {
         max_tokens: user.isPremium ? 3750 : 2500,
         model: "gpt-3.5-turbo",
         user: user.userId
+      }).catch((e) => {
+        command.editReply(translate(command.locale, ask.config.exec.error, { error: e.message }));
+        colors.error(`${userWithId(command.user)} tried to regenerate a question but got an error: ${e.message}`);
+        return;
       });
+
+      if (!regeneratedText) return;
 
       if (!regeneratedText.data.choices[0].message) {
         command.editReply(translate(command.locale, ask.config.exec.error, { error: "No message in response" }));
@@ -241,17 +257,21 @@ export const execute: CommandExecute = async(command, user) => {
       }
 
       answer = regeneratedText.data.choices[0].message?.content;
-
       command.editReply({ embeds: [answerEmbed(command, answer)] });
-      setTimeout(() => {
+
+      setTimeout(async() => {
         command.editReply({ components: [{ type: 1, components: [
           revealButton(command),
-          usageButton(command, user),
+          usageButton(
+            command,
+            user.isPremium ? user : await updateUser(user.userId, { usages: { update: { usage: { decrement: 1 } } } }),
+            user.isPremium ? true : false
+          ),
           favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
           regenerateButton(),
           qrCodeButton()
         ] }] });
-      }, 2500);
+      }, 1000);
     }
   });
 };

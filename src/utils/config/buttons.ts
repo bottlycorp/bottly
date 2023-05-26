@@ -56,6 +56,16 @@ export const regenerateButton = () : ButtonBuilder => {
   );
 };
 
+export const regenerationButton = (command: CommandInteraction | Interaction) : ButtonBuilder => {
+  return simpleButton(
+    translate(command.locale, global.config.buttons.regeneration),
+    ButtonStyle.Secondary,
+    "regeneration",
+    true,
+    { name: "typing", id: "1087703097498931290", animated: true }
+  );
+};
+
 export const premiumButton = (command: CommandInteraction | Interaction) : ButtonBuilder => {
   return simpleButton(
     translate(command.locale, global.config.buttons.premium),
