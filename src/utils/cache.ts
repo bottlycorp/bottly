@@ -1,7 +1,16 @@
 const cache = new Map<string, boolean>();
+const askCooldown = new Map<string, number>();
 
 export const setCache = (key: string, value: boolean): void => {
   cache.set(key, value);
+};
+
+export const setAskCooldown = (key: string, value: number): void => {
+  askCooldown.set(key, value);
+
+  setTimeout(() => {
+    askCooldown.delete(key);
+  }, value);
 };
 
 export const getCache = (key: string): boolean | undefined => {
@@ -17,6 +26,6 @@ export const existCache = (key: string): boolean => {
   return cache.has(key);
 };
 
-export const getCacheSize = (): number => {
-  return cache.size;
+export const existAskCooldown = (key: string): boolean => {
+  return askCooldown.has(key);
 };

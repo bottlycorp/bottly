@@ -5,6 +5,7 @@ import { ButtonBuilder } from "@discordjs/builders";
 import { premium } from "./premium.config";
 import { ButtonStyle } from "discord.js";
 import { getStringEnv } from "$core/utils/env-variable";
+import { findCommand } from "$core/utils/handler/command/command";
 
 export const execute: CommandExecute = async(command, user) => {
   const embed = simpleEmbed("", "premium", translate(command.locale, premium.config.exec.embed.title), {
@@ -36,7 +37,9 @@ export const execute: CommandExecute = async(command, user) => {
       )
     );
   } else {
-    embed.setDescription(translate(command.locale, premium.config.exec.embed.descriptionNotPremium));
+    embed.setDescription(translate(command.locale, premium.config.exec.embed.descriptionNotPremium, {
+      cmdAsk: await findCommand("ask")
+    }));
 
     buttons.push(
       simpleButton(

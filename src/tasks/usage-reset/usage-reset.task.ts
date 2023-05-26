@@ -19,7 +19,6 @@ export const execute: TaskExecute = async() => {
         privacy: true,
         discussions: true,
         questions: true,
-        votes: true,
         tips: true,
         subscription: true
       }

@@ -1,13 +1,13 @@
 import { User as DiscordUser } from "discord.js";
-import { prisma } from "$core/utils/prisma";
 import { colors } from "$core/client";
-import { DayJS } from "$core/utils/day-js";
 import { Prisma } from "@prisma/client";
 import { UsageMax } from "@prisma/client";
 import { userWithId } from "$core/utils/function";
+import { DayJS } from "../day-js";
+import { prisma } from "../prisma";
 
 export type UserIncludeAll = Prisma.UserGetPayload<{
-  include: { questions: true; privacy: true; usages: true; votes: true; discussions: true; tips: true; subscription: true };
+  include: { questions: true; privacy: true; usages: true; discussions: true; tips: true; subscription: true };
 }>
 
 export const MAX_USES: Record<UsageMax, number> = {
@@ -15,60 +15,16 @@ export const MAX_USES: Record<UsageMax, number> = {
   [UsageMax.PREMIUM]: 50
 };
 
-export const newUser = async(userToCreate: DiscordUser): Promise<UserIncludeAll> => {
-  const user = await prisma.user.create({
-    data: {
-      username: userToCreate.username,
-      userId: userToCreate.id,
-      createdAt: DayJS().unix(),
-      locale: "en_US",
-      messages: {},
-      privacy: {
-        create: {
-          autoDelete: false,
-          collectChat: true
-        }
-      },
-      usages: {
-        create: {
-          max: UsageMax.FREE,
-          usage: MAX_USES[UsageMax.FREE]
-        }
-      },
-      isPremium: false,
-      questions: {},
-      votes: {
-        create: {
-          active: false,
-          allVotes: {},
-          count: 0,
-          firstVote: "",
-          lastVote: ""
-        }
-      },
-      subscription: {},
-      tips: {
-        create: {
-          chatPremiumSaveIt: true
-        }
-      },
-      discussions: {}
-    },
-    include: {
-      questions: true,
-      privacy: true,
-      usages: true,
-      votes: true,
-      discussions: true,
-      tips: true,
-      subscription: true
-    }
-  });
-
-  return user;
-};
+const userCache = new Map<string, UserIncludeAll>();
 
 export const getUser = async(userId: DiscordUser): Promise<UserIncludeAll> => {
+  const cacheKey = typeof userId === "string" ? userId : userId.id;
+
+  if (userCache.has(cacheKey)) {
+    const cachedUser = userCache.get(cacheKey);
+    if (cachedUser) return cachedUser;
+  }
+
   const user = await prisma.user.findUnique({
     where: {
       userId: typeof userId === "string" ? userId : userId.id
@@ -77,7 +33,6 @@ export const getUser = async(userId: DiscordUser): Promise<UserIncludeAll> => {
       questions: true,
       privacy: true,
       usages: true,
-      votes: true,
       discussions: true,
       tips: true,
       subscription: true
@@ -86,56 +41,62 @@ export const getUser = async(userId: DiscordUser): Promise<UserIncludeAll> => {
 
   if (!user) {
     colors.info(`User ${userWithId(userId)} not found`);
-    return newUser(userId);
+    const createdUser = await prisma.user.create({
+      data: {
+        userId: typeof userId === "string" ? userId : userId.id,
+        isPremium: false,
+        privacy: { create: {} },
+        tips: { create: {} },
+        username: typeof userId === "string" ? userId : userId.username,
+        createdAt: DayJS().unix(),
+        locale: "en_US",
+        usages: { create: {} }
+      },
+      include: {
+        questions: true,
+        privacy: true,
+        usages: true,
+        discussions: true,
+        tips: true,
+        subscription: true
+      }
+    });
+
+    userCache.set(cacheKey, createdUser);
+    return createdUser;
   }
 
   colors.info(`User ${userWithId(userId)} found`);
+  userCache.set(cacheKey, user);
   return user;
 };
 
-export const updateUser = async(userId: string, data: Prisma.UserUpdateInput): Promise<boolean> => {
-  await prisma.user.update({
-    where: {
-      userId: userId
-    },
-    data: data
-  }).then(() => {
-    colors.info(`User ${userId} updated`);
-  }).catch((err) => {
-    console.log(err);
-    colors.error(`Error updating user ${userId}`);
+export const updateUser = async(userId: string, data: Prisma.UserUpdateInput): Promise<UserIncludeAll> => {
+  const cacheKey = userId;
+
+  const updatedUser = await prisma.user.update({
+    where: { userId }, data, include: {
+      questions: true,
+      privacy: true,
+      usages: true,
+      discussions: true,
+      tips: true,
+      subscription: true
+    }
   });
 
-  return true;
+  userCache.set(cacheKey, updatedUser);
+  return updatedUser;
 };
 
-export const deleteUser = async(userId: string): Promise<boolean> => {
-  await prisma.user.delete({
-    where: {
-      userId: userId
-    }
-  }).then(() => {
-    colors.info(`User ${userId} deleted`);
-  }).catch((err) => {
-    colors.error(`Error deleting user ${userId}`);
-    console.log(err);
-  });
+export const deleteUser = async(userId: string): Promise<void> => {
+  const cacheKey = userId;
 
-  return true;
+  await prisma.user.delete({ where: { userId } });
+
+  userCache.delete(cacheKey);
 };
 
 export const getMaxUsage = (user: UserIncludeAll): number => {
-  if (user.isPremium && user.votes?.active) {
-    return MAX_USES[UsageMax.PREMIUM] + 10;
-  }
-
-  if (user.isPremium && !user.votes?.active) {
-    return MAX_USES[UsageMax.PREMIUM];
-  }
-
-  if (user.votes?.active && !user.isPremium) {
-    return MAX_USES[UsageMax.FREE] + 10;
-  }
-
-  return MAX_USES[UsageMax.FREE];
+  return MAX_USES[user.isPremium ? UsageMax.PREMIUM : UsageMax.FREE];
 };

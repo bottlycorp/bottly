@@ -3,8 +3,7 @@ import {
   ChatInputCommandInteraction,
   Collection,
   SlashCommandBuilder,
-  SlashCommandSubcommandsOnlyBuilder,
-  ThreadChannel
+  SlashCommandSubcommandsOnlyBuilder
 } from "discord.js";
 
 export type SlashCommandDefition = SlashCommandSubcommandsOnlyBuilder |
@@ -12,8 +11,7 @@ export type SlashCommandDefition = SlashCommandSubcommandsOnlyBuilder |
 
 export type CommandExecute = (
   command: ChatInputCommandInteraction,
-  user: UserIncludeAll,
-  thread?: ThreadChannel
+  user: UserIncludeAll
 ) => Promise<void>;
 
 export type LoadedCommands = {
