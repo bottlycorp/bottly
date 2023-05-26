@@ -58,10 +58,6 @@ export const execute: CommandExecute = async(command, user) => {
     }) + "\n";
   }
 
-  if (user.votes?.active) {
-    lines += "\n" + translate(command.locale, history.config.exec.success.voterLine) + "\n";
-  }
-
   let askedThisDay = 0;
   let chatThisDay = 0;
   for (const question of questions) if (DayJS(question.createdAt * 1000).isSame(DayJS(), "day")) askedThisDay++;

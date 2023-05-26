@@ -147,6 +147,15 @@ export const ask = {
           "Antwort: {response}"
         ].join("\n")
       },
+      cooldown: {
+        "en-US": "This command is on cooldown for `{s} seconds` each use",
+        fr: "Cette commande est en cooldown pendant `{s} secondes` à chaque utilisation",
+        "pt-BR": "Este comando está em cooldown por `{s} segundos` a cada uso",
+        ru: "Эта команда находится в режиме охлаждения на `{s} секунд` каждое использование",
+        uk: "Ця команда знаходиться в режимі охолодження на `{s} секунд` кожне використання",
+        "es-ES": "Este comando está en cooldown por `{s} segundos` cada uso",
+        de: "Dieser Befehl ist für `{s} Sekunden` pro Verwendung in der Abklingzeit"
+      },
       waiting: {
         "en-US": "{emojiTypingWumpus} I'm thinking about your question...",
         fr: "{emojiTypingWumpus} Je suis entrain de réfléchir à votre question...",

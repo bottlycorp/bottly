@@ -8,4 +8,5 @@ export const enableInDev: EnableInDev = true;
 export const slashCommand: SlashCommandDefition = new SlashCommandBuilder()
   .setName(roadmap.config.name["en-US"])
   .setDescription(roadmap.config.description["en-US"])
-  .setDescriptionLocalizations(roadmap.config.description);
+  .setDescriptionLocalizations(roadmap.config.description)
+  .setDMPermission(false);
