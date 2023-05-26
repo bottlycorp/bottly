@@ -16,6 +16,7 @@ import { supabase } from "$core/utils/supabase";
 import { getLocale } from "$core/utils/locale";
 import { decode } from "base64-arraybuffer";
 import { EmbedBuilder } from "@discordjs/builders";
+import { existAskCooldown, setAskCooldown } from "$core/utils/cache";
 
 export const execute: CommandExecute = async(command, user) => {
   const channel = command.channel;
@@ -26,7 +27,13 @@ export const execute: CommandExecute = async(command, user) => {
     return;
   }
 
-  const message = await command.editReply(translate(command.locale, ask.config.exec.waiting));
+  if (existAskCooldown(command.user.id)) {
+    command.editReply(translate(command.locale, ask.config.exec.cooldown, { s: user.isPremium ? 5 : 10 }));
+    return;
+  }
+
+  const message = await command.editReply({ embeds: [simpleEmbed(translate(command.locale, ask.config.exec.waiting), "info")] });
+  setAskCooldown(command.user.id, user.isPremium ? 2500 : 5000);
 
   let answer: string;
   const messages: { content: string; role: "user" | "system" | "assistant" }[] = [];
@@ -55,7 +62,7 @@ export const execute: CommandExecute = async(command, user) => {
       messages,
       max_tokens: user.isPremium ? 3750 : 2500,
       model: "gpt-3.5-turbo",
-      user: user.userId
+      user: `${command.user.id}-${command.guild?.id}`
     });
 
     if (!response.data.choices[0].message) {
@@ -71,7 +78,6 @@ export const execute: CommandExecute = async(command, user) => {
   }
 
   command.editReply({
-    content: "",
     embeds: [answerEmbed(command, answer)],
     components: [{
       type: 1,
