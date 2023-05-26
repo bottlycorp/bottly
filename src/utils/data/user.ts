@@ -1,8 +1,7 @@
 import { User as DiscordUser } from "discord.js";
-import { prisma } from "$core/utils/prisma";
 import { colors } from "$core/client";
 import { DayJS } from "$core/utils/day-js";
-import { Prisma } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import { UsageMax } from "@prisma/client";
 import { userWithId } from "$core/utils/function";
 
@@ -15,7 +14,10 @@ export const MAX_USES: Record<UsageMax, number> = {
   [UsageMax.PREMIUM]: 50
 };
 
+const userCache = new Map<string, UserIncludeAll>();
+
 export const newUser = async(userToCreate: DiscordUser): Promise<UserIncludeAll> => {
+  const prisma = new PrismaClient();
   const user = await prisma.user.create({
     data: {
       username: userToCreate.username,
@@ -63,12 +65,21 @@ export const newUser = async(userToCreate: DiscordUser): Promise<UserIncludeAll>
       tips: true,
       subscription: true
     }
+  }).finally(async() => {
+    await prisma.$disconnect();
   });
 
   return user;
 };
 
 export const getUser = async(userId: DiscordUser): Promise<UserIncludeAll> => {
+  const prisma = new PrismaClient();
+  const cacheKey = typeof userId === "string" ? userId : userId.id;
+
+  if (userCache.has(cacheKey)) {
+    return userCache.get(cacheKey)!;
+  }
+
   const user = await prisma.user.findUnique({
     where: {
       userId: typeof userId === "string" ? userId : userId.id
@@ -82,6 +93,8 @@ export const getUser = async(userId: DiscordUser): Promise<UserIncludeAll> => {
       tips: true,
       subscription: true
     }
+  }).finally(async() => {
+    await prisma.$disconnect();
   });
 
   if (!user) {
@@ -94,6 +107,7 @@ export const getUser = async(userId: DiscordUser): Promise<UserIncludeAll> => {
 };
 
 export const updateUser = async(userId: string, data: Prisma.UserUpdateInput): Promise<boolean> => {
+  const prisma = new PrismaClient();
   await prisma.user.update({
     where: {
       userId: userId
@@ -104,12 +118,15 @@ export const updateUser = async(userId: string, data: Prisma.UserUpdateInput): P
   }).catch((err) => {
     console.log(err);
     colors.error(`Error updating user ${userId}`);
+  }).finally(async() => {
+    await prisma.$disconnect();
   });
 
   return true;
 };
 
 export const deleteUser = async(userId: string): Promise<boolean> => {
+  const prisma = new PrismaClient();
   await prisma.user.delete({
     where: {
       userId: userId
@@ -119,6 +136,8 @@ export const deleteUser = async(userId: string): Promise<boolean> => {
   }).catch((err) => {
     colors.error(`Error deleting user ${userId}`);
     console.log(err);
+  }).finally(async() => {
+    await prisma.$disconnect();
   });
 
   return true;
