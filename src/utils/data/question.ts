@@ -1,18 +1,15 @@
 import { colors } from "$core/client";
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { User } from "discord.js";
 import { userWithId } from "../function";
+import { prisma } from "../prisma";
 
 export type QuestionIncludeAll = Prisma.QuestionGetPayload<{
   include: { user: false };
 }>
 
 export const newQuestion = async(user: User, question: Prisma.QuestionCreateArgs): Promise<false | QuestionIncludeAll> => {
-  const prisma = new PrismaClient();
-
-  const data = await prisma.question.create(question).finally(async() => {
-    await prisma.$disconnect();
-  });
+  const data = await prisma.question.create(question);
 
   if (data == null) return false;
 
@@ -21,12 +18,9 @@ export const newQuestion = async(user: User, question: Prisma.QuestionCreateArgs
 };
 
 export const getQuestions = async(userId: string, contains?: string): Promise<QuestionIncludeAll[] | null> => {
-  const prisma = new PrismaClient();
   const questions = await prisma.question.findMany({
     where: { userId: userId, question: { contains: contains } },
     orderBy: { createdAt: "desc" }
-  }).finally(async() => {
-    await prisma.$disconnect();
   });
 
   if (questions == null) return null;
@@ -34,12 +28,10 @@ export const getQuestions = async(userId: string, contains?: string): Promise<Qu
 };
 
 export const isQuestionExist = async(id: string, userId: string): Promise<boolean> => {
-  const prisma = new PrismaClient();
+
   const question = await prisma.question.findUnique({
     where: { id: id },
     select: { userId: true }
-  }).finally(async() => {
-    await prisma.$disconnect();
   });
 
   if (question == null) return false;
@@ -49,12 +41,10 @@ export const isQuestionExist = async(id: string, userId: string): Promise<boolea
 };
 
 export const getQuestion = async(id: string, userId: string): Promise<QuestionIncludeAll | null> => {
-  const prisma = new PrismaClient();
+
   const question = await prisma.question.findUnique({
     where: { id: id },
     include: { user: false }
-  }).finally(async() => {
-    await prisma.$disconnect();
   });
 
   if (question == null) return null;

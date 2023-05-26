@@ -61,7 +61,6 @@ export const execute: CommandExecute = async(command, user) => {
     } else if (interaction.customId == "yes") {
       await prisma.discussion.deleteMany({ where: { userId: user.userId } });
       await prisma.question.deleteMany({ where: { userId: user.userId } });
-      await prisma.vote.deleteMany({ where: { userId: user.userId } });
       await prisma.tips.update({ where: { userId: user.userId }, data: { chatPremiumSaveIt: true } });
 
       await interaction.editReply({ embeds: [simpleEmbed(
