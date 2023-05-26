@@ -8,7 +8,8 @@ import { limitString, userWithId } from "$core/utils/function";
 import { getQuestion, newQuestion } from "$core/utils/data/question";
 import { getPrompt } from "@bottlycorp/prompts";
 import { simpleButton, simpleEmbed } from "$core/utils/embed";
-import { favoriteButton, premiumButton, qrCodeButton, regenerateButton, regenerationButton, revealButton, usageButton } from "$core/utils/config/buttons";
+import { favoriteButton, premiumButton, qrCodeButton, regenerateButton, regenerationButton, revealButton,
+  usageButton } from "$core/utils/config/buttons";
 import { updateUser } from "$core/utils/data/user";
 import { DayJS } from "$core/utils/day-js";
 import QRCode from "qrcode";
