@@ -17,7 +17,7 @@ export const MAX_USES: Record<UsageMax, number> = {
 
 const userCache = new Map<string, UserIncludeAll>();
 
-export const getUser = async(userId: DiscordUser): Promise<UserIncludeAll> => {
+export const getUser = async(userId: DiscordUser | string): Promise<UserIncludeAll> => {
   const cacheKey = typeof userId === "string" ? userId : userId.id;
 
   if (userCache.has(cacheKey)) {
@@ -27,7 +27,7 @@ export const getUser = async(userId: DiscordUser): Promise<UserIncludeAll> => {
 
   const user = await prisma.user.findUnique({
     where: {
-      userId: typeof userId === "string" ? userId : userId.id
+      userId: cacheKey
     },
     include: {
       questions: true,
@@ -40,14 +40,14 @@ export const getUser = async(userId: DiscordUser): Promise<UserIncludeAll> => {
   });
 
   if (!user) {
-    colors.info(`User ${userWithId(userId)} not found`);
+    colors.info(`User ${typeof userId === "string" ? userId : userWithId(userId)} not found, creating...`);
     const createdUser = await prisma.user.create({
       data: {
-        userId: typeof userId === "string" ? userId : userId.id,
+        userId: cacheKey,
         isPremium: false,
         privacy: { create: {} },
         tips: { create: {} },
-        username: typeof userId === "string" ? userId : userId.username,
+        username: "New User",
         createdAt: DayJS().unix(),
         locale: "en_US",
         usages: { create: {} }
@@ -66,7 +66,7 @@ export const getUser = async(userId: DiscordUser): Promise<UserIncludeAll> => {
     return createdUser;
   }
 
-  colors.info(`User ${userWithId(userId)} found`);
+  colors.info(`User ${typeof userId === "string" ? userId : userWithId(userId)} found!`);
   userCache.set(cacheKey, user);
   return user;
 };
@@ -83,16 +83,13 @@ export const updateUser = async(userId: string, data: Prisma.UserUpdateInput): P
     }
   });
 
-  userCache.set(cacheKey, updatedUser);
+  userCache.set(userId, updatedUser);
   return updatedUser;
 };
 
 export const deleteUser = async(userId: string): Promise<void> => {
-  const cacheKey = userId;
-
   await prisma.user.delete({ where: { userId } });
-
-  userCache.delete(cacheKey);
+  userCache.delete(userId);
 };
 
 export const getMaxUsage = (user: UserIncludeAll): number => {
