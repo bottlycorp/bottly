@@ -135,28 +135,17 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
       interaction.options.getSubcommandGroup() ?? undefined
     ));
 
-    if (!interaction.guild) {
-      interaction.reply({
-        embeds: [simpleEmbed(translate(interaction.locale, global.config.exec.error, {
-          error: translate(interaction.locale, global.config.exec.notInAGuild)
-        }), "error")], ephemeral: true
-      });
-
-      colors.error(`${userWithId(interaction.user)} tried to use the command ${interactionWithId(interaction)} in DM`);
-      return;
-    }
+    if (!interaction.guild) return;
 
     await interaction.deferReply({ ephemeral: true });
 
-    const member = await interaction.guild.members.fetch(client.user.id);
-    const missingPermissions = member.permissions.missing([
+    const missingPermissions = interaction.appPermissions?.missing([
       "SendMessages",
       "EmbedLinks",
       "ManageThreads",
       "SendMessagesInThreads",
       "CreatePrivateThreads",
       "CreatePublicThreads",
-      "AddReactions",
       "UseApplicationCommands",
       "AddReactions",
       "AttachFiles"
@@ -179,29 +168,22 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
     }
 
     if (!commandExecute) return;
-
-    const channel = await interaction.guild.channels.fetch(interaction.channelId).catch((error: Error) => {
-      interaction.editReply({ embeds: [simpleEmbed(translate(interaction.locale, global.config.exec.error, { error: error.message }), "error")] });
-      colors.error(`${userWithId(interaction.user)} tried to use the command ${interactionWithId(interaction)} in a non-existent/not access`);
-      return;
-    });
+    const channel = interaction.channel;
 
     if (!(channel instanceof TextChannel) && !(channel instanceof ThreadChannel)) {
-      interaction.editReply({
-        embeds: [
-          simpleEmbed(translate(interaction.locale, global.config.exec.error, {
-            error: translate(interaction.locale, global.config.exec.notInATextChannel)
-          }), "error")
-        ]
-      });
+      interaction.editReply({ embeds: [
+        simpleEmbed(translate(interaction.locale, global.config.exec.error, {
+          error: translate(interaction.locale, global.config.exec.notInATextChannel)
+        }), "error")
+      ] });
 
       colors.error(`${userWithId(interaction.user)} tried to use the command ${interactionWithId(interaction)} in a non-text channel`);
       return;
     }
 
     const user = await getUser(interaction.user);
-    if (user.username !== interaction.user.username) await updateUser(interaction.user.id, { username: interaction.user.username });
-    if (toLocale(user.locale) !== interaction.locale) await updateUser(interaction.user.id, { locale: toPrismaLocale(interaction.locale) });
+    if (user.username !== interaction.user.username) updateUser(interaction.user.id, { username: interaction.user.username });
+    if (toLocale(user.locale) !== interaction.locale) updateUser(interaction.user.id, { locale: toPrismaLocale(interaction.locale) });
 
     let accepted = user.privacy?.accepted ?? false;
 

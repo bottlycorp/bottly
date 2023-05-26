@@ -1,8 +1,8 @@
-import { prisma } from "../prisma";
 import { colors } from "$core/client";
 import { Prisma } from "@prisma/client";
 import { User } from "discord.js";
 import { userWithId } from "../function";
+import { prisma } from "../prisma";
 
 export type QuestionIncludeAll = Prisma.QuestionGetPayload<{
   include: { user: false };
@@ -10,6 +10,7 @@ export type QuestionIncludeAll = Prisma.QuestionGetPayload<{
 
 export const newQuestion = async(user: User, question: Prisma.QuestionCreateArgs): Promise<false | QuestionIncludeAll> => {
   const data = await prisma.question.create(question);
+
   if (data == null) return false;
 
   colors.info(`New question created for user ${userWithId(user)}, question: ${question.data.question}`);
@@ -27,6 +28,7 @@ export const getQuestions = async(userId: string, contains?: string): Promise<Qu
 };
 
 export const isQuestionExist = async(id: string, userId: string): Promise<boolean> => {
+
   const question = await prisma.question.findUnique({
     where: { id: id },
     select: { userId: true }
@@ -39,6 +41,7 @@ export const isQuestionExist = async(id: string, userId: string): Promise<boolea
 };
 
 export const getQuestion = async(id: string, userId: string): Promise<QuestionIncludeAll | null> => {
+
   const question = await prisma.question.findUnique({
     where: { id: id },
     include: { user: false }
