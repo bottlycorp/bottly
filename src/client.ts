@@ -39,7 +39,8 @@ export const colors = new BColors({
 });
 
 export const openai = new OpenAIApi(new Configuration({
-  apiKey: getStringEnv("OPENAI_API_KEY")
+  apiKey: getStringEnv("OPENAI_API_KEY"),
+  organization: getStringEnv("OPENAI_ORGANIZATION_ID")
 }));
 
 colors.info(`Starting Bottly v${version}...`);
