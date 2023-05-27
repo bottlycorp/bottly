@@ -17,12 +17,14 @@ export const MAX_USES: Record<UsageMax, number> = {
 
 const userCache = new Map<string, UserIncludeAll>();
 
-export const getUser = async(userId: DiscordUser | string): Promise<UserIncludeAll> => {
+export const getUser = async(userId: DiscordUser | string, mineInCache = true): Promise<UserIncludeAll> => {
   const cacheKey = typeof userId === "string" ? userId : userId.id;
 
-  if (userCache.has(cacheKey)) {
-    const cachedUser = userCache.get(cacheKey);
-    if (cachedUser) return cachedUser;
+  if (mineInCache) {
+    if (userCache.has(cacheKey)) {
+      const cachedUser = userCache.get(cacheKey);
+      if (cachedUser) return cachedUser;
+    }
   }
 
   const user = await prisma.user.findUnique({
