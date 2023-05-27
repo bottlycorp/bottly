@@ -17,6 +17,10 @@ export const MAX_USES: Record<UsageMax, number> = {
 
 const userCache = new Map<string, UserIncludeAll>();
 
+export const deleteUserCache = (userId: string): void => {
+  userCache.delete(userId);
+};
+
 export const getUser = async(userId: DiscordUser | string): Promise<UserIncludeAll> => {
   const cacheKey = typeof userId === "string" ? userId : userId.id;
 

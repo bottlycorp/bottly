@@ -85,3 +85,23 @@ export const acceptPrivacy = (command: CommandInteraction | Interaction) : Butto
     "acceptPrivacy"
   );
 };
+
+export const buttonsBuilder = (webUrl: string | null, command: CommandInteraction | Interaction, ...buttons: ButtonBuilder[]): ButtonBuilder[] => {
+  const list: ButtonBuilder[] = [];
+
+  console.log(webUrl);
+  if (webUrl !== null) {
+    const knowMoreButton = simpleButton(
+      translate(command.locale, ask.config.buttons.knowMore),
+      ButtonStyle.Link,
+      webUrl
+    );
+    list.push(knowMoreButton);
+  }
+
+  for (const button of buttons) {
+    list.push(button);
+  }
+
+  return list;
+};
