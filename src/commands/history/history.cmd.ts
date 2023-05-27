@@ -43,7 +43,7 @@ export const execute: CommandExecute = async(command, user) => {
       );
     } else {
       type = user.questions?.find(q => q.id === final[i].id) as QuestionIncludeAll;
-      lines += translate(command.locale, history.config.exec.success.lineQuestion, {
+      lines += translate(command.locale, history.config.exec.success[type.webUsed ? "lineQuestionWeb" : "lineQuestion"], {
         index: i + 1,
         id: final[i].id,
         question: limitString(type.question, 50),

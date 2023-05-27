@@ -1,7 +1,7 @@
 import { colors } from "$core/client";
 import { translate } from "$core/utils/config/message/message.util";
 import { getQuestion, isQuestionExist } from "$core/utils/data/question";
-import { simpleEmbed } from "$core/utils/embed";
+import { simpleButton, simpleEmbed } from "$core/utils/embed";
 import { CommandExecute } from "$core/utils/handler/command";
 import { request } from "./request.config";
 import { DayJS } from "$core/utils/day-js";
@@ -10,6 +10,7 @@ import { ButtonStyle, CommandInteraction } from "discord.js";
 import { updateUser } from "$core/utils/data/user";
 import { EmbedBuilder } from "@discordjs/builders";
 import { Prisma } from "@prisma/client";
+import { ask } from "../ask/ask.config";
 
 export const execute: CommandExecute = async(command, user) => {
   const questions = user.questions;
@@ -82,6 +83,12 @@ export const execute: CommandExecute = async(command, user) => {
     await updateUser(user.userId, { questions: { update: { data: { isFavorite: favorite, favoriteAt: DayJS().unix() }, where: { id: data.id } } } });
     const dataUpdated = await getQuestion(question, user.userId);
     if (dataUpdated == null) return;
+
+    const components = [];
+    components.push(favoriteButton().setStyle(favorite ? ButtonStyle.Primary : ButtonStyle.Secondary).setDisabled(false));
+    if (dataUpdated.webUsed) components.push(
+      simpleButton(translate(command.locale, ask.config.buttons.knowMore), ButtonStyle.Link, dataUpdated.webUrl)
+    );
 
     command.editReply({
       embeds: [embed(command, dataUpdated, timestamp)],
