@@ -181,7 +181,7 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
       return;
     }
 
-    const user = await getUser(interaction.user, limitedUsageCommands.includes(interaction.commandName) ? true : false);
+    const user = await getUser(interaction.user);
     if (user.username !== interaction.user.username) updateUser(interaction.user.id, { username: interaction.user.username });
     if (toLocale(user.locale) !== interaction.locale) updateUser(interaction.user.id, { locale: toPrismaLocale(interaction.locale) });
 
