@@ -302,10 +302,8 @@ export const answerEmbed = (command: CommandInteraction, answer: string, links: 
 
 export const answerPublicEmbed = (command: CommandInteraction, answer: string, prompt: string, links: string[] | null = null): EmbedBuilder => {
   let description = "";
-  description += translate(command.locale, ask.config.exec.success, {
-    question: limitString(prompt, 100),
-    response: answer
-  });
+  description += `❔ ${limitString(prompt, 100)}\n\n`;
+  description += translate(command.locale, ask.config.exec.success, { response: answer });
 
   if (links) {
     description += "\n\n";
