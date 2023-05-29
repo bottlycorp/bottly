@@ -1,21 +1,14 @@
 import { colors, openai, web as websearch } from "$core/client";
 import { translate } from "$core/utils/config/message/message.util";
 import { CommandExecute } from "$core/utils/handler/command";
-import {
-  ButtonInteraction,
-  ButtonStyle,
-  CommandInteraction,
-  MessageComponentInteraction,
-  TextChannel,
-  ThreadChannel
-} from "discord.js";
+import { ButtonInteraction, ButtonStyle, CommandInteraction, MessageComponentInteraction, TextChannel, ThreadChannel } from "discord.js";
 import { ask } from "./ask.config";
 import { global } from "$core/utils/config/message/command";
 import { limitString, userWithId } from "$core/utils/function";
 import { QuestionIncludeAll, getQuestion, newQuestion } from "$core/utils/data/question";
 import { getPrompt } from "@bottlycorp/prompts";
 import { simpleButton, simpleEmbed } from "$core/utils/embed";
-import { buttonsBuilder, favoriteButton, qrCodeButton, regenerateButton, revealButton, usageButton } from "$core/utils/config/buttons";
+import { buttonsBuilder, favoriteButton, qrCodeButton, revealButton, usageButton } from "$core/utils/config/buttons";
 import { updateUser } from "$core/utils/data/user";
 import { DayJS } from "$core/utils/day-js";
 import { supabase } from "$core/utils/supabase";
@@ -66,8 +59,6 @@ export const execute: CommandExecute = async(command, user) => {
   let publicUrl = "ThisIsABlankUrlBecauseItIsNotYetGenerated";
   let question: QuestionIncludeAll;
   let favorited = false;
-  let regenerated = 0;
-  let regeneratedLocked = false;
 
   const messages: { content: string; role: "user" | "system" | "assistant" }[] = [];
 
@@ -82,7 +73,7 @@ export const execute: CommandExecute = async(command, user) => {
     messages.push({ content: question.answer, role: "assistant" });
   };
 
-  const handleChatCompletion = async(regen = false): Promise<void> => {
+  const handleChatCompletion = async(): Promise<void> => {
     const response = await openai.createChatCompletion({
       messages,
       max_tokens: user.isPremium ? 3750 : 2500,
@@ -95,10 +86,8 @@ export const execute: CommandExecute = async(command, user) => {
       return;
     }
 
-    if (!regen) {
-      answer = response.data.choices[0].message?.content;
-      answeredAt = DayJS().unix();
-    }
+    answer = response.data.choices[0].message?.content;
+    answeredAt = DayJS().unix();
   };
 
   const handleQuestionCreation = async(): Promise<void> => {
@@ -130,88 +119,69 @@ export const execute: CommandExecute = async(command, user) => {
     });
 
     const context = command.options.getString("context", false);
+
     if (context) await handlePromptInContext();
+
     messages.push({ content: command.options.getString("prompt", true), role: "user" });
   }
 
-  const handleRespond = async(regen = false): Promise<void> => {
-    if (regen) command.editReply({ embeds: [simpleEmbed(translate(command.locale, ask.config.exec.regenerate), "info")], components:
-      buttonsBuilder(
-        url ?? null,
-        command,
-        true,
-        revealButton(command),
-        usageButton(command, user),
-        favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
-        regenerateButton(),
-        qrCodeButton()
-      )
-    });
+  try {
+    if (web) {
+      // Having more than 5 links is useless, it confuses the AI.
+      const dataWebSearch = await websearch.search(command.options.getString("prompt", true), 5, "active");
 
-    try {
-      if (web) {
-        const dataWebSearch = await websearch.search(command.options.getString("prompt", true), 5, "active");
-
-        answer = dataWebSearch.content;
-        url = dataWebSearch.url ?? undefined;
-        urls = dataWebSearch.urls ?? null;
-        answeredAt = DayJS().unix();
-      } else {
-        await handleChatCompletion();
-      }
-
-      if (!regen) await handleQuestionCreation();
-
-      setTimeout(async() => {
-        command.editReply({
-          embeds: [answerEmbed(command, answer, urls)],
-          components: buttonsBuilder(
-            url ?? null,
-            command,
-            false,
-            revealButton(command),
-            usageButton(command, user),
-            favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
-            regenerateButton().setDisabled(regeneratedLocked),
-            qrCodeButton()
-          )
-        });
-      }, 2500);
-    } catch (error: any) {
-      command.editReply(translate(command.locale, ask.config.exec.error, { error: error.message }));
-      return;
+      answer = dataWebSearch.content;
+      url = dataWebSearch.url ?? undefined;
+      urls = dataWebSearch.urls ?? null;
+      answeredAt = DayJS().unix();
+    } else {
+      await handleChatCompletion();
     }
-  };
 
-  await handleRespond();
+    await handleQuestionCreation();
+
+    command.editReply({
+      embeds: [answerEmbed(command, answer, urls)],
+      components: [{
+        type: 1,
+        components: buttonsBuilder(
+          url ?? null,
+          command,
+          revealButton(command),
+          usageButton(command, user),
+          favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
+          qrCodeButton()
+        )
+      }]
+    });
+  } catch (error: any) {
+    command.editReply(translate(command.locale, ask.config.exec.error, { error: error.message }));
+    return;
+  }
 
   const handleFavoriteButtonToggle = async(): Promise<void> => {
-    command.editReply({ components: buttonsBuilder(
+    command.editReply({ components: [{ type: 1, components: buttonsBuilder(
       url ?? null,
       command,
-      false,
       revealButton(command),
       usageButton(command, user),
       favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary).setDisabled(true),
-      regenerateButton().setDisabled(regeneratedLocked),
       qrCodeButton()
-    ) });
+    ) }] });
 
     favorited = !favorited;
     await updateUser(user.userId, { questions: { update: { data: {
       isFavorite: favorited, favoriteAt: DayJS().unix()
     }, where: { id: question.id } } } });
 
-    command.editReply({ components: buttonsBuilder(
+    command.editReply({ components: [{ type: 1, components: buttonsBuilder(
       url ?? null,
       command,
-      false,
       revealButton(command),
       usageButton(command, user),
       favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
-      regenerateButton().setDisabled(regeneratedLocked),
       qrCodeButton()
-    ) });
+    ) }] });
   };
 
   const handleQRCodeButtonClick = async(i: MessageComponentInteraction): Promise<void> => {
@@ -289,37 +259,20 @@ export const execute: CommandExecute = async(command, user) => {
       case "qrcode":
         await handleQRCodeButtonClick(interaction);
         break;
-      case "regenerate":
-        regenerated++;
-        if (regenerated <= (user.isPremium ? 5 : 3)) await handleRespond(true);
-
-        if (regenerated >= (user.isPremium ? 5 : 3)) {
-          regeneratedLocked = true;
-          command.editReply({ components: buttonsBuilder(
-            url ?? null,
-            command,
-            false,
-            revealButton(command),
-            usageButton(command, user),
-            favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
-            regenerateButton().setDisabled(regeneratedLocked),
-            qrCodeButton()
-          ) });
-          return;
-        }
-        break;
       case "return":
         command.editReply({
           embeds: [answerEmbed(command, answer, urls)],
-          components: buttonsBuilder(
-            url ?? null,
-            command,
-            false,
-            revealButton(command),
-            usageButton(command, user),
-            favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
-            regenerateButton().setDisabled(regeneratedLocked),
-          )
+          components: [{
+            type: 1,
+            components: buttonsBuilder(
+              url ?? null,
+              command,
+              revealButton(command),
+              usageButton(command, user),
+              favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
+              qrCodeButton()
+            )
+          }]
         });
         break;
     }

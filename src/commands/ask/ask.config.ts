@@ -200,15 +200,6 @@ export const ask = {
         "es-ES": "{emojiTypingWumpus} Estoy pensando en tu pregunta...",
         de: "{emojiTypingWumpus} Ich denke über deine Frage nach..."
       },
-      regenerate: {
-        "en-US": "{emojiTypingWumpus} I'm thinking to a better answer...",
-        fr: "{emojiTypingWumpus} Je suis entrain de réfléchir à une meilleure réponse...",
-        "pt-BR": "{emojiTypingWumpus} Estou pensando em uma resposta melhor...",
-        ru: "{emojiTypingWumpus} Я думаю о лучшем ответе...",
-        uk: "{emojiTypingWumpus} Я думаю про кращу відповідь...",
-        "es-ES": "{emojiTypingWumpus} Estoy pensando en una mejor respuesta...",
-        de: "{emojiTypingWumpus} Ich denke über eine bessere Antwort nach..."
-      },
       waintingWeb: {
         "en-US": "{emojiTypingWumpus} I'm searching on the web for your question...",
         fr: "{emojiTypingWumpus} Je suis entrain de chercher sur le web pour votre question...",
