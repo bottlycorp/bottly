@@ -23,15 +23,6 @@ export const global = {
       },
       usage: {
         "en-US": "{left}/{max}"
-      },
-      regeneration: {
-        "en-US": "Regeneration in progress",
-        fr: "Régénération en cours",
-        "pt-BR": "Regeneração em andamento",
-        ru: "Восстановление в процессе",
-        uk: "Відновлення в процесі",
-        "es-ES": "Regeneración en progreso",
-        de: "Regeneration im Gange"
       }
     },
     exec: {
