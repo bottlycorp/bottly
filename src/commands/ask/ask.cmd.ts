@@ -127,7 +127,11 @@ export const execute: CommandExecute = async(command, user) => {
 
   try {
     if (web) {
-      const dataWebSearch = await websearch.search(command.options.getString("prompt", true), 5, "active");
+      const dataWebSearch = await websearch.search(
+        command.options.getString("prompt", true),
+        user.isPremium ? 10 : 5,
+        "active"
+      );
 
       answer = dataWebSearch.content;
       url = dataWebSearch.url ?? undefined;
