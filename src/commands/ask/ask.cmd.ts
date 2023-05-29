@@ -134,7 +134,7 @@ export const execute: CommandExecute = async(command, user) => {
     messages.push({ content: command.options.getString("prompt", true), role: "user" });
   }
 
-  const handleWebSearch = async(regen = false): Promise<void> => {
+  const handleRespond = async(regen = false): Promise<void> => {
     if (regen) command.editReply({ embeds: [simpleEmbed(translate(command.locale, ask.config.exec.regenerate), "info")], components:
       buttonsBuilder(
         url ?? null,
@@ -143,7 +143,7 @@ export const execute: CommandExecute = async(command, user) => {
         revealButton(command),
         usageButton(command, user),
         favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
-        regenerateButton().setDisabled(regeneratedLocked),
+        regenerateButton(),
         qrCodeButton()
       )
     });
@@ -151,7 +151,6 @@ export const execute: CommandExecute = async(command, user) => {
     try {
       if (web) {
         const dataWebSearch = await websearch.search(command.options.getString("prompt", true), 5, "active");
-        console.log(dataWebSearch);
 
         answer = dataWebSearch.content;
         url = dataWebSearch.url ?? undefined;
@@ -161,28 +160,30 @@ export const execute: CommandExecute = async(command, user) => {
         await handleChatCompletion();
       }
 
-      await handleQuestionCreation();
+      if (!regen) await handleQuestionCreation();
 
-      command.editReply({
-        embeds: [answerEmbed(command, answer, urls)],
-        components: buttonsBuilder(
-          url ?? null,
-          command,
-          false,
-          revealButton(command),
-          usageButton(command, user),
-          favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
-          regenerateButton().setDisabled(regeneratedLocked),
-          qrCodeButton()
-        )
-      });
+      setTimeout(async() => {
+        command.editReply({
+          embeds: [answerEmbed(command, answer, urls)],
+          components: buttonsBuilder(
+            url ?? null,
+            command,
+            false,
+            revealButton(command),
+            usageButton(command, user),
+            favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
+            regenerateButton().setDisabled(regeneratedLocked),
+            qrCodeButton()
+          )
+        });
+      }, 2500);
     } catch (error: any) {
       command.editReply(translate(command.locale, ask.config.exec.error, { error: error.message }));
       return;
     }
   };
 
-  await handleWebSearch();
+  await handleRespond();
 
   const handleFavoriteButtonToggle = async(): Promise<void> => {
     command.editReply({ components: buttonsBuilder(
@@ -289,7 +290,10 @@ export const execute: CommandExecute = async(command, user) => {
         await handleQRCodeButtonClick(interaction);
         break;
       case "regenerate":
-        if (regenerated >= (user.isPremium ? 5 : 1)) {
+        regenerated++;
+        if (regenerated <= (user.isPremium ? 5 : 3)) await handleRespond(true);
+
+        if (regenerated >= (user.isPremium ? 5 : 3)) {
           regeneratedLocked = true;
           command.editReply({ components: buttonsBuilder(
             url ?? null,
@@ -303,9 +307,6 @@ export const execute: CommandExecute = async(command, user) => {
           ) });
           return;
         }
-
-        regenerated++;
-        await handleWebSearch(true);
         break;
       case "return":
         command.editReply({
