@@ -34,8 +34,7 @@ model Question {
   isFavorite  Boolean @default(false)
   qrCodeUrl   String  @default("")
   favoriteAt  Int     @default(0)
-  webUsed     Boolean @default(false)
-  webUrl      String  @default("")
+  webUrls     String[] @default([])
   user        User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
 

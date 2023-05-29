@@ -98,8 +98,7 @@ export const execute: CommandExecute = async(command, user) => {
         question: command.options.getString("prompt", true),
         createdAt: askedAt,
         repliedAt: repliedAt,
-        webUsed: web,
-        webUrl: web ? (url ?? undefined) : undefined,
+        webUrls: urls ?? [],
         user: { connect: { userId: user.userId } }
       }
     });
@@ -286,9 +285,7 @@ export const answerEmbed = (command: CommandInteraction, answer: string, links: 
 
   if (links) {
     description += "\n\n";
-    for (const link of links) {
-      description += translate(command.locale, ask.config.exec.links, { title: link.split("/")[2], url: link });
-    }
+    for (const link of links) description += translate(command.locale, ask.config.exec.links, { title: link.split("/")[2], url: link });
   }
 
   return simpleEmbed(

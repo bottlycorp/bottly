@@ -10,7 +10,6 @@ import { ButtonStyle, CommandInteraction } from "discord.js";
 import { updateUser } from "$core/utils/data/user";
 import { EmbedBuilder } from "@discordjs/builders";
 import { Prisma } from "@prisma/client";
-import { ask } from "../ask/ask.config";
 
 export const execute: CommandExecute = async(command, user) => {
   const questions = user.questions;
@@ -59,13 +58,18 @@ export const execute: CommandExecute = async(command, user) => {
   const timestamp = DayJS((data.repliedAt * 1000)).diff(DayJS((data.createdAt * 1000)), "second");
   let favorite = data.isFavorite;
 
+  const components = [];
+  if (data.webUrls.length > 0) {
+    components.push(simpleButton(translate(command.locale, request.config.buttons.knowMore), ButtonStyle.Link, data.webUrls[0]));
+  }
+
+  components.push(favoriteButton().setStyle(data.isFavorite ? ButtonStyle.Primary : ButtonStyle.Secondary));
+
   const message = await command.editReply({
     embeds: [embed(command, data, timestamp)],
     components: [{
       type: 1,
-      components: [
-        favoriteButton().setStyle(data.isFavorite ? ButtonStyle.Primary : ButtonStyle.Secondary)
-      ]
+      components: components
     }]
   });
 
@@ -74,29 +78,29 @@ export const execute: CommandExecute = async(command, user) => {
   collector.on("collect", async(interaction) => {
     interaction.deferUpdate();
     if (interaction.customId !== "favorite") return; // Wtf but ok :D
+    const components = [];
+    if (data.webUrls.length > 0) {
+      components.push(simpleButton(translate(command.locale, request.config.buttons.knowMore), ButtonStyle.Link, data.webUrls[0]));
+    }
+
+    components.push(favoriteButton().setStyle(favorite ? ButtonStyle.Primary : ButtonStyle.Secondary).setDisabled(true));
 
     favorite = !favorite;
-    command.editReply({ components: [{ type: 1, components: [
-      favoriteButton().setStyle(favorite ? ButtonStyle.Primary : ButtonStyle.Secondary).setDisabled(true)
-    ] }] });
+    command.editReply({ components: [{ type: 1, components: components }] });
 
     await updateUser(user.userId, { questions: { update: { data: { isFavorite: favorite, favoriteAt: DayJS().unix() }, where: { id: data.id } } } });
     const dataUpdated = await getQuestion(question, user.userId);
     if (dataUpdated == null) return;
 
-    const components = [];
+    // remove the last component
+    components.pop();
     components.push(favoriteButton().setStyle(favorite ? ButtonStyle.Primary : ButtonStyle.Secondary).setDisabled(false));
-    if (dataUpdated.webUsed) components.push(
-      simpleButton(translate(command.locale, ask.config.buttons.knowMore), ButtonStyle.Link, dataUpdated.webUrl)
-    );
 
     command.editReply({
       embeds: [embed(command, dataUpdated, timestamp)],
       components: [{
         type: 1,
-        components: [
-          favoriteButton().setStyle(favorite ? ButtonStyle.Primary : ButtonStyle.Secondary).setDisabled(false)
-        ]
+        components: components
       }]
     });
   });
@@ -107,7 +111,8 @@ export const embed = (
   data: Prisma.QuestionGetPayload<{include: { user: false } }>,
   answerTime: number
 ): EmbedBuilder => {
-  return simpleEmbed(translate(command.locale, request.config.exec.question, {
+  let description = "";
+  description += translate(command.locale, request.config.exec.question, {
     date: data.createdAt,
     date2: data.repliedAt,
     time: answerTime,
@@ -118,7 +123,14 @@ export const embed = (
     favoriteLine: data.isFavorite ? translate(command.locale, request.config.exec.favoriteLine, {
       date: data.favoriteAt
     }) : ""
-  }), "info", "", {
+  });
+
+  if (data.webUrls.length > 0) {
+    description += "\n\n";
+    for (const link of data.webUrls) description += translate(command.locale, request.config.exec.links, { title: link.split("/")[2], url: link });
+  }
+
+  return simpleEmbed(description, "info", "", {
     text: command.user.username,
     icon_url: command.user.avatarURL() ?? undefined,
     timestamp: true

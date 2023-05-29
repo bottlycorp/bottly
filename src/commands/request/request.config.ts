@@ -30,8 +30,18 @@ export const request = {
       "es-ES": "Obtener una pregunta hecha anteriormente",
       de: "Erhalten Sie eine zuvor gestellte Frage"
     },
+    buttons: {
+      knowMore: {
+        "en-US": "Know more",
+        fr: "En savoir plus",
+        "pt-BR": "Saber mais",
+        ru: "Узнать больше",
+        uk: "Дізнатися більше",
+        "es-ES": "Saber más",
+        de: "Mehr wissen"
+      }
+    },
     exec: {
-      buttons: {},
       auto: {
         "en-US": "At {date}",
         fr: "Le {date}",
@@ -102,6 +112,9 @@ export const request = {
         uk: "\n\n`⭐` Це питання було позначено як вибране <t:{date}:F>",
         "es-ES": "\n\n`⭐` Esta pregunta ha sido marcada como favorita el <t:{date}:F>",
         de: "\n\n`⭐` Diese Frage wurde am <t:{date}:F> als Favorit markiert"
+      },
+      links: {
+        "en-US": "`➡️` [{title}]({url})\n"
       }
     }
   }
