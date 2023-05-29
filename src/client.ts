@@ -41,7 +41,7 @@ export const colors = new BColors({
 
 export const openai = new OpenAIApi(new Configuration({
   apiKey: getStringEnv("OPENAI_API_KEY"),
-  organization: getStringEnv("OPENAI_ORGANIZATION_ID")
+  organization: getStringEnv("OPENAI_ORGANIZATION_ID") ?? ""
 }));
 
 export const web = new DataBeyond({
