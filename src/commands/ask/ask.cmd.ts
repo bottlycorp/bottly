@@ -87,7 +87,6 @@ export const execute: CommandExecute = async(command, user) => {
     }
 
     answer = response.data.choices[0].message?.content;
-
     answeredAt = DayJS().unix();
   };
 
@@ -112,7 +111,6 @@ export const execute: CommandExecute = async(command, user) => {
 
     question = created;
   };
-
 
   if (!web) {
     messages.push({

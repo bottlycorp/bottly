@@ -232,6 +232,7 @@ export const ask = {
         uk: "Ви досягли максимальної кількості регенерацій відповіді (`{max}`)",
         "es-ES": "Has alcanzado el número máximo de regeneraciones de la respuesta (`{max}`)",
         de: "Sie haben die maximale Anzahl von Regenerationen der Antwort (`{max}`) erreicht"
+      },
       waintingWeb: {
         "en-US": "{emojiTypingWumpus} I'm searching on the web for your question...",
         fr: "{emojiTypingWumpus} Je suis entrain de chercher sur le web pour votre question...",
