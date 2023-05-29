@@ -46,6 +46,26 @@ export const qrCodeButton = () : ButtonBuilder => {
   });
 };
 
+export const regenerateButton = () : ButtonBuilder => {
+  return simpleButton(
+    undefined,
+    ButtonStyle.Secondary,
+    "regenerate",
+    false,
+    { name: "✨" }
+  );
+};
+
+export const regenerationButton = (command: CommandInteraction | Interaction) : ButtonBuilder => {
+  return simpleButton(
+    translate(command.locale, global.config.buttons.regeneration),
+    ButtonStyle.Secondary,
+    "regeneration",
+    true,
+    { name: "typing", id: "1087703097498931290", animated: true }
+  );
+};
+
 export const premiumButton = (command: CommandInteraction | Interaction) : ButtonBuilder => {
   return simpleButton(
     translate(command.locale, global.config.buttons.premium),
@@ -86,7 +106,17 @@ export const acceptPrivacy = (command: CommandInteraction | Interaction) : Butto
   );
 };
 
-export const buttonsBuilder = (webUrl: string | null, command: CommandInteraction | Interaction, ...buttons: ButtonBuilder[]): ButtonBuilder[] => {
+export type Row = {
+  type: number;
+  components: ButtonBuilder[];
+};
+
+export const buttonsBuilder = (
+  webUrl: string | null,
+  command: CommandInteraction | Interaction,
+  disableAll = false,
+  ...buttons: ButtonBuilder[]
+): Row[] => {
   const list: ButtonBuilder[] = [];
 
   if (webUrl !== null) {
@@ -95,12 +125,16 @@ export const buttonsBuilder = (webUrl: string | null, command: CommandInteractio
       ButtonStyle.Link,
       webUrl
     );
-    list.push(knowMoreButton);
+    list.push(disableAll ? knowMoreButton.setDisabled(true) : knowMoreButton);
   }
 
   for (const button of buttons) {
-    list.push(button);
+    list.push(disableAll ? button.setDisabled(true) : button);
   }
 
-  return list;
+  const rows: Row[] = [];
+  while (list.length > 0) {
+    rows.push({ type: 1, components: list.splice(0, Math.min(5, list.length)) });
+  }
+  return rows;
 };
