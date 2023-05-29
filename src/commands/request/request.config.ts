@@ -113,6 +113,15 @@ export const request = {
         "es-ES": "\n\n`⭐` Esta pregunta ha sido marcada como favorita el <t:{date}:F>",
         de: "\n\n`⭐` Diese Frage wurde am <t:{date}:F> als Favorit markiert"
       },
+      linksTitle: {
+        "en-US": "{emojiBeta} Answer generated based on these links:",
+        fr: "{emojiBeta} Réponse générée à partir de ces liens :",
+        "pt-BR": "{emojiBeta} Resposta gerada com base nestes links:",
+        ru: "{emojiBeta} Ответ, сгенерированный на основе этих ссылок:",
+        uk: "{emojiBeta} Відповідь, згенерована на основі цих посилань:",
+        "es-ES": "{emojiBeta} Respuesta generada en base a estos enlaces:",
+        de: "{emojiBeta} Antwort, die auf diesen Links basiert, generiert:"
+      },
       links: {
         "en-US": "`➡️` [{title}]({url})\n"
       }

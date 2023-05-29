@@ -52,7 +52,7 @@ export const execute: CommandExecute = async(command, user) => {
   const message = await command.editReply({ embeds: embeds });
   setAskCooldown(command.user.id, user.isPremium ? 2500 : 5000);
 
-  let repliedAt: number = DayJS().unix();
+  let answeredAt = 0;
   let answer = "";
   let url: string | undefined = undefined;
   let urls: string[] | null = null;
@@ -87,6 +87,7 @@ export const execute: CommandExecute = async(command, user) => {
     }
 
     answer = response.data.choices[0].message?.content;
+    answeredAt = DayJS().unix();
   };
 
   const handleQuestionCreation = async(): Promise<void> => {
@@ -97,7 +98,7 @@ export const execute: CommandExecute = async(command, user) => {
         guildName: channel.guild.name,
         question: command.options.getString("prompt", true),
         createdAt: askedAt,
-        repliedAt: repliedAt,
+        repliedAt: answeredAt,
         webUrls: urls ?? [],
         user: { connect: { userId: user.userId } }
       }
@@ -131,11 +132,11 @@ export const execute: CommandExecute = async(command, user) => {
       answer = dataWebSearch.content;
       url = dataWebSearch.url ?? undefined;
       urls = dataWebSearch.urls ?? null;
+      answeredAt = DayJS().unix();
     } else {
       await handleChatCompletion();
     }
 
-    repliedAt = DayJS().unix();
     await handleQuestionCreation();
 
     command.editReply({
@@ -285,6 +286,8 @@ export const answerEmbed = (command: CommandInteraction, answer: string, links: 
 
   if (links) {
     description += "\n\n";
+    description += translate(command.locale, ask.config.exec.linksTitle);
+    description += "\n";
     for (const link of links) description += translate(command.locale, ask.config.exec.links, { title: link.split("/")[2], url: link });
   }
 

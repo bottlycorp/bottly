@@ -127,6 +127,8 @@ export const embed = (
 
   if (data.webUrls.length > 0) {
     description += "\n\n";
+    description += translate(command.locale, request.config.exec.linksTitle);
+    description += "\n";
     for (const link of data.webUrls) description += translate(command.locale, request.config.exec.links, { title: link.split("/")[2], url: link });
   }
 

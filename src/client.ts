@@ -46,6 +46,7 @@ export const openai = new OpenAIApi(new Configuration({
 
 export const web = new DataBeyond({
   GOOGLE_SEARCH_API_KEY: getStringEnv("GOOGLE_SEARCH_API_KEY"),
+  MULTIPLE_SEARCH_API_KEYS: getStringEnv("MULTIPLE_SEARCH_API_KEYS").split(","),
   GOOGLE_SEARCH_ENGINE_ID: getStringEnv("GOOGLE_SEARCH_ENGINE_ID"),
   OPENAI_API_KEY: getStringEnv("OPENAI_API_KEY"),
   OPENAI_ORGANIZATION_ID: getStringEnv("OPENAI_ORGANIZATION_ID") ?? ""
