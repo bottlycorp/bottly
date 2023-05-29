@@ -45,15 +45,17 @@ export const execute: CommandExecute = async(command, user) => {
     return;
   }
 
-  const message = await command.editReply({ embeds: [simpleEmbed(translate(command.locale, web
-    ? ask.config.exec.waintingWeb
-    : ask.config.exec.waiting),
-  "info")] });
+  const embeds = [];
+  embeds.push(simpleEmbed(translate(command.locale, web ? ask.config.exec.waintingWeb : ask.config.exec.waiting), "info"));
+  if (context && web) embeds.push(simpleEmbed(translate(command.locale, ask.config.exec.warningWebContext), "error"));
+
+  const message = await command.editReply({ embeds: embeds });
   setAskCooldown(command.user.id, user.isPremium ? 2500 : 5000);
 
   let repliedAt: number = DayJS().unix();
   let answer = "";
   let url: string | undefined = undefined;
+  let urls: string[] | null = null;
   let publicUrl = "ThisIsABlankUrlBecauseItIsNotYetGenerated";
   let question: QuestionIncludeAll;
   let favorited = false;
@@ -111,22 +113,25 @@ export const execute: CommandExecute = async(command, user) => {
   };
 
   if (!web) {
-    messages.push({ role: "system", content: translate(command.locale, getPrompt("default"), { lang: getLocale(command.locale) }) });
+    messages.push({
+      role: "system",
+      content: translate(command.locale, getPrompt("default"), { lang: getLocale(command.locale) })
+    });
 
     const context = command.options.getString("context", false);
-    if (context) {
-      await handlePromptInContext();
-    }
+
+    if (context) await handlePromptInContext();
 
     messages.push({ content: command.options.getString("prompt", true), role: "user" });
   }
 
   try {
     if (web) {
-      const dataWebSearch = await websearch.search(command.options.getString("prompt", true));
+      const dataWebSearch = await websearch.search(command.options.getString("prompt", true), 5, "active");
+
       answer = dataWebSearch.content;
       url = dataWebSearch.url ?? undefined;
-
+      urls = dataWebSearch.urls ?? null;
     } else {
       await handleChatCompletion();
     }
@@ -135,7 +140,7 @@ export const execute: CommandExecute = async(command, user) => {
     await handleQuestionCreation();
 
     command.editReply({
-      embeds: [answerEmbed(command, answer)],
+      embeds: [answerEmbed(command, answer, urls)],
       components: [{
         type: 1,
         components: buttonsBuilder(
@@ -230,11 +235,11 @@ export const execute: CommandExecute = async(command, user) => {
         try {
           if (web && url) {
             channel.send({
-              embeds: [answerPublicEmbed(command, answer, command.options.getString("prompt", true))],
+              embeds: [answerPublicEmbed(command, answer, command.options.getString("prompt", true), urls)],
               components: [{ type: 1, components: [simpleButton(translate(command.locale, ask.config.buttons.knowMore), ButtonStyle.Link, url)] }]
             });
           } else {
-            channel.send({ embeds: [answerPublicEmbed(command, answer, command.options.getString("prompt", true))] });
+            channel.send({ embeds: [answerPublicEmbed(command, answer, command.options.getString("prompt", true), urls)] });
           }
 
           command.editReply({ embeds: [simpleEmbed(translate(command.locale, ask.config.buttons.revealed), "info", "")], components: [] });
@@ -255,7 +260,7 @@ export const execute: CommandExecute = async(command, user) => {
         break;
       case "return":
         command.editReply({
-          embeds: [answerEmbed(command, answer)],
+          embeds: [answerEmbed(command, answer, urls)],
           components: [{
             type: 1,
             components: buttonsBuilder(
@@ -275,18 +280,41 @@ export const execute: CommandExecute = async(command, user) => {
   message.createMessageComponentCollector({ filter: (i) => i.user.id === command.user.id }).on("collect", handleButtonCollect);
 };
 
-export const answerEmbed = (command: CommandInteraction, answer: string): EmbedBuilder => {
+export const answerEmbed = (command: CommandInteraction, answer: string, links: string[] | null = null): EmbedBuilder => {
+  let description = "";
+  description += translate(command.locale, ask.config.exec.success, { response: answer });
+
+  if (links) {
+    description += "\n\n";
+    for (const link of links) {
+      description += translate(command.locale, ask.config.exec.links, { title: link.split("/")[2], url: link });
+    }
+  }
+
   return simpleEmbed(
-    translate(command.locale, ask.config.exec.success, { response: answer }),
+    description,
     "info",
     "",
     { text: command.user.username, icon_url: command.user.displayAvatarURL(), timestamp: true }
   );
 };
 
-export const answerPublicEmbed = (command: CommandInteraction, answer: string, prompt: string): EmbedBuilder => {
+export const answerPublicEmbed = (command: CommandInteraction, answer: string, prompt: string, links: string[] | null = null): EmbedBuilder => {
+  let description = "";
+  description += translate(command.locale, ask.config.exec.success, {
+    question: limitString(prompt, 100),
+    response: answer
+  });
+
+  if (links) {
+    description += "\n\n";
+    for (const link of links) {
+      description += translate(command.locale, ask.config.exec.links, { title: link.split("/")[2], url: link });
+    }
+  }
+
   return simpleEmbed(
-    translate(command.locale, global.config.exec.revealed_text, { response: answer, question: limitString(prompt, 100) }),
+    description,
     "info",
     undefined,
     { text: command.user.username, icon_url: command.user.displayAvatarURL(), timestamp: true }

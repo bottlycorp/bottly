@@ -115,6 +115,9 @@ export const ask = {
       success: {
         "en-US": "{response}"
       },
+      links: {
+        "en-US": "`➡️` [{title}]({url})\n"
+      },
       error: {
         "en-US": "An error occurred while executing the command: **{error}**",
         fr: "Une erreur est survenue lors de l'exécution de la commande: **{error}**",
