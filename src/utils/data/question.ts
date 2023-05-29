@@ -10,7 +10,6 @@ export type QuestionIncludeAll = Prisma.QuestionGetPayload<{
 
 export const newQuestion = async(user: User, question: Prisma.QuestionCreateArgs): Promise<false | QuestionIncludeAll> => {
   const data = await prisma.question.create(question);
-
   if (data == null) return false;
 
   colors.info(`New question created for user ${userWithId(user)}, question: ${question.data.question}`);

@@ -1,51 +1,68 @@
-import { colors, openai } from "$core/client";
+import { colors, openai, web as websearch } from "$core/client";
 import { translate } from "$core/utils/config/message/message.util";
 import { CommandExecute } from "$core/utils/handler/command";
-import { ButtonStyle, CommandInteraction, TextChannel, ThreadChannel } from "discord.js";
+import { ButtonInteraction, ButtonStyle, CommandInteraction, MessageComponentInteraction, TextChannel, ThreadChannel } from "discord.js";
 import { ask } from "./ask.config";
 import { global } from "$core/utils/config/message/command";
 import { limitString, userWithId } from "$core/utils/function";
-import { getQuestion, newQuestion } from "$core/utils/data/question";
+import { QuestionIncludeAll, getQuestion, newQuestion } from "$core/utils/data/question";
 import { getPrompt } from "@bottlycorp/prompts";
 import { simpleButton, simpleEmbed } from "$core/utils/embed";
-import { favoriteButton, premiumButton, qrCodeButton, regenerateButton, regenerationButton, revealButton,
-  usageButton } from "$core/utils/config/buttons";
+import { buttonsBuilder, favoriteButton, qrCodeButton, revealButton, usageButton } from "$core/utils/config/buttons";
 import { updateUser } from "$core/utils/data/user";
 import { DayJS } from "$core/utils/day-js";
-import QRCode from "qrcode";
 import { supabase } from "$core/utils/supabase";
 import { getLocale } from "$core/utils/locale";
 import { decode } from "base64-arraybuffer";
 import { EmbedBuilder } from "@discordjs/builders";
 import { existAskCooldown, setAskCooldown } from "$core/utils/cache";
+import QRCode from "qrcode";
 
 export const execute: CommandExecute = async(command, user) => {
+  const web = command.options.getBoolean("web", false) ?? false;
+  const context = command.options.getString("context", false) ?? "";
+
   const channel = command.channel;
   const askedAt = DayJS().unix();
-  if (!(channel instanceof ThreadChannel) && !(channel instanceof TextChannel)) {
+
+  const handleNotInTextChannel = (): void => {
     command.editReply(translate(command.locale, global.config.exec.notInATextChannel));
     colors.error(userWithId(command.user) + " tried to ask a question while not being in a text channel (thread or text channel)");
+  };
+
+  if (!(channel instanceof ThreadChannel) && !(channel instanceof TextChannel)) {
+    handleNotInTextChannel();
     return;
   }
 
+  const handleCooldown = (): void => {
+    command.editReply({ embeds: [simpleEmbed(translate(command.locale, ask.config.exec.cooldown, { s: user.isPremium ? 5 : 10 }), "error")] });
+    colors.error(userWithId(command.user) + " tried to ask a question but is in cooldown");
+  };
 
   if (existAskCooldown(command.user.id)) {
-    command.editReply(translate(command.locale, ask.config.exec.cooldown, { s: user.isPremium ? 5 : 10 }));
+    handleCooldown();
     return;
   }
 
-  const message = await command.editReply({ embeds: [simpleEmbed(translate(command.locale, ask.config.exec.waiting), "info")] });
+  const embeds = [];
+  embeds.push(simpleEmbed(translate(command.locale, web ? ask.config.exec.waintingWeb : ask.config.exec.waiting), "info"));
+  if (context && web) embeds.push(simpleEmbed(translate(command.locale, ask.config.exec.warningWebContext), "error"));
+
+  const message = await command.editReply({ embeds: embeds });
   setAskCooldown(command.user.id, user.isPremium ? 2500 : 5000);
 
-  let answer: string;
+  let answeredAt = 0;
+  let answer = "";
+  let url: string | undefined = undefined;
+  let urls: string[] | null = null;
+  let publicUrl = "ThisIsABlankUrlBecauseItIsNotYetGenerated";
+  let question: QuestionIncludeAll;
+  let favorited = false;
+
   const messages: { content: string; role: "user" | "system" | "assistant" }[] = [];
 
-  messages.push({ role: "system", content: translate(command.locale, getPrompt("default"), {
-    lang: getLocale(command.locale)
-  }) });
-
-  const context = command.options.getString("context", false);
-  if (context) {
+  const handlePromptInContext = async(): Promise<void> => {
     const question = await getQuestion(context, command.user.id);
     if (!question) {
       command.editReply(translate(command.locale, ask.config.exec.error, { error: "Question provided in context does not exist" }));
@@ -54,12 +71,9 @@ export const execute: CommandExecute = async(command, user) => {
 
     messages.push({ content: question.question, role: "user" });
     messages.push({ content: question.answer, role: "assistant" });
-  }
+  };
 
-  messages.push({ content: command.options.getString("prompt", true), role: "user" });
-
-  let repliedAt: number = DayJS().unix();
-  try {
+  const handleChatCompletion = async(): Promise<void> => {
     const response = await openai.createChatCompletion({
       messages,
       max_tokens: user.isPremium ? 3750 : 2500,
@@ -73,229 +87,235 @@ export const execute: CommandExecute = async(command, user) => {
     }
 
     answer = response.data.choices[0].message?.content;
-    repliedAt = DayJS().unix();
-  } catch (error: any) {
-    command.editReply(translate(command.locale, ask.config.exec.error, { error: error.message }));
-    colors.error(userWithId(command.user) + " tried to ask a question but an error occured: " + error.message);
-    return;
-  }
 
-  command.editReply({
-    embeds: [answerEmbed(command, answer)],
-    components: [{
-      type: 1,
-      components: [revealButton(command), usageButton(command, user), favoriteButton(), regenerateButton(), qrCodeButton()]
-    }]
-  });
+    answeredAt = DayJS().unix();
+  };
 
-  const question = await newQuestion(command.user, {
-    data: {
-      answer: answer,
-      channelName: channel.name,
-      guildName: channel.guild.name,
-      question: command.options.getString("prompt", true),
-      createdAt: askedAt,
-      repliedAt: repliedAt,
-      user: { connect: { userId: user.userId } }
+  const handleQuestionCreation = async(): Promise<void> => {
+    const created = await newQuestion(command.user, {
+      data: {
+        answer: answer,
+        channelName: channel.name,
+        guildName: channel.guild.name,
+        question: command.options.getString("prompt", true),
+        createdAt: askedAt,
+        repliedAt: answeredAt,
+        webUrls: urls ?? [],
+        user: { connect: { userId: user.userId } }
+      }
+    });
+
+    if (!created) {
+      command.editReply(translate(command.locale, ask.config.exec.error, { error: "Question could not be created" }));
+      return;
     }
-  }).catch((error) => {
-    command.editReply(translate(command.locale, ask.config.exec.error, { error: error.message }));
-    colors.error(userWithId(command.user) + " tried to ask a question but an error occured: " + error.message);
-    return;
-  });
 
-  updateUser(user.userId, { usages: { update: { usage: { decrement: 1 } } } });
+    question = created;
+  };
 
-  let favorited = false;
-  let regenerated = 0;
-  let publicUrl = "ThisIsABlankUrlBecauseItIsNotYetGenerated";
 
-  setTimeout(() => {
-    command.editReply({ components: [{ type: 1, components: [
-      revealButton(command).setDisabled(true),
-      usageButton(command, user),
-      favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary).setDisabled(true),
-      regenerateButton().setDisabled(true),
-      qrCodeButton().setDisabled(true)
-    ] }] });
-  }, 60000);
+  if (!web) {
+    messages.push({
+      role: "system",
+      content: translate(command.locale, getPrompt("default"), { lang: getLocale(command.locale) })
+    });
 
-  if (!question) {
-    command.editReply(translate(command.locale, global.config.exec.error, { error: "Question does not exist" }));
-    return;
+    const context = command.options.getString("context", false);
+
+    if (context) await handlePromptInContext();
+
+    messages.push({ content: command.options.getString("prompt", true), role: "user" });
   }
 
-  (await message).createMessageComponentCollector({ filter: (i) => i.user.id === command.user.id }).on("collect", async(i) => {
-    i.deferUpdate();
-    if (i.customId === "reveal") {
-      try {
-        channel.send({ embeds: [answerPublicEmbed(command, answer, command.options.getString("prompt", true))] });
-        command.editReply({ embeds: [simpleEmbed(translate(command.locale, ask.config.buttons.revealed), "info", "")], components: [] });
-      } catch (error) {
-        colors.error(userWithId(command.user) + " tried to reveal the answer but an error occured: " + error);
-        command.editReply(translate(command.locale, global.config.exec.error, {
-          error: "An error occured while revealing the answer, possibility is a permission error check permissions"
-        }));
-      }
-    } else if (i.customId === "favorite") {
-      command.editReply({ components: [{ type: 1, components: [
-        revealButton(command),
-        usageButton(command, user),
-        favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary).setDisabled(true),
-        regenerateButton(),
-        qrCodeButton()
-      ] }] });
+  try {
+    if (web) {
+      // Having more than 5 links is useless, it confuses the AI.
+      const dataWebSearch = await websearch.search(command.options.getString("prompt", true), 5, "active");
 
-      favorited = !favorited;
-      await updateUser(user.userId, {
-        questions: { update: { data: { isFavorite: favorited, favoriteAt: DayJS().unix() }, where: { id: question.id } } }
-      });
+      answer = dataWebSearch.content;
+      url = dataWebSearch.url ?? undefined;
+      urls = dataWebSearch.urls ?? null;
+      answeredAt = DayJS().unix();
+    } else {
+      await handleChatCompletion();
+    }
 
-      command.editReply({ components: [{ type: 1, components: [
-        revealButton(command),
-        usageButton(command, user),
-        favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary).setDisabled(false),
-        regenerateButton(),
-        qrCodeButton()
-      ] }] });
-    } else if (i.customId === "qrcode") {
-      if (publicUrl == "ThisIsABlankUrlBecauseItIsNotYetGenerated") {
-        const { error } = await supabase.storage
-          .from("qrcodes")
-          .upload(`${command.user.id}/${i.message.id}.png`, decode((await QRCode.toBuffer(
-            translate(command.locale, ask.config.exec.qrCode, {
-              question: limitString(command.options.getString("prompt", true), 256),
-              lang: getLocale(command.locale),
-              response: answer
-            })
-          )).toString("base64")), {
-            contentType: "image/png"
-          });
+    await handleQuestionCreation();
 
-        if (error) {
-          command.editReply(translate(command.locale, ask.config.exec.error, { error: error.message }));
-          return;
-        }
-
-        publicUrl = await supabase.storage.from("qrcodes").getPublicUrl(`${command.user.id}/${i.message.id}.png`).data.publicUrl;
-        updateUser(user.userId, { questions: { update: { data: { qrCodeUrl: publicUrl }, where: { id: question.id } } } });
-      }
-
-      if (!publicUrl) {
-        command.editReply(translate(command.locale, ask.config.exec.error, { error: "No public URL" }));
-        colors.error(userWithId(command.user) + " tried to get a QR code but no public URL was returned");
-        return;
-      }
-
-      command.editReply({
-        embeds: [
-          simpleEmbed(
-            translate(command.locale, ask.config.exec.qrCodeDesc),
-            "info",
-            undefined,
-            { text: command.user.username, icon_url: command.user.displayAvatarURL(), timestamp: true },
-            "",
-            publicUrl
-          )
-        ],
-        components: [{ type: 1, components: [simpleButton(undefined, ButtonStyle.Primary, "return", false, { name: "🔙" })] }]
-      });
-    } else if (i.customId === "return") {
-      command.editReply({
-        embeds: [answerEmbed(command, answer)],
-        components: [{ type: 1, components: [
+    command.editReply({
+      embeds: [answerEmbed(command, answer, urls)],
+      components: [{
+        type: 1,
+        components: buttonsBuilder(
+          url ?? null,
+          command,
           revealButton(command),
           usageButton(command, user),
           favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
-          regenerateButton(),
           qrCodeButton()
-        ] }]
-      });
-    } else if (i.customId === "regenerate") {
-      if (!user.isPremium && (user.usages?.usage && user.usages?.usage <= 0)) {
-        const embed = simpleEmbed(translate(i.locale, global.config.exec.noMoreUsages, { unix: DayJS().endOf("day").unix() }), "error");
-        const premiumEmbed = simpleEmbed(translate(i.locale, global.config.exec.orGetPremium), "premium");
+        )
+      }]
+    });
+  } catch (error: any) {
+    command.editReply(translate(command.locale, ask.config.exec.error, { error: error.message }));
+    return;
+  }
 
-        const embeds: EmbedBuilder[] = [embed];
-        const components = [{ type: 1, components: [premiumButton(i)] }];
-        if (!user.isPremium) embeds.push(premiumEmbed);
+  const handleFavoriteButtonToggle = async(): Promise<void> => {
+    command.editReply({ components: [{ type: 1, components: buttonsBuilder(
+      url ?? null,
+      command,
+      revealButton(command),
+      usageButton(command, user),
+      favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary).setDisabled(true),
+      qrCodeButton()
+    ) }] });
 
-        i.editReply({ embeds });
-        if (!user.isPremium) i.editReply({ components });
+    favorited = !favorited;
+    await updateUser(user.userId, { questions: { update: { data: {
+      isFavorite: favorited, favoriteAt: DayJS().unix()
+    }, where: { id: question.id } } } });
 
-        colors.error(`${userWithId(i.user)} tried to regenerate a question but has no usages left`);
+    command.editReply({ components: [{ type: 1, components: buttonsBuilder(
+      url ?? null,
+      command,
+      revealButton(command),
+      usageButton(command, user),
+      favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
+      qrCodeButton()
+    ) }] });
+  };
+
+  const handleQRCodeButtonClick = async(i: MessageComponentInteraction): Promise<void> => {
+    if (publicUrl == "ThisIsABlankUrlBecauseItIsNotYetGenerated") {
+      const { error } = await supabase.storage.from("qrcodes").upload(
+        `${command.user.id}/${i.message.id}.png`,
+        decode((await QRCode.toBuffer(
+          translate(command.locale, ask.config.exec.qrCode, {
+            question: limitString(command.options.getString("prompt", true), 256),
+            lang: getLocale(command.locale),
+            response: answer
+          })
+        )).toString("base64")),
+        { contentType: "image/png" }
+      );
+
+      if (error) {
+        command.editReply(translate(command.locale, ask.config.exec.error, { error: error.message }));
         return;
       }
 
-      if (regenerated >= 5 && !user.isPremium) {
-        command.editReply(translate(command.locale, ask.config.exec.regenerated_max, { max: 5, maxPremium: 10 }));
-        return;
-      }
-
-      if (regenerated >= 10 && user.isPremium) {
-        command.editReply(translate(command.locale, ask.config.exec.regenerated_max_premium, { max: 10 }));
-        return;
-      }
-
-      command.editReply({ embeds: [simpleEmbed(translate(command.locale, ask.config.exec.regenerate), "info", "")], components: [
-        { type: 1, components: [regenerationButton(i)] }
-      ] });
-
-      regenerated++;
-
-      const regeneratedText = await openai.createChatCompletion({
-        messages: [
-          ...messages,
-          { role: "user", content: command.options.getString("prompt", true) }
-        ],
-        max_tokens: user.isPremium ? 3750 : 2500,
-        model: "gpt-3.5-turbo",
-        user: user.userId
-      }).catch((e) => {
-        command.editReply(translate(command.locale, ask.config.exec.error, { error: e.message }));
-        colors.error(`${userWithId(command.user)} tried to regenerate a question but got an error: ${e.message}`);
-        return;
-      });
-
-      if (!regeneratedText) return;
-
-      if (!regeneratedText.data.choices[0].message) {
-        command.editReply(translate(command.locale, ask.config.exec.error, { error: "No message in response" }));
-        return;
-      }
-
-      answer = regeneratedText.data.choices[0].message?.content;
-      command.editReply({ embeds: [answerEmbed(command, answer)] });
-
-      setTimeout(async() => {
-        command.editReply({ components: [{ type: 1, components: [
-          revealButton(command),
-          usageButton(
-            command,
-            user.isPremium ? user : await updateUser(user.userId, { usages: { update: { usage: { decrement: 1 } } } }),
-            user.isPremium ? true : false
-          ),
-          favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
-          regenerateButton(),
-          qrCodeButton()
-        ] }] });
-      }, 1000);
+      publicUrl = await supabase.storage.from("qrcodes").getPublicUrl(`${command.user.id}/${i.message.id}.png`).data.publicUrl;
+      updateUser(user.userId, { questions: { update: { data: { qrCodeUrl: publicUrl }, where: { id: question.id } } } });
     }
-  });
+
+    if (!publicUrl) {
+      command.editReply(translate(command.locale, ask.config.exec.error, { error: "No public URL" }));
+      colors.error(userWithId(command.user) + " tried to get a QR code but no public URL was returned");
+      return;
+    }
+
+    command.editReply({
+      embeds: [
+        simpleEmbed(
+          translate(command.locale, ask.config.exec.qrCodeDesc),
+          "info",
+          undefined,
+          { text: command.user.username, icon_url: command.user.displayAvatarURL(), timestamp: true },
+          "",
+          publicUrl
+        )
+      ],
+      components: [{ type: 1, components: [simpleButton(undefined, ButtonStyle.Primary, "return", false, { name: "🔙" })] }]
+    });
+  };
+
+  const handleButtonCollect = async(interaction: ButtonInteraction): Promise<void> => {
+    interaction.deferUpdate();
+
+    switch (interaction.customId) {
+      case "reveal":
+        try {
+          if (web && url) {
+            channel.send({
+              embeds: [answerPublicEmbed(command, answer, command.options.getString("prompt", true), urls)],
+              components: [{ type: 1, components: [simpleButton(translate(command.locale, ask.config.buttons.knowMore), ButtonStyle.Link, url)] }]
+            });
+          } else {
+            channel.send({ embeds: [answerPublicEmbed(command, answer, command.options.getString("prompt", true), urls)] });
+          }
+
+          command.editReply({ embeds: [simpleEmbed(translate(command.locale, ask.config.buttons.revealed), "info", "")], components: [] });
+        } catch (error) {
+          colors.error(userWithId(command.user) + " tried to reveal the answer but an error occurred: " + error);
+          command.editReply(
+            translate(command.locale, global.config.exec.error, {
+              error: "An error occurred while revealing the answer, possibility is a permission error check permissions"
+            })
+          );
+        }
+        break;
+      case "favorite":
+        await handleFavoriteButtonToggle();
+        break;
+      case "qrcode":
+        await handleQRCodeButtonClick(interaction);
+        break;
+      case "return":
+        command.editReply({
+          embeds: [answerEmbed(command, answer, urls)],
+          components: [{
+            type: 1,
+            components: buttonsBuilder(
+              url ?? null,
+              command,
+              revealButton(command),
+              usageButton(command, user),
+              favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
+              qrCodeButton()
+            )
+          }]
+        });
+        break;
+    }
+  };
+
+  message.createMessageComponentCollector({ filter: (i) => i.user.id === command.user.id }).on("collect", handleButtonCollect);
 };
 
-export const answerEmbed = (command: CommandInteraction, answer: string): EmbedBuilder => {
+export const answerEmbed = (command: CommandInteraction, answer: string, links: string[] | null = null): EmbedBuilder => {
+  let description = "";
+  description += translate(command.locale, ask.config.exec.success, { response: answer });
+
+  if (links) {
+    description += "\n\n";
+    description += translate(command.locale, ask.config.exec.linksTitle);
+    description += "\n";
+    for (const link of links) description += translate(command.locale, ask.config.exec.links, { title: link.split("/")[2], url: link });
+  }
+
   return simpleEmbed(
-    translate(command.locale, ask.config.exec.success, { response: answer }),
+    description,
     "info",
     "",
     { text: command.user.username, icon_url: command.user.displayAvatarURL(), timestamp: true }
   );
 };
 
-export const answerPublicEmbed = (command: CommandInteraction, answer: string, prompt: string): EmbedBuilder => {
+export const answerPublicEmbed = (command: CommandInteraction, answer: string, prompt: string, links: string[] | null = null): EmbedBuilder => {
+  let description = "";
+  description += `❔ ${limitString(prompt, 100)}\n\n`;
+  description += translate(command.locale, ask.config.exec.success, { response: answer });
+
+  if (links) {
+    description += "\n\n";
+    for (const link of links) {
+      description += translate(command.locale, ask.config.exec.links, { title: link.split("/")[2], url: link });
+    }
+  }
+
   return simpleEmbed(
-    translate(command.locale, global.config.exec.revealed_text, { response: answer, question: limitString(prompt, 100) }),
+    description,
     "info",
     undefined,
     { text: command.user.username, icon_url: command.user.displayAvatarURL(), timestamp: true }
