@@ -1,7 +1,7 @@
 import { ask } from "./ask.config";
 import { EnableInDev } from "$core/utils/handler";
 import { SlashCommandDefition } from "$core/utils/handler/command";
-import { SlashCommandBuilder, SlashCommandStringOption } from "discord.js";
+import { SlashCommandBooleanOption, SlashCommandBuilder, SlashCommandStringOption } from "discord.js";
 
 export const enableInDev: EnableInDev = true;
 
@@ -26,4 +26,9 @@ export const slashCommand: SlashCommandDefition = new SlashCommandBuilder()
     .setDescription(ask.config.options.lang.description["en-US"])
     .setDescriptionLocalizations(ask.config.options.lang.description)
     .setRequired(false)
-    .setAutocomplete(true));
+    .setAutocomplete(true))
+  .addBooleanOption(new SlashCommandBooleanOption()
+    .setName("web")
+    .setDescription(ask.config.options.web.description["en-US"])
+    .setDescriptionLocalizations(ask.config.options.web.description)
+    .setRequired(false));

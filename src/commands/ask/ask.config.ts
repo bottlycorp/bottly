@@ -57,6 +57,20 @@ export const ask = {
           "es-ES": "Idioma en el que el bot responderá",
           de: "Die Sprache, in der der Bot antworten wird"
         }
+      },
+      web: {
+        name: {
+          "en-US": "web"
+        },
+        description: {
+          "en-US": "Use the web to answer the question",
+          fr: "Utiliser le web pour répondre à la question",
+          "pt-BR": "Use a web para responder a pergunta",
+          ru: "Используйте веб для ответа на вопрос",
+          uk: "Використовуйте веб для відповіді на питання",
+          "es-ES": "Usar la web para responder a la pregunta",
+          de: "Verwenden Sie das Web, um die Frage zu beantworten"
+        }
       }
     },
     description: {
@@ -86,11 +100,32 @@ export const ask = {
         uk: ":smile: Питання було розкрито громадськості",
         "es-ES": ":smile: La pregunta ha sido revelada al público",
         de: ":smile: Die Frage wurde der Öffentlichkeit offenbart"
+      },
+      knowMore: {
+        "en-US": "Know more",
+        fr: "En savoir plus",
+        "pt-BR": "Saber mais",
+        ru: "Узнать больше",
+        uk: "Дізнатися більше",
+        "es-ES": "Saber más",
+        de: "Mehr wissen"
       }
     },
     exec: {
       success: {
         "en-US": "{response}"
+      },
+      linksTitle: {
+        "en-US": "{emojiBeta} Answer generated based on these links:",
+        fr: "{emojiBeta} Réponse générée à partir de ces liens :",
+        "pt-BR": "{emojiBeta} Resposta gerada com base nestes links:",
+        ru: "{emojiBeta} Ответ, сгенерированный на основе этих ссылок:",
+        uk: "{emojiBeta} Відповідь, згенерована на основі цих посилань:",
+        "es-ES": "{emojiBeta} Respuesta generada en base a estos enlaces:",
+        de: "{emojiBeta} Antwort, die auf diesen Links basiert, generiert:"
+      },
+      links: {
+        "en-US": "`➡️` [{title}]({url})\n"
       },
       error: {
         "en-US": "An error occurred while executing the command: **{error}**",
@@ -164,6 +199,24 @@ export const ask = {
         uk: "{emojiTypingWumpus} Я думаю над вашим запитанням...",
         "es-ES": "{emojiTypingWumpus} Estoy pensando en tu pregunta...",
         de: "{emojiTypingWumpus} Ich denke über deine Frage nach..."
+      },
+      waintingWeb: {
+        "en-US": "{emojiTypingWumpus} I'm searching on the web for your question...",
+        fr: "{emojiTypingWumpus} Je suis entrain de chercher sur le web pour votre question...",
+        "pt-BR": "{emojiTypingWumpus} Estou procurando na web pela sua pergunta...",
+        ru: "{emojiTypingWumpus} Я ищу в Интернете ответ на ваш вопрос...",
+        uk: "{emojiTypingWumpus} Я шукаю в Інтернеті відповідь на ваше запитання...",
+        "es-ES": "{emojiTypingWumpus} Estoy buscando en la web la respuesta a tu pregunta...",
+        de: "{emojiTypingWumpus} Ich suche im Web nach deiner Frage..."
+      },
+      warningWebContext: {
+        "en-US": "Ccontexts are not supported when \"Web search\" is selected",
+        fr: "Les contextes ne sont pas supportés lorsque \"Recherche web\" est sélectionné",
+        "pt-BR": "Contextos não são suportados quando \"Pesquisa na web\" está selecionado",
+        ru: "Контексты не поддерживаются, когда выбрана \"Веб-поиск\"",
+        uk: "Контексти не підтримуються, коли вибрано \"Веб-пошук\"",
+        "es-ES": "Los contextos no son compatibles cuando se selecciona \"Búsqueda web\"",
+        de: "Kontexte werden nicht unterstützt, wenn \"Websuche\" ausgewählt ist"
       }
     }
   }
