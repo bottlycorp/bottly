@@ -210,28 +210,28 @@ export const ask = {
         de: "{emojiTypingWumpus} Ich denke über eine bessere Antwort nach..."
       },
       regenerated_max: {
-        "en-US": "You have reached the maximum number regenerations of the answer (`{max}`), for Premium users this limit is `{maxPremium}`",
+        "en-US": "You have reached the maximum number regenerations of the answer (`{max1}`), for Premium users this limit is `{maxPremium}`",
         fr: [
-          "Vous avez atteint le nombre maximum de régénérations de la réponse (`{max}`), pour les",
+          "Vous avez atteint le nombre maximum de régénérations de la réponse (`{max1}`), pour les",
           "utilisateurs Premium cette limite est de `{maxPremium}`"
         ].join(" "),
-        "pt-BR": "Você atingiu o número máximo de regenerações da resposta (`{max}`), para os usuários Premium esse limite é de `{maxPremium}`",
-        ru: "Вы достигли максимального количества регенераций ответа (`{max}`), для пользователей Premium это ограничение составляет `{maxPremium}`",
-        uk: "Ви досягли максимальної кількості регенерацій відповіді (`{max}`), для користувачів Premium це обмеження становить `{maxPremium}`",
+        "pt-BR": "Você atingiu o número máximo de regenerações da resposta (`{max1}`), para os usuários Premium esse limite é de `{maxPremium}`",
+        ru: "Вы достигли максимального количества регенераций ответа (`{max1}`), для пользователей Premium это ограничение составляет `{maxPremium}`",
+        uk: "Ви досягли максимальної кількості регенерацій відповіді (`{max1}`), для користувачів Premium це обмеження становить `{maxPremium}`",
         "es-ES": [
-          "Has alcanzado el número máximo de regeneraciones de la respuesta (`{max}`), para los usuarios Premium este",
+          "Has alcanzado el número máximo de regeneraciones de la respuesta (`{max1}`), para los usuarios Premium este",
           "límite es de `{maxPremium}`"
         ].join(" "),
-        de: "Sie haben die maximale Anzahl von Regenerationen der Antwort (`{max}`) erreicht, für Premium-Benutzer ist dieses Limit `{maxPremium}`"
+        de: "Sie haben die maximale Anzahl von Regenerationen der Antwort (`{max1}`) erreicht, für Premium-Benutzer ist dieses Limit `{maxPremium}`"
       },
       regenerated_max_premium: {
-        "en-US": "You have reached the maximum number regenerations of the answer (`{max}`)",
-        fr: "Vous avez atteint le nombre maximum de régénérations de la réponse (`{max}`)",
-        "pt-BR": "Você atingiu o número máximo de regenerações da resposta (`{max}`)",
-        ru: "Вы достигли максимального количества регенераций ответа (`{max}`)",
-        uk: "Ви досягли максимальної кількості регенерацій відповіді (`{max}`)",
-        "es-ES": "Has alcanzado el número máximo de regeneraciones de la respuesta (`{max}`)",
-        de: "Sie haben die maximale Anzahl von Regenerationen der Antwort (`{max}`) erreicht"
+        "en-US": "You have reached the maximum number regenerations of the answer (`{max2}`)",
+        fr: "Vous avez atteint le nombre maximum de régénérations de la réponse (`{max2}`)",
+        "pt-BR": "Você atingiu o número máximo de regenerações da resposta (`{max2}`)",
+        ru: "Вы достигли максимального количества регенераций ответа (`{max2}`)",
+        uk: "Ви досягли максимальної кількості регенерацій відповіді (`{max2}`)",
+        "es-ES": "Has alcanzado el número máximo de regeneraciones de la respuesta (`{max2}`)",
+        de: "Sie haben die maximale Anzahl von Regenerationen der Antwort (`{max2}`) erreicht"
       },
       waintingWeb: {
         "en-US": "{emojiTypingWumpus} I'm searching on the web for your question...",
