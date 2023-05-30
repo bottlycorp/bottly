@@ -173,6 +173,7 @@ export const buttonsBuilder = (
     while (list.length > 0) {
       rows.push({ type: 1, components: list.splice(0, Math.min(5, list.length)) });
     }
+
+    return rows;
   }
-  return rows;
 };

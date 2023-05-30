@@ -13,7 +13,6 @@ import { Prisma } from "@prisma/client";
 
 export const execute: CommandExecute = async(command, user) => {
   const questions = user.questions;
-  const rowConfig: RowConfig = { row1max: 2, row2max: 5, row3max: 5, row4max: 5, row5max: 5 };
   const question = command.options.getString(request.config.options.question.name["en-US"], true) ?? 1;
 
   if (questions == null) {
@@ -57,19 +56,39 @@ export const execute: CommandExecute = async(command, user) => {
     return;
   }
 
-  const emojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
-  const buttons: ButtonBuilder[] = [];
+  let rowConfig: RowConfig | null = null;
+  let inInitialResponse = true;
+  let actualPage = 0;
 
-  if (data.history.length == 0) {
-    for (let i = 0; i < (user.isPremium ? 5 : 3); i++) {
-      console.log(i);
-      buttons.push(simpleButton(undefined, ButtonStyle.Secondary, `p${i}`, true, { name: emojis[i] }));
+  if (data?.webUrls.length > 0) rowConfig = { row1max: 3, row2max: 5, row3max: 5, row4max: 5, row5max: 5 };
+  else rowConfig = { row1max: 2, row2max: 5, row3max: 5, row4max: 5, row5max: 5 };
+
+  const updateButtons = (): ButtonBuilder[] => {
+    const emojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
+    const buttons: ButtonBuilder[] = [];
+
+    buttons.push(simpleButton(undefined, ButtonStyle.Secondary, "initial", inInitialResponse, { name: "📄" }));
+
+    if (data.history.length == 0) {
+      for (let i = 0; i < (user.isPremium ? 5 : 3); i++) {
+        buttons.push(simpleButton(undefined, ButtonStyle.Secondary, `p${i + 1}`, true, { name: emojis[i] }));
+      }
+
+      return buttons;
     }
-  } else {
+
     for (let i = 0; i < (user.isPremium ? 5 : 3); i++) {
-      buttons.push(simpleButton(undefined, ButtonStyle.Secondary, `p${i}`, data.history.length >= i ? false : true, { name: emojis[i] }));
+      buttons.push(simpleButton(
+        undefined,
+        ButtonStyle.Secondary,
+        `p${i + 1}`,
+        data.history[i] == null ? true : ((!inInitialResponse && actualPage == i + 1) ? true : false),
+        { name: emojis[i] }
+      ));
     }
-  }
+
+    return buttons;
+  };
 
   const timestamp = DayJS((data.repliedAt * 1000)).diff(DayJS((data.createdAt * 1000)), "second");
   let favorite = data.isFavorite;
@@ -78,9 +97,9 @@ export const execute: CommandExecute = async(command, user) => {
   if (data.webUrls.length > 0) webUrl = data.webUrls[0];
 
   const message = await command.editReply({
-    embeds: [embed(command, data, timestamp)],
+    embeds: [embed(command, data, timestamp, actualPage, favorite)],
     components: buttonsBuilder(
-      webUrl, command, false, rowConfig, favoriteButton().setStyle(favorite ? ButtonStyle.Primary : ButtonStyle.Secondary), ...buttons
+      webUrl, command, false, rowConfig, favoriteButton().setStyle(favorite ? ButtonStyle.Primary : ButtonStyle.Secondary), ...updateButtons()
     )
   });
 
@@ -95,9 +114,9 @@ export const execute: CommandExecute = async(command, user) => {
         favorite = !favorite;
 
         command.editReply({
-          embeds: [embed(command, data, timestamp)],
+          embeds: [embed(command, data, timestamp, actualPage, favorite)],
           components: buttonsBuilder(
-            webUrl, command, true, rowConfig, favoriteButton().setStyle(favorite ? ButtonStyle.Primary : ButtonStyle.Secondary), ...buttons
+            webUrl, command, true, rowConfig, favoriteButton().setStyle(favorite ? ButtonStyle.Primary : ButtonStyle.Secondary), ...updateButtons()
           )
         });
 
@@ -114,9 +133,35 @@ export const execute: CommandExecute = async(command, user) => {
         if (dataUpdated == null) return;
 
         command.editReply({
-          embeds: [embed(command, dataUpdated, timestamp)],
+          embeds: [embed(command, dataUpdated, timestamp, actualPage, favorite)],
           components: buttonsBuilder(
-            webUrl, command, false, rowConfig, favoriteButton().setStyle(favorite ? ButtonStyle.Primary : ButtonStyle.Secondary), ...buttons
+            webUrl, command, false, rowConfig, favoriteButton().setStyle(favorite ? ButtonStyle.Primary : ButtonStyle.Secondary), ...updateButtons()
+          )
+        });
+        break;
+      case "initial":
+        inInitialResponse = true;
+        actualPage = 0;
+
+        command.editReply({
+          embeds: [embed(command, data, timestamp, actualPage, favorite)],
+          components: buttonsBuilder(
+            webUrl, command, false, rowConfig, favoriteButton().setStyle(favorite ? ButtonStyle.Primary : ButtonStyle.Secondary), ...updateButtons()
+          )
+        });
+        break;
+      case "p1":
+      case "p2":
+      case "p3":
+      case "p4":
+      case "p5":
+        inInitialResponse = false;
+        actualPage = parseInt(interaction.customId.replace("p", ""));
+
+        command.editReply({
+          embeds: [embed(command, data, timestamp, actualPage, favorite)],
+          components: buttonsBuilder(
+            webUrl, command, false, rowConfig, favoriteButton().setStyle(favorite ? ButtonStyle.Primary : ButtonStyle.Secondary), ...updateButtons()
           )
         });
         break;
@@ -127,7 +172,9 @@ export const execute: CommandExecute = async(command, user) => {
 export const embed = (
   command: CommandInteraction,
   data: Prisma.QuestionGetPayload<{include: { user: false } }>,
-  answerTime: number
+  answerTime: number,
+  page = 0,
+  favorite = false
 ): EmbedBuilder => {
   let description = "";
   description += translate(command.locale, request.config.exec.question, {
@@ -137,9 +184,12 @@ export const embed = (
     channel: data.channelName || "Not defined",
     guild: data.guildName || "Not defined",
     question: data.question,
-    answer: data.answer,
-    favoriteLine: data.isFavorite ? translate(command.locale, request.config.exec.favoriteLine, {
+    answer: page == 0 ? data.answer : data.history[page - 1] ?? data.answer,
+    favoriteLine: favorite ? translate(command.locale, request.config.exec.favoriteLine, {
       date: data.favoriteAt
+    }) : "",
+    regeneratedManyTimes: data.history.length > 0 ? translate(command.locale, request.config.exec.regeneratedManyTimes, {
+      times: data.history.length
     }) : ""
   });
 
