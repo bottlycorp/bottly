@@ -1,11 +1,11 @@
 import { colors } from "$core/client";
 import { translate } from "$core/utils/config/message/message.util";
 import { getQuestion, isQuestionExist } from "$core/utils/data/question";
-import { simpleButton, simpleEmbed } from "$core/utils/embed";
+import { simpleEmbed } from "$core/utils/embed";
 import { CommandExecute } from "$core/utils/handler/command";
 import { request } from "./request.config";
 import { DayJS } from "$core/utils/day-js";
-import { favoriteButton } from "$core/utils/config/buttons";
+import { buttonsBuilder, favoriteButton } from "$core/utils/config/buttons";
 import { ButtonStyle, CommandInteraction } from "discord.js";
 import { updateUser } from "$core/utils/data/user";
 import { EmbedBuilder } from "@discordjs/builders";
@@ -58,19 +58,12 @@ export const execute: CommandExecute = async(command, user) => {
   const timestamp = DayJS((data.repliedAt * 1000)).diff(DayJS((data.createdAt * 1000)), "second");
   let favorite = data.isFavorite;
 
-  const components = [];
-  if (data.webUrls.length > 0) {
-    components.push(simpleButton(translate(command.locale, request.config.buttons.knowMore), ButtonStyle.Link, data.webUrls[0]));
-  }
-
-  components.push(favoriteButton().setStyle(data.isFavorite ? ButtonStyle.Primary : ButtonStyle.Secondary));
+  let webUrl: string | null = null;
+  if (data.webUrls.length > 0) webUrl = data.webUrls[0];
 
   const message = await command.editReply({
     embeds: [embed(command, data, timestamp)],
-    components: [{
-      type: 1,
-      components: components
-    }]
+    components: buttonsBuilder(webUrl, command, false, favoriteButton().setStyle(favorite ? ButtonStyle.Primary : ButtonStyle.Secondary))
   });
 
   const collector = message.createMessageComponentCollector({ filter: (i) => i.user.id === command.user.id });
@@ -78,30 +71,20 @@ export const execute: CommandExecute = async(command, user) => {
   collector.on("collect", async(interaction) => {
     interaction.deferUpdate();
     if (interaction.customId !== "favorite") return; // Wtf but ok :D
-    const components = [];
-    if (data.webUrls.length > 0) {
-      components.push(simpleButton(translate(command.locale, request.config.buttons.knowMore), ButtonStyle.Link, data.webUrls[0]));
-    }
-
-    components.push(favoriteButton().setStyle(favorite ? ButtonStyle.Primary : ButtonStyle.Secondary).setDisabled(true));
-
     favorite = !favorite;
-    command.editReply({ components: [{ type: 1, components: components }] });
+
+    command.editReply({
+      embeds: [embed(command, data, timestamp)],
+      components: buttonsBuilder(webUrl, command, true, favoriteButton().setStyle(favorite ? ButtonStyle.Primary : ButtonStyle.Secondary))
+    });
 
     await updateUser(user.userId, { questions: { update: { data: { isFavorite: favorite, favoriteAt: DayJS().unix() }, where: { id: data.id } } } });
     const dataUpdated = await getQuestion(question, user.userId);
     if (dataUpdated == null) return;
 
-    // remove the last component
-    components.pop();
-    components.push(favoriteButton().setStyle(favorite ? ButtonStyle.Primary : ButtonStyle.Secondary).setDisabled(false));
-
     command.editReply({
       embeds: [embed(command, dataUpdated, timestamp)],
-      components: [{
-        type: 1,
-        components: components
-      }]
+      components: buttonsBuilder(webUrl, command, false, favoriteButton().setStyle(favorite ? ButtonStyle.Primary : ButtonStyle.Secondary))
     });
   });
 };
