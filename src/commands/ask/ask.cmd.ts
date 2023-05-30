@@ -12,7 +12,7 @@ import {
 import { ask } from "./ask.config";
 import { global } from "$core/utils/config/message/command";
 import { limitString, userWithId } from "$core/utils/function";
-import { QuestionIncludeAll, getQuestion, newQuestion } from "$core/utils/data/question";
+import { QuestionIncludeAll, getQuestion, newQuestion, updateQuestion } from "$core/utils/data/question";
 import { getPrompt } from "@bottlycorp/prompts";
 import { simpleButton, simpleEmbed } from "$core/utils/embed";
 import { buttonsBuilder, favoriteButton, qrCodeButton, regenerateButton, revealButton, usageButton } from "$core/utils/config/buttons";
@@ -140,6 +140,7 @@ export const execute: CommandExecute = async(command, user) => {
         url ?? null,
         command,
         true,
+        null,
         revealButton(command),
         usageButton(command, user),
         favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
@@ -169,6 +170,7 @@ export const execute: CommandExecute = async(command, user) => {
             url ?? null,
             command,
             false,
+            null,
             revealButton(command),
             usageButton(command, user),
             favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
@@ -190,6 +192,7 @@ export const execute: CommandExecute = async(command, user) => {
       url ?? null,
       command,
       false,
+      null,
       revealButton(command),
       usageButton(command, user),
       favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary).setDisabled(true),
@@ -206,6 +209,7 @@ export const execute: CommandExecute = async(command, user) => {
       url ?? null,
       command,
       false,
+      null,
       revealButton(command),
       usageButton(command, user),
       favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
@@ -299,6 +303,7 @@ export const execute: CommandExecute = async(command, user) => {
             url ?? null,
             command,
             false,
+            null,
             revealButton(command),
             usageButton(command, user),
             favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
@@ -307,6 +312,8 @@ export const execute: CommandExecute = async(command, user) => {
           ) });
           return;
         }
+
+        await updateQuestion({ where: { id: question.id }, data: { history: { push: answer } } });
         break;
       case "return":
         command.editReply({
@@ -315,6 +322,7 @@ export const execute: CommandExecute = async(command, user) => {
             url ?? null,
             command,
             false,
+            null,
             revealButton(command),
             usageButton(command, user),
             favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),

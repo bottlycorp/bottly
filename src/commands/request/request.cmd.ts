@@ -1,18 +1,19 @@
 import { colors } from "$core/client";
 import { translate } from "$core/utils/config/message/message.util";
 import { getQuestion, isQuestionExist } from "$core/utils/data/question";
-import { simpleEmbed } from "$core/utils/embed";
+import { simpleButton, simpleEmbed } from "$core/utils/embed";
 import { CommandExecute } from "$core/utils/handler/command";
 import { request } from "./request.config";
 import { DayJS } from "$core/utils/day-js";
-import { buttonsBuilder, favoriteButton } from "$core/utils/config/buttons";
+import { RowConfig, buttonsBuilder, favoriteButton } from "$core/utils/config/buttons";
 import { ButtonStyle, CommandInteraction } from "discord.js";
 import { updateUser } from "$core/utils/data/user";
-import { EmbedBuilder } from "@discordjs/builders";
+import { ButtonBuilder, EmbedBuilder } from "@discordjs/builders";
 import { Prisma } from "@prisma/client";
 
 export const execute: CommandExecute = async(command, user) => {
   const questions = user.questions;
+  const rowConfig: RowConfig = { row1max: 2, row2max: 5, row3max: 5, row4max: 5, row5max: 5 };
   const question = command.options.getString(request.config.options.question.name["en-US"], true) ?? 1;
 
   if (questions == null) {
@@ -51,8 +52,23 @@ export const execute: CommandExecute = async(command, user) => {
       ]
     });
 
+
     colors.error("Question is null");
     return;
+  }
+
+  const emojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
+  const buttons: ButtonBuilder[] = [];
+
+  if (data.history.length == 0) {
+    for (let i = 0; i < (user.isPremium ? 5 : 3); i++) {
+      console.log(i);
+      buttons.push(simpleButton(undefined, ButtonStyle.Secondary, `p${i}`, true, { name: emojis[i] }));
+    }
+  } else {
+    for (let i = 0; i < (user.isPremium ? 5 : 3); i++) {
+      buttons.push(simpleButton(undefined, ButtonStyle.Secondary, `p${i}`, data.history.length >= i ? false : true, { name: emojis[i] }));
+    }
   }
 
   const timestamp = DayJS((data.repliedAt * 1000)).diff(DayJS((data.createdAt * 1000)), "second");
@@ -63,29 +79,48 @@ export const execute: CommandExecute = async(command, user) => {
 
   const message = await command.editReply({
     embeds: [embed(command, data, timestamp)],
-    components: buttonsBuilder(webUrl, command, false, favoriteButton().setStyle(favorite ? ButtonStyle.Primary : ButtonStyle.Secondary))
+    components: buttonsBuilder(
+      webUrl, command, false, rowConfig, favoriteButton().setStyle(favorite ? ButtonStyle.Primary : ButtonStyle.Secondary), ...buttons
+    )
   });
 
   const collector = message.createMessageComponentCollector({ filter: (i) => i.user.id === command.user.id });
+  let dataUpdated: Prisma.QuestionGetPayload<{include: { user: false } }> | null = null;
 
   collector.on("collect", async(interaction) => {
     interaction.deferUpdate();
-    if (interaction.customId !== "favorite") return; // Wtf but ok :D
-    favorite = !favorite;
 
-    command.editReply({
-      embeds: [embed(command, data, timestamp)],
-      components: buttonsBuilder(webUrl, command, true, favoriteButton().setStyle(favorite ? ButtonStyle.Primary : ButtonStyle.Secondary))
-    });
+    switch (interaction.customId) {
+      case "favorite":
+        favorite = !favorite;
 
-    await updateUser(user.userId, { questions: { update: { data: { isFavorite: favorite, favoriteAt: DayJS().unix() }, where: { id: data.id } } } });
-    const dataUpdated = await getQuestion(question, user.userId);
-    if (dataUpdated == null) return;
+        command.editReply({
+          embeds: [embed(command, data, timestamp)],
+          components: buttonsBuilder(
+            webUrl, command, true, rowConfig, favoriteButton().setStyle(favorite ? ButtonStyle.Primary : ButtonStyle.Secondary), ...buttons
+          )
+        });
 
-    command.editReply({
-      embeds: [embed(command, dataUpdated, timestamp)],
-      components: buttonsBuilder(webUrl, command, false, favoriteButton().setStyle(favorite ? ButtonStyle.Primary : ButtonStyle.Secondary))
-    });
+        await updateUser(user.userId, {
+          questions: {
+            update: {
+              where: { id: data.id },
+              data: { isFavorite: favorite, favoriteAt: DayJS().unix() }
+            }
+          }
+        });
+
+        dataUpdated = await getQuestion(question, user.userId);
+        if (dataUpdated == null) return;
+
+        command.editReply({
+          embeds: [embed(command, dataUpdated, timestamp)],
+          components: buttonsBuilder(
+            webUrl, command, false, rowConfig, favoriteButton().setStyle(favorite ? ButtonStyle.Primary : ButtonStyle.Secondary), ...buttons
+          )
+        });
+        break;
+    }
   });
 };
 

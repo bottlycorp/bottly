@@ -51,3 +51,9 @@ export const getQuestion = async(id: string, userId: string): Promise<QuestionIn
 
   return question;
 };
+
+export const updateQuestion = async(question: Prisma.QuestionUpdateArgs): Promise<QuestionIncludeAll | null> => {
+  const data = await prisma.question.update({ ...question });
+  if (data == null) return null;
+  return data;
+};
