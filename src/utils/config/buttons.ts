@@ -111,20 +111,25 @@ export type Row = {
   components: ButtonBuilder[];
 };
 
+export type RowConfig = {
+  row1max: number;
+  row2max: number;
+  row3max: number;
+  row4max: number;
+  row5max: number;
+};
+
 export const buttonsBuilder = (
   webUrl: string | null,
   command: CommandInteraction | Interaction,
   disableAll = false,
+  max: RowConfig | null = null,
   ...buttons: ButtonBuilder[]
 ): Row[] => {
   const list: ButtonBuilder[] = [];
 
   if (webUrl !== null) {
-    const knowMoreButton = simpleButton(
-      translate(command.locale, ask.config.buttons.knowMore),
-      ButtonStyle.Link,
-      webUrl
-    );
+    const knowMoreButton = simpleButton(translate(command.locale, ask.config.buttons.knowMore), ButtonStyle.Link, webUrl);
     list.push(disableAll ? knowMoreButton.setDisabled(true) : knowMoreButton);
   }
 
@@ -133,8 +138,41 @@ export const buttonsBuilder = (
   }
 
   const rows: Row[] = [];
-  while (list.length > 0) {
-    rows.push({ type: 1, components: list.splice(0, Math.min(5, list.length)) });
+  if (max !== null) {
+    // if the first row lenght is same as row1max exemple then we can add to the next row
+    if (list.length > 0) {
+      const row1: ButtonBuilder[] = [];
+      const row2: ButtonBuilder[] = [];
+      const row3: ButtonBuilder[] = [];
+      const row4: ButtonBuilder[] = [];
+      const row5: ButtonBuilder[] = [];
+
+      for (let i = 0; i < list.length; i++) {
+        if (i < max.row1max) {
+          row1.push(list[i]);
+        } else if (i < max.row1max + max.row2max) {
+          row2.push(list[i]);
+        } else if (i < max.row1max + max.row2max + max.row3max) {
+          row3.push(list[i]);
+        } else if (i < max.row1max + max.row2max + max.row3max + max.row4max) {
+          row4.push(list[i]);
+        } else if (i < max.row1max + max.row2max + max.row3max + max.row4max + max.row5max) {
+          row5.push(list[i]);
+        }
+      }
+
+      if (row1.length > 0) rows.push({ type: 1, components: row1 });
+      if (row2.length > 0) rows.push({ type: 1, components: row2 });
+      if (row3.length > 0) rows.push({ type: 1, components: row3 });
+      if (row4.length > 0) rows.push({ type: 1, components: row4 });
+      if (row5.length > 0) rows.push({ type: 1, components: row5 });
+    }
+    return rows;
+  } else {
+    const rows: Row[] = [];
+    while (list.length > 0) {
+      rows.push({ type: 1, components: list.splice(0, Math.min(5, list.length)) });
+    }
   }
   return rows;
 };
