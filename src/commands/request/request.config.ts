@@ -63,55 +63,71 @@ export const request = {
       question: {
         "en-US": [
           "This question was asked the <t:{date}:F> (<t:{date2}:R>) and has been answered in `{time}s`, ",
-          "has been sent in `{channel}` from `{guild}`.",
+          "has been sent in `{channel}` from `{guild}`.\n",
           "{favoriteLine}",
+          "{regeneratedManyTimes}",
           "\n\n**Question:** {question}\n**Answer:** {answer}"
         ].join(""),
         fr: [
           "Cette question a été posée le <t:{date}:F> (<t:{date2}:R>) et a été répondue en `{time}s`, ",
-          "a été envoyée dans `{channel}` depuis `{guild}`.",
+          "a été envoyée dans `{channel}` depuis `{guild}`.\n",
           "{favoriteLine}",
+          "{regeneratedManyTimes}",
           "\n\n**Question:** {question}\n**Réponse:** {answer}"
         ].join(""),
         "pt-BR": [
           "Esta pergunta foi feita em <t:{date}:F> (<t:{date2}:R>) e foi respondida em `{time}s`, ",
-          "foi enviada em `{channel}` de `{guild}`.",
+          "foi enviada em `{channel}` de `{guild}`.\n",
           "{favoriteLine}",
+          "{regeneratedManyTimes}",
           "\n\n**Pergunta:** {question}\n**Resposta:** {answer}"
         ].join(""),
         ru: [
           "Этот вопрос был задан <t:{date}:F> (<t:{date2}:R>) и был ответ в `{time}s`, ",
-          "был отправлен в `{channel}` из `{guild}`.",
+          "был отправлен в `{channel}` из `{guild}`.\n",
           "{favoriteLine}",
+          "{regeneratedManyTimes}",
           "\n\n**Вопрос:** {question}\n**Ответ:** {answer}"
         ].join(""),
         uk: [
           "Це питання було задано <t:{date}:F> (<t:{date2}:R>) і було відповідь в `{time}s`, ",
-          "був відправлений в `{channel}` з `{guild}`.",
+          "був відправлений в `{channel}` з `{guild}`.\n",
           "{favoriteLine}",
+          "{regeneratedManyTimes}",
           "\n\n**Питання:** {question}\n**Відповідь:** {answer}"
         ].join(""),
         "es-ES": [
           "Esta pregunta fue hecha el <t:{date}:F> (<t:{date2}:R>) y fue respondida en `{time}s`, ",
-          "fue enviada en `{channel}` de `{guild}`.",
+          "fue enviada en `{channel}` de `{guild}`.\n",
           "{favoriteLine}",
+          "{regeneratedManyTimes}",
           "\n\n**Pregunta:** {question}\n**Respuesta:** {answer}"
         ].join(""),
         de: [
           "Diese Frage wurde am <t:{date}:F> (<t:{date2}:R>) gestellt und wurde in `{time}s` beantwortet, ",
-          "wurde in `{channel}` von `{guild}` gesendet.",
+          "wurde in `{channel}` von `{guild}` gesendet.\n",
           "{favoriteLine}",
+          "{regeneratedManyTimes}",
           "\n\n**Frage:** {question}\n**Antwort:** {answer}"
         ].join("")
       },
       favoriteLine: {
-        "en-US": "\n\n`⭐` This question has been marked as favorite the <t:{date}:F>",
-        fr: "\n\n`⭐` Cette question a été marquée comme favorite le <t:{date}:F>",
-        "pt-BR": "\n\n`⭐` Esta pergunta foi marcada como favorita em <t:{date}:F>",
-        ru: "\n\n`⭐` Этот вопрос был отмечен как избранный <t:{date}:F>",
-        uk: "\n\n`⭐` Це питання було позначено як вибране <t:{date}:F>",
-        "es-ES": "\n\n`⭐` Esta pregunta ha sido marcada como favorita el <t:{date}:F>",
-        de: "\n\n`⭐` Diese Frage wurde am <t:{date}:F> als Favorit markiert"
+        "en-US": "\n`⭐` This question has been marked as favorite the <t:{date}:F>",
+        fr: "\n`⭐` Cette question a été marquée comme favorite le <t:{date}:F>",
+        "pt-BR": "\n`⭐` Esta pergunta foi marcada como favorita em <t:{date}:F>",
+        ru: "\n`⭐` Этот вопрос был отмечен как избранный <t:{date}:F>",
+        uk: "\n`⭐` Це питання було позначено як вибране <t:{date}:F>",
+        "es-ES": "\n`⭐` Esta pregunta ha sido marcada como favorita el <t:{date}:F>",
+        de: "\n`⭐` Diese Frage wurde am <t:{date}:F> als Favorit markiert"
+      },
+      regeneratedManyTimes: {
+        "en-US": "\n`✨` This question has been regenerated `{times}` times",
+        fr: "\n`✨` Cette question a été régénérée `{times}` fois",
+        "pt-BR": "\n`✨` Esta pergunta foi regenerada `{times}` vezes",
+        ru: "\n`✨` Этот вопрос был восстановлен `{times}` раз",
+        uk: "\n`✨` Це питання було відновлено `{times}` разів",
+        "es-ES": "\n`✨` Esta pregunta ha sido regenerada `{times}` veces",
+        de: "\n`✨` Diese Frage wurde `{times}` Mal regeneriert"
       },
       linksTitle: {
         "en-US": "{emojiBeta} Answer generated based on these links:",

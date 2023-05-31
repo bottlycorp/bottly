@@ -35,6 +35,7 @@ model Question {
   qrCodeUrl   String  @default("")
   favoriteAt  Int     @default(0)
   webUrls     String[] @default([])
+  history     String[] @default([])
   user        User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
 

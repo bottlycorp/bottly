@@ -12,7 +12,7 @@ import {
 import { ask } from "./ask.config";
 import { global } from "$core/utils/config/message/command";
 import { limitString, userWithId } from "$core/utils/function";
-import { QuestionIncludeAll, getQuestion, newQuestion } from "$core/utils/data/question";
+import { QuestionIncludeAll, getQuestion, newQuestion, updateQuestion } from "$core/utils/data/question";
 import { getPrompt } from "@bottlycorp/prompts";
 import { simpleButton, simpleEmbed } from "$core/utils/embed";
 import { buttonsBuilder, favoriteButton, qrCodeButton, regenerateButton, revealButton, usageButton } from "$core/utils/config/buttons";
@@ -140,6 +140,7 @@ export const execute: CommandExecute = async(command, user) => {
         url ?? null,
         command,
         true,
+        null,
         revealButton(command),
         usageButton(command, user),
         favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
@@ -160,15 +161,33 @@ export const execute: CommandExecute = async(command, user) => {
         await handleChatCompletion();
       }
 
+      if (regen) updateQuestion({ where: { id: question.id }, data: { history: { push: answer } } });
+
       if (!regen) await handleQuestionCreation();
 
-      setTimeout(async() => {
+      command.editReply({
+        embeds: [answerEmbed(command, answer, urls)],
+        components: buttonsBuilder(
+          url ?? null,
+          command,
+          false,
+          null,
+          revealButton(command),
+          usageButton(command, user),
+          favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
+          regenerateButton().setDisabled(true),
+          qrCodeButton()
+        )
+      });
+
+      setTimeout(() => {
         command.editReply({
           embeds: [answerEmbed(command, answer, urls)],
           components: buttonsBuilder(
             url ?? null,
             command,
             false,
+            null,
             revealButton(command),
             usageButton(command, user),
             favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
@@ -176,7 +195,7 @@ export const execute: CommandExecute = async(command, user) => {
             qrCodeButton()
           )
         });
-      }, 2500);
+      }, web ? 3000 : 2500);
     } catch (error: any) {
       command.editReply(translate(command.locale, ask.config.exec.error, { error: error.message }));
       return;
@@ -190,6 +209,7 @@ export const execute: CommandExecute = async(command, user) => {
       url ?? null,
       command,
       false,
+      null,
       revealButton(command),
       usageButton(command, user),
       favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary).setDisabled(true),
@@ -206,6 +226,7 @@ export const execute: CommandExecute = async(command, user) => {
       url ?? null,
       command,
       false,
+      null,
       revealButton(command),
       usageButton(command, user),
       favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
@@ -299,6 +320,7 @@ export const execute: CommandExecute = async(command, user) => {
             url ?? null,
             command,
             false,
+            null,
             revealButton(command),
             usageButton(command, user),
             favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
@@ -315,6 +337,7 @@ export const execute: CommandExecute = async(command, user) => {
             url ?? null,
             command,
             false,
+            null,
             revealButton(command),
             usageButton(command, user),
             favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
