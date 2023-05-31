@@ -161,9 +161,26 @@ export const execute: CommandExecute = async(command, user) => {
         await handleChatCompletion();
       }
 
+      if (regen) updateQuestion({ where: { id: question.id }, data: { history: { push: answer } } });
+
       if (!regen) await handleQuestionCreation();
 
-      setTimeout(async() => {
+      command.editReply({
+        embeds: [answerEmbed(command, answer, urls)],
+        components: buttonsBuilder(
+          url ?? null,
+          command,
+          false,
+          null,
+          revealButton(command),
+          usageButton(command, user),
+          favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
+          regenerateButton().setDisabled(true),
+          qrCodeButton()
+        )
+      });
+
+      setTimeout(() => {
         command.editReply({
           embeds: [answerEmbed(command, answer, urls)],
           components: buttonsBuilder(
@@ -178,7 +195,7 @@ export const execute: CommandExecute = async(command, user) => {
             qrCodeButton()
           )
         });
-      }, 2500);
+      }, web ? 3000 : 2500);
     } catch (error: any) {
       command.editReply(translate(command.locale, ask.config.exec.error, { error: error.message }));
       return;
@@ -312,8 +329,6 @@ export const execute: CommandExecute = async(command, user) => {
           ) });
           return;
         }
-
-        await updateQuestion({ where: { id: question.id }, data: { history: { push: answer } } });
         break;
       case "return":
         command.editReply({
