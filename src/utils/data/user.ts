@@ -7,7 +7,7 @@ import { DayJS } from "../day-js";
 import { prisma } from "../prisma";
 
 export type UserIncludeAll = Prisma.UserGetPayload<{
-  include: { questions: true; privacy: true; usages: true; discussions: true; tips: true; subscription: true };
+  include: { questions: true; privacy: true; usages: true; discussions: true; tips: true; subscription: true; learn: true };
 }>
 
 export const MAX_USES: Record<UsageMax, number> = {
@@ -26,7 +26,8 @@ export const getUser = async(userId: DiscordUser | string): Promise<UserIncludeA
       usages: true,
       discussions: true,
       tips: true,
-      subscription: true
+      subscription: true,
+      learn: true
     }
   });
 
@@ -49,7 +50,8 @@ export const getUser = async(userId: DiscordUser | string): Promise<UserIncludeA
         usages: true,
         discussions: true,
         tips: true,
-        subscription: true
+        subscription: true,
+        learn: true
       }
     });
 
@@ -68,7 +70,8 @@ export const updateUser = async(userId: string, data: Prisma.UserUpdateInput): P
       usages: true,
       discussions: true,
       tips: true,
-      subscription: true
+      subscription: true,
+      learn: true
     }
   });
 

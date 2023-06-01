@@ -38,6 +38,7 @@ export const execute: CommandExecute = async(command, user) => {
     );
   } else {
     embed.setDescription(translate(command.locale, premium.config.exec.embed.descriptionNotPremium, {
+      cmdLearn: await findCommand("learn"),
       cmdAsk: await findCommand("ask")
     }));
 

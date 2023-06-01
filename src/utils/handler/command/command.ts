@@ -271,7 +271,7 @@ export const register = async(client: Client, commandsBuilder: CommandsBuilderCo
   }
 };
 
-export type Commands = "ask" | "chat" | "history" | "roadmap" | "request" | "privacy" | "support" | "premium";
+export type Commands = "ask" | "chat" | "history" | "roadmap" | "request" | "privacy" | "support" | "premium" | "learn";
 export type SubCommands = "stop" | "talk" | "download";
 
 export const findCommand = async(cmd: Commands, subCommand?: SubCommands): Promise<string> => {

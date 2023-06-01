@@ -1,7 +1,7 @@
-import { APIMessageComponentEmoji, ButtonStyle, EmbedBuilder, EmbedData } from "discord.js";
+import { APIMessageComponentEmoji, APISelectMenuOption, ButtonStyle, EmbedBuilder, EmbedData } from "discord.js";
 import { global } from "./config";
 import { isHexColor } from "./validator";
-import { ButtonBuilder } from "@discordjs/builders";
+import { ButtonBuilder, SelectMenuBuilder } from "@discordjs/builders";
 
 type EmbedType = "info" | "success" | "error" | "premium" | "vote";
 
@@ -65,6 +65,25 @@ export const simpleButton = (
   if (disabled) button.setDisabled(disabled);
 
   return button;
+};
+
+export const simpleSelect = (
+  customId: string, placeholder: string,
+  options: APISelectMenuOption[],
+  disabled?: boolean,
+  minValues?: number,
+  maxValues?: number
+): SelectMenuBuilder => {
+  const select = new SelectMenuBuilder()
+    .setCustomId(customId)
+    .setPlaceholder(placeholder);
+
+  if (disabled) select.setDisabled(disabled);
+  if (options) select.addOptions(options);
+  if (minValues) select.setMinValues(minValues);
+  if (maxValues) select.setMaxValues(maxValues);
+
+  return select;
 };
 
 export const getBaseEmbed = (type: EmbedType = "info"): EmbedBuilder => {
