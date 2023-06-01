@@ -20,11 +20,11 @@ export const execute: CommandExecute = async(command, user) => {
   );
 
   const autoDeleteButton: ButtonBuilder = simpleButton(
-    undefined, autoDelete ? ButtonStyle.Secondary : ButtonStyle.Primary, "auto-delete", false, { animated: false, name: "💾" }
+    undefined, autoDelete ? ButtonStyle.Primary : ButtonStyle.Secondary, "auto-delete", false, { animated: false, name: "🔥" }
   );
 
   const collectChatButton: ButtonBuilder = simpleButton(
-    undefined, collectChat ? ButtonStyle.Secondary : ButtonStyle.Primary, "collect-chat", false, { animated: false, name: "🔥" }
+    undefined, collectChat ? ButtonStyle.Primary : ButtonStyle.Secondary, "collect-chat", false, { animated: false, name: "💾" }
   );
 
   const deleteButton: ButtonBuilder = simpleButton(undefined, ButtonStyle.Danger, "delete", false, { animated: false, name: "🗑️" });
@@ -32,7 +32,7 @@ export const execute: CommandExecute = async(command, user) => {
   const returnButton: ButtonBuilder = simpleButton(undefined, ButtonStyle.Secondary, "return", false, { animated: false, name: "❌" });
   const returnButton2: ButtonBuilder = simpleButton(undefined, ButtonStyle.Secondary, "return2", false, { animated: false, name: "↩️" });
 
-  const message = command.editReply({ embeds: [embed], components: [{ type: 1, components: [autoDeleteButton, collectChatButton, deleteButton] }] });
+  const message = command.editReply({ embeds: [embed], components: [{ type: 1, components: [collectChatButton, autoDeleteButton, deleteButton] }] });
 
   const collector = (await message).createMessageComponentCollector({ time: 60000 });
 
@@ -77,8 +77,8 @@ export const execute: CommandExecute = async(command, user) => {
       return;
     } else if (interaction.customId == "return2" || interaction.customId == "return") {
       interaction.editReply({ embeds: [embed], components: [{ type: 1, components: [
-        autoDeleteButton.setStyle(autoDelete ? ButtonStyle.Secondary : ButtonStyle.Primary),
-        collectChatButton.setStyle(collectChat ? ButtonStyle.Secondary : ButtonStyle.Primary),
+        collectChatButton.setStyle(collectChat ? ButtonStyle.Primary : ButtonStyle.Secondary),
+        autoDeleteButton.setStyle(autoDelete ? ButtonStyle.Primary : ButtonStyle.Secondary),
         deleteButton
       ] }] });
       return;
@@ -87,15 +87,15 @@ export const execute: CommandExecute = async(command, user) => {
     updateUser(user.userId, {
       privacy: {
         update: {
-          autoDelete,
-          collectChat
+          autoDelete: autoDelete,
+          collectChat: collectChat
         }
       }
     });
 
     await interaction.editReply({ components: [{ type: 1, components: [
-      autoDeleteButton.setStyle(autoDelete ? ButtonStyle.Secondary : ButtonStyle.Primary),
-      collectChatButton.setStyle(collectChat ? ButtonStyle.Secondary : ButtonStyle.Primary),
+      collectChatButton.setStyle(collectChat ? ButtonStyle.Primary : ButtonStyle.Secondary),
+      autoDeleteButton.setStyle(autoDelete ? ButtonStyle.Primary : ButtonStyle.Secondary),
       deleteButton
     ] }] });
   });
