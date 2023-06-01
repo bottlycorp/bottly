@@ -56,6 +56,8 @@ model Question {
   isFavorite  Boolean @default(false)
   qrCodeUrl   String  @default("")
   favoriteAt  Int     @default(0)
+  webUrls     String[] @default([])
+  history     String[] @default([])
   user        User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
 
@@ -111,6 +113,7 @@ model Message {
 model Tips {
   id                String  @id @default(cuid())
   chatPremiumSaveIt Boolean @default(true)
+  webContextsWarning Boolean @default(true)
   userId            String  @unique
   user              User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }

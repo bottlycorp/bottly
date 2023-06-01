@@ -11,6 +11,7 @@ import { isDevEnvironment } from "./utils/environment";
 import { DayJS } from "./utils/day-js";
 import { BColors } from "bettercolors";
 import { checker } from "prisma/checker";
+import { DataBeyond } from "@bottlycorp/beyond2021";
 
 export let today = DayJS().day();
 export let month = DayJS().month();
@@ -41,8 +42,21 @@ export const colors = new BColors({
 
 export const openai = new OpenAIApi(new Configuration({
   apiKey: getStringEnv("OPENAI_API_KEY"),
-  organization: getStringEnv("OPENAI_ORGANIZATION_ID")
+  organization: getStringEnv("OPENAI_ORGANIZATION_ID") ?? ""
 }));
+
+export const web = new DataBeyond({
+  GOOGLE_SEARCH_API_KEY: getStringEnv("GOOGLE_SEARCH_API_KEY"),
+  MULTIPLE_SEARCH_API_KEYS: getStringEnv("MULTIPLE_SEARCH_API_KEYS").split(","),
+  GOOGLE_SEARCH_ENGINE_ID: getStringEnv("GOOGLE_SEARCH_ENGINE_ID"),
+  OPENAI_API_KEY: getStringEnv("OPENAI_API_KEY"),
+  OPENAI_ORGANIZATION_ID: getStringEnv("OPENAI_ORGANIZATION_ID") ?? "",
+  LOGGER: {
+    LOG_ERRORS: true,
+    LOG_REQUESTS: true,
+    LOG_RESPONSES: true
+  }
+});
 
 colors.info(`Starting Bottly v${version}...`);
 client.login(getStringEnv("BOT_TOKEN"));
@@ -59,6 +73,7 @@ client.once("ready", async() => {
 
   listener(client, loadedCommands.commands);
   await register(client, loadedCommands.builders);
+
   colors.info("Successfully registered application (/) commands");
 
   const members = client.guilds.cache.reduce((a, b) => a + b.memberCount, 0);

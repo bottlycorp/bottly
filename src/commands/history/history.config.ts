@@ -58,6 +58,9 @@ export const history = {
         lineQuestion: {
           "en-US": ":grey_question: **{index}.** {question} - <t:{createdAt}:f>\n"
         },
+        lineQuestionWeb: {
+          "en-US": ":globe_with_meridians: **{index}.** {question} - <t:{createdAt}:f>\n"
+        },
         lineDiscussion: {
           "en-US": ":thought_balloon: **[{index}.]({link})** {title} - <t:{createdAt}:f> `{count} messages`\n"
         },

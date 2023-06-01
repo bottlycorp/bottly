@@ -7,6 +7,7 @@ const preParams: Record<string, string | number | undefined> = {
   emojiDO: "<:thAlways:1101648091372859444>",
   emojiQRC: "<:qrcode:1106941333471494287>",
   emojiDC: "<:thClosed:1101648093960749066>",
+  emojiBeta: "<:BE:1112675130074730596><:TA:1112675126652194927>",
   discordLink: "https://discord.gg/tFUJHr2htA"
 };
 
