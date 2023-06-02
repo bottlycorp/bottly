@@ -13,7 +13,7 @@ import { Prisma } from "@prisma/client";
 
 export const execute: CommandExecute = async(command, user) => {
   const questions = user.questions;
-  const question = command.options.getString(request.options.question.name["en-US"], true) ?? 1;
+  const question = command.options.getString(request.config.options.question.name["en-US"], true) ?? 1;
 
   if (questions == null) {
     command.editReply({ content: "You have no questions" });
@@ -26,7 +26,7 @@ export const execute: CommandExecute = async(command, user) => {
   if (!questionExist) {
     command.editReply({
       embeds: [
-        simpleEmbed(translate(command.locale, request.exec.thisQuestionDoesNotExist), "error", "", {
+        simpleEmbed(translate(command.locale, request.config.exec.thisQuestionDoesNotExist), "error", "", {
           text: command.user.username,
           icon_url: command.user.avatarURL() ?? undefined,
           timestamp: true
@@ -43,7 +43,7 @@ export const execute: CommandExecute = async(command, user) => {
   if (data == null) {
     command.editReply({
       embeds: [
-        simpleEmbed(translate(command.locale, request.exec.thisQuestionDoesNotExist), "error", "", {
+        simpleEmbed(translate(command.locale, request.config.exec.thisQuestionDoesNotExist), "error", "", {
           text: command.user.username,
           icon_url: command.user.avatarURL() ?? undefined,
           timestamp: true
@@ -177,7 +177,7 @@ export const embed = (
   favorite = false
 ): EmbedBuilder => {
   let description = "";
-  description += translate(command.locale, request.exec.question, {
+  description += translate(command.locale, request.config.exec.question, {
     date: data.createdAt,
     date2: data.repliedAt,
     time: answerTime,
@@ -185,19 +185,19 @@ export const embed = (
     guild: data.guildName || "Not defined",
     question: data.question,
     answer: page == 0 ? data.answer : data.history[page - 1] ?? data.answer,
-    favoriteLine: favorite ? translate(command.locale, request.exec.favoriteLine, {
+    favoriteLine: favorite ? translate(command.locale, request.config.exec.favoriteLine, {
       date: data.favoriteAt
     }) : "",
-    regeneratedManyTimes: data.history.length > 0 ? translate(command.locale, request.exec.regeneratedManyTimes, {
+    regeneratedManyTimes: data.history.length > 0 ? translate(command.locale, request.config.exec.regeneratedManyTimes, {
       times: data.history.length
     }) : ""
   });
 
   if (data.webUrls.length > 0) {
     description += "\n\n";
-    description += translate(command.locale, request.exec.linksTitle);
+    description += translate(command.locale, request.config.exec.linksTitle);
     description += "\n";
-    for (const link of data.webUrls) description += translate(command.locale, request.exec.links, { title: link.split("/")[2], url: link });
+    for (const link of data.webUrls) description += translate(command.locale, request.config.exec.links, { title: link.split("/")[2], url: link });
   }
 
   return simpleEmbed(description, "info", "", {

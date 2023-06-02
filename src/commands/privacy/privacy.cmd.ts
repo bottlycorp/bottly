@@ -13,9 +13,9 @@ export const execute: CommandExecute = async(command, user) => {
   let collectChat = user.privacy?.collectChat;
 
   const embed = simpleEmbed(
-    translate(command.locale, privacy.exec.embed.description),
+    translate(command.locale, privacy.config.exec.embed.description),
     "info",
-    translate(command.locale, privacy.exec.embed.title),
+    translate(command.locale, privacy.config.exec.embed.title),
     { text: command.user.username, icon_url: command.user.avatarURL() ?? undefined, timestamp: true }
   );
 
@@ -52,9 +52,9 @@ export const execute: CommandExecute = async(command, user) => {
 
     if (interaction.customId == "delete") {
       await interaction.editReply({ embeds: [simpleEmbed(
-        translate(command.locale, privacy.exec.deleteEmbed.description),
+        translate(command.locale, privacy.config.exec.deleteEmbed.description),
         "error",
-        translate(command.locale, privacy.exec.deleteEmbed.title),
+        translate(command.locale, privacy.config.exec.deleteEmbed.title),
         { text: command.user.username, icon_url: command.user.avatarURL() ?? undefined, timestamp: true }
       )], components: [{ type: 1, components: [yesButton, returnButton] }] });
       return;
@@ -64,13 +64,13 @@ export const execute: CommandExecute = async(command, user) => {
       await prisma.tips.update({ where: { userId: user.userId }, data: { chatPremiumSaveIt: true } });
 
       await interaction.editReply({ embeds: [simpleEmbed(
-        translate(command.locale, privacy.exec.deleted.description, {
+        translate(command.locale, privacy.config.exec.deleted.description, {
           username: command.user.username,
           usage: user.usages?.usage ?? 20,
           usageMax: getMaxUsage(user)
         }),
         "error",
-        translate(command.locale, privacy.exec.deleted.title),
+        translate(command.locale, privacy.config.exec.deleted.title),
         { text: command.user.username, icon_url: command.user.avatarURL() ?? undefined, timestamp: true }
       )], components: [{ type: 1, components: [returnButton2] }] });
       return;

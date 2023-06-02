@@ -6,13 +6,13 @@ import { SlashCommandBuilder, SlashCommandStringOption } from "discord.js";
 export const enableInDev: EnableInDev = true;
 
 export const slashCommand: SlashCommandDefition = new SlashCommandBuilder()
-  .setName(request.name["en-US"])
-  .setDescription(request.description["en-US"])
-  .setDescriptionLocalizations(request.description)
+  .setName(request.config.name["en-US"])
+  .setDescription(request.config.description["en-US"])
+  .setDescriptionLocalizations(request.config.description)
   .setDMPermission(false)
   .addStringOption(new SlashCommandStringOption()
-    .setName(request.options.question.name["en-US"])
-    .setDescription(request.options.question.description["en-US"])
-    .setDescriptionLocalizations(request.options.question.description)
+    .setName(request.config.options.question.name["en-US"])
+    .setDescription(request.config.options.question.description["en-US"])
+    .setDescriptionLocalizations(request.config.options.question.description)
     .setAutocomplete(true)
     .setRequired(true));
