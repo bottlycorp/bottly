@@ -30,6 +30,4 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Run typecheck
-        env:
-          NODE_OPTIONS: "--max_old_space_size=4096"
         run: npm run typecheck
