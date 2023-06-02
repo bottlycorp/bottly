@@ -6,7 +6,7 @@ import { privacy } from "./privacy.config";
 export const enableInDev: EnableInDev = true;
 
 export const slashCommand: SlashCommandDefition = new SlashCommandBuilder()
-  .setName(privacy.config.name["en-US"])
-  .setDescription(privacy.config.description["en-US"])
-  .setDescriptionLocalizations(privacy.config.description)
+  .setName(privacy.name["en-US"])
+  .setDescription(privacy.description["en-US"])
+  .setDescriptionLocalizations(privacy.description)
   .setDMPermission(false);

@@ -8,7 +8,7 @@ import { getStringEnv } from "$core/utils/env-variable";
 import { findCommand } from "$core/utils/handler/command/command";
 
 export const execute: CommandExecute = async(command, user) => {
-  const embed = simpleEmbed("", "premium", translate(command.locale, premium.config.exec.embed.title), {
+  const embed = simpleEmbed("", "premium", translate(command.locale, premium.exec.embed.title), {
     text: command.user.username,
     icon_url: command.user.displayAvatarURL() ?? undefined,
     timestamp: true
@@ -17,13 +17,13 @@ export const execute: CommandExecute = async(command, user) => {
   const buttons: ButtonBuilder[] = [];
 
   if (user.isPremium && user.subscription) {
-    embed.setDescription(translate(command.locale, premium.config.exec.embed.descriptionPremium, {
+    embed.setDescription(translate(command.locale, premium.exec.embed.descriptionPremium, {
       firstF: user.subscription?.firstPayment,
       firstR: user.subscription?.firstPayment,
       next: user.subscription?.nextPayment,
       activeSubscription: user.subscription?.canceledAt == 0
-        ? translate(command.locale, premium.config.exec.embed.activeSubscription, { next: user.subscription?.nextPayment })
-        : translate(command.locale, premium.config.exec.embed.canceledSubscription, {
+        ? translate(command.locale, premium.exec.embed.activeSubscription, { next: user.subscription?.nextPayment })
+        : translate(command.locale, premium.exec.embed.canceledSubscription, {
           cancel: user.subscription?.canceledAt,
           next: user.subscription?.nextPayment
         })
@@ -31,19 +31,19 @@ export const execute: CommandExecute = async(command, user) => {
 
     buttons.push(
       simpleButton(
-        translate(command.locale, premium.config.exec.buttons.manageSubscription),
+        translate(command.locale, premium.exec.buttons.manageSubscription),
         ButtonStyle.Link,
         getStringEnv("STRIPE_MANAGE_LINK")
       )
     );
   } else {
-    embed.setDescription(translate(command.locale, premium.config.exec.embed.descriptionNotPremium, {
+    embed.setDescription(translate(command.locale, premium.exec.embed.descriptionNotPremium, {
       cmdAsk: await findCommand("ask")
     }));
 
     buttons.push(
       simpleButton(
-        translate(command.locale, premium.config.exec.buttons.becomePremium),
+        translate(command.locale, premium.exec.buttons.becomePremium),
         ButtonStyle.Link,
         getStringEnv("STRIPE_PREMIUM_LINK")
       )
