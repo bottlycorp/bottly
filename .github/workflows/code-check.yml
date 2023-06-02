@@ -7,6 +7,11 @@ on:
     types: [opened, synchronize]
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: node:latest
+      options: --memory=4G
   lint:
     name: ESLint
     runs-on: ubuntu-latest
