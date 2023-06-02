@@ -7,11 +7,6 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    container:
-      image: node:latest
-      options: --memory=4G
   lint:
     name: ESLint
     runs-on: ubuntu-latest
@@ -27,6 +22,9 @@ jobs:
   typecheck:
     name: TS Typecheck
     runs-on: ubuntu-latest
+    container:
+      image: node:latest
+      options: --memory=4G
     steps:
       - uses: actions/setup-node@v3
       - uses: actions/checkout@v3
