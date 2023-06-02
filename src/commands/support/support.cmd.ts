@@ -7,16 +7,16 @@ import { ButtonStyle } from "discord.js";
 
 export const execute: CommandExecute = async(command) => {
   const embedImage = simpleEmbed("", "info");
-  embedImage.setImage(translate(command.locale, support.config.imgs));
+  embedImage.setImage(translate(command.locale, support.imgs));
   const embedText = simpleEmbed(
-    translate(command.locale, support.config.exec.embed.description),
+    translate(command.locale, support.exec.embed.description),
     "info",
-    translate(command.locale, support.config.exec.embed.title)
+    translate(command.locale, support.exec.embed.title)
   );
 
   const button = new ButtonBuilder()
     .setStyle(ButtonStyle.Link)
-    .setLabel(translate(command.locale, support.config.buttons.join))
+    .setLabel(translate(command.locale, support.buttons.join))
     .setURL("https://discord.gg/tFUJHr2htA");
 
   command.editReply({
