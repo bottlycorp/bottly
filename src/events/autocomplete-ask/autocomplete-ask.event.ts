@@ -32,7 +32,7 @@ export const execute: EventExecute<"interactionCreate"> = async(interaction: Int
 
     interaction.respond(
       requests.map((question) => ({
-        name: limitString(question.question, 70) + " - " + translate(interaction.locale, request.config.exec.auto, {
+        name: limitString(question.question, 70) + " - " + translate(interaction.locale, request.exec.auto, {
           date: dayjs((question.createdAt * 1000)).format("DD/MM/YYYY HH:mm:ss")
         }),
         value: question.id
