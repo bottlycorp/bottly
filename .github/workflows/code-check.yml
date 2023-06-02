@@ -22,8 +22,6 @@ jobs:
   typecheck:
     name: TS Typecheck
     runs-on: ubuntu-latest
-    env:
-      NODE_OPTIONS: --max-old-space-size=8096
     steps:
       - uses: actions/setup-node@v3
       - uses: actions/checkout@v3
@@ -32,4 +30,6 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Run typecheck
+        env:
+          NODE_OPTIONS: "--max_old_space_size=4096"
         run: npm run typecheck
