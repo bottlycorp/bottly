@@ -23,7 +23,7 @@ jobs:
     name: TS Typecheck
     runs-on: ubuntu-latest
     env:
-      NODE_OPTIONS: --max-old-space-size=4096
+      NODE_OPTIONS: --max-old-space-size=8096
     steps:
       - uses: actions/setup-node@v3
       - uses: actions/checkout@v3
