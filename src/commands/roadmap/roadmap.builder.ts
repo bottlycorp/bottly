@@ -6,7 +6,7 @@ import { SlashCommandBuilder } from "discord.js";
 export const enableInDev: EnableInDev = true;
 
 export const slashCommand: SlashCommandDefition = new SlashCommandBuilder()
-  .setName(roadmap.config.name["en-US"])
-  .setDescription(roadmap.config.description["en-US"])
-  .setDescriptionLocalizations(roadmap.config.description)
+  .setName(roadmap.name["en-US"])
+  .setDescription(roadmap.description["en-US"])
+  .setDescriptionLocalizations(roadmap.description)
   .setDMPermission(false);
