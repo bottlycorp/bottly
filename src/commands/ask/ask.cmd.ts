@@ -289,9 +289,17 @@ export const execute: CommandExecute = async(command, user) => {
             channel.send({
               embeds: [answerPublicEmbed(command, answer, command.options.getString("prompt", true), urls)],
               components: [{ type: 1, components: [simpleButton(translate(command.locale, ask.buttons.knowMore), ButtonStyle.Link, url)] }]
+            }).catch(() => {
+              command.editReply(translate(command.locale, ask.exec.error, {
+                error: "An error occurred while revealing the answer, possibility is a permission error check permissions"
+              }));
             });
           } else {
-            channel.send({ embeds: [answerPublicEmbed(command, answer, command.options.getString("prompt", true), urls)] });
+            channel.send({ embeds: [answerPublicEmbed(command, answer, command.options.getString("prompt", true), urls)] }).catch(() => {
+              command.editReply(translate(command.locale, ask.exec.error, {
+                error: "An error occurred while revealing the answer, possibility is a permission error check permissions"
+              }));
+            });
           }
 
           command.editReply({ embeds: [simpleEmbed(translate(command.locale, ask.buttons.revealed), "info", "")], components: [] });
