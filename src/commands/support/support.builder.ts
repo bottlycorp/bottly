@@ -6,7 +6,7 @@ import { SlashCommandBuilder } from "discord.js";
 export const enableInDev: EnableInDev = true;
 
 export const slashCommand: SlashCommandDefition = new SlashCommandBuilder()
-  .setName(support.config.name["en-US"])
-  .setDescription(support.config.description["en-US"])
-  .setDescriptionLocalizations(support.config.description)
+  .setName(support.name["en-US"])
+  .setDescription(support.description["en-US"])
+  .setDescriptionLocalizations(support.description)
   .setDMPermission(false);
