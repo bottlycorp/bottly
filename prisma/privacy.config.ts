@@ -1,7 +1,6 @@
 import { Command } from "$core/utils/config/message/command/command.type";
 
 export const privacy = {
-  config: {
     exec: {
       buttons: {
         accept: {
@@ -268,5 +267,4 @@ export const privacy = {
         ].join("\n")
       }
     }
-  }
-} satisfies Record<string, Command>;
+} satisfies Command;
