@@ -12,8 +12,8 @@ import { UsageMax } from "@prisma/client";
 
 export const execute: CommandExecute = async(command, user) => {
   const questions = user.questions;
-  const valuePage: number = command.options.getInteger(history.config.options.page.name["en-US"], false) ?? 1;
-  const perPage: number = command.options.getInteger(history.config.options.per.name["en-US"], false) ?? 10;
+  const valuePage: number = command.options.getInteger(history.options.page.name["en-US"], false) ?? 1;
+  const perPage: number = command.options.getInteger(history.options.per.name["en-US"], false) ?? 10;
 
   if (questions == null && user.discussions == null) {
     command.editReply({ content: "You have no questions/discussions, so you can't see your history" });
@@ -31,7 +31,7 @@ export const execute: CommandExecute = async(command, user) => {
       type = user.discussions?.find(d => d.id === final[i].id) as DiscussionIncludeAll;
       lines += translate(
         command.locale,
-        type.title == "default" ? history.config.exec.success.lineDiscussionNoTitle : history.config.exec.success.lineDiscussion,
+        type.title == "default" ? history.exec.success.lineDiscussionNoTitle : history.exec.success.lineDiscussion,
         {
           index: i + 1,
           id: final[i].id,
@@ -43,7 +43,7 @@ export const execute: CommandExecute = async(command, user) => {
       );
     } else {
       type = user.questions?.find(q => q.id === final[i].id) as QuestionIncludeAll;
-      lines += translate(command.locale, history.config.exec.success[type.webUrls.length > 0 ? "lineQuestionWeb" : "lineQuestion"], {
+      lines += translate(command.locale, history.exec.success[type.webUrls.length > 0 ? "lineQuestionWeb" : "lineQuestion"], {
         index: i + 1,
         id: final[i].id,
         question: limitString(type.question, 50),
@@ -53,7 +53,7 @@ export const execute: CommandExecute = async(command, user) => {
   }
 
   if (user.usages?.max !== UsageMax.PREMIUM) {
-    lines += "\n" + translate(command.locale, history.config.exec.success.notPremiumLine, {
+    lines += "\n" + translate(command.locale, history.exec.success.notPremiumLine, {
       left: user?.usages?.usage ?? 0
     }) + "\n";
   }
@@ -63,12 +63,12 @@ export const execute: CommandExecute = async(command, user) => {
   for (const question of questions) if (DayJS(question.createdAt * 1000).isSame(DayJS(), "day")) askedThisDay++;
   for (const chat of user.discussions) if (DayJS(chat.createdAt * 1000).isSame(DayJS(), "day")) chatThisDay++;
 
-  lines += "\n" + translate(command.locale, history.config.exec.success.statsLineQuestions, {
+  lines += "\n" + translate(command.locale, history.exec.success.statsLineQuestions, {
     count: askedThisDay,
     total: questions.length
   }) + "\n";
 
-  lines += translate(command.locale, history.config.exec.success.statsLineDiscussions, {
+  lines += translate(command.locale, history.exec.success.statsLineDiscussions, {
     count: chatThisDay,
     total: user.discussions.length
   });
@@ -76,7 +76,7 @@ export const execute: CommandExecute = async(command, user) => {
   command.editReply({
     embeds: [
       simpleEmbed(lines, "info", "", {
-        text: translate(command.locale, history.config.exec.success.footer, {
+        text: translate(command.locale, history.exec.success.footer, {
           page: valuePage,
           total: Math.ceil(final.length / perPage),
           per: perPage

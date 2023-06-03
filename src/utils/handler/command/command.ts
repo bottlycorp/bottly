@@ -154,7 +154,7 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
     if (missingPermissions && missingPermissions.length > 0) {
       interaction.editReply({
         embeds: [
-          simpleEmbed(translate(interaction.locale, global.config.exec.botPermissionsNotFound, {
+          simpleEmbed(translate(interaction.locale, global.exec.botPermissionsNotFound, {
             permissions: missingPermissions.map((permission) => `\`${permission}\``).join(", ")
           }), "error")
         ]
@@ -172,8 +172,8 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
 
     if (!(channel instanceof TextChannel) && !(channel instanceof ThreadChannel)) {
       interaction.editReply({ embeds: [
-        simpleEmbed(translate(interaction.locale, global.config.exec.error, {
-          error: translate(interaction.locale, global.config.exec.notInATextChannel)
+        simpleEmbed(translate(interaction.locale, global.exec.error, {
+          error: translate(interaction.locale, global.exec.notInATextChannel)
         }), "error")
       ] });
 
@@ -190,13 +190,13 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
     if (!user.privacy?.accepted) {
       const message = await interaction.editReply({
         embeds: [
-          simpleEmbed(translate(interaction.locale, privacy.config.exec.privacyPolicy, {
+          simpleEmbed(translate(interaction.locale, privacy.exec.privacyPolicy, {
             cmdHistory: await findCommand("history"),
             cmdRoadmap: await findCommand("roadmap"),
             cmdPrivacy: await findCommand("privacy"),
             cmdPrivacyDeletion: await findCommand("privacy")
           }), "error"),
-          simpleEmbed(translate(interaction.locale, privacy.config.exec.doYouAccept), "info")
+          simpleEmbed(translate(interaction.locale, privacy.exec.doYouAccept), "info")
         ],
         components: [{
           type: 1,
@@ -215,8 +215,8 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
         if (buttonInteraction.customId === "acceptPrivacy") {
           await updateUser(interaction.user.id, { privacy: { update: { accepted: true, collectChat: true, failed: false } } });
           buttonInteraction.editReply({ embeds: [
-            simpleEmbed(translate(interaction.locale, privacy.config.exec.accepted), "info"),
-            simpleEmbed(translate(interaction.locale, privacy.config.exec.acceptedNotifyExecuted), "success")
+            simpleEmbed(translate(interaction.locale, privacy.exec.accepted), "info"),
+            simpleEmbed(translate(interaction.locale, privacy.exec.acceptedNotifyExecuted), "success")
           ], components: [] });
           accepted = true;
           colors.info(`${userWithId(interaction.user)} accepted the privacy policy`);
@@ -248,8 +248,8 @@ export const listener = async(client: Client<true>, commands: CommandsCollection
 
 export const decrement = (interaction: CommandInteraction, user: UserIncludeAll): boolean => {
   if (limitedUsageCommands.includes(interaction.commandName) && (user?.usages?.usage ?? 0) <= 0) {
-    const embed = simpleEmbed(translate(interaction.locale, global.config.exec.noMoreUsages, { unix: DayJS().endOf("day").unix() }), "error");
-    const premiumEmbed = simpleEmbed(translate(interaction.locale, global.config.exec.orGetPremium), "premium");
+    const embed = simpleEmbed(translate(interaction.locale, global.exec.noMoreUsages, { unix: DayJS().endOf("day").unix() }), "error");
+    const premiumEmbed = simpleEmbed(translate(interaction.locale, global.exec.orGetPremium), "premium");
 
     const embeds: EmbedBuilder[] = [embed];
     const components = [{ type: 1, components: [premiumButton(interaction)] }];

@@ -14,26 +14,26 @@ import { createTranscript } from "discord-html-transcripts";
 export const execute: CommandExecute = async(command, user) => {
   const channel = command.channel;
   if (!(channel instanceof ThreadChannel)) {
-    command.editReply(translate(command.locale, global.config.exec.notInAThread));
+    command.editReply(translate(command.locale, global.exec.notInAThread));
     colors.error(userWithId(command.user) + " tried to stop a discussion while not being in a thread");
     return;
   }
 
   if (!haveActiveDiscussion(user)) {
-    command.editReply(translate(command.locale, chat.config.exec.notHaveActiveDiscussion, { chatTalk: await findCommand("chat", "talk") }));
+    command.editReply(translate(command.locale, chat.exec.notHaveActiveDiscussion, { chatTalk: await findCommand("chat", "talk") }));
     colors.error(userWithId(command.user) + " tried to stop a discussion while not having an active discussion");
     return;
   }
 
   if (!await isTheAuthor(channel.id, command.user.id)) {
-    command.editReply(translate(command.locale, chat.config.exec.notTheAuthor));
+    command.editReply(translate(command.locale, chat.exec.notTheAuthor));
     colors.error(userWithId(command.user) + " tried to stop a discussion while not being the author");
     return;
   }
 
   command.editReply({
     embeds: [
-      simpleEmbed(translate(command.locale, chat.config.exec.stopped, {
+      simpleEmbed(translate(command.locale, chat.exec.stopped, {
         count: user.discussions.find(d => d.active === true)?.count ?? 0
       }), "info", "", {
         text: channel.name,
@@ -48,7 +48,7 @@ export const execute: CommandExecute = async(command, user) => {
 
   if (!user.privacy?.collectChat) {
     await deleteDiscussion(channel.id);
-    channel.send({ embeds: [simpleEmbed(translate(command.locale, chat.config.exec.deletedData, {
+    channel.send({ embeds: [simpleEmbed(translate(command.locale, chat.exec.deletedData, {
       id: command.user.id
     }), "error", "")] });
     colors.info(userWithId(command.user) + " stopped a discussion and deleted the data because he doesn't want to collect his data");
@@ -68,7 +68,7 @@ export const execute: CommandExecute = async(command, user) => {
 
       command.editReply({
         components: [{ type: 1, components: [
-          downloadButton(command, channel.id).setLabel(translate(command.locale, chat.config.buttons.download) + ` (${minutes}m${seconds}s)`)
+          downloadButton(command, channel.id).setLabel(translate(command.locale, chat.buttons.download) + ` (${minutes}m${seconds}s)`)
         ] }]
       });
 
@@ -88,9 +88,9 @@ export const execute: CommandExecute = async(command, user) => {
         await interaction.deferUpdate();
         clearInterval(interval);
 
-        await interaction.editReply({ content: translate(command.locale, chat.config.exec.creatingFile), embeds: [], components: [] });
+        await interaction.editReply({ content: translate(command.locale, chat.exec.creatingFile), embeds: [], components: [] });
         const file = await createTranscript(channel, { saveImages: true, poweredBy: false /** sorry bro 🙏 */ });
-        await interaction.editReply({ content: translate(command.locale, chat.config.exec.createdFile), embeds: [], files: [file] });
+        await interaction.editReply({ content: translate(command.locale, chat.exec.createdFile), embeds: [], files: [file] });
         collector.stop("Downloaded");
       }
     });

@@ -12,7 +12,7 @@ import { ask } from "$core/commands/ask/ask.config";
 
 export const usageButton = (command: CommandInteraction | Interaction, user: UserIncludeAll, reduce = true) : ButtonBuilder => {
   return simpleButton(
-    translate(command.locale, global.config.buttons.usage, {
+    translate(command.locale, global.buttons.usage, {
       left: reduce ? (user?.usages?.usage ?? 1) == 0 ? 0 : (user?.usages?.usage ?? 1) - 1 : (user?.usages?.usage ?? 1),
       max: getMaxUsage(user)
     }),
@@ -25,7 +25,7 @@ export const usageButton = (command: CommandInteraction | Interaction, user: Use
 
 export const revealButton = (command: CommandInteraction | Interaction) : ButtonBuilder => {
   return simpleButton(
-    translate(command.locale, ask.config.buttons.reveal),
+    translate(command.locale, ask.buttons.reveal),
     ButtonStyle.Primary,
     "reveal"
   );
@@ -58,7 +58,7 @@ export const regenerateButton = () : ButtonBuilder => {
 
 export const regenerationButton = (command: CommandInteraction | Interaction) : ButtonBuilder => {
   return simpleButton(
-    translate(command.locale, global.config.buttons.regeneration),
+    translate(command.locale, global.buttons.regeneration),
     ButtonStyle.Secondary,
     "regeneration",
     true,
@@ -68,7 +68,7 @@ export const regenerationButton = (command: CommandInteraction | Interaction) : 
 
 export const premiumButton = (command: CommandInteraction | Interaction) : ButtonBuilder => {
   return simpleButton(
-    translate(command.locale, global.config.buttons.premium),
+    translate(command.locale, global.buttons.premium),
     ButtonStyle.Link,
     getStringEnv("STRIPE_PREMIUM_LINK")
   );
@@ -76,7 +76,7 @@ export const premiumButton = (command: CommandInteraction | Interaction) : Butto
 
 export const voteButton = (command: CommandInteraction | Interaction) : ButtonBuilder => {
   return simpleButton(
-    translate(command.locale, global.config.buttons.vote),
+    translate(command.locale, global.buttons.vote),
     ButtonStyle.Link,
     "https://top.gg/bot/1076862546658738236/vote"
   );
@@ -84,7 +84,7 @@ export const voteButton = (command: CommandInteraction | Interaction) : ButtonBu
 
 export const downloadButton = (command: CommandInteraction | Interaction, id: string) : ButtonBuilder => {
   return simpleButton(
-    translate(command.locale, chat.config.buttons.download),
+    translate(command.locale, chat.buttons.download),
     ButtonStyle.Primary,
     "download_" + id
   );
@@ -92,7 +92,7 @@ export const downloadButton = (command: CommandInteraction | Interaction, id: st
 
 export const hideButton = (command: CommandInteraction | Interaction) : ButtonBuilder => {
   return simpleButton(
-    translate(command.locale, chat.config.buttons.hidePremiumTip),
+    translate(command.locale, chat.buttons.hidePremiumTip),
     ButtonStyle.Primary,
     "hide"
   );
@@ -100,7 +100,7 @@ export const hideButton = (command: CommandInteraction | Interaction) : ButtonBu
 
 export const acceptPrivacy = (command: CommandInteraction | Interaction) : ButtonBuilder => {
   return simpleButton(
-    translate(command.locale, privacy.config.exec.buttons.accept),
+    translate(command.locale, privacy.exec.buttons.accept),
     ButtonStyle.Primary,
     "acceptPrivacy"
   );
@@ -129,7 +129,7 @@ export const buttonsBuilder = (
   const list: ButtonBuilder[] = [];
 
   if (webUrl !== null) {
-    const knowMoreButton = simpleButton(translate(command.locale, ask.config.buttons.knowMore), ButtonStyle.Link, webUrl);
+    const knowMoreButton = simpleButton(translate(command.locale, ask.buttons.knowMore), ButtonStyle.Link, webUrl);
     list.push(disableAll ? knowMoreButton.setDisabled(true) : knowMoreButton);
   }
 

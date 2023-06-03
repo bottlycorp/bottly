@@ -15,19 +15,19 @@ import { hideButton } from "$core/utils/config/buttons";
 export const execute: CommandExecute = async(command, user) => {
   const channel = command.channel;
   if (!(channel instanceof TextChannel)) {
-    command.editReply(translate(command.locale, global.config.exec.notInATextChannel, { chatStart: await findCommand("chat", "talk") }));
+    command.editReply(translate(command.locale, global.exec.notInATextChannel, { chatStart: await findCommand("chat", "talk") }));
     colors.error(userWithId(command.user) + " tried to start a discussion while not being in a text channel");
     return;
   }
 
   if (user.usages?.usage == 0) {
-    command.editReply({ embeds: [simpleEmbed(translate(command.locale, global.config.exec.noMoreUsages), "error")] });
+    command.editReply({ embeds: [simpleEmbed(translate(command.locale, global.exec.noMoreUsages), "error")] });
     colors.error(userWithId(command.user) + " tried to start a discussion but he has no more usages");
     return;
   }
 
   if (haveActiveDiscussion(user)) {
-    command.editReply(translate(command.locale, chat.config.exec.alreadyActiveDiscussion, {
+    command.editReply(translate(command.locale, chat.exec.alreadyActiveDiscussion, {
       chatStop: await findCommand("chat", "stop"),
       thread: user.discussions.find(d => d.active === true)?.channelId ?? "undefined"
     }));
@@ -35,16 +35,16 @@ export const execute: CommandExecute = async(command, user) => {
     return;
   }
 
-  command.editReply({ content: translate(command.locale, chat.config.exec.channelCreating) });
+  command.editReply({ content: translate(command.locale, chat.exec.channelCreating) });
   const privateThread = command.options.getBoolean("private", false) ?? false;
 
   await channel.threads.create({
-    name: translate(command.locale, chat.config.exec.channelTemporaryTitle, { user: command.user.username }),
+    name: translate(command.locale, chat.exec.channelTemporaryTitle, { user: command.user.username }),
     invitable: false,
     autoArchiveDuration: ThreadAutoArchiveDuration.OneHour,
     type: privateThread ? ChannelType.PrivateThread : ChannelType.PublicThread
   }).catch(error => {
-    command.editReply({ content: "", embeds: [simpleEmbed(translate(command.locale, global.config.exec.error, { error: error.message }), "error")] });
+    command.editReply({ content: "", embeds: [simpleEmbed(translate(command.locale, global.exec.error, { error: error.message }), "error")] });
     return;
   }).then(async(thread) => {
     if (!thread) {
@@ -53,8 +53,8 @@ export const execute: CommandExecute = async(command, user) => {
     }
 
     command.editReply({
-      content: translate(command.locale, chat.config.exec.channelCreated, {
-        type: privateThread ? translate(command.locale, chat.config.exec.private) : translate(command.locale, chat.config.exec.public),
+      content: translate(command.locale, chat.exec.channelCreated, {
+        type: privateThread ? translate(command.locale, chat.exec.private) : translate(command.locale, chat.exec.public),
         id: thread.id
       })
     });
@@ -63,11 +63,11 @@ export const execute: CommandExecute = async(command, user) => {
 
     const messageSended = await thread.send({
       embeds: [
-        simpleEmbed(translate(command.locale, chat.config.exec.discussionOpened, {
+        simpleEmbed(translate(command.locale, chat.exec.discussionOpened, {
           chatStop: await findCommand("chat", "stop"),
           history: await findCommand("history")
         })),
-        simpleEmbed(translate(command.locale, user.isPremium ? chat.config.exec.discussionOpenedPremium : chat.config.exec.premiumTip), "premium")
+        simpleEmbed(translate(command.locale, user.isPremium ? chat.exec.discussionOpenedPremium : chat.exec.premiumTip), "premium")
       ],
       components: !user.tips?.chatPremiumSaveIt ? [] : [{ type: 1, components: [hideButton(command)] }]
     });
@@ -84,7 +84,7 @@ export const execute: CommandExecute = async(command, user) => {
         if (interaction.customId === "hide") {
           await interaction.update({
             embeds: [
-              simpleEmbed(translate(command.locale, chat.config.exec.discussionOpened, {
+              simpleEmbed(translate(command.locale, chat.exec.discussionOpened, {
                 chatStop: await findCommand("chat", "stop"),
                 history: await findCommand("history")
               }))
