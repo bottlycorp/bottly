@@ -40,8 +40,7 @@ export const colors = new BColors({
 });
 
 export const openai = new OpenAIApi(new Configuration({
-  apiKey: getStringEnv("OPENAI_API_KEY"),
-  organization: getStringEnv("OPENAI_ORGANIZATION_ID") ?? ""
+  apiKey: getStringEnv("OPENAI_API_KEY")
 }));
 
 export const web = new DataBeyond({
@@ -49,7 +48,7 @@ export const web = new DataBeyond({
   MULTIPLE_SEARCH_API_KEYS: getStringEnv("MULTIPLE_SEARCH_API_KEYS").split(","),
   GOOGLE_SEARCH_ENGINE_ID: getStringEnv("GOOGLE_SEARCH_ENGINE_ID"),
   OPENAI_API_KEY: getStringEnv("OPENAI_API_KEY"),
-  OPENAI_ORGANIZATION_ID: getStringEnv("OPENAI_ORGANIZATION_ID") ?? "",
+  OPENAI_ORGANIZATION_ID: "",
   LOGGER: {
     LOG_ERRORS: true,
     LOG_REQUESTS: true,
