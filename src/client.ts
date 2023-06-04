@@ -52,7 +52,7 @@ export const web = new DataBeyond({
   LOGGER: {
     LOG_ERRORS: true,
     LOG_REQUESTS: true,
-    LOG_RESPONSES: true
+    LOG_RESPONSES: false
   }
 });
 
