@@ -6,8 +6,6 @@ import { version } from "../package.json";
 import { getStringEnv } from "./utils/env-variable";
 import { sep } from "path";
 import { Configuration, OpenAIApi } from "openai";
-import { AutoPoster } from "topgg-autoposter";
-import { isDevEnvironment } from "./utils/environment";
 import { DayJS } from "./utils/day-js";
 import { BColors } from "bettercolors";
 import { DataBeyond } from "@bottlycorp/beyond2021";
@@ -22,14 +20,6 @@ export const client = new DiscordClient({
   ],
   partials: [Partials.Message, Partials.Channel, Partials.Reaction]
 });
-
-if (!isDevEnvironment) {
-  const poster = AutoPoster(getStringEnv("TOPGG_TOKEN"), client);
-
-  poster.on("posted", () => {
-    colors.success("Posted stats to Top.gg!");
-  });
-}
 
 export const colors = new BColors({
   date: {
