@@ -18,8 +18,6 @@ RUN echo "registry=https://npm.pkg.github.com/" >> .npmrc \
   && echo "//npm.pkg.github.com/:_authToken=${AUTH_TOKEN}" >> .npmrc \
   && echo "@bottlycorp:registry=https://npm.pkg.github.com/" >> .npmrc
 
-RUN echo "registry=https://registry.npmjs.org/" >> .npmrc
-  
 RUN npm install
 
 # Copy all files:
