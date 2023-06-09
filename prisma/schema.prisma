@@ -20,23 +20,35 @@ model User {
   subscription Subscription?
   tips         Tips?
   usages       Usage?
+  lists        List[]
+}
+
+model List {
+  id        String     @id @unique @default(cuid())
+  createdAt Int        @default(0)
+  name      String     @default("Not defined")
+  userId    String
+  user      User       @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  Question  Question[]
 }
 
 model Question {
-  id          String  @id @unique @default(cuid())
-  question    String  @default("")
-  answer      String  @default("")
-  createdAt   Int     @default(0)
-  repliedAt   Int     @default(0)
+  id          String   @id @unique @default(cuid())
+  question    String   @default("")
+  answer      String   @default("")
+  createdAt   Int      @default(0)
+  repliedAt   Int      @default(0)
   userId      String
-  channelName String  @default("Not defined")
-  guildName   String  @default("Not defined")
-  isFavorite  Boolean @default(false)
-  qrCodeUrl   String  @default("")
-  favoriteAt  Int     @default(0)
+  channelName String   @default("Not defined")
+  guildName   String   @default("Not defined")
+  isFavorite  Boolean  @default(false)
+  qrCodeUrl   String   @default("")
+  favoriteAt  Int      @default(0)
   webUrls     String[] @default([])
   history     String[] @default([])
-  user        User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  listId      String?
+  list        List?    @relation(fields: [listId], references: [id], onDelete: Cascade)
+  user        User     @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
 
 model Usage {
@@ -89,11 +101,11 @@ model Message {
 }
 
 model Tips {
-  id                String  @id @default(cuid())
-  chatPremiumSaveIt Boolean @default(true)
+  id                 String  @id @default(cuid())
+  chatPremiumSaveIt  Boolean @default(true)
   webContextsWarning Boolean @default(true)
-  userId            String  @unique
-  user              User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  userId             String  @unique
+  user               User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
 
 model Subscription {
