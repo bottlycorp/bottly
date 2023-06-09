@@ -218,5 +218,16 @@ export const list = {
         }
       }
     }
+  },
+  "exec": {
+    "no-lists": {
+      "en-US": "You have not created any question lists yet. Create one with {cmdListCreate} and add questions to it with {cmdListAdd}",
+      fr: "Vous n'avez pour l'instant créer aucune liste de questions. Créez-en une avec {cmdListNew} et ajoutez-y des questions avec {cmdListAdd}",
+      "pt-BR": "Você ainda não criou nenhuma lista de perguntas. Crie uma com {cmdListCreate} e adicione perguntas a ela com {cmdListAdd}",
+      ru: "Вы еще не создали ни одного списка вопросов. Создайте его с помощью {cmdListCreate} и добавьте вопросы в него с помощью {cmdListAdd}",
+      uk: "Ви ще не створили жодного списку питань. Створіть один з {cmdListCreate} та додайте до нього питання з {cmdListAdd}",
+      "es-ES": "Aún no ha creado ninguna lista de preguntas. Cree uno con {cmdListCreate} y agregue preguntas a él con {cmdListAdd}",
+      de: "Sie haben noch keine Fragenlisten erstellt. Erstellen Sie eine mit {cmdListCreate} und fügen Sie Fragen mit {cmdListAdd} hinzu"
+    }
   }
 } satisfies Command;

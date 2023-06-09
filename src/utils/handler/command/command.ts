@@ -271,8 +271,8 @@ export const register = async(client: Client, commandsBuilder: CommandsBuilderCo
   }
 };
 
-export type Commands = "ask" | "chat" | "history" | "roadmap" | "request" | "privacy" | "support" | "premium";
-export type SubCommands = "stop" | "talk" | "download";
+export type Commands = "ask" | "chat" | "history" | "roadmap" | "request" | "privacy" | "support" | "premium" | "list";
+export type SubCommands = "stop" | "talk" | "download" | "create" | "delete" | "remove" | "add" | "list" | "lists" | "rename";
 
 export const findCommand = async(cmd: Commands, subCommand?: SubCommands): Promise<string> => {
   const commands = await client.application?.commands.fetch();
