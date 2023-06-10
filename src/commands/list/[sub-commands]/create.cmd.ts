@@ -16,21 +16,27 @@ export const execute: CommandExecute = async(command, user) => {
   }
 
   await createList(user, name);
+  const questions = user.questions
+    .filter(question => !question.listId)
+    .map(question => ({
+      label: limitString(question.question, 60),
+      value: question.id,
+      description: limitString(question.answer, 60)
+    }));
+
+  if (questions.length === 0) {
+    command.editReply({ embeds: [simpleEmbed(translate(command.locale, list.exec["list-create"]["no-questions"], {
+      cmdAsk: await findCommand("ask")
+    }), "error")] });
+    return;
+  }
 
   const select = new SelectMenuBuilder()
     .setCustomId("choose-question")
     .setPlaceholder(translate(command.locale, list.exec["list-create"]["select-choose-placeholder"], { name: name }))
     .setMinValues(1)
     .setMaxValues(user.questions.length - user.questions.filter(question => question.listId).length)
-    .addOptions(
-      user.questions
-        .filter(question => !question.listId)
-        .map(question => ({
-          label: limitString(question.question, 60),
-          value: question.id,
-          description: limitString(question.answer, 60)
-        }))
-    );
+    .addOptions(questions);
 
   const message = await command.editReply({
     embeds: [simpleEmbed(translate(command.locale, list.exec["list-create"]["created"], {

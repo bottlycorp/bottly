@@ -257,6 +257,15 @@ export const list = {
         "es-ES": "Ha creado con éxito la lista `{name}`, ahora elija preguntas para agregar a ella en el menú a continuación",
         de: "Sie haben die Liste `{name}` erfolgreich erstellt. Wählen Sie nun Fragen aus, die Sie im folgenden Menü hinzufügen möchten"
       },
+      "no-questions": {
+        "en-US": "You have not added any questions to the list yet. Add some with {cmdListAdd}",
+        fr: "Toutes vos questions ont déjà été ajoutés à une liste, vous pouvez poser une nouvelle question avec {cmdAsk}",
+        "pt-BR": "Você ainda não adicionou nenhuma pergunta à lista. Adicione algumas com {cmdListAdd}",
+        ru: "Вы еще не добавили вопросы в список. Добавьте некоторые с помощью {cmdListAdd}",
+        uk: "Ви ще не додали жодного питання до списку. Додайте деякі з {cmdListAdd}",
+        "es-ES": "Aún no ha agregado ninguna pregunta a la lista. Agregue algunos con {cmdListAdd}",
+        de: "Sie haben noch keine Fragen zur Liste hinzugefügt. Fügen Sie einige mit {cmdListAdd} hinzu"
+      },
       "added": {
         "en-US": "You have successfully added `{count}` question(s) to the list `{name}`",
         fr: "Vous avez ajouté avec succès `{count}` question(s) à la liste `{name}`",
@@ -265,6 +274,35 @@ export const list = {
         uk: "Ви успішно додали `{count}` питання(ь) до списку `{name}`",
         "es-ES": "Ha agregado con éxito `{count}` pregunta(s) a la lista `{name}`",
         de: "Sie haben `{count}` Frage(n) erfolgreich zur Liste `{name}` hinzugefügt"
+      }
+    },
+    "lists": {
+      "title": {
+        "en-US": "Question Lists",
+        fr: "Listes de questions",
+        "pt-BR": "Listas de perguntas",
+        ru: "Списки вопросов",
+        uk: "Списки питань",
+        "es-ES": "Listas de preguntas",
+        de: "Fragenlisten"
+      },
+      "list": {
+        "en-US": "List `{name}`",
+        fr: "Liste `{name}`",
+        "pt-BR": "Lista `{name}`",
+        ru: "Список `{name}`",
+        uk: "Список `{name}`",
+        "es-ES": "Lista `{name}`",
+        de: "Liste `{name}`"
+      },
+      "list_line": {
+        "en-US": "{name} ({count} questions)",
+        fr: "{name} ({count} questions)",
+        "pt-BR": "{name} ({count} perguntas)",
+        ru: "{name} ({count} вопросов)",
+        uk: "{name} ({count} питань)",
+        "es-ES": "{name} ({count} preguntas)",
+        de: "{name} ({count} Fragen)"
       }
     },
     "list-renamed": {
