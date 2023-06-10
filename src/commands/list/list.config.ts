@@ -228,6 +228,89 @@ export const list = {
       uk: "Ви ще не створили жодного списку питань. Створіть один з {cmdListCreate} та додайте до нього питання з {cmdListAdd}",
       "es-ES": "Aún no ha creado ninguna lista de preguntas. Cree uno con {cmdListCreate} y agregue preguntas a él con {cmdListAdd}",
       de: "Sie haben noch keine Fragenlisten erstellt. Erstellen Sie eine mit {cmdListCreate} und fügen Sie Fragen mit {cmdListAdd} hinzu"
+    },
+    "list-create": {
+      "select-choose-placeholder": {
+        "en-US": "Select a question to add to the list",
+        fr: "Sélectionnez une question à ajouter à la liste",
+        "pt-BR": "Selecione uma pergunta para adicionar à lista",
+        ru: "Выберите вопрос для добавления в список",
+        uk: "Виберіть питання для додавання до списку",
+        "es-ES": "Seleccione una pregunta para agregar a la lista",
+        de: "Wählen Sie eine Frage aus, die Sie der Liste hinzufügen möchten"
+      },
+      "already-exists": {
+        "en-US": "A list with the name `{name}` already exists",
+        fr: "Une liste avec le nom `{name}` existe déjà",
+        "pt-BR": "Uma lista com o nome `{name}` já existe",
+        ru: "Список с названием `{name}` уже существует",
+        uk: "Список з назвою `{name}` вже існує",
+        "es-ES": "Ya existe una lista con el nombre `{name}`",
+        de: "Eine Liste mit dem Namen `{name}` existiert bereits"
+      },
+      "created": {
+        "en-US": "You have successfully created the list `{name}`, now choose questions to add to it via the menu below",
+        fr: "Vous avez créé avec succès la liste `{name}`, choisissez maintenant des questions à y ajouter via le menu ci-dessous",
+        "pt-BR": "Você criou com sucesso a lista `{name}`, agora escolha perguntas para adicionar a ela no menu abaixo",
+        ru: "Вы успешно создали список `{name}`, теперь выберите вопросы для добавления в него в меню ниже",
+        uk: "Ви успішно створили список `{name}`, тепер виберіть питання для додавання до нього в меню нижче",
+        "es-ES": "Ha creado con éxito la lista `{name}`, ahora elija preguntas para agregar a ella en el menú a continuación",
+        de: "Sie haben die Liste `{name}` erfolgreich erstellt. Wählen Sie nun Fragen aus, die Sie im folgenden Menü hinzufügen möchten"
+      },
+      "added": {
+        "en-US": "You have successfully added `{count}` question(s) to the list `{name}`",
+        fr: "Vous avez ajouté avec succès `{count}` question(s) à la liste `{name}`",
+        "pt-BR": "Você adicionou com sucesso `{count}` pergunta(s) à lista `{name}`",
+        ru: "Вы успешно добавили `{count}` вопрос(ов) в список `{name}`",
+        uk: "Ви успішно додали `{count}` питання(ь) до списку `{name}`",
+        "es-ES": "Ha agregado con éxito `{count}` pregunta(s) a la lista `{name}`",
+        de: "Sie haben `{count}` Frage(n) erfolgreich zur Liste `{name}` hinzugefügt"
+      }
+    },
+    "list-renamed": {
+      "en-US": "You've successfully renamed the list `{name}` to `{newname}`",
+      fr: "Vous avez renommé avec succès la liste `{name}` en `{newname}`",
+      "pt-BR": "Você renomeou com sucesso a lista `{name}` para `{newname}`",
+      ru: "Вы успешно переименовали список `{name}` в `{newname}`",
+      uk: "Ви успішно перейменували список `{name}` в `{newname}`",
+      "es-ES": "Ha cambiado el nombre de la lista `{name}` a `{newname}`",
+      de: "Sie haben die Liste `{name}` erfolgreich in `{newname}` umbenannt"
+    },
+    "list-deleted": {
+      "en-US": "You've successfully deleted the list `{name}`",
+      fr: "Vous avez supprimé avec succès la liste `{name}`",
+      "pt-BR": "Você excluiu com sucesso a lista `{name}`",
+      ru: "Вы успешно удалили список `{name}`",
+      uk: "Ви успішно видалили список `{name}`",
+      "es-ES": "Ha eliminado con éxito la lista `{name}`",
+      de: "Sie haben die Liste `{name}` erfolgreich gelöscht"
+    },
+    "list-added": {
+      "en-US": "You've successfully added the question `{question}` to the list `{name}`",
+      fr: "Vous avez ajouté avec succès la question `{question}` à la liste `{name}`",
+      "pt-BR": "Você adicionou com sucesso a pergunta `{question}` à lista `{name}`",
+      ru: "Вы успешно добавили вопрос `{question}` в список `{name}`",
+      uk: "Ви успішно додали питання `{question}` до списку `{name}`",
+      "es-ES": "Ha agregado con éxito la pregunta `{question}` a la lista `{name}`",
+      de: "Sie haben die Frage `{question}` erfolgreich der Liste `{name}` hinzugefügt"
+    },
+    "list-removed": {
+      "en-US": "You've successfully removed the question `{question}` from the list `{name}`",
+      fr: "Vous avez supprimé avec succès la question `{question}` de la liste `{name}`",
+      "pt-BR": "Você removeu com sucesso a pergunta `{question}` da lista `{name}`",
+      ru: "Вы успешно удалили вопрос `{question}` из списка `{name}`",
+      uk: "Ви успішно видалили питання `{question}` зі списку `{name}`",
+      "es-ES": "Ha eliminado con éxito la pregunta `{question}` de la lista `{name}`",
+      de: "Sie haben die Frage `{question}` erfolgreich aus der Liste `{name}` entfernt"
+    },
+    "list-cleared": {
+      "en-US": "You've successfully cleared the list `{name}`",
+      fr: "Vous avez vidé avec succès la liste `{name}`",
+      "pt-BR": "Você limpou com sucesso a lista `{name}`",
+      ru: "Вы успешно очистили список `{name}`",
+      uk: "Ви успішно очистили список `{name}`",
+      "es-ES": "Ha limpiado con éxito la lista `{name}`",
+      de: "Sie haben die Liste `{name}` erfolgreich geleert"
     }
   }
 } satisfies Command;

@@ -29,7 +29,7 @@ model List {
   name      String     @default("Not defined")
   userId    String
   user      User       @relation(fields: [userId], references: [userId], onDelete: Cascade)
-  Question  Question[]
+  questions Question[]
 }
 
 model Question {
