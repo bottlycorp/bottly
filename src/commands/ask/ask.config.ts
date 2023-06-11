@@ -114,6 +114,24 @@ export const ask = {
     success: {
       "en-US": "{response}"
     },
+    listPlaceholder: {
+      "en-US": "Choose the list where the question will be added",
+      fr: "Choisissez la liste où la question sera ajoutée",
+      "pt-BR": "Escolha a lista onde a pergunta será adicionada",
+      ru: "Выберите список, в который будет добавлен вопрос",
+      uk: "Виберіть список, в який буде додано питання",
+      "es-ES": "Elija la lista donde se agregará la pregunta",
+      de: "Wählen Sie die Liste aus, in der die Frage hinzugefügt werden soll"
+    },
+    listPlaceholderDescription: {
+      "en-US": "Actually {count} questions",
+      fr: "Actuellement {count} questions",
+      "pt-BR": "Atualmente {count} perguntas",
+      ru: "На самом деле {count} вопросов",
+      uk: "Насправді {count} питань",
+      "es-ES": "Actualmente {count} preguntas",
+      de: "Eigentlich {count} Fragen"
+    },
     linksTitle: {
       "en-US": "{emojiBeta} Answer generated based on these links:",
       fr: "{emojiBeta} Réponse générée à partir de ces liens :",

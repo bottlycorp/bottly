@@ -15,15 +15,16 @@ import { limitString, userWithId } from "$core/utils/function";
 import { QuestionIncludeAll, getQuestion, newQuestion, updateQuestion } from "$core/utils/data/question";
 import { getPrompt } from "@bottlycorp/prompts";
 import { simpleButton, simpleEmbed } from "$core/utils/embed";
-import { buttonsBuilder, favoriteButton, qrCodeButton, regenerateButton, revealButton, usageButton } from "$core/utils/config/buttons";
+import { buttonsBuilder, favoriteButton, listButton, qrCodeButton, regenerateButton, revealButton, usageButton } from "$core/utils/config/buttons";
 import { updateUser } from "$core/utils/data/user";
 import { DayJS } from "$core/utils/day-js";
 import { supabase } from "$core/utils/supabase";
 import { getLocale } from "$core/utils/locale";
 import { decode } from "base64-arraybuffer";
-import { EmbedBuilder } from "@discordjs/builders";
+import { EmbedBuilder, SelectMenuBuilder } from "@discordjs/builders";
 import { existAskCooldown, setAskCooldown } from "$core/utils/cache";
 import QRCode from "qrcode";
+import { addQuestionToList, removeQuestionFromList } from "$core/utils/data/list";
 
 export const execute: CommandExecute = async(command, user) => {
   const web = command.options.getBoolean("web", false) ?? false;
@@ -68,6 +69,8 @@ export const execute: CommandExecute = async(command, user) => {
   let favorited = false;
   let regenerated = 0;
   let regeneratedLocked = false;
+  let addedToList = false;
+  let listId: string;
 
   const messages: { content: string; role: "user" | "system" | "assistant" }[] = [];
 
@@ -145,7 +148,8 @@ export const execute: CommandExecute = async(command, user) => {
         usageButton(command, user),
         favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
         regenerateButton(),
-        qrCodeButton()
+        qrCodeButton(),
+        listButton(command, addedToList)
       )
     });
 
@@ -175,27 +179,11 @@ export const execute: CommandExecute = async(command, user) => {
           revealButton(command),
           usageButton(command, user),
           favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
-          regenerateButton().setDisabled(true),
-          qrCodeButton()
+          regenerateButton(),
+          qrCodeButton(),
+          listButton(command, addedToList)
         )
       });
-
-      setTimeout(() => {
-        command.editReply({
-          embeds: [answerEmbed(command, answer, urls)],
-          components: buttonsBuilder(
-            url ?? null,
-            command,
-            false,
-            null,
-            revealButton(command),
-            usageButton(command, user),
-            favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
-            regenerateButton().setDisabled(regeneratedLocked),
-            qrCodeButton()
-          )
-        });
-      }, web ? 3000 : 2500);
     } catch (error: any) {
       command.editReply(translate(command.locale, ask.exec.error, { error: error.message }));
       return;
@@ -214,7 +202,8 @@ export const execute: CommandExecute = async(command, user) => {
       usageButton(command, user),
       favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary).setDisabled(true),
       regenerateButton().setDisabled(regeneratedLocked),
-      qrCodeButton()
+      qrCodeButton(),
+      listButton(command, addedToList)
     ) });
 
     favorited = !favorited;
@@ -231,7 +220,8 @@ export const execute: CommandExecute = async(command, user) => {
       usageButton(command, user),
       favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
       regenerateButton().setDisabled(regeneratedLocked),
-      qrCodeButton()
+      qrCodeButton(),
+      listButton(command, addedToList)
     ) });
   };
 
@@ -276,6 +266,62 @@ export const execute: CommandExecute = async(command, user) => {
         )
       ],
       components: [{ type: 1, components: [simpleButton(undefined, ButtonStyle.Primary, "return", false, { name: "🔙" })] }]
+    });
+  };
+
+  const handleListButtonToggle = async(): Promise<void> => {
+    const message = await command.editReply({ components: [{
+      type: 1,
+      components: [
+        new SelectMenuBuilder()
+          .setCustomId("list")
+          .setPlaceholder(translate(command.locale, ask.exec.listPlaceholder))
+          .addOptions(
+            user.lists.map((list) => ({
+              label: list.name,
+              value: list.id,
+              description: translate(
+                command.locale,
+                ask.exec.listPlaceholderDescription,
+                { count: user.questions.filter((q) => q.listId == list.id).length }
+              )
+            }))
+          )
+      ]
+    }] });
+
+    const collector = message.createMessageComponentCollector({ filter: (i) => i.user.id == command.user.id, time: 30000 });
+    if (!collector) return;
+
+    collector.on("collect", async(i) => {
+      if (!i.isAnySelectMenu()) return;
+
+      if (i.customId == "list") {
+        const listSelected = i.values[0];
+        const list = user.lists.find((l) => l.id == listSelected);
+        listId = listSelected;
+        if (!list) return;
+
+        addedToList = !addedToList;
+        await addQuestionToList(listSelected, [question.id]);
+
+        command.editReply({
+          components: buttonsBuilder(
+            url ?? null,
+            command,
+            false,
+            null,
+            revealButton(command),
+            usageButton(command, user),
+            favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
+            regenerateButton().setDisabled(regeneratedLocked),
+            qrCodeButton(),
+            listButton(command, true)
+          )
+        });
+
+        collector.stop();
+      }
     });
   };
 
@@ -333,7 +379,8 @@ export const execute: CommandExecute = async(command, user) => {
             usageButton(command, user),
             favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
             regenerateButton().setDisabled(regeneratedLocked),
-            qrCodeButton()
+            qrCodeButton(),
+            listButton(command, addedToList)
           ) });
           return;
         }
@@ -350,6 +397,29 @@ export const execute: CommandExecute = async(command, user) => {
             usageButton(command, user),
             favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
             regenerateButton().setDisabled(regeneratedLocked),
+            listButton(command, addedToList)
+          )
+        });
+        break;
+      case "list":
+        await handleListButtonToggle();
+        break;
+      case "cancelList":
+        addedToList = false;
+        await removeQuestionFromList(listId, [question.id]);
+
+        command.editReply({
+          components: buttonsBuilder(
+            url ?? null,
+            command,
+            false,
+            null,
+            revealButton(command),
+            usageButton(command, user),
+            favoriteButton().setStyle(favorited ? ButtonStyle.Primary : ButtonStyle.Secondary),
+            regenerateButton().setDisabled(regeneratedLocked),
+            qrCodeButton(),
+            listButton(command, addedToList)
           )
         });
         break;
