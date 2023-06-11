@@ -23,10 +23,6 @@ export const execute: CommandExecute = async(command, user) => {
     return;
   }
 
-  // log only ids
-  console.log(user.questions.map(question => question.id));
-  console.log(questionToAdd);
-
   const question = user.questions.find(question => question.id === questionToAdd && question.listId == null);
   if (!question) {
     command.editReply({ embeds: [simpleEmbed(translate(command.locale, list.exec["add"]["not-found"], {
