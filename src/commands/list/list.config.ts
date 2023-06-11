@@ -205,7 +205,7 @@ export const list = {
           }
         },
         newname: {
-          name: { "en-US": "newname" },
+          name: { "en-US": "new-name" },
           description: {
             "en-US": "The new name of the list",
             fr: "Le nouveau nom de la liste",
@@ -222,12 +222,24 @@ export const list = {
   "exec": {
     "no-lists": {
       "en-US": "You have not created any question lists yet. Create one with {cmdListCreate} and add questions to it with {cmdListAdd}",
-      fr: "Vous n'avez pour l'instant créer aucune liste de questions. Créez-en une avec {cmdListNew} et ajoutez-y des questions avec {cmdListAdd}",
+      fr: [
+        "Vous n'avez pour l'instant créer aucune liste de questions. Créez-en une avec {cmdListCreate}",
+        "et ajoutez-y des questions avec {cmdListAdd}"
+      ].join(" "),
       "pt-BR": "Você ainda não criou nenhuma lista de perguntas. Crie uma com {cmdListCreate} e adicione perguntas a ela com {cmdListAdd}",
       ru: "Вы еще не создали ни одного списка вопросов. Создайте его с помощью {cmdListCreate} и добавьте вопросы в него с помощью {cmdListAdd}",
       uk: "Ви ще не створили жодного списку питань. Створіть один з {cmdListCreate} та додайте до нього питання з {cmdListAdd}",
       "es-ES": "Aún no ha creado ninguna lista de preguntas. Cree uno con {cmdListCreate} y agregue preguntas a él con {cmdListAdd}",
       de: "Sie haben noch keine Fragenlisten erstellt. Erstellen Sie eine mit {cmdListCreate} und fügen Sie Fragen mit {cmdListAdd} hinzu"
+    },
+    "not-found": {
+      "en-US": "The list name `{name}` was not found, you can create it with {cmdListCreate}",
+      fr: "Le nom de liste `{name}` n'a pas été trouvé, vous pouvez la créer avec {cmdListCreate}",
+      "pt-BR": "O nome da lista `{name}` não foi encontrado, você pode criá-lo com {cmdListCreate}",
+      ru: "Список с названием `{name}` не найден, вы можете создать его с помощью {cmdListCreate}",
+      uk: "Список з назвою `{name}` не знайдено, ви можете створити його з {cmdListCreate}",
+      "es-ES": "No se encontró el nombre de la lista `{name}`, puede crearlo con {cmdListCreate}",
+      de: "Der Listenname `{name}` wurde nicht gefunden. Sie können es mit {cmdListCreate} erstellen"
     },
     "list-create": {
       "select-choose-placeholder": {
@@ -274,6 +286,44 @@ export const list = {
         uk: "Ви успішно додали `{count}` питання(ь) до списку `{name}`",
         "es-ES": "Ha agregado con éxito `{count}` pregunta(s) a la lista `{name}`",
         de: "Sie haben `{count}` Frage(n) erfolgreich zur Liste `{name}` hinzugefügt"
+      },
+      "limit": {
+        "en-US": "You have reached the maximum number of lists allowed ({limit}), delete one with {cmdListDelete} before creating a new one",
+        fr: "Vous avez le nombre maximum de listes autorisées ({limit}), supprimez-en une avec {cmdListDelete} avant d'en créer une nouvelle",
+        "pt-BR": "Você tem o número máximo de listas permitidas ({limit}), exclua uma com {cmdListDelete} antes de criar uma nova",
+        ru: "Вы достигли максимального количества списков ({limit}), удалите один с помощью {cmdListDelete} перед созданием нового",
+        uk: "Ви досягли максимальної кількості списків ({limit}), видаліть один з {cmdListDelete} перед створенням нового",
+        "es-ES": "Ha alcanzado el número máximo de listas permitidas ({limit}), elimine una con {cmdListDelete} antes de crear una nueva",
+        de: "Sie haben die maximale Anzahl von Listen erreicht ({limit}). Löschen Sie eine mit {cmdListDelete}, bevor Sie eine neue erstellen"
+      }
+    },
+    "rename": {
+      "already-exists": {
+        "en-US": "You can't rename the list `{name}` to `{newName}` because a list with that name already exists",
+        fr: "Vous ne pouvez pas renommer la liste `{name}` en `{newName}` car une liste avec ce nom existe déjà",
+        "pt-BR": "Você não pode renomear a lista `{name}` para `{newName}` porque uma lista com esse nome já existe",
+        ru: "Вы не можете переименовать список `{name}` в `{newName}`, потому что список с таким именем уже существует",
+        uk: "Ви не можете перейменувати список `{name}` в `{newName}`, оскільки список з такою назвою вже існує",
+        "es-ES": "No puede cambiar el nombre de la lista `{name}` a `{newName}` porque ya existe una lista con ese nombre",
+        de: "Sie können die Liste `{name}` nicht in `{newName}` umbenennen, da bereits eine Liste mit diesem Namen existiert"
+      },
+      "renamed": {
+        "en-US": "You have successfully renamed the list `{name}` to `{newName}`",
+        fr: "Vous avez renommé avec succès la liste `{name}` en `{newName}`",
+        "pt-BR": "Você renomeou com sucesso a lista `{name}` para `{newName}`",
+        ru: "Вы успешно переименовали список `{name}` в `{newName}`",
+        uk: "Ви успішно перейменували список `{name}` в `{newName}`",
+        "es-ES": "Ha cambiado el nombre de la lista `{name}` a `{newName}`",
+        de: "Sie haben die Liste `{name}` erfolgreich in `{newName}` umbenannt"
+      },
+      "not-found": {
+        "en-US": "You don't have a list with the name `{name}`",
+        fr: "Vous n'avez pas de liste avec le nom `{name}`",
+        "pt-BR": "Você não tem uma lista com o nome `{name}`",
+        ru: "У вас нет списка с именем `{name}`",
+        uk: "У вас немає списку з назвою `{name}`",
+        "es-ES": "No tiene una lista con el nombre `{name}`",
+        de: "Sie haben keine Liste mit dem Namen `{name}`"
       }
     },
     "lists": {
@@ -303,6 +353,26 @@ export const list = {
         uk: "{name} ({count} питань)",
         "es-ES": "{name} ({count} preguntas)",
         de: "{name} ({count} Fragen)"
+      }
+    },
+    "add": {
+      "added": {
+        "en-US": "You've successfully added the question `{question}` to the list `{name}`",
+        fr: "Vous avez ajouté avec succès la question `{question}` à la liste `{name}`",
+        "pt-BR": "Você adicionou com sucesso a pergunta `{question}` à lista `{name}`",
+        ru: "Вы успешно добавили вопрос `{question}` в список `{name}`",
+        uk: "Ви успішно додали питання `{question}` до списку `{name}`",
+        "es-ES": "Ha agregado con éxito la pregunta `{question}` a la lista `{name}`",
+        de: "Sie haben die Frage `{question}` erfolgreich der Liste `{name}` hinzugefügt"
+      },
+      "not-found": {
+        "en-US": "The question `{question}` was not found",
+        fr: "La question `{question}` n'a pas été trouvée",
+        "pt-BR": "A pergunta `{question}` não foi encontrada",
+        ru: "Вопрос `{question}` не найден",
+        uk: "Питання `{question}` не знайдено",
+        "es-ES": "No se encontró la pregunta `{question}`",
+        de: "Die Frage `{question}` wurde nicht gefunden"
       }
     },
     "list-renamed": {
@@ -341,14 +411,23 @@ export const list = {
       "es-ES": "Ha eliminado con éxito la pregunta `{question}` de la lista `{name}`",
       de: "Sie haben die Frage `{question}` erfolgreich aus der Liste `{name}` entfernt"
     },
-    "list-cleared": {
-      "en-US": "You've successfully cleared the list `{name}`",
-      fr: "Vous avez vidé avec succès la liste `{name}`",
-      "pt-BR": "Você limpou com sucesso a lista `{name}`",
-      ru: "Вы успешно очистили список `{name}`",
-      uk: "Ви успішно очистили список `{name}`",
-      "es-ES": "Ha limpiado con éxito la lista `{name}`",
-      de: "Sie haben die Liste `{name}` erfolgreich geleert"
+    "question-not-exist": {
+      "en-US": "The question `{question}` does not exist, ou n'est pas dans la liste `{list}`",
+      fr: "La question `{question}` n'existe pas, ou n'est pas dans la liste `{list}`",
+      "pt-BR": "A pergunta `{question}` não existe, ou não está na lista `{list}`",
+      ru: "Вопрос `{question}` не существует или не находится в списке `{list}`",
+      uk: "Питання `{question}` не існує або не знаходиться в списку `{list}`",
+      "es-ES": "La pregunta `{question}` no existe, o no está en la lista `{list}`",
+      de: "Die Frage `{question}` existiert nicht oder ist nicht in der Liste `{list}`"
+    },
+    "need-choose-list": {
+      "en-US": "You need to choose a list",
+      fr: "Vous devez choisir une liste",
+      "pt-BR": "Você precisa escolher uma lista",
+      ru: "Вам нужно выбрать список",
+      uk: "Вам потрібно вибрати список",
+      "es-ES": "Necesitas elegir una lista",
+      de: "Sie müssen eine Liste auswählen"
     }
   }
 } satisfies Command;

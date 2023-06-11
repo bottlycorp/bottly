@@ -31,6 +31,24 @@ export const global = {
       uk: "Відновлення в процесі",
       "es-ES": "Regeneración en progreso",
       de: "Regeneration im Gange"
+    },
+    list: {
+      "en-US": "Add to a list",
+      fr: "Ajouter à une liste",
+      "pt-BR": "Adicionar a uma lista",
+      ru: "Добавить в список",
+      uk: "Додати до списку",
+      "es-ES": "Agregar a una lista",
+      de: "Zu einer Liste hinzufügen"
+    },
+    cancelList: {
+      "en-US": "Remove from list",
+      fr: "Retirer de la liste",
+      "pt-BR": "Remover da lista",
+      ru: "Удалить из списка",
+      uk: "Видалити зі списку",
+      "es-ES": "Eliminar de la lista",
+      de: "Aus Liste entfernen"
     }
   },
   exec: {

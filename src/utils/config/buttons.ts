@@ -106,6 +106,14 @@ export const acceptPrivacy = (command: CommandInteraction | Interaction) : Butto
   );
 };
 
+export const listButton = (command: CommandInteraction | Interaction, added: boolean) : ButtonBuilder => {
+  return simpleButton(
+    translate(command.locale, added ? global.buttons.cancelList : global.buttons.list),
+    added ? ButtonStyle.Primary : ButtonStyle.Secondary,
+    added ? "cancelList" : "list"
+  );
+};
+
 export type Row = {
   type: number;
   components: ButtonBuilder[];
@@ -139,7 +147,6 @@ export const buttonsBuilder = (
 
   const rows: Row[] = [];
   if (max !== null) {
-    // if the first row lenght is same as row1max exemple then we can add to the next row
     if (list.length > 0) {
       const row1: ButtonBuilder[] = [];
       const row2: ButtonBuilder[] = [];
