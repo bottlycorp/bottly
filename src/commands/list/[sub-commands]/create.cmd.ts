@@ -6,16 +6,26 @@ import { SelectMenuBuilder } from "@discordjs/builders";
 import { list } from "../list.config";
 import { limitString } from "$core/utils/function";
 import { addQuestionToList, createList } from "$core/utils/data/list";
+import { premiumButton } from "$core/utils/config/buttons";
 
 export const execute: CommandExecute = async(command, user) => {
   const name = command.options.getString("name", true);
 
-  if (user.lists.find(list => list.name === name)) {
-    command.editReply({ embeds: [simpleEmbed(translate(command.locale, list.exec["list-create"]["already-exists"], { name: name }), "error")] });
+  if (user.lists.length >= 10 && !user.isPremium) {
+    command.editReply({ embeds: [simpleEmbed(translate(command.locale, list.exec["list-create"]["limit"], {
+      limit: 10,
+      cmdListDelete: await findCommand("list", "delete")
+    }), "error")], components: [{ type: 1, components: [premiumButton(command)] }] });
+    return;
+  } else if (user.lists.length >= 20) {
+    command.editReply({ embeds: [simpleEmbed(translate(command.locale, list.exec["list-create"]["limit"], {
+      limit: 20,
+      cmdListDelete: await findCommand("list", "delete")
+    }), "error")] });
     return;
   }
 
-  await createList(user, name);
+  const listId = await createList(user, name);
   const questions = user.questions
     .filter(question => !question.listId)
     .map(question => ({
@@ -28,6 +38,11 @@ export const execute: CommandExecute = async(command, user) => {
     command.editReply({ embeds: [simpleEmbed(translate(command.locale, list.exec["list-create"]["no-questions"], {
       cmdAsk: await findCommand("ask")
     }), "error")] });
+    return;
+  }
+
+  if (user.lists.find(list => list.name === name)) {
+    command.editReply({ embeds: [simpleEmbed(translate(command.locale, list.exec["list-create"]["already-exists"], { name: name }), "error")] });
     return;
   }
 
@@ -53,7 +68,7 @@ export const execute: CommandExecute = async(command, user) => {
     if (!interaction.isAnySelectMenu()) return;
 
     const questionIds = interaction.values;
-    await addQuestionToList(user, name, questionIds);
+    await addQuestionToList(listId, questionIds);
 
     await interaction.update({
       embeds: [simpleEmbed(translate(command.locale, list.exec["list-create"]["added"], { name: name, count: questionIds.length }), "success")],
