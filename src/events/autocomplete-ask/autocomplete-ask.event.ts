@@ -18,7 +18,6 @@ export const execute: EventExecute<"interactionCreate"> = async(interaction: Int
   if (!interaction.isAutocomplete()) return;
   if (interaction.commandName !== "ask") return;
 
-
   const focused = interaction.options.getFocused(true);
 
   if (focused.name === "context") {
