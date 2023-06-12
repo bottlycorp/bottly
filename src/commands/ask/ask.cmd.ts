@@ -115,6 +115,8 @@ export const execute: CommandExecute = async(command, user) => {
       }
     });
 
+    await updateUser(command.user.id, { usages: { update: { usage: { decrement: 1 } } } });
+
     if (!created) {
       command.editReply(translate(command.locale, ask.exec.error, { error: "Question could not be created" }));
       return;

@@ -132,8 +132,8 @@ export const execute: EventExecute<"messageCreate"> = async(message: Message) =>
   await openai.createChatCompletion({
     messages: messages,
     model: "gpt-3.5-turbo",
-    max_tokens: tokens,
-    user: user.userId
+    user: user.userId,
+    max_tokens: tokens
   }).catch(async(error: Error) => {
     clearInterval(interval);
     deleteCache(message.author.id);
@@ -143,6 +143,7 @@ export const execute: EventExecute<"messageCreate"> = async(message: Message) =>
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const errorType = error?.response?.data?.error?.type;
+    console.log(errorType);
     if (errorType !== "requests") {
       clearInterval(interval);
       deleteCache(message.author.id);
