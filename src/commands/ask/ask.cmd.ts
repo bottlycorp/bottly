@@ -103,7 +103,7 @@ export const execute: CommandExecute = async(command, user) => {
     }
 
     if (!regen) {
-      answer = response.data.choices[0].message?.content;
+      answer = response.data.choices[0].message?.content ?? "";
       answeredAt = DayJS().unix();
     }
   };
