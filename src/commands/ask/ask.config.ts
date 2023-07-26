@@ -29,6 +29,20 @@ export const ask = {
         de: "Die Frage, die an die künstliche Intelligenz gerichtet werden soll"
       }
     },
+    model: {
+      name: {
+        "en-US": "model"
+      },
+      description: {
+        "en-US": "The model to use to answer the question",
+        fr: "Le modèle à utiliser pour répondre à la question",
+        "pt-BR": "O modelo a ser usado para responder a pergunta",
+        ru: "Модель, которую нужно использовать для ответа на вопрос",
+        uk: "Модель, яку потрібно використовувати для відповіді на питання",
+        "es-ES": "El modelo a utilizar para responder a la pregunta",
+        de: "Das Modell, das zur Beantwortung der Frage verwendet werden soll"
+      }
+    },
     context: {
       name: {
         "en-US": "context"

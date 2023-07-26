@@ -15,7 +15,16 @@ export const slashCommand: SlashCommandDefition = new SlashCommandBuilder()
     .setDescription(ask.options.prompt.description["en-US"])
     .setDescriptionLocalizations(ask.options.prompt.description)
     .setRequired(true)
-    .setMaxLength(500))
+    .setMaxLength(1000))
+  .addStringOption(new SlashCommandStringOption()
+    .setName("model")
+    .setDescription(ask.options.model.description["en-US"])
+    .setDescriptionLocalizations(ask.options.model.description)
+    .setRequired(false)
+    .addChoices(
+      { name: "GPT 3.5 Turbo", value: "gpt-3.5-turbo"},
+      { name: "GPT 4", value: "gpt-4"}
+    ))
   .addStringOption(new SlashCommandStringOption()
     .setName("context")
     .setDescription(ask.options.context.description["en-US"])

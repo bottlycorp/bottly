@@ -15,7 +15,7 @@ import { limitString, userWithId } from "$core/utils/function";
 import { QuestionIncludeAll, getQuestion, newQuestion, updateQuestion } from "$core/utils/data/question";
 import { getPrompt } from "@bottlycorp/prompts";
 import { simpleButton, simpleEmbed } from "$core/utils/embed";
-import { buttonsBuilder, favoriteButton, qrCodeButton, regenerateButton, revealButton, usageButton } from "$core/utils/config/buttons";
+import { buttonsBuilder, favoriteButton, premiumButton, qrCodeButton, regenerateButton, revealButton, usageButton } from "$core/utils/config/buttons";
 import { updateUser } from "$core/utils/data/user";
 import { DayJS } from "$core/utils/day-js";
 import { supabase } from "$core/utils/supabase";
@@ -28,9 +28,16 @@ import QRCode from "qrcode";
 export const execute: CommandExecute = async(command, user) => {
   const web = command.options.getBoolean("web", false) ?? false;
   const context = command.options.getString("context", false) ?? "";
+  const model = command.options.getString("model", false) ?? "gpt-3.5-turbo";
 
   const channel = command.channel;
   const askedAt = DayJS().unix();
+
+  if (model !== "gpt-3.5-turbo" && user.isPremium === false) {
+    const premiumEmbed = simpleEmbed(translate(command.locale, global.exec.orGetPremiumGPT4), "premium");
+    command.editReply({ embeds: [premiumEmbed], components: [{ type: 1, components: [premiumButton(command)]}] });
+    return;
+  }
 
   const handleNotInTextChannel = (): void => {
     command.editReply(translate(command.locale, global.exec.notInATextChannel));
@@ -86,7 +93,7 @@ export const execute: CommandExecute = async(command, user) => {
     const response = await openai.createChatCompletion({
       messages,
       max_tokens: user.isPremium ? 3750 : 2500,
-      model: "gpt-3.5-turbo",
+      model: model || "gpt-3.5-turbo",
       user: `${command.user.id}-${command.guild?.id}`
     });
 

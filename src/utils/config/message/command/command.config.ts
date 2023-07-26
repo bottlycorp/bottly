@@ -77,13 +77,22 @@ export const global = {
       ].join(" ")
     },
     orGetPremium: {
-      fr: ":sparkles: Vous pouvez aussi devenir premium pour 5.00$/mois et augmenter votre nombre d'utilisation à 50/jour",
       "en-US": ":sparkles: You can also become premium for $5.00/month and increase your number of uses to 50/day",
+      fr: ":sparkles: Vous pouvez aussi devenir premium pour 5.00$/mois et augmenter votre nombre d'utilisation à 50/jour",
       "pt-BR": ":sparkles: Você também pode se tornar premium por $5.00/mês e aumentar seu número de usos para 50/dia",
       ru: ":sparkles: Вы также можете стать премиумом за 5,00$/месяц и увеличить количество использований до 50/день",
       uk: ":sparkles: Ви також можете стати преміумом за 5,00$/місяць і збільшити кількість використань до 50/день",
       "es-ES": ":sparkles: También puedes convertirte en premium por $5.00/mes y aumentar tu número de usos a 50/día",
       de: ":sparkles: Sie können auch für 5,00 $ / Monat Premium werden und Ihre Anzahl der Verwendungen auf 50 / Tag erhöhen"
+    },
+    orGetPremiumGPT4: {
+      "en-US": ":sparkles: The use of GPT 4 is reserved for premium members, you can become premium for $5.00/month",
+      fr: ":sparkles: L'utilisation de GPT 4 est réservée aux membres premium, vous pouvez devenir premium pour 5.00$/mois",
+      "pt-BR": ":sparkles: O uso do GPT 4 é reservado para membros premium, você pode se tornar premium por $5.00/mês",
+      ru: ":sparkles: Использование GPT 4 зарезервировано для премиум-пользователей, вы можете стать премиумом за 5,00$/месяц",
+      uk: ":sparkles: Використання GPT 4 зарезервовано для преміум-користувачів, ви можете стати преміумом за 5,00$/місяць",
+      "es-ES": ":sparkles: El uso de GPT 4 está reservado para miembros premium, puede convertirse en premium por $5.00/mes",
+      de: ":sparkles: Die Verwendung von GPT 4 ist Premium-Mitgliedern vorbehalten. Sie können für 5,00 $ / Monat Premium werden"
     },
     error: {
       "en-US": "An error occurred while executing the command: **{error}**",

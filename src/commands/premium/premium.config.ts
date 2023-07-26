@@ -110,6 +110,7 @@ export const premium = {
         "en-US": [
           "{emojiPremium} You are not a premium user.",
           "\n**What are the advantages ?**",
+          "• Use **GPT 4** and **GPT 4 (32k)** models instead of **GPT 3.5 Turbo** (You can still use GPT 3.5 Turbo)",
           "• You have 50 uses per day",
           "• You have priority access to support",
           "• You have 50% more writing power on your questions and discussions",
@@ -125,6 +126,7 @@ export const premium = {
         fr: [
           "{emojiPremium} Vous n'êtes pas un utilisateur premium.",
           "\n**Quels sont les avantages ?**",
+          "• Utilisez les modèles **GPT 4** et **GPT 4 (32k)** au lieu de **GPT 3.5 Turbo** (Vous pouvez toujours utiliser GPT 3.5 Turbo)",
           "• Vous avez 50 utilisations par jour",
           "• Vous avez un accès prioritaire au support",
           "• Vous avez 50% de puissance d'écriture en plus sur vos questions et discussions",
@@ -140,6 +142,7 @@ export const premium = {
         "pt-BR": [
           "{emojiPremium} Você não é um usuário premium.",
           "\n**Quais são as vantagens ?**",
+          "• Use os modelos **GPT 4** e **GPT 4 (32k)** em vez de **GPT 3.5 Turbo** (Você ainda pode usar o GPT 3.5 Turbo)",
           "• Você tem 50 usos por dia",
           "• Você tem acesso prioritário ao suporte",
           "• Você tem 50% a mais de poder de escrita em suas perguntas e discussões",
@@ -155,6 +158,7 @@ export const premium = {
         ru: [
           "{emojiPremium} Вы не являетесь премиум-пользователем.",
           "\n**Каковы преимущества ?**",
+          "• Используйте модели **GPT 4** и **GPT 4 (32k)** вместо **GPT 3.5 Turbo** (Вы все еще можете использовать GPT 3.5 Turbo)",
           "• У вас есть 50 использований в день",
           "• У вас есть приоритетный доступ к поддержке",
           "• У вас на 50% больше мощности записи в ваших вопросах и обсуждениях",
@@ -170,6 +174,7 @@ export const premium = {
         uk: [
           "{emojiPremium} Ви не є преміум-користувачем.",
           "\n**Які переваги ?**",
+          "• Використовуйте моделі **GPT 4** і **GPT 4 (32k)** замість **GPT 3.5 Turbo** (Ви все ще можете використовувати GPT 3.5 Turbo)",
           "• У вас є 50 використань на день",
           "• У вас є пріоритетний доступ до підтримки",
           "• У вас на 50% більше потужності запису в ваших питаннях та обговореннях",
@@ -185,6 +190,7 @@ export const premium = {
         "es-ES": [
           "{emojiPremium} No eres un usuario premium.",
           "\n**¿Cuáles son las ventajas ?**",
+          "• Use los modelos **GPT 4** y **GPT 4 (32k)** en lugar de **GPT 3.5 Turbo** (Todavía puede usar GPT 3.5 Turbo)",
           "• Tienes 50 usos por día",
           "• Tiene acceso prioritario al soporte",
           "• Tiene un 50% más de potencia de escritura en sus preguntas y discusiones",
@@ -200,6 +206,7 @@ export const premium = {
         de: [
           "{emojiPremium} Sie sind kein Premium-Benutzer.",
           "\n**Was sind die Vorteile ?**",
+          "• Verwenden Sie die Modelle **GPT 4** und **GPT 4 (32k)** anstelle von **GPT 3.5 Turbo** (Sie können immer noch GPT 3.5 Turbo verwenden)",
           "• Sie haben 50 Anwendungen pro Tag",
           "• Sie haben Prioritätszugang zum Support",
           "• Sie haben 50% mehr Schreibkraft bei Ihren Fragen und Diskussionen",
