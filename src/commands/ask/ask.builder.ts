@@ -22,8 +22,8 @@ export const slashCommand: SlashCommandDefition = new SlashCommandBuilder()
     .setDescriptionLocalizations(ask.options.model.description)
     .setRequired(false)
     .addChoices(
-      { name: "GPT 3.5 Turbo", value: "gpt-3.5-turbo"},
-      { name: "GPT 4", value: "gpt-4"}
+      { name: "GPT 3.5 Turbo", value: "gpt-3.5-turbo" },
+      { name: "GPT 4", value: "gpt-4" }
     ))
   .addStringOption(new SlashCommandStringOption()
     .setName("context")

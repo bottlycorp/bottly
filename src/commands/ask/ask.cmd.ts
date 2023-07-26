@@ -35,7 +35,7 @@ export const execute: CommandExecute = async(command, user) => {
 
   if (model !== "gpt-3.5-turbo" && user.isPremium === false) {
     const premiumEmbed = simpleEmbed(translate(command.locale, global.exec.orGetPremiumGPT4), "premium");
-    command.editReply({ embeds: [premiumEmbed], components: [{ type: 1, components: [premiumButton(command)]}] });
+    command.editReply({ embeds: [premiumEmbed], components: [{ type: 1, components: [premiumButton(command)] }] });
     return;
   }
 
