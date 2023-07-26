@@ -77,13 +77,13 @@ export const global = {
       ].join(" ")
     },
     orGetPremium: {
-      "en-US": ":sparkles: You can also become premium for $5.00/month and increase your number of uses to 50/day",
-      fr: ":sparkles: Vous pouvez aussi devenir premium pour 5.00$/mois et augmenter votre nombre d'utilisation à 50/jour",
-      "pt-BR": ":sparkles: Você também pode se tornar premium por $5.00/mês e aumentar seu número de usos para 50/dia",
-      ru: ":sparkles: Вы также можете стать премиумом за 5,00$/месяц и увеличить количество использований до 50/день",
-      uk: ":sparkles: Ви також можете стати преміумом за 5,00$/місяць і збільшити кількість використань до 50/день",
-      "es-ES": ":sparkles: También puedes convertirte en premium por $5.00/mes y aumentar tu número de usos a 50/día",
-      de: ":sparkles: Sie können auch für 5,00 $ / Monat Premium werden und Ihre Anzahl der Verwendungen auf 50 / Tag erhöhen"
+      "en-US": ":sparkles: You can get premium for $5.00/month and increase your usage to 50/day",
+      fr: ":sparkles: Vous pouvez obtenir le premium pour 5.00$/mois et augmenter votre nombre d'utilisation à 50/jour",
+      "pt-BR": ":sparkles: Você pode obter premium por $5.00/mês e aumentar seu uso para 50/dia",
+      ru: ":sparkles: Вы можете получить премиум за 5,00$/месяц и увеличить количество использований до 50/день",
+      uk: ":sparkles: Ви можете отримати преміум за 5,00$/місяць і збільшити кількість використань до 50/день",
+      "es-ES": ":sparkles: Puede obtener premium por $5.00/mes y aumentar su uso a 50/día",
+      de: ":sparkles: Sie können Premium für 5,00 $ / Monat erhalten und Ihre Nutzung auf 50/Tag erhöhen"
     },
     orGetPremiumGPT4: {
       "en-US": ":sparkles: The use of GPT 4 is reserved for premium members, you can become premium for $5.00/month",
