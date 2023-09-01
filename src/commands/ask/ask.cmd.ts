@@ -330,9 +330,9 @@ export const execute: CommandExecute = async(command, user) => {
         break;
       case "regenerate":
         regenerated++;
-        if (regenerated <= (user.isPremium ? 5 : 3)) await handleRespond(true);
+        if (regenerated <= (user.isPremium ? 10 : 2)) await handleRespond(true);
 
-        if (regenerated >= (user.isPremium ? 5 : 3)) {
+        if (regenerated >= (user.isPremium ? 10 : 2)) {
           regeneratedLocked = true;
           command.editReply({ components: buttonsBuilder(
             url ?? null,

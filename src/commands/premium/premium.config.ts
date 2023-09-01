@@ -115,7 +115,7 @@ export const premium = {
           "• You have priority access to support",
           "• You have 50% more writing power on your questions and discussions",
           "• Download discussions when finished",
-          "• Regenerate your questions 10 times (per question) and not use your uses for it",
+          "• Regenerate your questions 10 times (per question) and not use your credits for it",
           "• Your cooldown for {cmdAsk} is `5 seconds` instead of `10 seconds`",
           "\n**How do I become premium and how much does it cost ?**",
           "• You can become premium by clicking on the button below, for a total of $5,00 per month.",
