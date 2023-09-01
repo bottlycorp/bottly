@@ -101,14 +101,14 @@ export const history = {
       },
       voterLine: {
         fr: [
-          ":identification_card: Vous avez pour Bottly durant les dernières `12 heures`, ce qui vous permet d'être à 30 utilisations au lieu de 20"
+          ":identification_card: Vous avez pour Bottly durant les dernières `12 heures`, ce qui vous permet d'être à 30 utilisations au lieu de 5"
         ].join(" "),
-        "en-US": ":identification_card: You have Bottly for the last `12 hours`, which allows you to be at 30 uses instead of 20",
-        "pt-BR": ":identification_card: Você tem Bottly por `12 horas`, o que permite que você esteja em 30 usos em vez de 20",
-        ru: ":identification_card: У вас есть Bottly за последние `12 часов`, что позволяет вам быть в 30 использований вместо 20",
-        uk: ":identification_card: У вас є Bottly за останні `12 годин`, що дозволяє вам бути в 30 використаннях замість 20",
-        "es-ES": ":identification_card: Tienes Bottly durante las últimas `12 horas`, lo que te permite estar en 30 usos en lugar de 20",
-        de: ":identification_card: Sie haben Bottly für die letzten `12 Stunden`, was Ihnen erlaubt, bei 30 Verwendungen anstelle von 20 zu sein"
+        "en-US": ":identification_card: You have Bottly for the last `12 hours`, which allows you to be at 30 uses instead of 5",
+        "pt-BR": ":identification_card: Você tem Bottly por `12 horas`, o que permite que você esteja em 30 usos em vez de 5",
+        ru: ":identification_card: У вас есть Bottly за последние `12 часов`, что позволяет вам быть в 30 использований вместо 5",
+        uk: ":identification_card: У вас є Bottly за останні `12 годин`, що дозволяє вам бути в 30 використаннях замість 5",
+        "es-ES": ":identification_card: Tienes Bottly durante las últimas `12 horas`, lo que te permite estar en 30 usos en lugar de 5",
+        de: ":identification_card: Sie haben Bottly für die letzten `12 Stunden`, was Ihnen erlaubt, bei 30 Verwendungen anstelle von 5 zu sein"
       },
       statsLineQuestions: {
         "en-US": ":bar_chart: You asked `{count}` questions this day, and `{total}` questions in total",

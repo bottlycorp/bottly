@@ -5,7 +5,7 @@ import { DayJS } from "$core/utils/day-js";
 import { prisma } from "$core/utils/prisma";
 import { getMaxUsage } from "$core/utils/data/user";
 
-export const interval: TaskInterval = "*/5 * * * *";
+export const interval: TaskInterval = "0 * * * *";
 
 export const enableInDev: EnableInDev = true;
 

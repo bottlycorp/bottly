@@ -66,7 +66,7 @@ export const execute: CommandExecute = async(command, user) => {
       await interaction.editReply({ embeds: [simpleEmbed(
         translate(command.locale, privacy.exec.deleted.description, {
           username: command.user.username,
-          usage: user.usages?.usage ?? 20,
+          usage: user.usages?.usage ?? 5,
           usageMax: getMaxUsage(user)
         }),
         "error",

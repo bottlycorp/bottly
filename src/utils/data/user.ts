@@ -11,7 +11,7 @@ export type UserIncludeAll = Prisma.UserGetPayload<{
 }>
 
 export const MAX_USES: Record<UsageMax, number> = {
-  [UsageMax.FREE]: 20,
+  [UsageMax.FREE]: 5,
   [UsageMax.PREMIUM]: 50
 };
 

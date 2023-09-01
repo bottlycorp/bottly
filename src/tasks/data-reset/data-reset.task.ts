@@ -4,7 +4,7 @@ import { TaskExecute, TaskInterval } from "$core/utils/handler/task";
 import { DayJS } from "$core/utils/day-js";
 import { prisma } from "$core/utils/prisma";
 
-export const interval: TaskInterval = "*/10 * * * *";
+export const interval: TaskInterval = "0 * * * *";
 
 export const enableInDev: EnableInDev = true;
 

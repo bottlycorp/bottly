@@ -14,7 +14,7 @@ const activitites: Activity[] = [
 
 let index = 0;
 
-export const interval: TaskInterval = "1 * * * * *";
+export const interval: TaskInterval = "* * * * *";
 
 export const enableInDev: EnableInDev = true;
 
